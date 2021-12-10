@@ -81,7 +81,9 @@ namespace Thesis {
                         }
 
                         // Precedence
-                        if (!prevTrip.Successors.Contains(trip)) precedenceViolationCount++;
+                        if (!prevTrip.Successors.Contains(trip)) {
+                            precedenceViolationCount++;
+                        }
 
                         prevTrip = trip;
                     }
@@ -312,7 +314,7 @@ namespace Thesis {
 
         /* Operation cost */
 
-        public static (double, double, double) UnassignTripCostDiff(int oldTripIndex, Trip oldTrip, Driver driver, Driver[] assignment, Instance instance, float penaltyFactor, DebugCost debugDiff, DebugCost debugCostOld, DebugCost debugCostNew) {
+        public static (double, double, double) UnassignTripCostDiff(int oldTripIndex, Trip oldTrip, Driver driver, Driver[] assignment, Instance instance, float penaltyFactor) {
             Trip tripBefore = GetDriverSameDayTripBefore(oldTripIndex, driver, oldTrip.DayIndex, assignment, instance);
             Trip tripAfter = GetDriverSameDayTripAfter(oldTripIndex, driver, oldTrip.DayIndex, assignment, instance);
 
@@ -359,7 +361,6 @@ namespace Thesis {
             double costWithoutPenaltyDiff = drivingCostDiff + travelCostDiff;
 
             // Work day penalty
-            (Trip debugFirstDayTrip, Trip debugLastDayTrip) = GetFirstLastDayTrip(oldTripIndex, oldTrip, driver, assignment, instance);
             double oldWorkDayLength = GetDriverWorkDayLength(oldTripIndex, oldTrip, driver, assignment, instance);
             double newWorkDayLength = oldWorkDayLength + drivingTimeDiff + travelTimeDiff;
             double workDayLengthDiff = newWorkDayLength - oldWorkDayLength;
@@ -384,18 +385,12 @@ namespace Thesis {
 
             double[] workDayLengthDiffs = new double[Config.DayCount];
             workDayLengthDiffs[oldTrip.DayIndex] = workDayLengthDiff;
-            DebugCost currentDiff = new DebugCost(costDiff, drivingTimeDiff, drivingCostDiff, travelTimeDiff, travelCostDiff, workDayLengthExceedanceCountDiff, workDayLengthExceedanceDiff, workDayLengthPenaltyBaseDiff, precedenceViolationCountDiff, precedencePenaltyBaseDiff, workDayLengthDiffs);
-            DebugCost diffError = currentDiff - debugDiff;
-
-            if (Math.Abs(costDiff - debugDiff.TotalCost) > 1) throw new Exception(string.Format("Incorrect cost diff {0} (should be {1})", costDiff, debugDiff.TotalCost));
-            if (Math.Abs(costWithoutPenaltyDiff - debugDiff.DrivingCost - debugDiff.TravelCost) > 1) throw new Exception(string.Format("Incorrect cost without penalty diff {0} (should be {1})", costWithoutPenaltyDiff, debugDiff.DrivingCost - debugDiff.TravelCost));
-            if (Math.Abs(penaltyBaseDiff - debugDiff.WorkDayLengthPenaltyBase - debugDiff.PrecedencePenaltyBase) > 1) throw new Exception(string.Format("Incorrect penalty diff {0} (should be {1})", penaltyBaseDiff, debugDiff.WorkDayLengthPenaltyBase - debugDiff.PrecedencePenaltyBase));
 
             return (costDiff, costWithoutPenaltyDiff, penaltyBaseDiff);
         }
 
-        public static (double, double, double) AssignTripCostDiff(int newTripIndex, Trip newTrip, Driver driver, Driver[] assignment, Instance instance, float penaltyFactor, DebugCost debugDiff, DebugCost debugCostOld, DebugCost debugCostNew) {
-            (double costDiff, double costWithoutPenaltyDiff, double penaltyBaseDiff) = UnassignTripCostDiff(newTripIndex, newTrip, driver, assignment, instance, penaltyFactor, -debugDiff, debugCostNew, debugCostOld);
+        public static (double, double, double) AssignTripCostDiff(int newTripIndex, Trip newTrip, Driver driver, Driver[] assignment, Instance instance, float penaltyFactor) {
+            (double costDiff, double costWithoutPenaltyDiff, double penaltyBaseDiff) = UnassignTripCostDiff(newTripIndex, newTrip, driver, assignment, instance, penaltyFactor);
             return (-costDiff, -costWithoutPenaltyDiff, -penaltyBaseDiff);
         }
 

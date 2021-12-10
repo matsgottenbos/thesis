@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,9 @@ namespace Thesis {
         }
 
         public Solution Solve() {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             List<AssignmentNode> possibleNodes = EnumerateAssignments();
 
             int tripCount = instance.Trips.Length;
@@ -27,6 +31,12 @@ namespace Thesis {
                 }
             }
 
+            if (bestNode == null) {
+                stopwatch.Stop();
+                Console.WriteLine("No solution; determined in {0} s", stopwatch.ElapsedMilliseconds / 1000f);
+                return null;
+            }
+
             int[] bestAssignmentIndices = NodeToAssignmentIndices(bestNode, tripCount);
             Driver[] bestAssignment = new Driver[tripCount];
             for (int tripIndex = 0; tripIndex < tripCount; tripIndex++) {
@@ -34,25 +44,26 @@ namespace Thesis {
                 bestAssignment[tripIndex] = instance.Drivers[driverIndex];
             }
 
+            stopwatch.Stop();
+            Console.WriteLine("Optimal solution found in {0} s", stopwatch.ElapsedMilliseconds / 1000f);
+
             return new Solution(bestCost, bestAssignment);
         }
         
 
         List<AssignmentNode> EnumerateAssignments() {
             List<AssignmentNode> previousTripNodes = new List<AssignmentNode>() { null };
-            List<List<AssignmentNode>> nodesPerTrip = new List<List<AssignmentNode>>();
             for (int tripIndex = 0; tripIndex < instance.Trips.Length; tripIndex++) {
                 List<AssignmentNode> currentTripNodes = new List<AssignmentNode>();
                 for (int previousNodeIndex = 0; previousNodeIndex < previousTripNodes.Count; previousNodeIndex++) {
                     AssignmentNode previousTripNode = previousTripNodes[previousNodeIndex];
                     for (int driverIndex = 0; driverIndex < Config.DriverCount; driverIndex++) {
                         AssignmentNode node = new AssignmentNode(driverIndex, previousTripNode);
-                        if (IsNodeFeasible(node, tripIndex)) currentTripNodes.Add(node);
+                        if (IsNodeFeasible(node, tripIndex + 1)) currentTripNodes.Add(node);
                     }
                 }
 
                 previousTripNodes = currentTripNodes;
-                nodesPerTrip.Add(currentTripNodes);
             }
 
             return previousTripNodes;
@@ -61,17 +72,54 @@ namespace Thesis {
         bool IsNodeFeasible(AssignmentNode node, int assignedTripCount) {
             int[] assignment = NodeToAssignmentIndices(node, assignedTripCount);
             Trip[] driversPreviousTrip = new Trip[Config.DriverCount];
+            float?[] driversWorkDayStartTime = new float?[Config.DriverCount];
 
             for (int tripIndex = 0; tripIndex < assignment.Length; tripIndex++) {
                 int driverIndex = assignment[tripIndex];
+                Driver driver = instance.Drivers[driverIndex];
                 Trip trip = instance.Trips[tripIndex];
-                Trip driverIndexPreviousTrip = driversPreviousTrip[driverIndex];
 
-                if (driverIndexPreviousTrip == null || driverIndexPreviousTrip.Successors.Contains(trip)) {
-                    driversPreviousTrip[driverIndex] = trip;
+                // Check working day length
+                float? workDayStartTime = driversWorkDayStartTime[driverIndex];
+                if (workDayStartTime.HasValue) {
+                    Trip lastDayTrip = driversPreviousTrip[driverIndex];
+                    if (trip.DayIndex != lastDayTrip.DayIndex) {
+                        float workingDayLength = lastDayTrip.EndTime + CostHelper.TravelTimeFromHome(lastDayTrip, driver) - workDayStartTime.Value;
+
+                        if (workingDayLength > Config.MaxWorkDayLength) {
+                            // Working day is too long
+                            return false;
+                        }
+
+                        driversWorkDayStartTime[driverIndex] = null;
+                    }
                 } else {
+                    float debug = trip.StartTime - CostHelper.TravelTimeFromHome(trip, driver);
+                    driversWorkDayStartTime[driverIndex] = trip.StartTime - CostHelper.TravelTimeFromHome(trip, driver);
+                }
+
+                // Check precedence
+                Trip driverIndexPreviousTrip = driversPreviousTrip[driverIndex];
+                if (driverIndexPreviousTrip != null && !driverIndexPreviousTrip.Successors.Contains(trip)) {
                     // These trips cannot be scheduled consecutively
                     return false;
+                }
+
+                driversPreviousTrip[driverIndex] = trip;
+            }
+
+            // Check last day working day length
+            for (int driverIndex = 0; driverIndex < Config.DriverCount; driverIndex++) {
+                float? workDayStartTime = driversWorkDayStartTime[driverIndex];
+                if (workDayStartTime.HasValue) {
+                    Driver driver = instance.Drivers[driverIndex];
+                    Trip lastDayTrip = driversPreviousTrip[driverIndex];
+                    float workingDayLength = lastDayTrip.EndTime + CostHelper.TravelTimeFromHome(lastDayTrip, driver) - workDayStartTime.Value;
+
+                    if (workingDayLength > Config.MaxWorkDayLength) {
+                        // Working day is too long
+                        return false;
+                    }
                 }
             }
 

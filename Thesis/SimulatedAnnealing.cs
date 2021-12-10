@@ -45,29 +45,9 @@ namespace Thesis {
 
                 AssignTripOperation operation = AssignTripOperation.CreateRandom(assignment, instance, penaltyFactor, rand);
 
-                // Debug
-                Driver[] debugAssignment = (Driver[])assignment.Clone();
-                debugAssignment[operation.TripIndex] = operation.NewDriver;
-                (double debugTotalCost, double debugCostWithoutPenalty, double debugPenaltyBase) = CostHelper.AssignmentCostWithPenalties(debugAssignment, instance, penaltyFactor);
-                double debugTotalCostDiff = debugTotalCost - cost;
-                double debugCostWithoutPenaltyDiff = debugCostWithoutPenalty - costWithoutPenalty;
-                double debugPenaltyBaseDiff = debugPenaltyBase - penaltyBase;
-                DebugCost[] debugDriverCostsOld = CostHelper.DebugCost(assignment, instance, penaltyFactor);
-                DebugCost[] debugDriverCostsNew = CostHelper.DebugCost(debugAssignment, instance, penaltyFactor);
-                DebugCost[] debugDriverCostDiffs = new DebugCost[Config.DriverCount];
-                for (int i = 0; i < Config.DriverCount; i++) {
-                    debugDriverCostDiffs[i] = debugDriverCostsNew[i] - debugDriverCostsOld[i];
-                }
-                DebugCost debugCostOld = DebugCost.CreateBySum(debugDriverCostsOld);
-                DebugCost debugCostNew = DebugCost.CreateBySum(debugDriverCostsNew);
-                DebugCost debugCostDiff = DebugCost.CreateBySum(debugDriverCostDiffs);
-                if (Math.Abs(debugCostDiff.TotalCost - debugTotalCostDiff) > 1) throw new Exception();
-                if (Math.Abs(debugCostDiff.DrivingCost + debugCostDiff.TravelCost - debugCostWithoutPenaltyDiff) > 1) throw new Exception();
-                if (Math.Abs(debugCostDiff.WorkDayLengthPenaltyBase + debugCostDiff.PrecedencePenaltyBase - debugPenaltyBaseDiff) > 1) throw new Exception();
-
                 //if (operation == null) continue;
 
-                (double costDiff, double costWithoutPenaltyDiff, double penaltyBaseDiff) = operation.GetCostDiff(penaltyFactor, debugDriverCostDiffs, debugDriverCostsOld, debugDriverCostsNew);
+                (double costDiff, double costWithoutPenaltyDiff, double penaltyBaseDiff) = operation.GetCostDiff(penaltyFactor);
 
                 if (costDiff < 0 || rand.NextDouble() < Math.Exp(-costDiff / temperature)) {
                     operation.Execute();
@@ -88,11 +68,6 @@ namespace Thesis {
                             bestAssignment = (Driver[])assignment.Clone();
                         }
                     }
-
-                    // Debug
-                    if (Math.Abs(debugTotalCost - cost) > 1) throw new Exception(string.Format("Incorrect cost {0} (should be {1})", cost, debugTotalCost));
-                    if (Math.Abs(debugCostWithoutPenalty - costWithoutPenalty) > 1) throw new Exception(string.Format("Incorrect cost without penalty {0} (should be {1})", costWithoutPenalty, debugCostWithoutPenalty));
-                    if (Math.Abs(debugPenaltyBase - penaltyBase) > 1) throw new Exception(string.Format("Incorrect penalty {0} (should be {1})", penaltyBase, debugPenaltyBase));
                 }
 
                 // Update iteration number
@@ -105,7 +80,8 @@ namespace Thesis {
 
                 // Log
                 if (iterationNum % Config.SaLogFrequency == 0) {
-                    Console.WriteLine("#: {0}; Best cost: {1}; Cost: {2}; Penalty: {3}; Temp: {4}; Penalty: {5}", ToString(iterationNum), ToString(bestCost), ToString(costWithoutPenalty), ToString(penaltyBase), ToString(temperature), ToString(penaltyFactor));
+                    string assignmentStr = string.Join(' ', bestAssignment.Select(driver => driver.Index));
+                    Console.WriteLine("#: {0}; Best cost: {1}; Cost: {2}; Penalty: {3}; Temp: {4}; Penalty: {5}; Best assignment: {6}", ToString(iterationNum), ToString(bestCost), ToString(costWithoutPenalty), ToString(penaltyBase), ToString(temperature), ToString(penaltyFactor), assignmentStr);
                 }
 
                 // Update temperature and penalty factor
@@ -119,7 +95,8 @@ namespace Thesis {
             // Check cost to remove floating point imprecisions
             (bestCost, _, _) = CostHelper.AssignmentCostWithPenalties(bestAssignment, instance, 1f);
 
-            Console.WriteLine("SA finished in {0} s", (float)stopwatch.ElapsedMilliseconds / 1000f);
+            stopwatch.Stop();
+            Console.WriteLine("SA finished in {0} s", stopwatch.ElapsedMilliseconds / 1000f);
 
             return (bestCost, bestAssignment);
         }
@@ -151,7 +128,7 @@ namespace Thesis {
             this.penaltyFactor = penaltyFactor;
         }
 
-        public abstract (double, double, double) GetCostDiff(float penaltyFactor, DebugCost[] debugDriverCostDiffs, DebugCost[] debugDriverCostsOld, DebugCost[] debugDriverCostsNew);
+        public abstract (double, double, double) GetCostDiff(float penaltyFactor);
         public abstract void Execute();
     }
 
@@ -164,12 +141,12 @@ namespace Thesis {
             NewDriver = newDriver;
         }
 
-        public override (double, double, double) GetCostDiff(float penaltyFactor, DebugCost[] debugDriverCostDiffs, DebugCost[] debugDriverCostsOld, DebugCost[] debugDriverCostsNew) {
+        public override (double, double, double) GetCostDiff(float penaltyFactor) {
             Trip trip = instance.Trips[TripIndex];
             Driver oldDriver = assignment[TripIndex];
 
-            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverPenaltyBaseDiff) = CostHelper.UnassignTripCostDiff(TripIndex, trip, oldDriver, assignment, instance, penaltyFactor, debugDriverCostDiffs[oldDriver.Index], debugDriverCostsOld[oldDriver.Index], debugDriverCostsNew[oldDriver.Index]);
-            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverPenaltyBaseDiff) = CostHelper.AssignTripCostDiff(TripIndex, trip, NewDriver, assignment, instance, penaltyFactor, debugDriverCostDiffs[NewDriver.Index], debugDriverCostsOld[NewDriver.Index], debugDriverCostsNew[NewDriver.Index]);
+            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverPenaltyBaseDiff) = CostHelper.UnassignTripCostDiff(TripIndex, trip, oldDriver, assignment, instance, penaltyFactor);
+            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverPenaltyBaseDiff) = CostHelper.AssignTripCostDiff(TripIndex, trip, NewDriver, assignment, instance, penaltyFactor);
 
             return (oldDriverCostDiff + newDriverCostDiff, oldDriverCostWithoutPenaltyDiff + newDriverCostWithoutPenaltyDiff, oldDriverPenaltyBaseDiff + newDriverPenaltyBaseDiff);
         }

@@ -9,8 +9,8 @@ namespace Thesis {
         // Counts
         public const int DayCount = 2;
         public const int StationCount = 10;
-        public const int TripCountPerDay = 5;
-        public const int DriverCount = 5;
+        public const int TripCountPerDay = 10;
+        public const int DriverCount = 20;
         public const int MaxStationCountPerTrip = 4;
 
         // Distances
@@ -34,13 +34,13 @@ namespace Thesis {
         public const float WorkDayLengthExceedancePenaltyPerHour = 1000;
 
         // Simulated annealing
-        public const int SaIterationCount = 10000000;
+        public const int SaIterationCount = 1000000000;
         public const int SaCheckCostFrequency = 1000;
-        public const int SaLogFrequency = 100000;
-        public const int SaParameterUpdateFrequency = 10000;
+        public const int SaLogFrequency = 1000000;
+        public const int SaParameterUpdateFrequency = SaIterationCount / 1000;
         public const float SaInitialTemperature = 1500f;
         public const float SaTemperatureReductionFactor = 0.995f;
         public const float SaInitialPenaltyFactor = 0.00001f;
-        public const float SaPenaltyIncrementFactor = 1.015f;
+        public const float SaPenaltyIncrementFactor = 1.01f;
     }
 }
