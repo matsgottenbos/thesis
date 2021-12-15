@@ -16,19 +16,19 @@ namespace Thesis {
             Console.WriteLine("Instance generation complete");
 
             // Determine lower bounds
-            LowerBoundCalculator lowerBoundCalculator = new LowerBoundCalculator(instance);
-            float lowerBound1 = lowerBoundCalculator.CalculateLowerBound1();
-            float lowerBound2 = lowerBoundCalculator.CalculateLowerBound2();
-            Console.WriteLine("Lower bound 1: {0}", lowerBound1);
-            Console.WriteLine("Lower bound 2: {0}", lowerBound2);
+            //LowerBoundCalculator lowerBoundCalculator = new LowerBoundCalculator(instance);
+            //float lowerBound1 = lowerBoundCalculator.CalculateLowerBound1();
+            //float lowerBound2 = lowerBoundCalculator.CalculateLowerBound2();
+            //Console.WriteLine("Lower bound 1: {0}", lowerBound1);
+            //Console.WriteLine("Lower bound 2: {0}", lowerBound2);
 
             // Simulated annealing
             Random rand2 = new Random();
             SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, rand2);
             (double saCost, Driver[] saSolution) = simulatedAnnealing.Run();
             Console.WriteLine("SA cost: {0}", saCost);
-            Console.WriteLine("Lower bound 1: {0}", lowerBound1);
-            Console.WriteLine("Lower bound 2: {0}", lowerBound2);
+            //Console.WriteLine("Lower bound 1: {0}", lowerBound1);
+            //Console.WriteLine("Lower bound 2: {0}", lowerBound2);
 
             // Solve optimally
             //OptimalSolver optimalSolver = new OptimalSolver(instance);

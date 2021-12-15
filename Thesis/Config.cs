@@ -9,8 +9,9 @@ namespace Thesis {
         // Counts
         public const int DayCount = 2;
         public const int StationCount = 10;
+        //public const int TripCountPerDay = 5;
         public const int TripCountPerDay = 10;
-        public const int DriverCount = 20;
+        public const int DriverCount = 10;
         public const int MaxStationCountPerTrip = 4;
 
         // Distances
