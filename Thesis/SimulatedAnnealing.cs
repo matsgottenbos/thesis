@@ -10,10 +10,12 @@ namespace Thesis {
     class SimulatedAnnealing {
         readonly Instance instance;
         readonly Random rand;
+        readonly XorShiftRandom fastRand;
 
-        public SimulatedAnnealing(Instance instance, Random rand) {
+        public SimulatedAnnealing(Instance instance, Random rand, XorShiftRandom fastRand) {
             this.instance = instance;
             this.rand = rand;
+            this.fastRand = fastRand;
         }
 
         public (double, Driver[]) Run() {
@@ -34,6 +36,9 @@ namespace Thesis {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
+            double tripCountFactor = fastRand.GetIntFactor(assignment.Length);
+            double driverCountMinusOneFactor = fastRand.GetIntFactor(instance.Drivers.Length - 1);
+
             while (iterationNum < Config.SaIterationCount) {
                 //int operationIndex = rand.Next(3);
                 //Operation operation = operationIndex switch {
@@ -43,13 +48,13 @@ namespace Thesis {
                 //    _ => throw new Exception(),
                 //};
 
-                AssignTripOperation operation = AssignTripOperation.CreateRandom(assignment, instance, penaltyFactor, rand);
+                AssignTripOperation operation = AssignTripOperation.CreateRandom(assignment, instance, penaltyFactor, fastRand, tripCountFactor, driverCountMinusOneFactor);
 
                 //if (operation == null) continue;
 
                 (double costDiff, double costWithoutPenaltyDiff, double penaltyBaseDiff) = operation.GetCostDiff(penaltyFactor);
 
-                if (costDiff < 0 || rand.NextDouble() < Math.Exp(-costDiff / temperature)) {
+                if (costDiff < 0 || fastRand.NextDouble() < Math.Exp(-costDiff / temperature)) {
                     operation.Execute();
                     cost += costDiff;
                     costWithoutPenalty += costWithoutPenaltyDiff;
@@ -59,7 +64,7 @@ namespace Thesis {
                     if (costWithoutPenalty < -10) throw new Exception(string.Format("Negative cost without penalty: {0}", costWithoutPenalty));
                     if (penaltyBase < -10) throw new Exception(string.Format("Negative penalty: {0}", penaltyBase));
 
-                    if (cost < bestCost && penaltyBase < 0.1) {
+                    if (cost < bestCost && penaltyBase < 0.01) {
                         // Check cost to remove floating point imprecisions
                         (cost, costWithoutPenalty, penaltyBase) = CostHelper.AssignmentCostWithPenalties(assignment, instance, penaltyFactor);
 
@@ -81,13 +86,13 @@ namespace Thesis {
                 // Log
                 if (iterationNum % Config.SaLogFrequency == 0) {
                     string assignmentStr = string.Join(' ', bestAssignment.Select(driver => driver.Index));
-                    Console.WriteLine("#: {0}; Best cost: {1}; Cost: {2}; Penalty: {3}; Temp: {4}; Penalty: {5}; Best assignment: {6}", ToString(iterationNum), ToString(bestCost), ToString(costWithoutPenalty), ToString(penaltyBase), ToString(temperature), ToString(penaltyFactor), assignmentStr);
+                    Console.WriteLine("#: {0}; Best cost: {1}; Cost: {2}; Penalty: {3}; Temp: {4}; P.factor: {5}; Best assignment: {6}", LargeNumToString(iterationNum, 2), ToString(bestCost), ToString(costWithoutPenalty), ToString(penaltyBase), ToString(temperature), ToString(penaltyFactor), assignmentStr);
                 }
 
                 // Update temperature and penalty factor
                 if (iterationNum % Config.SaParameterUpdateFrequency == 0) {
                     temperature *= Config.SaTemperatureReductionFactor;
-                    penaltyFactor = Math.Min(1, penaltyFactor * Config.SaPenaltyIncrementFactor);
+                    penaltyFactor = Math.Min(1, penaltyFactor + Config.SaPenaltyIncrement);
                     (cost, costWithoutPenalty, penaltyBase) = CostHelper.AssignmentCostWithPenalties(assignment, instance, penaltyFactor);
                 }
             }
@@ -96,16 +101,30 @@ namespace Thesis {
             (bestCost, _, _) = CostHelper.AssignmentCostWithPenalties(bestAssignment, instance, 1f);
 
             stopwatch.Stop();
-            Console.WriteLine("SA finished in {0} s", stopwatch.ElapsedMilliseconds / 1000f);
+            float saDuration = stopwatch.ElapsedMilliseconds / 1000f;
+            float saSpeed = Config.SaIterationCount / saDuration;
+            Console.WriteLine("SA finished {0} iterations in {1} s  |  Speed: {2} iterations/s", LargeNumToString(iterationNum, 2), ToString(saDuration), LargeNumToString(saSpeed));
 
             return (bestCost, bestAssignment);
         }
 
-        string ToString(float num) {
-            return Math.Round(num, 4).ToString(CultureInfo.InvariantCulture);
+        static string ToString(double num, int precision = 4) {
+            return Math.Round(num, precision).ToString(CultureInfo.InvariantCulture);
         }
-        string ToString(double num) {
-            return Math.Round(num, 4).ToString(CultureInfo.InvariantCulture);
+
+        static string LargeNumToString(double num, int precision = 4) {
+            if (num < 1000) {
+                return ToString(num, precision);
+            } else if (num < 1000000) {
+                double numThousands = num / 1000;
+                return ToString(numThousands, precision) + "k";
+            } else if (num < 1000000000) {
+                double numMillions = num / 1000000;
+                return ToString(numMillions, precision) + "M";
+            } else {
+                double numMBllions = num / 1000000000;
+                return ToString(numMBllions, precision) + "B";
+            }
         }
 
         int[] GetInitialAssignmentIndices(Random rand) {
@@ -145,8 +164,8 @@ namespace Thesis {
             Trip trip = instance.Trips[TripIndex];
             Driver oldDriver = assignment[TripIndex];
 
-            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverPenaltyBaseDiff) = CostHelper.UnassignTripCostDiff(TripIndex, trip, oldDriver, assignment, instance, penaltyFactor);
-            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverPenaltyBaseDiff) = CostHelper.AssignTripCostDiff(TripIndex, trip, NewDriver, assignment, instance, penaltyFactor);
+            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverPenaltyBaseDiff) = CostHelper.UnassignTripCostDiff(trip, oldDriver, assignment, instance, penaltyFactor);
+            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverPenaltyBaseDiff) = CostHelper.AssignTripCostDiff(trip, NewDriver, assignment, instance, penaltyFactor);
 
             return (oldDriverCostDiff + newDriverCostDiff, oldDriverCostWithoutPenaltyDiff + newDriverCostWithoutPenaltyDiff, oldDriverPenaltyBaseDiff + newDriverPenaltyBaseDiff);
         }
@@ -155,12 +174,12 @@ namespace Thesis {
             assignment[TripIndex] = NewDriver;
         }
 
-        public static AssignTripOperation CreateRandom(Driver[] assignment, Instance instance, float penaltyFactor, Random rand) {
-            int tripIndex = rand.Next(assignment.Length);
+        public static AssignTripOperation CreateRandom(Driver[] assignment, Instance instance, float penaltyFactor, XorShiftRandom fastRand, double tripCountFactor, double driverCountMinusOneFactor) {
+            int tripIndex = fastRand.NextIntWithFactor(tripCountFactor); // assignment.Length
             Driver oldDriver = assignment[tripIndex];
 
             // Select random driver that is not the current driver
-            int newDriverIndex = rand.Next(instance.Drivers.Length - 1);
+            int newDriverIndex = fastRand.NextIntWithFactor(driverCountMinusOneFactor); // instance.Drivers.Length - 1
             if (newDriverIndex >= oldDriver.Index) newDriverIndex++;
             Driver newDriver = instance.Drivers[newDriverIndex];
 

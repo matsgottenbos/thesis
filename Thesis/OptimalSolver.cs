@@ -55,7 +55,7 @@ namespace Thesis {
             }
 
             // Debug
-            if (newTripIndex < 3) {
+            if (newTripIndex < 2) {
                 string logStr = "";
                 AssignmentNode searchNode = node;
                 while (searchNode != null) {
@@ -108,8 +108,8 @@ namespace Thesis {
 
                 if (searchNode.DriverIndex == nodeDriverIndex) {
                     if (driverSameDayTripBefore == null) {
-                        // Check predecence
-                        if (!searchNodeTrip.Successors.Contains(nodeTrip)) return null;
+                        // Check precedence
+                        if (!instance.TripSuccession[searchNodeTrip.Index, nodeTrip.Index]) return null;
 
                         driverSameDayTripBefore = searchNodeTrip;
                     }
@@ -121,14 +121,14 @@ namespace Thesis {
             }
 
             // Check working day length
-            float arriveAtHomeTime = nodeTrip.EndTime + CostHelper.TravelTimeToHome(nodeTrip, driver);
-            float workingDayLength = arriveAtHomeTime - driverFirstDayTrip.StartTime + CostHelper.TravelTimeFromHome(driverFirstDayTrip, driver);
+            float workDayEndTime = CostHelper.WorkDayEndTime(nodeTrip, driver);
+            float workingDayLength = workDayEndTime - CostHelper.WorkDayStartTime(driverFirstDayTrip, driver);
             if (workingDayLength > Config.MaxWorkDayLength) return null;
 
             // Get cost diff
             double workingTimeDiff;
             if (driverSameDayTripBefore == null) workingTimeDiff = workingDayLength;
-            else workingTimeDiff = arriveAtHomeTime - driverSameDayTripBefore.EndTime - CostHelper.TravelTimeToHome(driverSameDayTripBefore, driver);
+            else workingTimeDiff = workDayEndTime - CostHelper.WorkDayEndTime(driverSameDayTripBefore, driver);
 
             double costDiff = workingTimeDiff * driver.HourlyRate;
 

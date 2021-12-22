@@ -14,9 +14,9 @@ namespace Thesis {
 
         public Instance GenerateInstance() {
             float[,] stationTravelTimes = GenerateStationTravelTimes();
-            (Trip[] trips, Trip[][] tripsPerDay) = GenerateAllTrips(stationTravelTimes);
+            (Trip[] trips, Trip[][] tripsPerDay, bool[,] tripSuccession) = GenerateAllTrips(stationTravelTimes);
             Driver[] drivers = GenerateDrivers();
-            return new Instance(stationTravelTimes, trips, tripsPerDay, drivers);
+            return new Instance(stationTravelTimes, trips, tripSuccession, tripsPerDay, drivers);
         }
 
         float[,] GenerateStationTravelTimes() {
@@ -61,7 +61,7 @@ namespace Thesis {
             // Sort trips by start time
             dayTrips = dayTrips.OrderBy(trip => trip.StartTime).ToArray();
 
-            // Generate precedence constraints
+            // Generate precedence constraints within day
             for (int dayTrip1Index = 0; dayTrip1Index < Config.TripCountPerDay; dayTrip1Index++) {
                 for (int dayTrip2Index = dayTrip1Index; dayTrip2Index < Config.TripCountPerDay; dayTrip2Index++) {
                     Trip trip1 = dayTrips[dayTrip1Index];
@@ -76,7 +76,7 @@ namespace Thesis {
             return dayTrips;
         }
 
-        (Trip[], Trip[][]) GenerateAllTrips(float[,] stationTravelTimes) {
+        (Trip[], Trip[][], bool[,]) GenerateAllTrips(float[,] stationTravelTimes) {
             // Generate days
             Trip[][] tripsPerDay = new Trip[Config.DayCount][];
             List<Trip> tripsList = new List<Trip>();
@@ -92,7 +92,7 @@ namespace Thesis {
                 trips[tripIndex].Index = tripIndex;
             }
 
-            // Generate precedence constraints
+            // Generate precedence constraints between days
             for (int dayIndex = 0; dayIndex < Config.DayCount - 1; dayIndex++) {
                 Trip[] day1Trips = tripsPerDay[dayIndex];
                 Trip[] day2Trips = tripsPerDay[dayIndex + 1];
@@ -104,7 +104,17 @@ namespace Thesis {
                 }
             }
 
-            return (trips, tripsPerDay);
+            // Create 2D bool array for precedance relations
+            bool[,] tripSuccession = new bool[trips.Length, trips.Length];
+            for (int tripIndex = 0; tripIndex < trips.Length; tripIndex++) {
+                Trip trip = trips[tripIndex];
+                for (int successorIndex = 0; successorIndex < trip.Successors.Count; successorIndex++) {
+                    Trip successor = trip.Successors[successorIndex];
+                    tripSuccession[tripIndex, successor.Index] = true;
+                }
+            }
+
+            return (trips, tripsPerDay, tripSuccession);
         }
 
         Driver[] GenerateDrivers() {
@@ -137,8 +147,17 @@ namespace Thesis {
                     payedTravelTimes[i] = payedTravelTime;
                 }
 
-                drivers[driverIndex] = new Driver(driverIndex, hourlyRate, trackProficiencies, payedTravelTimes);
+                drivers[driverIndex] = new Driver(-1, hourlyRate, trackProficiencies, payedTravelTimes);
             }
+
+            // Sort drivers by hourly rate
+            drivers = drivers.OrderBy(driver => driver.HourlyRate).ToArray();
+
+            // Add driver indices
+            for (int driverIndex = 0; driverIndex < drivers.Length; driverIndex++) {
+                drivers[driverIndex].Index = driverIndex;
+            }
+
             return drivers;
         }
     }
@@ -177,7 +196,7 @@ namespace Thesis {
     }
 
     class Driver {
-        public readonly int Index;
+        public int Index;
         public readonly float HourlyRate;
         public readonly bool[,] TrackProficiencies;
         public readonly float[] PayedTravelTimes;
@@ -193,12 +212,14 @@ namespace Thesis {
     class Instance {
         public readonly float[,] StationTravelTimes;
         public readonly Trip[] Trips;
+        public readonly bool[,] TripSuccession;
         public readonly Trip[][] TripsPerDay;
         public readonly Driver[] Drivers;
 
-        public Instance(float[,] stationTravelTimes, Trip[] trips, Trip[][] tripsPerDay, Driver[] drivers) {
+        public Instance(float[,] stationTravelTimes, Trip[] trips, bool[,] tripSuccession, Trip[][] tripsPerDay, Driver[] drivers) {
             StationTravelTimes = stationTravelTimes;
             Trips = trips;
+            TripSuccession = tripSuccession;
             TripsPerDay = tripsPerDay;
             Drivers = drivers;
         }

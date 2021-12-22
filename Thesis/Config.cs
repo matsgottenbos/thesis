@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class Config {
+        // App
+        public const bool RunOptimalAlgorithm = false;
+        public const bool RunSimulatedAnnealing = true;
+
         // Counts
         public const int DayCount = 2;
         public const int StationCount = 10;
@@ -35,13 +39,13 @@ namespace Thesis {
         public const float WorkDayLengthExceedancePenaltyPerHour = 1000;
 
         // Simulated annealing
-        public const int SaIterationCount = 1000000000;
-        public const int SaCheckCostFrequency = 1000;
-        public const int SaLogFrequency = 1000000;
+        public const int SaIterationCount = 10000000;
+        public const int SaCheckCostFrequency = 100000;
+        public const int SaLogFrequency = 100000;
         public const int SaParameterUpdateFrequency = SaIterationCount / 1000;
         public const float SaInitialTemperature = 1500f;
         public const float SaTemperatureReductionFactor = 0.995f;
-        public const float SaInitialPenaltyFactor = 0.00001f;
-        public const float SaPenaltyIncrementFactor = 1.01f;
+        public const float SaInitialPenaltyFactor = 0.001f;
+        public const float SaPenaltyIncrement = 0.001f;
     }
 }
