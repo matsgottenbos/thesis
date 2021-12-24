@@ -222,7 +222,10 @@ namespace Thesis {
 
         /* Operation cost */
 
-        static (double, double, double) UnassignTripCostDiffInner(Trip oldTrip, Driver driver, Driver[] assignment, Trip tripBefore, Trip tripAfter, Instance instance, float penaltyFactor) {
+        public static (double, double, double) UnassignTripCostDiff(Trip oldTrip, Driver driver, Driver[] assignment, Instance instance, float penaltyFactor) {
+            Trip tripBefore = GetDriverSameDayTripBefore(oldTrip.Index, driver, oldTrip.DayIndex, assignment, instance);
+            Trip tripAfter = GetDriverSameDayTripAfter(oldTrip.Index, driver, oldTrip.DayIndex, assignment, instance);
+
             float workDayLengthDiff, workDayLengthPenaltyDiff;
             int precedenceViolationCountDiff = 0;
             if (tripBefore == null) {
@@ -276,41 +279,8 @@ namespace Thesis {
             return (costDiff, costWithoutPenaltyDiff, penaltyBaseDiff);
         }
 
-        public static (double, double, double) UnassignTripCostDiff(Trip oldTrip, Driver driver, Driver[] assignment, int[,] driverDayTripCount, Trip[,] driverDayTrips, Instance instance, float penaltyFactor) {
-            Trip tripBefore, tripAfter;
-            int dayTripCount = driverDayTripCount[driver.Index, oldTrip.DayIndex];
-            if (dayTripCount == 1) {
-                tripBefore = null;
-                tripAfter = null;
-            } else {
-                tripBefore = GetDriverSameDayTripBefore(oldTrip.Index, driver, oldTrip.DayIndex, assignment, instance);
-                tripAfter = GetDriverSameDayTripAfter(oldTrip.Index, driver, oldTrip.DayIndex, assignment, instance);
-            }
-
-            return UnassignTripCostDiffInner(oldTrip, driver, assignment, tripBefore, tripAfter, instance, penaltyFactor);
-        }
-
-        public static (double, double, double) AssignTripCostDiff(Trip newTrip, Driver driver, Driver[] assignment, int[,] driverDayTripCount, Trip[,] driverDayTrips, Instance instance, float penaltyFactor) {
-            Trip tripBefore, tripAfter;
-            int dayTripCount = driverDayTripCount[driver.Index, newTrip.DayIndex];
-            if (dayTripCount == 0) {
-                tripBefore = null;
-                tripAfter = null;
-            } else if (dayTripCount == 1) {
-                Trip otherDayTrip = driverDayTrips[driver.Index, newTrip.DayIndex];
-                if (otherDayTrip.Index < newTrip.Index) {
-                    tripBefore = otherDayTrip;
-                    tripAfter = null;
-                } else {
-                    tripBefore = null;
-                    tripAfter = otherDayTrip;
-                }
-            } else {
-                tripBefore = GetDriverSameDayTripBefore(newTrip.Index, driver, newTrip.DayIndex, assignment, instance);
-                tripAfter = GetDriverSameDayTripAfter(newTrip.Index, driver, newTrip.DayIndex, assignment, instance);
-            }
-
-            (double costDiff, double costWithoutPenaltyDiff, double penaltyBaseDiff) = UnassignTripCostDiffInner(newTrip, driver, assignment, tripBefore, tripAfter, instance, penaltyFactor);
+        public static (double, double, double) AssignTripCostDiff(Trip newTrip, Driver driver, Driver[] assignment, Instance instance, float penaltyFactor) {
+            (double costDiff, double costWithoutPenaltyDiff, double penaltyBaseDiff) = UnassignTripCostDiff(newTrip, driver, assignment, instance, penaltyFactor);
             return (-costDiff, -costWithoutPenaltyDiff, -penaltyBaseDiff);
         }
 

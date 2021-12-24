@@ -23,22 +23,15 @@ namespace Thesis {
             float temperature = Config.SaInitialTemperature;
             float penaltyFactor = Config.SaInitialPenaltyFactor;
 
-            // Create arrays with assignment info
-            Driver[] assignment = new Driver[instance.Trips.Length];
-            int[,] driverDayTripCount = new int[Config.DriverCount, Config.DayCount]; // For each driver, for each day, the number of trips of that driver on that day
-            Trip[,] driverDayTrips = new Trip[Config.DriverCount, Config.DayCount]; // For each driver, for each day, if there is just one trip of that driver on that day, it is stored here
-
-
             // Create a random assignment
+            Driver[] assignment = new Driver[instance.Trips.Length];
             int[] assignmentIndices = GetInitialAssignmentIndices(rand);
             Trip[] driverLastTrips = new Trip[instance.Drivers.Length];
             for (int tripIndex = 0; tripIndex < assignmentIndices.Length; tripIndex++) {
                 Trip trip = instance.Trips[tripIndex];
                 int driverIndex = assignmentIndices[tripIndex];
                 Driver driver = instance.Drivers[driverIndex];
-
                 assignment[tripIndex] = driver;
-                CostHelper.AssignDriverDayTrip(trip, driver, driverDayTripCount, driverDayTrips, assignment, instance);
             }
 
             // Get cost of initial assignment
@@ -65,7 +58,7 @@ namespace Thesis {
                 //    _ => throw new Exception(),
                 //};
 
-                AssignTripOperation operation = AssignTripOperation.CreateRandom(assignment, driverDayTripCount, driverDayTrips, instance, penaltyFactor, fastRand, tripCountFactor, driverCountMinusOneFactor);
+                AssignTripOperation operation = AssignTripOperation.CreateRandom(assignment, instance, penaltyFactor, fastRand, tripCountFactor, driverCountMinusOneFactor);
 
                 //if (operation == null) continue;
 
@@ -151,15 +144,11 @@ namespace Thesis {
 
     abstract class Operation {
         protected readonly Driver[] assignment;
-        protected readonly int[,] driverDayTripCount;
-        protected readonly Trip[,] driverDayTrips;
         protected readonly Instance instance;
         protected readonly float penaltyFactor;
 
-        public Operation(Driver[] assignment, int[,] driverDayTripCount, Trip[,] driverDayTrips, Instance instance, float penaltyFactor) {
+        public Operation(Driver[] assignment, Instance instance, float penaltyFactor) {
             this.assignment = assignment;
-            this.driverDayTripCount = driverDayTripCount;
-            this.driverDayTrips = driverDayTrips;
             this.instance = instance;
             this.penaltyFactor = penaltyFactor;
         }
@@ -173,7 +162,7 @@ namespace Thesis {
         readonly Trip trip;
         readonly Driver oldDriver, newDriver;
 
-        public AssignTripOperation(int tripIndex, Driver newDriver, Driver[] assignment, int[,] driverDayTripCount, Trip[,] driverDayTrips, Instance instance, float penaltyFactor) : base(assignment, driverDayTripCount, driverDayTrips, instance, penaltyFactor) {
+        public AssignTripOperation(int tripIndex, Driver newDriver, Driver[] assignment, Instance instance, float penaltyFactor) : base(assignment, instance, penaltyFactor) {
             this.tripIndex = tripIndex;
             this.newDriver = newDriver;
             trip = instance.Trips[tripIndex];
@@ -181,19 +170,17 @@ namespace Thesis {
         }
 
         public override (double, double, double) GetCostDiff(float penaltyFactor) {
-            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverPenaltyBaseDiff) = CostHelper.UnassignTripCostDiff(trip, oldDriver, assignment, driverDayTripCount, driverDayTrips, instance, penaltyFactor);
-            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverPenaltyBaseDiff) = CostHelper.AssignTripCostDiff(trip, newDriver, assignment, driverDayTripCount, driverDayTrips, instance, penaltyFactor);
+            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverPenaltyBaseDiff) = CostHelper.UnassignTripCostDiff(trip, oldDriver, assignment, instance, penaltyFactor);
+            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverPenaltyBaseDiff) = CostHelper.AssignTripCostDiff(trip, newDriver, assignment, instance, penaltyFactor);
 
             return (oldDriverCostDiff + newDriverCostDiff, oldDriverCostWithoutPenaltyDiff + newDriverCostWithoutPenaltyDiff, oldDriverPenaltyBaseDiff + newDriverPenaltyBaseDiff);
         }
 
         public override void Execute() {
             assignment[tripIndex] = newDriver;
-            CostHelper.UnassignDriverDayTrip(trip, oldDriver, driverDayTripCount, driverDayTrips, assignment, instance);
-            CostHelper.AssignDriverDayTrip(trip, newDriver, driverDayTripCount, driverDayTrips, assignment, instance);
         }
 
-        public static AssignTripOperation CreateRandom(Driver[] assignment, int[,] driverDayTripCount, Trip[,] driverDayTrips, Instance instance, float penaltyFactor, XorShiftRandom fastRand, double tripCountFactor, double driverCountMinusOneFactor) {
+        public static AssignTripOperation CreateRandom(Driver[] assignment, Instance instance, float penaltyFactor, XorShiftRandom fastRand, double tripCountFactor, double driverCountMinusOneFactor) {
             int tripIndex = fastRand.NextIntWithFactor(tripCountFactor);
             Driver oldDriver = assignment[tripIndex];
 
@@ -202,7 +189,7 @@ namespace Thesis {
             if (newDriverIndex >= oldDriver.Index) newDriverIndex++;
             Driver newDriver = instance.Drivers[newDriverIndex];
 
-            return new AssignTripOperation(tripIndex, newDriver, assignment, driverDayTripCount, driverDayTrips, instance, penaltyFactor);
+            return new AssignTripOperation(tripIndex, newDriver, assignment, instance, penaltyFactor);
         }
     }
 }
