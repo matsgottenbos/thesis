@@ -222,9 +222,9 @@ namespace Thesis {
 
         /* Operation cost */
 
-        public static (double, double, double) UnassignTripCostDiff(Trip oldTrip, Driver driver, Driver[] assignment, Instance instance, float penaltyFactor) {
-            Trip tripBefore = GetDriverSameDayTripBefore(oldTrip.Index, driver, oldTrip.DayIndex, assignment, instance);
-            Trip tripAfter = GetDriverSameDayTripAfter(oldTrip.Index, driver, oldTrip.DayIndex, assignment, instance);
+        public static (double, double, double) UnassignTripCostDiff(Trip oldTrip, Driver driver, Driver[] assignment, Trip[,] sameDayTripsBefore, Trip[,] sameDayTripsAfter, Instance instance, float penaltyFactor) {
+            Trip tripBefore = sameDayTripsBefore[oldTrip.Index, driver.Index];
+            Trip tripAfter = sameDayTripsAfter[oldTrip.Index, driver.Index];
 
             float workDayLengthDiff, workDayLengthPenaltyDiff;
             int precedenceViolationCountDiff = 0;
@@ -279,8 +279,8 @@ namespace Thesis {
             return (costDiff, costWithoutPenaltyDiff, penaltyBaseDiff);
         }
 
-        public static (double, double, double) AssignTripCostDiff(Trip newTrip, Driver driver, Driver[] assignment, Instance instance, float penaltyFactor) {
-            (double costDiff, double costWithoutPenaltyDiff, double penaltyBaseDiff) = UnassignTripCostDiff(newTrip, driver, assignment, instance, penaltyFactor);
+        public static (double, double, double) AssignTripCostDiff(Trip newTrip, Driver driver, Driver[] assignment, Trip[,] sameDayTripsBefore, Trip[,] sameDayTripsAfter, Instance instance, float penaltyFactor) {
+            (double costDiff, double costWithoutPenaltyDiff, double penaltyBaseDiff) = UnassignTripCostDiff(newTrip, driver, assignment, sameDayTripsBefore, sameDayTripsAfter, instance, penaltyFactor);
             return (-costDiff, -costWithoutPenaltyDiff, -penaltyBaseDiff);
         }
 
@@ -299,7 +299,10 @@ namespace Thesis {
             return amountPenaltyBaseDiff + countPenaltyBaseDiff;
         }
 
-        static Trip GetDriverSameDayTripBefore(int tripIndex, Driver driver, int dayIndex, Driver[] assignment, Instance instance) {
+
+        /* Getting trips */
+
+        public static Trip GetDriverSameDayTripBefore(int tripIndex, Driver driver, int dayIndex, Driver[] assignment, Instance instance) {
             for (int searchTripIndex = tripIndex - 1; searchTripIndex >= 0; searchTripIndex--) {
                 Trip trip = instance.Trips[searchTripIndex];
                 if (trip.DayIndex != dayIndex) return null;
@@ -310,7 +313,7 @@ namespace Thesis {
             }
             return null;
         }
-        static Trip GetDriverSameDayTripAfter(int tripIndex, Driver driver, int dayIndex, Driver[] assignment, Instance instance) {
+        public static Trip GetDriverSameDayTripAfter(int tripIndex, Driver driver, int dayIndex, Driver[] assignment, Instance instance) {
             for (int searchTripIndex = tripIndex + 1; searchTripIndex < instance.Trips.Length; searchTripIndex++) {
                 Trip trip = instance.Trips[searchTripIndex];
                 if (trip.DayIndex != dayIndex) return null;
@@ -346,6 +349,67 @@ namespace Thesis {
             Trip lastDayTrip = GetLastDayTrip(someTripOnDay, driver, assignment, instance);
             float workDayLength = WorkDayLength(firstDayTrip, lastDayTrip, driver);
             return workDayLength;
+        }
+
+
+        /* Objects for gettings trips */
+
+        public static void AssignSameDayTripsBeforeAfter(Trip newTrip, int newDriverIndex, Trip[,] sameDayTripsBefore, Trip[,] sameDayTripsAfter, Instance instance) {
+            // Update before-trips after new trip
+            Trip tripBefore = sameDayTripsBefore[newTrip.Index, newDriverIndex];
+            if (tripBefore == null) {
+                // No trip before, so update until start of the day
+                for (int searchTripIndex = newTrip.Index + 1; searchTripIndex < instance.Trips.Length; searchTripIndex++) {
+                    Trip searchTrip = instance.Trips[searchTripIndex];
+                    Trip searchTripBefore = sameDayTripsBefore[searchTripIndex, newDriverIndex];
+                    if (searchTripBefore != null || searchTrip.DayIndex != newTrip.DayIndex) break;
+                    sameDayTripsBefore[searchTripIndex, newDriverIndex] = newTrip;
+                }
+            } else {
+                // Trip before, so update until we see a different trip before
+                for (int searchTripIndex = newTrip.Index + 1; searchTripIndex < instance.Trips.Length; searchTripIndex++) {
+                    Trip searchTripBefore = sameDayTripsBefore[searchTripIndex, newDriverIndex];
+                    if (searchTripBefore != tripBefore) break;
+                    sameDayTripsBefore[searchTripIndex, newDriverIndex] = newTrip;
+                }
+            }
+
+            // Update after-trips before new trip
+            Trip tripAfter = sameDayTripsAfter[newTrip.Index, newDriverIndex];
+            if (tripAfter == null) {
+                // No trip after, so update until end of the day
+                for (int searchTripIndex = newTrip.Index - 1; searchTripIndex >= 0; searchTripIndex--) {
+                    Trip searchTrip = instance.Trips[searchTripIndex];
+                    Trip searchTripAfter = sameDayTripsAfter[searchTripIndex, newDriverIndex];
+                    if (searchTripAfter != null || searchTrip.DayIndex != newTrip.DayIndex) break;
+                    sameDayTripsAfter[searchTripIndex, newDriverIndex] = newTrip;
+                }
+            } else {
+                // Trip after, so update until we see a different trip after
+                for (int searchTripIndex = newTrip.Index - 1; searchTripIndex >= 0; searchTripIndex--) {
+                    Trip searchTripAfter = sameDayTripsAfter[searchTripIndex, newDriverIndex];
+                    if (searchTripAfter != tripAfter) break;
+                    sameDayTripsAfter[searchTripIndex, newDriverIndex] = newTrip;
+                }
+            }
+        }
+
+        public static void UnassignSameDayTripsBeforeAfter(Trip oldTrip, int oldDriverIndex, Trip[,] sameDayTripsBefore, Trip[,] sameDayTripsAfter, Instance instance) {
+            // Update before-trips after new trip
+            Trip tripBefore = sameDayTripsBefore[oldTrip.Index, oldDriverIndex];
+            for (int searchTripIndex = oldTrip.Index + 1; searchTripIndex < instance.Trips.Length; searchTripIndex++) {
+                Trip searchTripBefore = sameDayTripsBefore[searchTripIndex, oldDriverIndex];
+                if (searchTripBefore != oldTrip) break;
+                sameDayTripsBefore[searchTripIndex, oldDriverIndex] = tripBefore;
+            }
+
+            // Update after-trips before new trip
+            Trip tripAfter = sameDayTripsAfter[oldTrip.Index, oldDriverIndex];
+            for (int searchTripIndex = oldTrip.Index - 1; searchTripIndex >= 0; searchTripIndex--) {
+                Trip searchTripAfter = sameDayTripsAfter[searchTripIndex, oldDriverIndex];
+                if (searchTripAfter != oldTrip) break;
+                sameDayTripsAfter[searchTripIndex, oldDriverIndex] = tripAfter;
+            }
         }
     }
 }
