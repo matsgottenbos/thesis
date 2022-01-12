@@ -10,33 +10,34 @@ namespace Thesis {
 
         public static double AssignmentCostWithoutPenalties(List<Trip>[] driverPaths, Instance instance) {
             // Determine cost
-            double cost = 0;
+            double totalWorkTime = 0;
             for (int driverIndex = 0; driverIndex < Config.DriverCount; driverIndex++) {
-                Driver driver = instance.Drivers[driverIndex];
                 List<Trip> driverPath = driverPaths[driverIndex];
+                if (driverPath.Count == 0) continue;
+                Driver driver = instance.Drivers[driverIndex];
 
-                if (driverPath.Count < 1) continue;
+                Trip dayFirstTrip = driverPath[0];
+                Trip prevTrip = driverPath[0];
+                for (int driverTripIndex = 1; driverTripIndex < driverPath.Count; driverTripIndex++) {
+                    Trip trip = driverPath[driverTripIndex];
 
-                // Count driving cost
-                cost += DrivingCost(driverPath, driver);
+                    // Working day length
+                    if (trip.DayIndex != dayFirstTrip.DayIndex) {
+                        // End previous day
+                        totalWorkTime += WorkDayLength(dayFirstTrip, prevTrip, driver, instance);
 
-                // Count first and last trip travel
-                Trip firstTrip = driverPath[0];
-                Trip lastTrip = driverPath[driverPath.Count - 1];
-                cost += TravelCostFromHome(firstTrip, driver) + TravelCostToHome(lastTrip, driver);
+                        // Start new day
+                        dayFirstTrip = trip;
+                    }
 
-                // TODO: option for hotel
-
-                if (driverPath.Count < 2) continue;
-
-                // Count travel cost
-                for (int tripIndex = 0; tripIndex < driverPath.Count - 1; tripIndex++) {
-                    Trip trip1 = driverPath[tripIndex];
-                    Trip trip2 = driverPath[tripIndex + 1];
-                    cost += BestCostBetween(trip1, trip2, driver);
+                    prevTrip = trip;
                 }
+
+                // End last day
+                totalWorkTime += WorkDayLength(dayFirstTrip, prevTrip, driver, instance);
             }
 
+            double cost = totalWorkTime * Config.HourlyRate;
             return cost;
         }
         public static double AssignmentCostWithoutPenalties(int[] assignmentIndices, Instance instance) {
@@ -52,54 +53,52 @@ namespace Thesis {
         /* Assignment penalties */
 
         public static double GetAssignmentBasePenalties(List<Trip>[] driverPaths, Instance instance) {
-            int workDayLengthExceedanceCount = 0;
-            double workDayLengthExceedance = 0;
-            int precedenceViolationCount = 0;
+            int totalWorkDayLengthExceedanceCount = 0;
+            double totalWorkDayLengthExceedance = 0;
+            int totalPrecedenceViolationCount = 0;
             for (int driverIndex = 0; driverIndex < Config.DriverCount; driverIndex++) {
-                Driver driver = instance.Drivers[driverIndex];
                 List<Trip> driverPath = driverPaths[driverIndex];
-                if (driverPath.Count > 0) {
-                    Trip prevTrip = driverPath[0];
-                    int currentDayIndex = prevTrip.DayIndex;
-                    double workDayStartTime = prevTrip.StartTime - TravelTimeFromHome(prevTrip, driver);
-                    for (int driverTripIndex = 1; driverTripIndex < driverPath.Count; driverTripIndex++) {
-                        Trip trip = driverPath[driverTripIndex];
+                if (driverPath.Count == 0) continue;
+                Driver driver = instance.Drivers[driverIndex];
 
-                        // Working day length
-                        if (trip.DayIndex != currentDayIndex) {
-                            // End previous day
-                            double workDayLength = prevTrip.EndTime + TravelTimeToHome(prevTrip, driver) - workDayStartTime;
-                            double currentWorkDayLengthExceedance = Math.Max(0, workDayLength - Config.MaxWorkDayLength);
-                            if (currentWorkDayLengthExceedance > 0) {
-                                workDayLengthExceedanceCount++;
-                                workDayLengthExceedance += currentWorkDayLengthExceedance;
-                            }
+                Trip dayFirstTrip = driverPath[0];
+                Trip prevTrip = driverPath[0];
+                for (int driverTripIndex = 1; driverTripIndex < driverPath.Count; driverTripIndex++) {
+                    Trip trip = driverPath[driverTripIndex];
 
-                            // Start new day
-                            currentDayIndex = trip.DayIndex;
-                            workDayStartTime = trip.StartTime - TravelTimeFromHome(trip, driver);
+                    // Check working day length
+                    if (trip.DayIndex != dayFirstTrip.DayIndex) {
+                        // End previous day
+                        double workDayLength = WorkDayLength(dayFirstTrip, prevTrip, driver, instance);
+                        double workDayLengthExceedance = Math.Max(0, workDayLength - Config.MaxWorkDayLength);
+                        if (workDayLengthExceedance > 0) {
+                            totalWorkDayLengthExceedanceCount++;
+                            totalWorkDayLengthExceedance += workDayLengthExceedance;
                         }
 
-                        // Precedence
-                        if (!instance.TripSuccession[prevTrip.Index, trip.Index]) {
-                            precedenceViolationCount++;
-                        }
-
-                        prevTrip = trip;
+                        // Start new day
+                        dayFirstTrip = trip;
                     }
 
-                    // End last day
-                    double lastWorkDayLength = prevTrip.EndTime + TravelTimeToHome(prevTrip, driver) - workDayStartTime;
-                    double lastWorkDayLengthExceedance = Math.Max(0, lastWorkDayLength - Config.MaxWorkDayLength);
-                    if (lastWorkDayLengthExceedance > 0) {
-                        workDayLengthExceedanceCount++;
-                        workDayLengthExceedance += lastWorkDayLengthExceedance;
+                    // Check precedence
+                    if (!instance.TripSuccession[prevTrip.Index, trip.Index]) {
+                        totalPrecedenceViolationCount++;
                     }
+
+                    prevTrip = trip;
+                }
+
+                // End last day
+                double lastWorkDayLength = WorkDayLength(dayFirstTrip, prevTrip, driver, instance);
+                double lastWorkDayLengthExceedance = Math.Max(0, lastWorkDayLength - Config.MaxWorkDayLength);
+                if (lastWorkDayLengthExceedance > 0) {
+                    totalWorkDayLengthExceedanceCount++;
+                    totalWorkDayLengthExceedance += lastWorkDayLengthExceedance;
                 }
             }
 
-            double workDayLengthPenaltyBase = workDayLengthExceedanceCount * Config.WorkDayLengthExceedancePenalty + workDayLengthExceedance * Config.WorkDayLengthExceedancePenaltyPerHour;
-            double precendencePenaltyBase = precedenceViolationCount * Config.PrecendenceViolationPenalty;
+            double workDayLengthPenaltyBase = totalWorkDayLengthExceedanceCount * Config.WorkDayLengthExceedancePenalty + totalWorkDayLengthExceedance * Config.WorkDayLengthExceedancePenaltyPerHour;
+            double precendencePenaltyBase = totalPrecedenceViolationCount * Config.PrecendenceViolationPenalty;
             double penaltyBase = workDayLengthPenaltyBase + precendencePenaltyBase;
             return penaltyBase;
         }
@@ -154,69 +153,29 @@ namespace Thesis {
         }
 
 
-        /* Driving cost */
-
-        public static float DrivingCost(Trip trip, Driver driver) {
-            return trip.Duration * driver.HourlyRate;
-        }
-        public static float DrivingCost(List<Trip> trips, Driver driver) {
-            float cost = 0;
-            for (int tripIndex = 0; tripIndex < trips.Count; tripIndex++) {
-                cost += DrivingCost(trips[tripIndex], driver);
-            }
-            return cost;
-        }
-
-
         /* Travel cost */
 
-        public static float TravelTimeFromHome(Trip trip, Driver driver) {
-            return driver.PayedTravelTimes[trip.FirstStation];
-        }
-        public static float TravelCostFromHome(Trip trip, Driver driver) {
-            return TravelTimeFromHome(trip, driver) * driver.HourlyRate;
+        public static float TwoWayPayedTravelTime(Trip trip, Driver driver) {
+            return driver.TwoWayPayedTravelTimes[trip.FirstStation];
         }
 
-        public static float TravelTimeToHome(Trip trip, Driver driver) {
-            return driver.PayedTravelTimes[trip.LastStation];
-        }
-        public static float TravelCostToHome(Trip trip, Driver driver) {
-            return TravelTimeToHome(trip, driver) * driver.HourlyRate;
-        }
-
-        public static float WaitingTimeBetween(Trip trip1, Trip trip2) {
-            if (trip1.DayIndex != trip2.DayIndex) return float.MaxValue; // Waiting is not possible between days
-            return trip2.StartTime - trip1.EndTime;
-        }
-        public static float WaitingCostBetween(Trip trip1, Trip trip2, Driver driver) {
-            if (trip1.DayIndex != trip2.DayIndex) return float.MaxValue; // Waiting is not possible between days
-            return (trip2.StartTime - trip1.EndTime) * driver.HourlyRate; // Assumption: waiting time is paid
-        }
-
-        public static float BestWorkingTimeBetween(Trip trip1, Trip trip2, Driver driver) {
-            // If same day, waiting time
-            if (trip1.DayIndex == trip2.DayIndex) return WaitingTimeBetween(trip1, trip2);
-
-            // If different days: travel time via home
-            return TravelTimeToHome(trip1, driver) + TravelTimeFromHome(trip2, driver);
-        }
-        public static float BestCostBetween(Trip trip1, Trip trip2, Driver driver) {
-            return BestWorkingTimeBetween(trip1, trip2, driver) * driver.HourlyRate;
+        public static float TwoWayPayedTravelCost(Trip trip, Driver driver) {
+            return TwoWayPayedTravelTime(trip, driver) * Config.HourlyRate;
         }
 
 
         /* Work day start and end times */
 
-        public static float WorkDayStartTime(Trip firstDayTrip, Driver driver) {
-            return firstDayTrip.StartTime - TravelTimeFromHome(firstDayTrip, driver);
+        public static float WorkDayStartTimeWithTwoWayTravel(Trip firstDayTrip, Driver driver) {
+            return firstDayTrip.StartTime - TwoWayPayedTravelTime(firstDayTrip, driver);
         }
 
-        public static float WorkDayEndTime(Trip lastDayTrip, Driver driver) {
-            return lastDayTrip.EndTime + TravelTimeToHome(lastDayTrip, driver);
+        public static float WorkDayEndTimeWithoutTwoWayTravel(Trip firstDayTrip, Trip lastDayTrip, Instance instance) {
+            return lastDayTrip.EndTime + instance.CarTravelTimes[lastDayTrip.LastStation, firstDayTrip.FirstStation];
         }
 
-        public static float WorkDayLength(Trip firstDayTrip, Trip lastDayTrip, Driver driver) {
-            return WorkDayEndTime(lastDayTrip, driver) - WorkDayStartTime(firstDayTrip, driver);
+        public static float WorkDayLength(Trip firstDayTrip, Trip lastDayTrip, Driver driver, Instance instance) {
+            return WorkDayEndTimeWithoutTwoWayTravel(firstDayTrip, lastDayTrip, instance) - WorkDayStartTimeWithTwoWayTravel(firstDayTrip, driver);
         }
 
 
@@ -231,16 +190,16 @@ namespace Thesis {
             if (tripBefore == null) {
                 if (tripAfter == null) {
                     // No trips before or after
-                    float oldWorkDayLength = WorkDayLength(oldTrip, oldTrip, driver);
+                    float oldWorkDayLength = WorkDayLength(oldTrip, oldTrip, driver, instance);
                     float newWorkDayLength = 0;
                     workDayLengthDiff = -oldWorkDayLength;
                     workDayLengthPenaltyDiff = GetWorkDayPenaltyBaseDiff(oldWorkDayLength, newWorkDayLength);
                 } else {
                     // Trip after, but not before
                     Trip lastDayTrip = GetLastDayTrip(tripAfter, driver, assignment, instance);
-                    float workDayEndTime = WorkDayEndTime(lastDayTrip, driver);
-                    float oldWorkDayLength = workDayEndTime - WorkDayStartTime(oldTrip, driver);
-                    float newWorkDayLength = workDayEndTime - WorkDayStartTime(tripAfter, driver);
+                    float workDayEndTime = WorkDayEndTimeWithoutTwoWayTravel(oldTrip, lastDayTrip, instance);
+                    float oldWorkDayLength = workDayEndTime - WorkDayStartTimeWithTwoWayTravel(oldTrip, driver);
+                    float newWorkDayLength = workDayEndTime - WorkDayStartTimeWithTwoWayTravel(tripAfter, driver);
                     workDayLengthDiff = newWorkDayLength - oldWorkDayLength;
                     workDayLengthPenaltyDiff = GetWorkDayPenaltyBaseDiff(oldWorkDayLength, newWorkDayLength);
 
@@ -251,9 +210,9 @@ namespace Thesis {
                 if (tripAfter == null) {
                     // Trip before, but not after
                     Trip firstDayTrip = GetFirstDayTrip(tripBefore, driver, assignment, instance);
-                    float workDayStartTime = WorkDayStartTime(firstDayTrip, driver);
-                    float oldWorkDayLength = WorkDayEndTime(oldTrip, driver) - workDayStartTime;
-                    float newWorkDayLength = WorkDayEndTime(tripBefore, driver) - workDayStartTime;
+                    float workDayStartTime = WorkDayStartTimeWithTwoWayTravel(firstDayTrip, driver);
+                    float oldWorkDayLength = WorkDayEndTimeWithoutTwoWayTravel(firstDayTrip, oldTrip, instance) - workDayStartTime;
+                    float newWorkDayLength = WorkDayEndTimeWithoutTwoWayTravel(firstDayTrip, tripBefore, instance) - workDayStartTime;
                     workDayLengthDiff = newWorkDayLength - oldWorkDayLength;
                     workDayLengthPenaltyDiff = GetWorkDayPenaltyBaseDiff(oldWorkDayLength, newWorkDayLength);
                 } else {
@@ -272,7 +231,7 @@ namespace Thesis {
                 if (!instance.TripSuccession[tripBefore.Index, oldTrip.Index]) precedenceViolationCountDiff--;
             }
 
-            double costWithoutPenaltyDiff = workDayLengthDiff * driver.HourlyRate;
+            double costWithoutPenaltyDiff = workDayLengthDiff * Config.HourlyRate;
             double precedencePenaltyBaseDiff = precedenceViolationCountDiff * Config.PrecendenceViolationPenalty; // TODO: include next-day successors
             double penaltyBaseDiff = workDayLengthPenaltyDiff + precedencePenaltyBaseDiff;
             double costDiff = costWithoutPenaltyDiff + penaltyBaseDiff * penaltyFactor;
@@ -347,7 +306,7 @@ namespace Thesis {
         static float GetDriverWorkDayLength(Trip someTripOnDay, Driver driver, Driver[] assignment, Instance instance) {
             Trip firstDayTrip = GetFirstDayTrip(someTripOnDay, driver, assignment, instance);
             Trip lastDayTrip = GetLastDayTrip(someTripOnDay, driver, assignment, instance);
-            float workDayLength = WorkDayLength(firstDayTrip, lastDayTrip, driver);
+            float workDayLength = WorkDayLength(firstDayTrip, lastDayTrip, driver, instance);
             return workDayLength;
         }
 

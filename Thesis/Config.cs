@@ -30,8 +30,7 @@ namespace Thesis {
         public const float TrackProficiencyProb = 0.9f;
 
         // Salaries
-        public const float MinHourlyRate = 55f;
-        public const float MaxHourlyRate = 65f;
+        public const float HourlyRate = 50f;
 
         // Penalties
         public const float PrecendenceViolationPenalty = 10000;

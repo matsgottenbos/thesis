@@ -13,26 +13,34 @@ namespace Thesis {
         }
 
         public Instance GenerateInstance() {
-            float[,] stationTravelTimes = GenerateStationTravelTimes();
-            (Trip[] trips, Trip[][] tripsPerDay, bool[,] tripSuccession) = GenerateAllTrips(stationTravelTimes);
+            (float[,] trainTravelTimes, float[,] carTravelTimes) = GenerateTravelTimes();
+            (Trip[] trips, Trip[][] tripsPerDay, bool[,] tripSuccession) = GenerateAllTrips(trainTravelTimes);
             Driver[] drivers = GenerateDrivers();
-            return new Instance(stationTravelTimes, trips, tripSuccession, tripsPerDay, drivers);
+            return new Instance(trainTravelTimes, carTravelTimes, trips, tripSuccession, tripsPerDay, drivers);
         }
 
-        float[,] GenerateStationTravelTimes() {
-            float[,] stationTravelTimes = new float[Config.StationCount, Config.StationCount];
+        (float[,], float[,]) GenerateTravelTimes() {
+            float[,] trainTravelTimes = new float[Config.StationCount, Config.StationCount];
+            float[,] carTravelTimes = new float[Config.StationCount, Config.StationCount];
             for (int i = 0; i < Config.StationCount; i++) {
                 for (int j = i; j < Config.StationCount; j++) {
                     if (i == j) continue;
-                    float dist = (float)rand.NextDouble() * Config.MaxDist;
-                    stationTravelTimes[i, j] = dist;
-                    stationTravelTimes[j, i] = dist;
+
+                    // Train travel times are randomly generated within [1, maxDist]
+                    float trainTravelTime = (float)rand.NextDouble() * (Config.MaxDist - 1) + 1;
+                    trainTravelTimes[i, j] = trainTravelTime;
+                    trainTravelTimes[j, i] = trainTravelTime;
+
+                    // Car travel times are randomly generated within [0.5, 1.5] times the train travel times
+                    float carTravelTime = trainTravelTime * ((float)rand.NextDouble() + 0.5f);
+                    carTravelTimes[i, j] = carTravelTime;
+                    carTravelTimes[j, i] = carTravelTime;
                 }
             }
-            return stationTravelTimes;
+            return (trainTravelTimes, carTravelTimes);
         }
 
-        Trip[] GenerateTripsOneDay(float[,] stationTravelTimes, int dayIndex) {
+        Trip[] GenerateTripsOneDay(float[,] trainTravelTimes, int dayIndex) {
             // Generate trips
             Trip[] dayTrips = new Trip[Config.TripCountPerDay];
             for (int dayTripIndex = 0; dayTripIndex < Config.TripCountPerDay; dayTripIndex++) {
@@ -49,12 +57,15 @@ namespace Thesis {
                 for (int j = 0; j < tripStations.Count - 1; j++) {
                     int station1Index = tripStations[j];
                     int station2Index = tripStations[j + 1];
-                    tripDuration += stationTravelTimes[station1Index, station2Index];
+                    tripDuration += trainTravelTimes[station1Index, station2Index];
                 }
                 float startTime = (float)rand.NextDouble() * (Config.DayLength - tripDuration);
                 float endTime = startTime + tripDuration;
 
-                Trip trip = new Trip(-1, tripStations, dayIndex, startTime, endTime, tripDuration);
+                // Driving cost
+                float drivingCost = tripDuration * Config.HourlyRate;
+
+                Trip trip = new Trip(-1, tripStations, dayIndex, startTime, endTime, tripDuration, drivingCost);
                 dayTrips[dayTripIndex] = trip;
             }
 
@@ -66,7 +77,7 @@ namespace Thesis {
                 for (int dayTrip2Index = dayTrip1Index; dayTrip2Index < Config.TripCountPerDay; dayTrip2Index++) {
                     Trip trip1 = dayTrips[dayTrip1Index];
                     Trip trip2 = dayTrips[dayTrip2Index];
-                    float travelTimeBetween = stationTravelTimes[trip1.Stations[trip1.Stations.Count - 1], trip2.Stations[0]];
+                    float travelTimeBetween = trainTravelTimes[trip1.Stations[trip1.Stations.Count - 1], trip2.Stations[0]];
                     if (trip1.EndTime + travelTimeBetween <= trip2.StartTime) {
                         trip1.AddSuccessor(trip2, dayTrip2Index);
                     }
@@ -120,9 +131,6 @@ namespace Thesis {
         Driver[] GenerateDrivers() {
             Driver[] drivers = new Driver[Config.DriverCount];
             for (int driverIndex = 0; driverIndex < Config.DriverCount; driverIndex++) {
-                // Salary
-                float hourlyRate = (float)rand.NextDouble() * (Config.MaxHourlyRate - Config.MinHourlyRate) + Config.MinHourlyRate;
-
                 // Track proficiencies
                 bool[,] trackProficiencies = new bool[Config.StationCount, Config.StationCount];
                 for (int i = 0; i < Config.StationCount; i++) {
@@ -140,18 +148,15 @@ namespace Thesis {
                 }
 
                 // Travel times
-                float[] payedTravelTimes = new float[Config.StationCount];
+                float[] twoWayPayedTravelTimes = new float[Config.StationCount];
                 for (int i = 0; i < Config.StationCount; i++) {
-                    float travelTime = (float)rand.NextDouble() * Config.MaxDist;
-                    float payedTravelTime = Math.Max(0, travelTime - 1); // First hour of travel is unpaid
-                    payedTravelTimes[i] = payedTravelTime;
+                    float oneWayTravelTime = (float)rand.NextDouble() * Config.MaxDist;
+                    float twoWayPayedTravelTime = Math.Max(0, 2 * oneWayTravelTime - 1); // First hour of travel is unpaid
+                    twoWayPayedTravelTimes[i] = twoWayPayedTravelTime;
                 }
 
-                drivers[driverIndex] = new Driver(-1, hourlyRate, trackProficiencies, payedTravelTimes);
+                drivers[driverIndex] = new Driver(-1, trackProficiencies, twoWayPayedTravelTimes);
             }
-
-            // Sort drivers by hourly rate
-            drivers = drivers.OrderBy(driver => driver.HourlyRate).ToArray();
 
             // Add driver indices
             for (int driverIndex = 0; driverIndex < drivers.Length; driverIndex++) {
@@ -167,12 +172,12 @@ namespace Thesis {
         public readonly List<int> Stations;
         public readonly int FirstStation, LastStation;
         public readonly int DayIndex;
-        public readonly float StartTime, EndTime, Duration;
+        public readonly float StartTime, EndTime, Duration, DrivingCost;
         public readonly List<Trip> Successors;
         public readonly List<Trip> SameDaySuccessors;
         public readonly List<int> SameDaySuccessorsIndices;
 
-        public Trip(int index, List<int> stations, int dayIndex, float startTime, float endTime, float duration) {
+        public Trip(int index, List<int> stations, int dayIndex, float startTime, float endTime, float duration, float drivingCost) {
             Index = index;
             Stations = stations;
             FirstStation = stations[0];
@@ -184,6 +189,7 @@ namespace Thesis {
             StartTime = startTime;
             EndTime = endTime;
             Duration = duration;
+            DrivingCost = drivingCost;
         }
 
         public void AddSuccessor(Trip trip, int? dayIndex) {
@@ -197,27 +203,26 @@ namespace Thesis {
 
     class Driver {
         public int Index;
-        public readonly float HourlyRate;
         public readonly bool[,] TrackProficiencies;
-        public readonly float[] PayedTravelTimes;
+        public readonly float[] TwoWayPayedTravelTimes;
 
-        public Driver(int index, float hourlyRate, bool[,] trackProficiencies, float[] payedTravelTimes) {
+        public Driver(int index, bool[,] trackProficiencies, float[] twoWayPayedTravelTimes) {
             Index = index;
-            HourlyRate = hourlyRate;
             TrackProficiencies = trackProficiencies;
-            PayedTravelTimes = payedTravelTimes;
+            TwoWayPayedTravelTimes = twoWayPayedTravelTimes;
         }
     }
 
     class Instance {
-        public readonly float[,] StationTravelTimes;
+        public readonly float[,] TrainTravelTimes, CarTravelTimes;
         public readonly Trip[] Trips;
         public readonly bool[,] TripSuccession;
         public readonly Trip[][] TripsPerDay;
         public readonly Driver[] Drivers;
 
-        public Instance(float[,] stationTravelTimes, Trip[] trips, bool[,] tripSuccession, Trip[][] tripsPerDay, Driver[] drivers) {
-            StationTravelTimes = stationTravelTimes;
+        public Instance(float[,] trainTravelTimes, float[,] carTravelTimes, Trip[] trips, bool[,] tripSuccession, Trip[][] tripsPerDay, Driver[] drivers) {
+            TrainTravelTimes = trainTravelTimes;
+            CarTravelTimes = carTravelTimes;
             Trips = trips;
             TripSuccession = tripSuccession;
             TripsPerDay = tripsPerDay;

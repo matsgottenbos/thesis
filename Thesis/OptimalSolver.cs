@@ -20,7 +20,7 @@ namespace Thesis {
             // Calculate minimum remaning driving costs after each assigned number of trips
             double[] minRemainingDrivingCosts = new double[instance.Trips.Length];
             for (int tripIndex = instance.Trips.Length - 1; tripIndex >= 1; tripIndex--) {
-                float tripMinDrivingCost = instance.Trips[tripIndex].Duration * Config.MinHourlyRate;
+                float tripMinDrivingCost = instance.Trips[tripIndex].DrivingCost;
                 minRemainingDrivingCosts[tripIndex - 1] = minRemainingDrivingCosts[tripIndex] + tripMinDrivingCost;
             }
 
@@ -55,7 +55,7 @@ namespace Thesis {
             }
 
             // Debug
-            if (newTripIndex < 2) {
+            if (newTripIndex < 5) {
                 string logStr = "";
                 AssignmentNode searchNode = node;
                 while (searchNode != null) {
@@ -121,16 +121,16 @@ namespace Thesis {
             }
 
             // Check working day length
-            float workDayEndTime = CostHelper.WorkDayEndTime(nodeTrip, driver);
-            float workingDayLength = workDayEndTime - CostHelper.WorkDayStartTime(driverFirstDayTrip, driver);
+            float workDayEndTime = CostHelper.WorkDayEndTimeWithoutTwoWayTravel(driverFirstDayTrip, nodeTrip, instance);
+            float workingDayLength = workDayEndTime - CostHelper.WorkDayStartTimeWithTwoWayTravel(driverFirstDayTrip, driver);
             if (workingDayLength > Config.MaxWorkDayLength) return null;
 
             // Get cost diff
             double workingTimeDiff;
             if (driverSameDayTripBefore == null) workingTimeDiff = workingDayLength;
-            else workingTimeDiff = workDayEndTime - CostHelper.WorkDayEndTime(driverSameDayTripBefore, driver);
+            else workingTimeDiff = workDayEndTime - CostHelper.WorkDayEndTimeWithoutTwoWayTravel(driverFirstDayTrip, driverSameDayTripBefore, instance);
 
-            double costDiff = workingTimeDiff * driver.HourlyRate;
+            double costDiff = workingTimeDiff * Config.HourlyRate;
 
             return costDiff;
         }
