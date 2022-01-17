@@ -20,14 +20,14 @@ namespace Thesis {
         }
 
         (float[,], float[,]) GenerateTravelTimes() {
-            float[,] trainTravelTimes = new float[Config.StationCount, Config.StationCount];
-            float[,] carTravelTimes = new float[Config.StationCount, Config.StationCount];
-            for (int i = 0; i < Config.StationCount; i++) {
-                for (int j = i; j < Config.StationCount; j++) {
+            float[,] trainTravelTimes = new float[Config.GenStationCount, Config.GenStationCount];
+            float[,] carTravelTimes = new float[Config.GenStationCount, Config.GenStationCount];
+            for (int i = 0; i < Config.GenStationCount; i++) {
+                for (int j = i; j < Config.GenStationCount; j++) {
                     if (i == j) continue;
 
                     // Train travel times are randomly generated within [1, maxDist]
-                    float trainTravelTime = (float)rand.NextDouble() * (Config.MaxDist - 1) + 1;
+                    float trainTravelTime = (float)rand.NextDouble() * (Config.GenMaxDist - 1) + 1;
                     trainTravelTimes[i, j] = trainTravelTime;
                     trainTravelTimes[j, i] = trainTravelTime;
 
@@ -42,13 +42,13 @@ namespace Thesis {
 
         Trip[] GenerateTripsOneDay(float[,] trainTravelTimes, int dayIndex) {
             // Generate trips
-            Trip[] dayTrips = new Trip[Config.TripCountPerDay];
-            for (int dayTripIndex = 0; dayTripIndex < Config.TripCountPerDay; dayTripIndex++) {
+            Trip[] dayTrips = new Trip[Config.GenTripCountPerDay];
+            for (int dayTripIndex = 0; dayTripIndex < Config.GenTripCountPerDay; dayTripIndex++) {
                 // Stations
                 List<int> tripStations = new List<int>();
-                int tripStationCount = rand.Next(2, Config.MaxStationCountPerTrip + 1);
+                int tripStationCount = rand.Next(2, Config.GenMaxStationCountPerTrip + 1);
                 while (tripStations.Count < tripStationCount) {
-                    int randomStation = rand.Next(Config.StationCount);
+                    int randomStation = rand.Next(Config.GenStationCount);
                     if (!tripStations.Contains(randomStation)) tripStations.Add(randomStation);
                 }
 
@@ -73,8 +73,8 @@ namespace Thesis {
             dayTrips = dayTrips.OrderBy(trip => trip.StartTime).ToArray();
 
             // Generate precedence constraints within day
-            for (int dayTrip1Index = 0; dayTrip1Index < Config.TripCountPerDay; dayTrip1Index++) {
-                for (int dayTrip2Index = dayTrip1Index; dayTrip2Index < Config.TripCountPerDay; dayTrip2Index++) {
+            for (int dayTrip1Index = 0; dayTrip1Index < Config.GenTripCountPerDay; dayTrip1Index++) {
+                for (int dayTrip2Index = dayTrip1Index; dayTrip2Index < Config.GenTripCountPerDay; dayTrip2Index++) {
                     Trip trip1 = dayTrips[dayTrip1Index];
                     Trip trip2 = dayTrips[dayTrip2Index];
                     float travelTimeBetween = trainTravelTimes[trip1.Stations[trip1.Stations.Count - 1], trip2.Stations[0]];
@@ -89,9 +89,9 @@ namespace Thesis {
 
         (Trip[], Trip[][], bool[,]) GenerateAllTrips(float[,] stationTravelTimes) {
             // Generate days
-            Trip[][] tripsPerDay = new Trip[Config.DayCount][];
+            Trip[][] tripsPerDay = new Trip[Config.GenDayCount][];
             List<Trip> tripsList = new List<Trip>();
-            for (int dayIndex = 0; dayIndex < Config.DayCount; dayIndex++) {
+            for (int dayIndex = 0; dayIndex < Config.GenDayCount; dayIndex++) {
                 Trip[] dayTrips = GenerateTripsOneDay(stationTravelTimes, dayIndex);
                 tripsPerDay[dayIndex] = dayTrips;
                 tripsList.AddRange(dayTrips);
@@ -104,7 +104,7 @@ namespace Thesis {
             }
 
             // Generate precedence constraints between days
-            for (int dayIndex = 0; dayIndex < Config.DayCount - 1; dayIndex++) {
+            for (int dayIndex = 0; dayIndex < Config.GenDayCount - 1; dayIndex++) {
                 Trip[] day1Trips = tripsPerDay[dayIndex];
                 Trip[] day2Trips = tripsPerDay[dayIndex + 1];
 
@@ -129,17 +129,17 @@ namespace Thesis {
         }
 
         Driver[] GenerateDrivers() {
-            Driver[] drivers = new Driver[Config.DriverCount];
-            for (int driverIndex = 0; driverIndex < Config.DriverCount; driverIndex++) {
+            Driver[] drivers = new Driver[Config.GenDriverCount];
+            for (int driverIndex = 0; driverIndex < Config.GenDriverCount; driverIndex++) {
                 // Track proficiencies
-                bool[,] trackProficiencies = new bool[Config.StationCount, Config.StationCount];
-                for (int i = 0; i < Config.StationCount; i++) {
-                    for (int j = i; j < Config.StationCount; j++) {
+                bool[,] trackProficiencies = new bool[Config.GenStationCount, Config.GenStationCount];
+                for (int i = 0; i < Config.GenStationCount; i++) {
+                    for (int j = i; j < Config.GenStationCount; j++) {
                         bool isProficient;
                         if (i == j) {
                             isProficient = true;
                         } else {
-                            isProficient = rand.NextDouble() < Config.TrackProficiencyProb;
+                            isProficient = rand.NextDouble() < Config.GenTrackProficiencyProb;
                         }
 
                         trackProficiencies[i, j] = isProficient;
@@ -148,14 +148,19 @@ namespace Thesis {
                 }
 
                 // Travel times
-                float[] twoWayPayedTravelTimes = new float[Config.StationCount];
-                for (int i = 0; i < Config.StationCount; i++) {
-                    float oneWayTravelTime = (float)rand.NextDouble() * Config.MaxDist;
+                float[] twoWayPayedTravelTimes = new float[Config.GenStationCount];
+                for (int i = 0; i < Config.GenStationCount; i++) {
+                    float oneWayTravelTime = (float)rand.NextDouble() * Config.GenMaxDist;
                     float twoWayPayedTravelTime = Math.Max(0, 2 * oneWayTravelTime - 1); // First hour of travel is unpaid
                     twoWayPayedTravelTimes[i] = twoWayPayedTravelTime;
                 }
 
-                drivers[driverIndex] = new Driver(-1, trackProficiencies, twoWayPayedTravelTimes);
+                // Contract hours
+                int contactHours = (int)(rand.NextDouble() * (Config.GenMaxContractHours - Config.GenMinContractHours) + Config.GenMinContractHours);
+                float minWorkedHours = contactHours * Config.MinContractHoursFraction;
+                float maxWorkedHours = contactHours * Config.MaxContractHoursFraction;
+
+                drivers[driverIndex] = new Driver(-1, minWorkedHours, maxWorkedHours, trackProficiencies, twoWayPayedTravelTimes);
             }
 
             // Add driver indices
@@ -203,11 +208,14 @@ namespace Thesis {
 
     class Driver {
         public int Index;
+        public float MinWorkedHours, MaxWorkedHours;
         public readonly bool[,] TrackProficiencies;
         public readonly float[] TwoWayPayedTravelTimes;
 
-        public Driver(int index, bool[,] trackProficiencies, float[] twoWayPayedTravelTimes) {
+        public Driver(int index, float minWorkedHours, float maxWorkedHours, bool[,] trackProficiencies, float[] twoWayPayedTravelTimes) {
             Index = index;
+            MinWorkedHours = minWorkedHours;
+            MaxWorkedHours = maxWorkedHours;
             TrackProficiencies = trackProficiencies;
             TwoWayPayedTravelTimes = twoWayPayedTravelTimes;
         }

@@ -10,41 +10,59 @@ namespace Thesis {
         public const bool RunOptimalAlgorithm = false;
         public const bool RunSimulatedAnnealing = true;
 
-        // Counts
-        public const int DayCount = 2;
-        public const int StationCount = 10;
-        //public const int TripCountPerDay = 5;
-        public const int TripCountPerDay = 10;
-        public const int DriverCount = 10;
-        public const int MaxStationCountPerTrip = 4;
-
-        // Distances
-        public const float MaxDist = 3f;
-
-        // Hours
+        // Working day
         public const float DayLength = 20f;
         public const float MaxWorkDayLength = 10f;
-
-        // Probabilities
-        public const float WithinDaySuccessorProb = 0.5f;
-        public const float TrackProficiencyProb = 0.9f;
 
         // Salaries
         public const float HourlyRate = 50f;
 
-        // Penalties
-        public const float PrecendenceViolationPenalty = 10000;
-        public const float WorkDayLengthExceedancePenalty = 1000;
-        public const float WorkDayLengthExceedancePenaltyPerHour = 1000;
+        // Contract hour deviations
+        public const float MinContractHoursFraction = 0.8f;
+        public const float MaxContractHoursFraction = 1.2f;
 
-        // Simulated annealing
-        public const int SaIterationCount = 10000000;
+
+        /* Generator */
+        // Counts
+        public const int GenDayCount = 2;
+        public const int GenStationCount = 10;
+        public const int GenTripCountPerDay = 10;
+        public const int GenDriverCount = 10;
+        public const int GenMaxStationCountPerTrip = 4;
+
+        // Distances
+        public const float GenMaxDist = 3f;
+
+        // Contract hours
+        public const int GenMinContractHours = 5 * GenDayCount;
+        public const int GenMaxContractHours = 10 * GenDayCount;
+
+        // Generator probabilities
+        public const float GenWithinDaySuccessorProb = 0.5f;
+        public const float GenTrackProficiencyProb = 0.9f;
+
+
+        /* Simulated annealing */
+        // SA parameters
+        public const int SaIterationCount = 200000000;
         public const int SaCheckCostFrequency = 100000;
         public const int SaLogFrequency = 1000000;
         public const int SaParameterUpdateFrequency = SaIterationCount / 1000;
         public const float SaInitialTemperature = 1500f;
-        public const float SaTemperatureReductionFactor = 0.995f;
+        public const float SaTemperatureReductionFactor = 0.997f;
         public const float SaInitialPenaltyFactor = 0.001f;
         public const float SaPenaltyIncrement = 0.001f;
+
+        // Penalties
+        public const float PrecendenceViolationPenalty = 10000;
+        public const float WorkDayLengthViolationPenalty = 1000;
+        public const float WorkDayLengthViolationPenaltyPerHour = 1000;
+        public const float ContractHoursViolationPenalty = 1000;
+        public const float ContractHoursViolationPenaltyPerHour = 100;
+
+
+        /* Debug */
+        public const bool DebugCheckOperations = false;
+        public const bool DebugCheckAndLogOperations = false;
     }
 }
