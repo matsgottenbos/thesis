@@ -44,7 +44,7 @@ namespace Thesis {
 
         /* Simulated annealing */
         // SA parameters
-        public const int SaIterationCount = 200000000;
+        public const int SaIterationCount = 50000000;
         public const int SaCheckCostFrequency = 100000;
         public const int SaLogFrequency = 1000000;
         public const int SaParameterUpdateFrequency = SaIterationCount / 1000;
@@ -54,15 +54,16 @@ namespace Thesis {
         public const float SaPenaltyIncrement = 0.001f;
 
         // Penalties
-        public const float PrecendenceViolationPenalty = 10000;
+        public const float PrecendenceViolationPenalty = 5000;
         public const float WorkDayLengthViolationPenalty = 1000;
-        public const float WorkDayLengthViolationPenaltyPerHour = 1000;
+        public const float WorkDayLengthViolationPenaltyPerHour = 200;
         public const float ContractHoursViolationPenalty = 1000;
-        public const float ContractHoursViolationPenaltyPerHour = 100;
+        public const float ContractHoursViolationPenaltyPerHour = 200;
 
 
         /* Debug */
         public const bool DebugCheckOperations = false;
         public const bool DebugCheckAndLogOperations = false;
+        public const bool DebugRunInspector = false;
     }
 }

@@ -164,9 +164,9 @@ namespace Thesis {
         /** Check if minimum contract hours can still be achieved for all drivers */
         bool CheckMinContractHours(AssignmentNode node) {
             // Only check for the last two trips; before that, hardly any branches can be cut
-            if (node.TripIndex < instance.Trips.Length - 2) return true;
+            int tripsLeftToAssign = instance.Trips.Length - node.TripIndex - 1;
+            if (tripsLeftToAssign > 2) return true;
 
-            int tripsLeftToAssign = instance.Trips.Length - node.TripIndex + 1;
             float[] allDriversWorkedHours = new float[instance.Drivers.Length];
             Trip[] allDriversFirstDayTrip = new Trip[instance.Drivers.Length];
             Trip[] allDriversLastDayTrip = new Trip[instance.Drivers.Length];
@@ -182,6 +182,7 @@ namespace Thesis {
                     Trip currentDriverLastDayTrip = allDriversLastDayTrip[searchNode.DriverIndex];
                     Driver currentDriver = instance.Drivers[searchNode.DriverIndex];
                     if (searchTrip.DayIndex != currentDriverFirstDayTrip.DayIndex) {
+                        // End day for driver
                         allDriversWorkedHours[searchNode.DriverIndex] += CostHelper.WorkDayLength(currentDriverFirstDayTrip, currentDriverLastDayTrip, currentDriver, instance);
                         allDriversLastDayTrip[searchNode.DriverIndex] = searchTrip;
                     }

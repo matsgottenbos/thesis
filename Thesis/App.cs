@@ -23,6 +23,11 @@ namespace Thesis {
             //Console.WriteLine("Lower bound 1: {0}", lowerBound1);
             //Console.WriteLine("Lower bound 2: {0}", lowerBound2);
 
+            // Debug inspector
+            if (Config.DebugRunInspector) {
+                new SaInspector(instance);
+            }
+
             // Solve optimally
             if (Config.RunOptimalAlgorithm) {
                 OptimalSolver optimalSolver = new OptimalSolver(instance);
@@ -40,10 +45,10 @@ namespace Thesis {
 
             // Simulated annealing
             if (Config.RunSimulatedAnnealing) {
-                //Random rand2 = new Random();
-                //XorShiftRandom fastRand2 = new XorShiftRandom();
-                Random rand2 = new Random(1);
-                XorShiftRandom fastRand2 = new XorShiftRandom(1);
+                Random rand2 = new Random();
+                XorShiftRandom fastRand2 = new XorShiftRandom();
+                //Random rand2 = new Random(1);
+                //XorShiftRandom fastRand2 = new XorShiftRandom(1);
                 SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, rand2, fastRand2);
                 (double saCost, Driver[] saSolution) = simulatedAnnealing.Run();
                 string saAssignmentStr = string.Join(' ', saSolution.Select(driver => driver.Index));

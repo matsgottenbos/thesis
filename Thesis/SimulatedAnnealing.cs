@@ -35,7 +35,7 @@ namespace Thesis {
             }
 
             // Get cost of initial assignment
-            (double cost, double costWithoutPenalty, double penaltyBase, double[] driversWorkedHours) = CostHelper.AssignmentCostWithPenalties(assignmentIndices, instance, penaltyFactor); // TODO: use assignments instead of indices here?
+            (double cost, double costWithoutPenalty, double penaltyBase, double[] driversWorkedHours) = CostHelper.AssignmentCostWithPenalties(assignment, instance, penaltyFactor);
 
             // Initialise best solution variables
             double bestCost = double.MaxValue;
