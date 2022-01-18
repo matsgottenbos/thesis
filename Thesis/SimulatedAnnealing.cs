@@ -70,8 +70,8 @@ namespace Thesis {
                     if (Config.DebugCheckAndLogOperations) {
                         Console.WriteLine("\n* Before *");
                         (debugCost1, debugCostWithoutPenalty1, debugPenaltyBase1, debugDriversWorkedHours1) = CostHelper.AssignmentCostWithPenalties(assignment, instance, penaltyFactor);
-                        Console.WriteLine("Stored worked hours: {0}", ToString(driversWorkedHours));
-                        Console.WriteLine("Checked worked hours: {0}", ToString(debugDriversWorkedHours1));
+                        Console.WriteLine("Stored worked hours: {0}", ParseHelper.ToString(driversWorkedHours));
+                        Console.WriteLine("Checked worked hours: {0}", ParseHelper.ToString(debugDriversWorkedHours1));
                     } else if (Config.DebugCheckOperations) {
                         (debugCost1, debugCostWithoutPenalty1, debugPenaltyBase1, debugDriversWorkedHours1) = CostHelper.AssignmentCostWithPenalties(assignment, instance, penaltyFactor);
                     }
@@ -85,8 +85,8 @@ namespace Thesis {
                     if (Config.DebugCheckAndLogOperations) {
                         Console.WriteLine("\n* After *");
                         (double debugCost2, double debugCostWithoutPenalty2, double debugPenaltyBase2, double[] debugDriversWorkedHours2) = CostHelper.AssignmentCostWithPenalties(assignment, instance, penaltyFactor);
-                        Console.WriteLine("Stored worked hours: {0}", ToString(driversWorkedHours));
-                        Console.WriteLine("Checked worked hours: {0}", ToString(debugDriversWorkedHours2));
+                        Console.WriteLine("Stored worked hours: {0}", ParseHelper.ToString(driversWorkedHours));
+                        Console.WriteLine("Checked worked hours: {0}", ParseHelper.ToString(debugDriversWorkedHours2));
                         double debugCostDiff = debugCost2 - debugCost1;
                         double debugCostWithoutPenaltyDiff = debugCostWithoutPenalty2 - debugCostWithoutPenalty1;
                         double debugPenaltyBaseDiff = debugPenaltyBase2 - debugPenaltyBase1;
@@ -118,9 +118,10 @@ namespace Thesis {
 
                 // Log
                 if (iterationNum % Config.SaLogFrequency == 0) {
-                    string bestCostString = bestAssignment == null ? "" : ToString(bestCost);
+                    string bestCostString = bestAssignment == null ? "" : ParseHelper.ToString(bestCost);
+                    string penaltyString = penaltyBase > 0 ? ParseHelper.ToString(penaltyBase) : "-";
                     string assignmentStr = bestAssignment == null ? "" : string.Join(' ', bestAssignment.Select(driver => driver.Index));
-                    Console.WriteLine("#: {0,-4}; Best cost: {1,-10}; Cost: {2,-10}; Penalty: {3,-11}; Temp: {4,-9}; P.factor: {5,-5}; Best assignment: {6}", LargeNumToString(iterationNum, 2), bestCostString, ToString(costWithoutPenalty), ToString(penaltyBase), ToString(temperature), ToString(penaltyFactor), assignmentStr);
+                    Console.WriteLine("# {0,4}    Best cost: {1,10}    Cost: {2,10}    Penalty: {3,11}    Temp: {4,9}    P.factor: {5,5}    Best assignment: {6}", ParseHelper.LargeNumToString(iterationNum), bestCostString, ParseHelper.ToString(costWithoutPenalty), penaltyString, ParseHelper.ToString(temperature), ParseHelper.ToString(penaltyFactor, "0.00"), assignmentStr);
                 }
 
                 // Update temperature and penalty factor
@@ -137,32 +138,9 @@ namespace Thesis {
             stopwatch.Stop();
             float saDuration = stopwatch.ElapsedMilliseconds / 1000f;
             float saSpeed = Config.SaIterationCount / saDuration;
-            Console.WriteLine("SA finished {0} iterations in {1} s  |  Speed: {2} iterations/s", LargeNumToString(iterationNum, 2), ToString(saDuration), LargeNumToString(saSpeed));
+            Console.WriteLine("SA finished {0} iterations in {1} s  |  Speed: {2} iterations/s", ParseHelper.LargeNumToString(iterationNum), ParseHelper.ToString(saDuration), ParseHelper.LargeNumToString(saSpeed));
 
             return (bestCost, bestAssignment);
-        }
-
-        static string ToString(double num, int precision = 4) {
-            return Math.Round(num, precision).ToString(CultureInfo.InvariantCulture);
-        }
-
-        static string ToString(double[] numArray, int precision = 4) {
-            return string.Join(" ", numArray.Select(num => ToString(num)));
-        }
-
-        static string LargeNumToString(double num, int precision = 4) {
-            if (num < 1000) {
-                return ToString(num, precision);
-            } else if (num < 1000000) {
-                double numThousands = num / 1000;
-                return ToString(numThousands, precision) + "k";
-            } else if (num < 1000000000) {
-                double numMillions = num / 1000000;
-                return ToString(numMillions, precision) + "M";
-            } else {
-                double numMBllions = num / 1000000000;
-                return ToString(numMBllions, precision) + "B";
-            }
         }
 
         int[] GetInitialAssignmentIndices(Random rand) {

@@ -39,7 +39,7 @@ namespace Thesis {
                     return;
                 } else {
                     optimalAssignmentStr = string.Join(' ', optimalSolution.Assignment.Select(driver => driver.Index));
-                    Console.WriteLine("Optimal cost: {0}  |  {1}", optimalSolution.Cost, optimalAssignmentStr);
+                    Console.WriteLine("Optimal cost: {0}  |  {1}", ParseHelper.ToString(optimalSolution.Cost), optimalAssignmentStr);
                 }
             }
 
@@ -52,7 +52,7 @@ namespace Thesis {
                 SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, rand2, fastRand2);
                 (double saCost, Driver[] saSolution) = simulatedAnnealing.Run();
                 string saAssignmentStr = string.Join(' ', saSolution.Select(driver => driver.Index));
-                Console.WriteLine("SA cost: {0}  |  {1}", saCost, saAssignmentStr);
+                Console.WriteLine("SA cost: {0}  |  {1}", ParseHelper.ToString(saCost), saAssignmentStr);
             }
 
             Console.ReadLine();
