@@ -7,19 +7,20 @@ using System.Threading.Tasks;
 namespace Thesis {
     static class Config {
         // App
-        public const bool RunOptimalAlgorithm = false;
+        public const bool RunOptimalAlgorithm = true;
         public const bool RunSimulatedAnnealing = true;
 
         // Working day
-        public const float DayLength = 20f;
-        public const float MaxWorkDayLength = 10f;
+        public const int DayLength = 20 * 60;
+        public const int MaxWorkDayLength = 10 * 60;
 
         // Salaries
-        public const float HourlyRate = 50f;
+        public const float SalaryRate = 50 / 60f;
+        public const int UnpaidTravelTimePerDay = 60;
 
-        // Contract hour deviations
-        public const float MinContractHoursFraction = 0.8f;
-        public const float MaxContractHoursFraction = 1.2f;
+        // Contract time deviations
+        public const float MinContractTimeFraction = 0.8f;
+        public const float MaxContractTimeFraction = 1.2f;
 
 
         /* Generator */
@@ -31,11 +32,12 @@ namespace Thesis {
         public const int GenMaxStationCountPerTrip = 4;
 
         // Distances
-        public const float GenMaxDist = 3f;
+        public const int GenMinStationTravelTime = 60;
+        public const int GenMaxStationTravelTime = 3 * 60;
 
-        // Contract hours
-        public const int GenMinContractHours = 5 * GenDayCount;
-        public const int GenMaxContractHours = 10 * GenDayCount;
+        // Contract times
+        public const int GenMinContractTime = 5 * 60 * GenDayCount;
+        public const int GenMaxContractTime = 10 * 60 * GenDayCount;
 
         // Generator probabilities
         public const float GenWithinDaySuccessorProb = 0.5f;
@@ -56,9 +58,9 @@ namespace Thesis {
         // Penalties
         public const float PrecendenceViolationPenalty = 5000;
         public const float WorkDayLengthViolationPenalty = 1000;
-        public const float WorkDayLengthViolationPenaltyPerHour = 200;
-        public const float ContractHoursViolationPenalty = 1000;
-        public const float ContractHoursViolationPenaltyPerHour = 200;
+        public const float WorkDayLengthViolationPenaltyPerMin = 200 / 60f;
+        public const float ContractTimeViolationPenalty = 1000;
+        public const float ContractTimeViolationPenaltyPerMin = 200 / 60f;
 
 
         /* Debug */

@@ -37,7 +37,7 @@ namespace Thesis {
                 totalWorkTime += WorkDayLength(dayFirstTrip, prevTrip, driver, instance);
             }
 
-            double cost = totalWorkTime * Config.HourlyRate;
+            double cost = totalWorkTime * Config.SalaryRate;
             return cost;
         }
         public static double AssignmentCostWithoutPenalties(int[] assignmentIndices, Instance instance) {
@@ -56,21 +56,21 @@ namespace Thesis {
             int totalPrecedenceViolationCount = 0;
             int totalWorkDayLengthViolationCount = 0;
             double totalWorkDayLengthViolation = 0;
-            int totalContractHoursViolationCount = 0;
-            double totalContractHoursViolation = 0;
-            double[] driverWorkedHours = new double[instance.Drivers.Length];
+            int totalContractTimeViolationCount = 0;
+            double totalContractTimeViolation = 0;
+            double[] driverWorkedTime = new double[instance.Drivers.Length];
             for (int driverIndex = 0; driverIndex < Config.GenDriverCount; driverIndex++) {
                 List<Trip> driverPath = driverPaths[driverIndex];
                 Driver driver = instance.Drivers[driverIndex];
                 if (driverPath.Count == 0) {
-                    // Empty path, so we only need to check min contract hours
-                    if (driver.MinWorkedHours > 0) {
-                        totalContractHoursViolationCount++;
-                        totalContractHoursViolation += driver.MinWorkedHours;
+                    // Empty path, so we only need to check min contract time
+                    if (driver.MinContractTime > 0) {
+                        totalContractTimeViolationCount++;
+                        totalContractTimeViolation += driver.MinContractTime;
                     }
                     continue;
                 }
-                double currentDriverWorkedHours = 0;
+                double currentDriverWorkedTime = 0;
 
                 Trip dayFirstTrip = driverPath[0];
                 Trip prevTrip = driverPath[0];
@@ -82,7 +82,7 @@ namespace Thesis {
                         // End previous day
                         double workDayLength = WorkDayLength(dayFirstTrip, prevTrip, driver, instance);
                         //if (Config.DebugCheckAndLog) Console.WriteLine("Driver {0} work day {1} length: {2}", driverIndex, dayFirstTrip.DayIndex, workDayLength);
-                        currentDriverWorkedHours += workDayLength;
+                        currentDriverWorkedTime += workDayLength;
                         double workDayLengthViolation = Math.Max(0, workDayLength - Config.MaxWorkDayLength);
                         if (workDayLengthViolation > 0) {
                             totalWorkDayLengthViolationCount++;
@@ -104,40 +104,40 @@ namespace Thesis {
                 // End last day
                 double lastWorkDayLength = WorkDayLength(dayFirstTrip, prevTrip, driver, instance);
                 //if (Config.DebugCheckAndLog) Console.WriteLine("Driver {0} work day {1} length: {2}", driverIndex, dayFirstTrip.DayIndex, lastWorkDayLength);
-                currentDriverWorkedHours += lastWorkDayLength;
+                currentDriverWorkedTime += lastWorkDayLength;
                 double lastWorkDayLengthViolation = Math.Max(0, lastWorkDayLength - Config.MaxWorkDayLength);
                 if (lastWorkDayLengthViolation > 0) {
                     totalWorkDayLengthViolationCount++;
                     totalWorkDayLengthViolation += lastWorkDayLengthViolation;
                 }
 
-                // Check driver hours
-                if (currentDriverWorkedHours < driver.MinWorkedHours) {
-                    totalContractHoursViolationCount++;
-                    totalContractHoursViolation += driver.MinWorkedHours - currentDriverWorkedHours;
-                } else if (currentDriverWorkedHours > driver.MaxWorkedHours) {
-                    totalContractHoursViolationCount++;
-                    totalContractHoursViolation += currentDriverWorkedHours - driver.MaxWorkedHours;
+                // Check driver worked time
+                if (currentDriverWorkedTime < driver.MinContractTime) {
+                    totalContractTimeViolationCount++;
+                    totalContractTimeViolation += driver.MinContractTime - currentDriverWorkedTime;
+                } else if (currentDriverWorkedTime > driver.MaxContractTime) {
+                    totalContractTimeViolationCount++;
+                    totalContractTimeViolation += currentDriverWorkedTime - driver.MaxContractTime;
                 }
 
-                driverWorkedHours[driverIndex] = currentDriverWorkedHours;
+                driverWorkedTime[driverIndex] = currentDriverWorkedTime;
             }
 
             double precendencePenaltyBase = totalPrecedenceViolationCount * Config.PrecendenceViolationPenalty;
-            double workDayLengthPenaltyBase = totalWorkDayLengthViolationCount * Config.WorkDayLengthViolationPenalty + totalWorkDayLengthViolation * Config.WorkDayLengthViolationPenaltyPerHour;
-            double contractHoursPenaltyBase = totalContractHoursViolationCount * Config.ContractHoursViolationPenalty + totalContractHoursViolation * Config.ContractHoursViolationPenaltyPerHour;
-            double penaltyBase = precendencePenaltyBase + workDayLengthPenaltyBase + contractHoursPenaltyBase;
+            double workDayLengthPenaltyBase = totalWorkDayLengthViolationCount * Config.WorkDayLengthViolationPenalty + totalWorkDayLengthViolation * Config.WorkDayLengthViolationPenaltyPerMin;
+            double contractTimePenaltyBase = totalContractTimeViolationCount * Config.ContractTimeViolationPenalty + totalContractTimeViolation * Config.ContractTimeViolationPenaltyPerMin;
+            double penaltyBase = precendencePenaltyBase + workDayLengthPenaltyBase + contractTimePenaltyBase;
 
             // Debug
             if (Config.DebugCheckAndLogOperations) {
                 Console.WriteLine("Precedence violation count: {0}", totalPrecedenceViolationCount);
                 Console.WriteLine("WDL violation count: {0}", totalWorkDayLengthViolationCount);
                 Console.WriteLine("WDL violation amount: {0}", totalWorkDayLengthViolation);
-                Console.WriteLine("CH violation count: {0}", totalContractHoursViolationCount);
-                Console.WriteLine("CH violation amount: {0}", totalContractHoursViolation);
+                Console.WriteLine("CT violation count: {0}", totalContractTimeViolationCount);
+                Console.WriteLine("CT violation amount: {0}", totalContractTimeViolation);
             }
 
-            return (penaltyBase, driverWorkedHours);
+            return (penaltyBase, driverWorkedTime);
         }
 
 
@@ -145,10 +145,10 @@ namespace Thesis {
 
         public static (double, double, double, double[]) AssignmentCostWithPenalties(List<Trip>[] driverPaths, Instance instance, float penaltyFactor) {
             double costWithoutPenalty = AssignmentCostWithoutPenalties(driverPaths, instance);
-            (double penaltyBase, double[] driverWorkedHours) = GetAssignmentBasePenalties(driverPaths, instance);
+            (double penaltyBase, double[] driverWorkedTime) = GetAssignmentBasePenalties(driverPaths, instance);
             double penalty = penaltyBase * penaltyFactor;
             double cost = costWithoutPenalty + penalty;
-            return (cost, costWithoutPenalty, penaltyBase, driverWorkedHours);
+            return (cost, costWithoutPenalty, penaltyBase, driverWorkedTime);
         }
         public static (double, double, double, double[]) AssignmentCostWithPenalties(int[] assignmentIndices, Instance instance, float penaltyFactor) {
             List<Trip>[] driverPaths = GetPathPerDriver(assignmentIndices, instance);
@@ -197,7 +197,7 @@ namespace Thesis {
         }
 
         public static float TwoWayPayedTravelCost(Trip trip, Driver driver) {
-            return TwoWayPayedTravelTime(trip, driver) * Config.HourlyRate;
+            return TwoWayPayedTravelTime(trip, driver) * Config.SalaryRate;
         }
 
 
@@ -218,7 +218,7 @@ namespace Thesis {
 
         /* Operation cost */
 
-        public static (double, double, double, float) UnassignTripCostDiffWithoutContractHours(Trip oldTrip, Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance, float penaltyFactor) {
+        public static (double, double, double, float) UnassignTripCostDiffWithoutContractTime(Trip oldTrip, Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance, float penaltyFactor) {
             Trip tripBefore = GetDriverSameDayTripBefore(oldTrip.Index, driver, oldTrip.DayIndex, tripToIgnore, assignment, instance);
             Trip tripAfter = GetDriverSameDayTripAfter(oldTrip.Index, driver, oldTrip.DayIndex, tripToIgnore, assignment, instance);
 
@@ -273,38 +273,38 @@ namespace Thesis {
             // Debug
             if (Config.DebugCheckAndLogOperations) Console.WriteLine("Precedence violation count: {0}", precedenceViolationCountDiff);
 
-            double costWithoutPenaltyDiff = workDayLengthDiff * Config.HourlyRate;
+            double costWithoutPenaltyDiff = workDayLengthDiff * Config.SalaryRate;
             double penaltyBaseDiff = workDayLengthPenaltyDiff + precedencePenaltyBaseDiff;
             double costDiff = costWithoutPenaltyDiff + penaltyBaseDiff * penaltyFactor;
             return (costDiff, costWithoutPenaltyDiff, penaltyBaseDiff, workDayLengthDiff);
         }
 
-        public static (double, double, double, float) UnassignTripCostDiff(Trip oldTrip, Driver driver, Trip tripToIgnore, Driver[] assignment, float driverOldWorkedHours, Instance instance, float penaltyFactor) {
+        public static (double, double, double, float) UnassignTripCostDiff(Trip oldTrip, Driver driver, Trip tripToIgnore, Driver[] assignment, float driverOldWorkedTime, Instance instance, float penaltyFactor) {
             if (Config.DebugCheckAndLogOperations) Console.WriteLine("Unassign trip {0} from driver {1}", oldTrip.Index, driver.Index);
-            (double costDiff, double costWithoutPenaltyDiff, double penaltyBaseDiffWithoutContractHours, float workDayLengthDiff) = UnassignTripCostDiffWithoutContractHours(oldTrip, driver, tripToIgnore, assignment, instance, penaltyFactor);
+            (double costDiff, double costWithoutPenaltyDiff, double penaltyBaseDiffWithoutContractTime, float workDayLengthDiff) = UnassignTripCostDiffWithoutContractTime(oldTrip, driver, tripToIgnore, assignment, instance, penaltyFactor);
 
-            // Worked hours penalty
-            float contractHoursPenaltyBaseDiff = GetContractHoursPenaltyBaseDiff(driverOldWorkedHours, driverOldWorkedHours + workDayLengthDiff, driver);
-            float contractHoursPenaltyDiff = contractHoursPenaltyBaseDiff * penaltyFactor;
+            // Worked time penalty
+            float contractTimePenaltyBaseDiff = GetContractTimePenaltyBaseDiff(driverOldWorkedTime, driverOldWorkedTime + workDayLengthDiff, driver);
+            float contractTimePenaltyDiff = contractTimePenaltyBaseDiff * penaltyFactor;
 
-            return (costDiff + contractHoursPenaltyDiff, costWithoutPenaltyDiff, penaltyBaseDiffWithoutContractHours + contractHoursPenaltyBaseDiff, workDayLengthDiff);
+            return (costDiff + contractTimePenaltyDiff, costWithoutPenaltyDiff, penaltyBaseDiffWithoutContractTime + contractTimePenaltyBaseDiff, workDayLengthDiff);
         }
 
-        public static (double, double, double, float) AssignTripCostDiff(Trip newTrip, Driver driver, Trip tripToIgnore, Driver[] assignment, float driverOldWorkedHours, Instance instance, float penaltyFactor) {
+        public static (double, double, double, float) AssignTripCostDiff(Trip newTrip, Driver driver, Trip tripToIgnore, Driver[] assignment, float driverOldWorkedTime, Instance instance, float penaltyFactor) {
             if (Config.DebugCheckAndLogOperations) Console.WriteLine("Assign trip {0} to driver {1}", newTrip.Index, driver.Index);
-            (double costDiff, double costWithoutPenaltyDiff, double penaltyBaseDiff, float workDayLengthDiff) = UnassignTripCostDiffWithoutContractHours(newTrip, driver, tripToIgnore, assignment, instance, penaltyFactor);
+            (double costDiff, double costWithoutPenaltyDiff, double penaltyBaseDiff, float workDayLengthDiff) = UnassignTripCostDiffWithoutContractTime(newTrip, driver, tripToIgnore, assignment, instance, penaltyFactor);
 
-            // Worked hours penalty
-            float contractHoursPenaltyBaseDiff = GetContractHoursPenaltyBaseDiff(driverOldWorkedHours, driverOldWorkedHours - workDayLengthDiff, driver);
-            float contractHoursPenaltyDiff = contractHoursPenaltyBaseDiff * penaltyFactor;
+            // Worked time penalty
+            float contractTimePenaltyBaseDiff = GetContractTimePenaltyBaseDiff(driverOldWorkedTime, driverOldWorkedTime - workDayLengthDiff, driver);
+            float contractTimePenaltyDiff = contractTimePenaltyBaseDiff * penaltyFactor;
 
-            return (-costDiff + contractHoursPenaltyDiff, -costWithoutPenaltyDiff, -penaltyBaseDiff + contractHoursPenaltyBaseDiff, -workDayLengthDiff);
+            return (-costDiff + contractTimePenaltyDiff, -costWithoutPenaltyDiff, -penaltyBaseDiff + contractTimePenaltyBaseDiff, -workDayLengthDiff);
         }
 
         static float GetWorkDayPenaltyBaseDiff(float oldWorkDayLength, float newWorkDayLength) {
             float oldWorkDayLengthViolation = Math.Max(0, oldWorkDayLength - Config.MaxWorkDayLength);
             float newWorkDayLengthViolation = Math.Max(0, newWorkDayLength - Config.MaxWorkDayLength);
-            float amountPenaltyBaseDiff = (newWorkDayLengthViolation - oldWorkDayLengthViolation) * Config.WorkDayLengthViolationPenaltyPerHour;
+            float amountPenaltyBaseDiff = (newWorkDayLengthViolation - oldWorkDayLengthViolation) * Config.WorkDayLengthViolationPenaltyPerMin;
 
             float countPenaltyBaseDiff = 0;
             if (oldWorkDayLengthViolation > 0) {
@@ -323,37 +323,37 @@ namespace Thesis {
             return amountPenaltyBaseDiff + countPenaltyBaseDiff;
         }
 
-        static float GetContractHoursPenaltyBaseDiff(float oldWorkedHours, float newWorkedHours, Driver driver) {
-            float contractHoursPenaltyBaseDiff = 0;
+        static float GetContractTimePenaltyBaseDiff(float oldWorkedTime, float newWorkedTime, Driver driver) {
+            float contractTimePenaltyBaseDiff = 0;
 
-            float oldContractHoursViolation = 0;
-            if (oldWorkedHours < driver.MinWorkedHours) {
-                oldContractHoursViolation += driver.MinWorkedHours - oldWorkedHours;
-                contractHoursPenaltyBaseDiff -= Config.ContractHoursViolationPenalty;
-            } else if (oldWorkedHours > driver.MaxWorkedHours) {
-                oldContractHoursViolation += oldWorkedHours - driver.MaxWorkedHours;
-                contractHoursPenaltyBaseDiff -= Config.ContractHoursViolationPenalty;
+            float oldContractTimeViolation = 0;
+            if (oldWorkedTime < driver.MinContractTime) {
+                oldContractTimeViolation += driver.MinContractTime - oldWorkedTime;
+                contractTimePenaltyBaseDiff -= Config.ContractTimeViolationPenalty;
+            } else if (oldWorkedTime > driver.MaxContractTime) {
+                oldContractTimeViolation += oldWorkedTime - driver.MaxContractTime;
+                contractTimePenaltyBaseDiff -= Config.ContractTimeViolationPenalty;
             }
 
-            float newContractHoursViolation = 0;
-            if (newWorkedHours < driver.MinWorkedHours) {
-                newContractHoursViolation += driver.MinWorkedHours - newWorkedHours;
-                contractHoursPenaltyBaseDiff += Config.ContractHoursViolationPenalty;
-            } else if (newWorkedHours > driver.MaxWorkedHours) {
-                newContractHoursViolation += newWorkedHours - driver.MaxWorkedHours;
-                contractHoursPenaltyBaseDiff += Config.ContractHoursViolationPenalty;
+            float newContractTimeViolation = 0;
+            if (newWorkedTime < driver.MinContractTime) {
+                newContractTimeViolation += driver.MinContractTime - newWorkedTime;
+                contractTimePenaltyBaseDiff += Config.ContractTimeViolationPenalty;
+            } else if (newWorkedTime > driver.MaxContractTime) {
+                newContractTimeViolation += newWorkedTime - driver.MaxContractTime;
+                contractTimePenaltyBaseDiff += Config.ContractTimeViolationPenalty;
             }
 
             // Debug
             if (Config.DebugCheckAndLogOperations) {
-                Console.WriteLine("Worked hours: {0} -> {1}", oldWorkedHours, newWorkedHours);
-                Console.WriteLine("CH violation count: {0}", contractHoursPenaltyBaseDiff / Config.ContractHoursViolationPenalty);
-                Console.WriteLine("CH violation amount: {0} ({1} -> {2})", newContractHoursViolation - oldContractHoursViolation, oldContractHoursViolation, newContractHoursViolation);
+                Console.WriteLine("Worked time: {0} -> {1}", oldWorkedTime, newWorkedTime);
+                Console.WriteLine("CT violation count: {0}", contractTimePenaltyBaseDiff / Config.ContractTimeViolationPenalty);
+                Console.WriteLine("CT violation amount: {0} ({1} -> {2})", newContractTimeViolation - oldContractTimeViolation, oldContractTimeViolation, newContractTimeViolation);
             }
 
-            contractHoursPenaltyBaseDiff += (newContractHoursViolation - oldContractHoursViolation) * Config.ContractHoursViolationPenaltyPerHour;
+            contractTimePenaltyBaseDiff += (newContractTimeViolation - oldContractTimeViolation) * Config.ContractTimeViolationPenaltyPerMin;
 
-            return contractHoursPenaltyBaseDiff;
+            return contractTimePenaltyBaseDiff;
         }
 
 
