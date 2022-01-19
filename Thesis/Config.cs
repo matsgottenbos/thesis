@@ -11,12 +11,12 @@ namespace Thesis {
         public const bool RunSimulatedAnnealing = true;
 
         // Working day
-        public const float DayLength = 20 * 60;
-        public const float MaxWorkDayLength = 10 * 60;
+        public const int DayLength = 20 * 60;
+        public const int MaxWorkDayLength = 10 * 60;
 
         // Salaries
         public const float SalaryRate = 50 / 60f;
-        public const float UnpaidTravelTimePerDay = 60;
+        public const int UnpaidTravelTimePerDay = 60;
 
         // Contract time deviations
         public const float MinContractTimeFraction = 0.8f;
@@ -32,8 +32,8 @@ namespace Thesis {
         public const int GenMaxStationCountPerTrip = 4;
 
         // Distances
-        public const float GenMinDist = 60;
-        public const float GenMaxDist = 3 * 60;
+        public const int GenMinStationTravelTime = 60;
+        public const int GenMaxStationTravelTime = 3 * 60;
 
         // Contract times
         public const int GenMinContractTime = 5 * 60 * GenDayCount;
@@ -65,7 +65,7 @@ namespace Thesis {
 
         /* Debug */
         public const bool DebugCheckOperations = false;
-        public const bool DebugCheckAndLogOperations = true;
-        public const bool DebugRunInspector = true;
+        public const bool DebugCheckAndLogOperations = false;
+        public const bool DebugRunInspector = false;
     }
 }

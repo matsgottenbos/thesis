@@ -64,9 +64,9 @@ namespace Thesis {
                 Driver driver = instance.Drivers[driverIndex];
                 if (driverPath.Count == 0) {
                     // Empty path, so we only need to check min contract time
-                    if (driver.MinWorkedTime > 0) {
+                    if (driver.MinContractTime > 0) {
                         totalContractTimeViolationCount++;
-                        totalContractTimeViolation += driver.MinWorkedTime;
+                        totalContractTimeViolation += driver.MinContractTime;
                     }
                     continue;
                 }
@@ -112,12 +112,12 @@ namespace Thesis {
                 }
 
                 // Check driver worked time
-                if (currentDriverWorkedTime < driver.MinWorkedTime) {
+                if (currentDriverWorkedTime < driver.MinContractTime) {
                     totalContractTimeViolationCount++;
-                    totalContractTimeViolation += driver.MinWorkedTime - currentDriverWorkedTime;
-                } else if (currentDriverWorkedTime > driver.MaxWorkedTime) {
+                    totalContractTimeViolation += driver.MinContractTime - currentDriverWorkedTime;
+                } else if (currentDriverWorkedTime > driver.MaxContractTime) {
                     totalContractTimeViolationCount++;
-                    totalContractTimeViolation += currentDriverWorkedTime - driver.MaxWorkedTime;
+                    totalContractTimeViolation += currentDriverWorkedTime - driver.MaxContractTime;
                 }
 
                 driverWorkedTime[driverIndex] = currentDriverWorkedTime;
@@ -327,20 +327,20 @@ namespace Thesis {
             float contractTimePenaltyBaseDiff = 0;
 
             float oldContractTimeViolation = 0;
-            if (oldWorkedTime < driver.MinWorkedTime) {
-                oldContractTimeViolation += driver.MinWorkedTime - oldWorkedTime;
+            if (oldWorkedTime < driver.MinContractTime) {
+                oldContractTimeViolation += driver.MinContractTime - oldWorkedTime;
                 contractTimePenaltyBaseDiff -= Config.ContractTimeViolationPenalty;
-            } else if (oldWorkedTime > driver.MaxWorkedTime) {
-                oldContractTimeViolation += oldWorkedTime - driver.MaxWorkedTime;
+            } else if (oldWorkedTime > driver.MaxContractTime) {
+                oldContractTimeViolation += oldWorkedTime - driver.MaxContractTime;
                 contractTimePenaltyBaseDiff -= Config.ContractTimeViolationPenalty;
             }
 
             float newContractTimeViolation = 0;
-            if (newWorkedTime < driver.MinWorkedTime) {
-                newContractTimeViolation += driver.MinWorkedTime - newWorkedTime;
+            if (newWorkedTime < driver.MinContractTime) {
+                newContractTimeViolation += driver.MinContractTime - newWorkedTime;
                 contractTimePenaltyBaseDiff += Config.ContractTimeViolationPenalty;
-            } else if (newWorkedTime > driver.MaxWorkedTime) {
-                newContractTimeViolation += newWorkedTime - driver.MaxWorkedTime;
+            } else if (newWorkedTime > driver.MaxContractTime) {
+                newContractTimeViolation += newWorkedTime - driver.MaxContractTime;
                 contractTimePenaltyBaseDiff += Config.ContractTimeViolationPenalty;
             }
 

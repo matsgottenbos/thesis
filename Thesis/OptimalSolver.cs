@@ -62,7 +62,7 @@ namespace Thesis {
                     logStr = string.Format("{0} / {1}  |  ", searchNode.DriverIndex, Config.GenDriverCount) + logStr;
                     searchNode = searchNode.Prev;
                 }
-                Console.WriteLine(Math.Round(costUpperBound, 4) + "  |  " + logStr);
+                Console.WriteLine(ParseHelper.ToString(costUpperBound) + "  |  " + logStr);
             }
 
             double bestNodeCost = costUpperBound;
@@ -157,7 +157,7 @@ namespace Thesis {
             }
 
             driverWorkedTime += CostHelper.WorkDayLength(driverFirstDayTrip, driverLastDayTrip, driver, instance);
-            if (driverWorkedTime > driver.MaxWorkedTime) return false;
+            if (driverWorkedTime > driver.MaxContractTime) return false;
             return true;
         }
 
@@ -200,7 +200,7 @@ namespace Thesis {
                 Trip currentDriverFirstDayTrip = allDriversFirstDayTrip[driverIndex];
                 if (currentDriverFirstDayTrip == null) {
                     // Driver has no assigned trips
-                    if (currentDriver.MinWorkedTime > 0) {
+                    if (currentDriver.MinContractTime > 0) {
                         minTimeViolations++;
                         if (minTimeViolations > tripsLeftToAssign) return false;
                     }
@@ -211,7 +211,7 @@ namespace Thesis {
                 float currentDriverWorkedTime = allDriversWorkedTime[driverIndex] + CostHelper.WorkDayLength(currentDriverFirstDayTrip, currentDriverLastDayTrip, currentDriver, instance);
 
                 // Check minimum contract time
-                if (currentDriverWorkedTime < currentDriver.MinWorkedTime) {
+                if (currentDriverWorkedTime < currentDriver.MinContractTime) {
                     minTimeViolations++;
                     if (minTimeViolations > tripsLeftToAssign) return false;
                 }
