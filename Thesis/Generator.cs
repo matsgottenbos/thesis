@@ -26,8 +26,8 @@ namespace Thesis {
                 for (int j = i; j < Config.GenStationCount; j++) {
                     if (i == j) continue;
 
-                    // Train travel times are randomly generated within [1, maxDist]
-                    float trainTravelTime = (float)rand.NextDouble() * (Config.GenMaxDist - 1) + 1;
+                    // Train travel times are randomly generated within [minDist, maxDist]
+                    float trainTravelTime = (float)rand.NextDouble() * (Config.GenMaxDist - Config.GenMinDist) + Config.GenMinDist;
                     trainTravelTimes[i, j] = trainTravelTime;
                     trainTravelTimes[j, i] = trainTravelTime;
 
@@ -63,7 +63,7 @@ namespace Thesis {
                 float endTime = startTime + tripDuration;
 
                 // Driving cost
-                float drivingCost = tripDuration * Config.HourlyRate;
+                float drivingCost = tripDuration * Config.SalaryRate;
 
                 Trip trip = new Trip(-1, tripStations, dayIndex, startTime, endTime, tripDuration, drivingCost);
                 dayTrips[dayTripIndex] = trip;
@@ -151,16 +151,16 @@ namespace Thesis {
                 float[] twoWayPayedTravelTimes = new float[Config.GenStationCount];
                 for (int i = 0; i < Config.GenStationCount; i++) {
                     float oneWayTravelTime = (float)rand.NextDouble() * Config.GenMaxDist;
-                    float twoWayPayedTravelTime = Math.Max(0, 2 * oneWayTravelTime - 1); // First hour of travel is unpaid
+                    float twoWayPayedTravelTime = Math.Max(0, 2 * oneWayTravelTime - Config.UnpaidTravelTimePerDay);
                     twoWayPayedTravelTimes[i] = twoWayPayedTravelTime;
                 }
 
-                // Contract hours
-                int contactHours = (int)(rand.NextDouble() * (Config.GenMaxContractHours - Config.GenMinContractHours) + Config.GenMinContractHours);
-                float minWorkedHours = contactHours * Config.MinContractHoursFraction;
-                float maxWorkedHours = contactHours * Config.MaxContractHoursFraction;
+                // Contract time
+                int contactTime = (int)(rand.NextDouble() * (Config.GenMaxContractTime - Config.GenMinContractTime) + Config.GenMinContractTime);
+                float minWorkedTime = contactTime * Config.MinContractTimeFraction;
+                float maxWorkedTime = contactTime * Config.MaxContractTimeFraction;
 
-                drivers[driverIndex] = new Driver(-1, minWorkedHours, maxWorkedHours, trackProficiencies, twoWayPayedTravelTimes);
+                drivers[driverIndex] = new Driver(-1, minWorkedTime, maxWorkedTime, trackProficiencies, twoWayPayedTravelTimes);
             }
 
             // Add driver indices
@@ -208,14 +208,14 @@ namespace Thesis {
 
     class Driver {
         public int Index;
-        public float MinWorkedHours, MaxWorkedHours;
+        public float MinWorkedTime, MaxWorkedTime;
         public readonly bool[,] TrackProficiencies;
         public readonly float[] TwoWayPayedTravelTimes;
 
-        public Driver(int index, float minWorkedHours, float maxWorkedHours, bool[,] trackProficiencies, float[] twoWayPayedTravelTimes) {
+        public Driver(int index, float minWorkedTime, float maxWorkedTime, bool[,] trackProficiencies, float[] twoWayPayedTravelTimes) {
             Index = index;
-            MinWorkedHours = minWorkedHours;
-            MaxWorkedHours = maxWorkedHours;
+            MinWorkedTime = minWorkedTime;
+            MaxWorkedTime = maxWorkedTime;
             TrackProficiencies = trackProficiencies;
             TwoWayPayedTravelTimes = twoWayPayedTravelTimes;
         }
