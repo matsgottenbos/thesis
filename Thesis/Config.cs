@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,6 +62,12 @@ namespace Thesis {
         public const float WorkDayLengthViolationPenaltyPerMin = 200 / 60f;
         public const float ContractTimeViolationPenalty = 1000;
         public const float ContractTimeViolationPenaltyPerMin = 200 / 60f;
+
+
+        /* File structure */
+        public static readonly string ProjectFolder = (Environment.Is64BitProcess ? Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName : Directory.GetParent(Environment.CurrentDirectory).Parent.FullName) + @"\"; // Path to the project root folder
+        public static readonly string SolutionFolder = ProjectFolder + @"\..\"; // Path to the solution root folder
+        public static readonly string DataFolder = Path.Combine(SolutionFolder, @"data\");
 
 
         /* Debug */

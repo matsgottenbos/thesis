@@ -62,7 +62,9 @@ namespace Thesis {
                     logStr = string.Format("{0} / {1}  |  ", searchNode.DriverIndex, Config.GenDriverCount) + logStr;
                     searchNode = searchNode.Prev;
                 }
-                Console.WriteLine(ParseHelper.ToString(costUpperBound) + "  |  " + logStr);
+
+                string bestCostStr = costUpperBound < double.MaxValue ? ParseHelper.ToString(costUpperBound) : "-";
+                Console.WriteLine(bestCostStr + "  |  " + logStr);
             }
 
             double bestNodeCost = costUpperBound;

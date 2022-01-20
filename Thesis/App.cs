@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 namespace Thesis {
     class App {
         public App() {
+            // Import data
+            //DataImporter.Import();
+
+
+
+
             //Random rand = new Random();
             Random rand = new Random(1);
 
