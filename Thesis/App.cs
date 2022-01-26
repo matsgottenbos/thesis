@@ -51,10 +51,16 @@ namespace Thesis {
 
             // Simulated annealing
             if (Config.RunSimulatedAnnealing) {
-                Random rand2 = new Random();
-                XorShiftRandom fastRand2 = new XorShiftRandom();
-                //Random rand2 = new Random(1);
-                //XorShiftRandom fastRand2 = new XorShiftRandom(1);
+                Random rand2;
+                XorShiftRandom fastRand2;
+                if (Config.DebugUseSeededSa) {
+                    rand2 = new Random(1);
+                    fastRand2 = new XorShiftRandom(1);
+                } else {
+                    rand2 = new Random();
+                    fastRand2 = new XorShiftRandom();
+                }
+
                 SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, rand2, fastRand2);
                 (double saCost, Driver[] saSolution) = simulatedAnnealing.Run();
                 string saAssignmentStr = string.Join(' ', saSolution.Select(driver => driver.Index));

@@ -52,7 +52,7 @@ namespace Thesis {
                 float drivingCost = duration * Config.SalaryRate;
 
                 // TODO: add stations, remove day index
-                trips[tripIndex] = new Trip(-1, new List<int> { -1, -1 }, 0, startTime, endTime, duration, drivingCost);
+                trips[tripIndex] = new Trip(-1, new List<int> { -1, -1 }, startTime, endTime, duration, drivingCost);
             }
 
             Console.ReadLine();
