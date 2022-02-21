@@ -80,6 +80,7 @@ namespace Thesis {
         public const bool DebugCheckOperations = false;
         public const bool DebugCheckAndLogOperations = true;
         public const bool DebugRunInspector = false;
+        public const bool DebugRunOdataTest = true;
         public const bool DebugUseSeededSa = true;
     }
 }

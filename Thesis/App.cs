@@ -8,6 +8,14 @@ using System.Threading.Tasks;
 namespace Thesis {
     class App {
         public App() {
+            // Test
+            if (Config.DebugRunOdataTest) {
+                OdataTest.Run();
+                Console.ReadLine();
+                return;
+            }
+
+
             // Import data
             //DataImporter.Import();
 

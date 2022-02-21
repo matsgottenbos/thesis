@@ -1,0 +1,2536 @@
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="RailCube.WebApi.Models" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="BorderCrossModel">
+        <Key>
+          <PropertyRef Name="TransportDetailID" />
+        </Key>
+        <Property Name="PerformingRU" Type="Edm.String" />
+        <Property Name="Alias" Type="Edm.String" />
+        <Property Name="LocomotiveNo" Type="Edm.String" />
+        <Property Name="TrainNo" Type="Edm.String" />
+        <Property Name="TractionType" Type="Edm.String" />
+        <Property Name="LocomotiveType" Type="Edm.String" />
+        <Property Name="OriginCountry" Type="Edm.String" />
+        <Property Name="OriginLocation" Type="Edm.String" />
+        <Property Name="OriginIsBorder" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="BorderLocation" Type="Edm.String" />
+        <Property Name="BorderLocationCode" Type="Edm.String" />
+        <Property Name="BorderLocationAlternative" Type="Edm.String" />
+        <Property Name="BorderLocationAlternativeCode" Type="Edm.String" />
+        <Property Name="BorderLocationLongitude" Type="Edm.Double" />
+        <Property Name="BorderLocationLatitude" Type="Edm.Double" />
+        <Property Name="DestinationLocation" Type="Edm.String" />
+        <Property Name="DestinationCountry" Type="Edm.String" />
+        <Property Name="DestinationIsBorder" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="BorderEventTime" Type="Edm.DateTimeOffset" />
+        <Property Name="Departure" Type="Edm.DateTimeOffset" />
+        <Property Name="Arrival" Type="Edm.DateTimeOffset" />
+        <Property Name="Traction" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="BorderCrossType" Type="Edm.String" />
+        <Property Name="InfraManager" Type="Edm.String" />
+        <Property Name="GermanBorderCode" Type="Edm.String" />
+        <Property Name="TransportDetailID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="OurReference" Type="Edm.String" />
+        <Property Name="Order" Type="Edm.String" />
+        <Property Name="OrderOwner" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="OriginBorderLocationCode" Type="Edm.String" />
+        <Property Name="OriginBorderLocationName" Type="Edm.String" />
+        <Property Name="OriginBorderActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="DestinationBorderLocationCode" Type="Edm.String" />
+        <Property Name="DestinationBorderLocationName" Type="Edm.String" />
+        <Property Name="DestinationBorderActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="SpecialTrain" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="WeekNo" Type="Edm.String" />
+        <Property Name="Year" Type="Edm.String" />
+        <Property Name="TransportDescription" Type="Edm.String" />
+        <Property Name="WagonWeight" Type="Edm.Double" />
+        <Property Name="ContainerNettWeight" Type="Edm.Double" />
+        <Property Name="ContainerTare" Type="Edm.Double" />
+        <Property Name="FreightWeight" Type="Edm.Double" />
+        <Property Name="TractionLocomotiveWeight" Type="Edm.Double" />
+        <Property Name="SendLocomotiveWeight" Type="Edm.Double" />
+        <Property Name="WagonLength" Type="Edm.Double" />
+        <Property Name="TractionLocomotiveLength" Type="Edm.Double" />
+        <Property Name="SendLocomotiveLength" Type="Edm.Double" />
+        <Property Name="TrainWeightGross" Type="Edm.Double" Nullable="false" />
+        <Property Name="TrainWeightNett" Type="Edm.Double" Nullable="false" />
+        <Property Name="TrainProductCount" Type="Edm.Double" Nullable="false" />
+        <Property Name="WagonCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonEmptyCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonLoadedCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonCountNOITSI" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonCountNotNOITSI" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TractionLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="SendLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="OriginLocationCRDCode" Type="Edm.String" />
+        <Property Name="OriginLocationLongitude" Type="Edm.Double" />
+        <Property Name="OriginLocationLatitude" Type="Edm.Double" />
+        <Property Name="OriginCountryISO" Type="Edm.String" />
+        <Property Name="DestinationCountryISO" Type="Edm.String" />
+        <Property Name="OriginTrackNo" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="DestinationLocationCRDCode" Type="Edm.String" />
+        <Property Name="DestinationLocationLongitude" Type="Edm.Double" />
+        <Property Name="DestinationLocationLatitude" Type="Edm.Double" />
+        <Property Name="DestinationTrackNo" Type="Edm.String" />
+        <Property Name="IsInterModal" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="NoOfElectricLocomotives" Type="Edm.Int32" Nullable="false" />
+        <Property Name="NoOfDieselocomotives" Type="Edm.Int32" Nullable="false" />
+        <Property Name="MaxWagonCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TrainTypeEN" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="CertificateModel">
+        <Key>
+          <PropertyRef Name="Employee_CertificateID" />
+        </Key>
+        <Property Name="EmployeeName" Type="Edm.String" />
+        <Property Name="EmployeeFirstName" Type="Edm.String" />
+        <Property Name="EmployeeLastName" Type="Edm.String" />
+        <Property Name="BirthDate" Type="Edm.DateTimeOffset" />
+        <Property Name="PrimaryCompany" Type="Edm.String" />
+        <Property Name="PrimaryJobTitle" Type="Edm.String" />
+        <Property Name="CertificateName" Type="Edm.String" />
+        <Property Name="CertificateNumber" Type="Edm.String" />
+        <Property Name="CertificateTypeNameEN" Type="Edm.String" />
+        <Property Name="CertificateTypeNameNL" Type="Edm.String" />
+        <Property Name="CertificateTypeNameDE" Type="Edm.String" />
+        <Property Name="CertificateTypeNameFR" Type="Edm.String" />
+        <Property Name="CertificateTypeNameIT" Type="Edm.String" />
+        <Property Name="CertificateTypeNameHU" Type="Edm.String" />
+        <Property Name="CertificateTypeNameSK" Type="Edm.String" />
+        <Property Name="CertificateTypeNameCZ" Type="Edm.String" />
+        <Property Name="IsMandatory" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsApplicable" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="ValidFrom" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ValidTo" Type="Edm.DateTimeOffset" />
+        <Property Name="EmployeeID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="LicenseNumber" Type="Edm.String" />
+        <Property Name="ComplementaryCertificateNo" Type="Edm.String" />
+        <Property Name="ComplementaryCertificateValidFrom" Type="Edm.DateTimeOffset" />
+        <Property Name="ComplementaryCertificateValidTo" Type="Edm.DateTimeOffset" />
+        <Property Name="MedicalCertificateValidFrom" Type="Edm.DateTimeOffset" />
+        <Property Name="MedicalCertificateValidTo" Type="Edm.DateTimeOffset" />
+        <Property Name="LocomotiveTypes" Type="Collection(Edm.String)" />
+        <Property Name="Locations" Type="Collection(Edm.String)" />
+        <Property Name="Activities" Type="Collection(Edm.String)" />
+        <Property Name="Employee_CertificateID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="CostModel">
+        <Key>
+          <PropertyRef Name="Transport_CostID" />
+        </Key>
+        <Property Name="Customer" Type="Edm.String" />
+        <Property Name="ProjectCode" Type="Edm.String" />
+        <Property Name="ProjectName" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="OrderDescription" Type="Edm.String" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.String" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="CostDescription" Type="Edm.String" />
+        <Property Name="CostNumber" Type="Edm.String" />
+        <Property Name="ContraAccount" Type="Edm.String" />
+        <Property Name="CostCenter" Type="Edm.String" />
+        <Property Name="CostOwner" Type="Edm.String" />
+        <Property Name="Debtor" Type="Edm.String" />
+        <Property Name="CostInformation" Type="Edm.String" />
+        <Property Name="Costs" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="Transport_CostID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="ComplementaryCertificateModel">
+        <Key>
+          <PropertyRef Name="Employee_IDDocumentID" />
+        </Key>
+        <Property Name="ValidFrom" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ValidTo" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="IDNumber" Type="Edm.String" />
+        <Property Name="LicenseNumber" Type="Edm.String" />
+        <Property Name="EmployerReferenceNumber" Type="Edm.String" />
+        <Property Name="IssuingOrganisation" Type="Edm.String" />
+        <Property Name="OrganisationPostalAddress" Type="Edm.String" />
+        <Property Name="InternalReferenceNumber" Type="Edm.String" />
+        <Property Name="FirstName" Type="Edm.String" />
+        <Property Name="LastName" Type="Edm.String" />
+        <Property Name="EmployerName" Type="Edm.String" />
+        <Property Name="EmployeeNo" Type="Edm.String" />
+        <Property Name="EmployerRICSCode" Type="Edm.String" />
+        <Property Name="EmployeeStartDate" Type="Edm.DateTimeOffset" />
+        <Property Name="Picture" Type="Edm.Binary" />
+        <Property Name="RailwayUndertaking" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="InfrastructureManager" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="EmployerWorkingPlace" Type="Edm.String" />
+        <Property Name="EmployerPostalAddress" Type="Edm.String" />
+        <Property Name="EmployerTownCountry" Type="Edm.String" />
+        <Property Name="EmployerTown" Type="Edm.String" />
+        <Property Name="EmployerCountry" Type="Edm.String" />
+        <Property Name="HolderPlaceOfBirth" Type="Edm.String" />
+        <Property Name="HolderDateOfBirth" Type="Edm.DateTimeOffset" />
+        <Property Name="HolderNationality" Type="Edm.String" />
+        <Property Name="HolderPostalAddress" Type="Edm.String" />
+        <Property Name="HolderTown" Type="Edm.String" />
+        <Property Name="HolderTownCountry" Type="Edm.String" />
+        <Property Name="DrivingCategoryA" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="DrivingCategoryA1" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="DrivingCategoryA2" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="DrivingCategoryA3" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="DrivingCategoryA4" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="DrivingCategoryA5" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="DrivingCategoryB" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="DrivingCategoryB1" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="DrivingCategoryB2" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="DrivingCategoryNotes" Type="Edm.String" />
+        <Property Name="AdditionalInformation" Type="Edm.String" />
+        <Property Name="Restrictions" Type="Edm.String" />
+        <Property Name="Employee_IDDocumentID" Type="Edm.Guid" Nullable="false" />
+        <NavigationProperty Name="Languages" Type="Collection(RailCube.WebApi.Models.ComplementaryCertificate_LanguageModel)" />
+        <NavigationProperty Name="Lines" Type="Collection(RailCube.WebApi.Models.ComplementaryCertificate_LineModel)" />
+        <NavigationProperty Name="RollingStock" Type="Collection(RailCube.WebApi.Models.ComplementaryCertificate_RollingStockModel)" />
+        <NavigationProperty Name="Locations" Type="Collection(RailCube.WebApi.Models.ComplementaryCertificate_LocationModel)" />
+        <NavigationProperty Name="Activities" Type="Collection(RailCube.WebApi.Models.ComplementaryCertificate_ActivityModel)" />
+        <NavigationProperty Name="OtherCertificates" Type="Collection(RailCube.WebApi.Models.ComplementaryCertificate_OtherCertificateModel)" />
+      </EntityType>
+      <EntityType Name="ContractLocomotiveModel">
+        <Key>
+          <PropertyRef Name="Contract_LocomotiveID" />
+        </Key>
+        <Property Name="Contract_LocomotiveID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="ContractID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="ContractNo" Type="Edm.String" />
+        <Property Name="ContractPriceModel" Type="Edm.String" />
+        <Property Name="ContractType" Type="Edm.String" />
+        <Property Name="ContractCreatedBy" Type="Edm.String" />
+        <Property Name="ContractCostCenter" Type="Edm.String" />
+        <Property Name="ContractCreationDate" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ContractDescription" Type="Edm.String" />
+        <Property Name="ContractEndCustomer" Type="Edm.String" />
+        <Property Name="ContractEndDate" Type="Edm.DateTimeOffset" />
+        <Property Name="ContractLastEditBy" Type="Edm.String" />
+        <Property Name="ContractLastEditOn" Type="Edm.DateTimeOffset" />
+        <Property Name="ContractKMperYear" Type="Edm.Int32" />
+        <Property Name="ContractRSRDmEnabled" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="ContractNoticePeriod" Type="Edm.DateTimeOffset" />
+        <Property Name="ContractPlannedNumberOfVehicles" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ContractPricePerVehiclePerDay" Type="Edm.Double" />
+        <Property Name="ContractStartDate" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ContractSupplier" Type="Edm.String" />
+        <Property Name="LocomotiveNo" Type="Edm.String" />
+        <Property Name="LocomotiveAlias" Type="Edm.String" />
+        <Property Name="ECM" Type="Edm.String" />
+        <Property Name="Keeper" Type="Edm.String" />
+        <Property Name="Owner" Type="Edm.String" />
+        <Property Name="LocomotiveStartDate" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="LocomotiveEndDate" Type="Edm.DateTimeOffset" />
+        <Property Name="LocomotiveStartLocation" Type="Edm.String" />
+        <Property Name="LocomotiveEndLocation" Type="Edm.String" />
+        <Property Name="MonthlyRentalRate" Type="Edm.Double" />
+        <Property Name="AllocationInformation" Type="Edm.String" />
+        <Property Name="LocoInformation" Type="Edm.String" />
+        <Property Name="Information" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="CountryModel">
+        <Key>
+          <PropertyRef Name="CountryCodeID" />
+        </Key>
+        <Property Name="CountryName" Type="Edm.String" />
+        <Property Name="CountryCode" Type="Edm.String" />
+        <Property Name="CountryCodeID" Type="Edm.String" Nullable="false" />
+      </EntityType>
+      <EntityType Name="DefectCodeModel">
+        <Key>
+          <PropertyRef Name="Defect_DefectCodeID" />
+        </Key>
+        <Property Name="DefectCode" Type="Edm.String" />
+        <Property Name="IsExisting" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="DefectPart" Type="Edm.String" />
+        <Property Name="Classification" Type="Edm.String" />
+        <Property Name="DefectCodeDescriptionEN" Type="Edm.String" />
+        <Property Name="DefectCodeDescriptionNL" Type="Edm.String" />
+        <Property Name="DefectCodeDescriptionDE" Type="Edm.String" />
+        <Property Name="DefectCodeDescriptionFR" Type="Edm.String" />
+        <Property Name="DefectCodeDescriptionIT" Type="Edm.String" />
+        <Property Name="DefectCodeDescriptionHU" Type="Edm.String" />
+        <Property Name="DefectCodeDescriptionSK" Type="Edm.String" />
+        <Property Name="DefectCodeDescriptionCZ" Type="Edm.String" />
+        <Property Name="Defect_DefectCodeID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="DefectNo" Type="Edm.String" />
+        <Property Name="VehicleType" Type="Edm.String" />
+        <Property Name="VehicleNo" Type="Edm.String" />
+        <Property Name="VehicleAlias" Type="Edm.String" />
+        <Property Name="VehicleTypeNo" Type="Edm.String" />
+        <Property Name="VehicleTypeName" Type="Edm.String" />
+        <Property Name="Description" Type="Edm.String" />
+        <Property Name="LabelCode" Type="Edm.String" />
+        <Property Name="LabelDescriptionEN" Type="Edm.String" />
+        <Property Name="LabelDescriptionNL" Type="Edm.String" />
+        <Property Name="LabelDescriptionDE" Type="Edm.String" />
+        <Property Name="LabelDescriptionFR" Type="Edm.String" />
+        <Property Name="LabelDescriptionIT" Type="Edm.String" />
+        <Property Name="LabelDescriptionHU" Type="Edm.String" />
+        <Property Name="LabelDescriptionSK" Type="Edm.String" />
+        <Property Name="LabelDescriptionCZ" Type="Edm.String" />
+        <Property Name="ExistingLabelCode" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionEN" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionNL" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionDE" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionFR" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionIT" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionHU" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionSK" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionCZ" Type="Edm.String" />
+        <Property Name="LocationName" Type="Edm.String" />
+        <Property Name="LocationCode" Type="Edm.String" />
+        <Property Name="LocationCountry" Type="Edm.String" />
+        <Property Name="DefectStatusNameEN" Type="Edm.String" />
+        <Property Name="DefectStatusNameNL" Type="Edm.String" />
+        <Property Name="DefectStatusNameDE" Type="Edm.String" />
+        <Property Name="DefectStatusNameFR" Type="Edm.String" />
+        <Property Name="DefectStatusNameIT" Type="Edm.String" />
+        <Property Name="DefectStatusNameHU" Type="Edm.String" />
+        <Property Name="DefectStatusNameSK" Type="Edm.String" />
+        <Property Name="DefectStatusNameCZ" Type="Edm.String" />
+        <Property Name="ReportedOn" Type="Edm.DateTimeOffset" />
+        <Property Name="CreatedBy" Type="Edm.String" />
+        <Property Name="CreationDate" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="NoticedBy" Type="Edm.String" />
+        <Property Name="NoticedByEmailAddress" Type="Edm.String" />
+        <Property Name="PlannedRepairStart" Type="Edm.DateTimeOffset" />
+        <Property Name="PlannedRepairEnd" Type="Edm.DateTimeOffset" />
+        <Property Name="WorkshopName" Type="Edm.String" />
+        <Property Name="WorkshopCountry" Type="Edm.String" />
+        <Property Name="OperationsClosedBy" Type="Edm.String" />
+        <Property Name="OperationsClosedOn" Type="Edm.DateTimeOffset" />
+        <Property Name="ManagerClosedOn" Type="Edm.DateTimeOffset" />
+        <Property Name="Outsourced" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="ReferenceID3rthParty" Type="Edm.String" />
+        <Property Name="OutsourcedBy" Type="Edm.String" />
+        <Property Name="OutsourcedTo" Type="Edm.String" />
+        <Property Name="OutsourcedOn" Type="Edm.DateTimeOffset" />
+        <Property Name="Accepted3rthPartyOn" Type="Edm.DateTimeOffset" />
+        <Property Name="Closed3rthPartyOn" Type="Edm.DateTimeOffset" />
+        <Property Name="OperationsOK" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="ManagerOK" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="RailwayUndertaking" Type="Edm.String" />
+        <NavigationProperty Name="DefectRemarks" Type="Collection(RailCube.WebApi.Models.RemarkModel)" />
+      </EntityType>
+      <EntityType Name="DefectModel">
+        <Key>
+          <PropertyRef Name="DefectID" />
+        </Key>
+        <Property Name="DefectID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="DefectNo" Type="Edm.String" />
+        <Property Name="VehicleType" Type="Edm.String" />
+        <Property Name="VehicleNo" Type="Edm.String" />
+        <Property Name="VehicleAlias" Type="Edm.String" />
+        <Property Name="VehicleTypeNo" Type="Edm.String" />
+        <Property Name="VehicleTypeName" Type="Edm.String" />
+        <Property Name="Description" Type="Edm.String" />
+        <Property Name="LabelCode" Type="Edm.String" />
+        <Property Name="LabelDescriptionEN" Type="Edm.String" />
+        <Property Name="LabelDescriptionNL" Type="Edm.String" />
+        <Property Name="LabelDescriptionDE" Type="Edm.String" />
+        <Property Name="LabelDescriptionFR" Type="Edm.String" />
+        <Property Name="LabelDescriptionIT" Type="Edm.String" />
+        <Property Name="LabelDescriptionHU" Type="Edm.String" />
+        <Property Name="LabelDescriptionSK" Type="Edm.String" />
+        <Property Name="LabelDescriptionCZ" Type="Edm.String" />
+        <Property Name="ExistingLabelCode" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionEN" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionNL" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionDE" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionFR" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionIT" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionHU" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionSK" Type="Edm.String" />
+        <Property Name="ExistingLabelDescriptionCZ" Type="Edm.String" />
+        <Property Name="LocationName" Type="Edm.String" />
+        <Property Name="LocationCode" Type="Edm.String" />
+        <Property Name="LocationCountry" Type="Edm.String" />
+        <Property Name="DefectStatusNameEN" Type="Edm.String" />
+        <Property Name="DefectStatusNameNL" Type="Edm.String" />
+        <Property Name="DefectStatusNameDE" Type="Edm.String" />
+        <Property Name="DefectStatusNameFR" Type="Edm.String" />
+        <Property Name="DefectStatusNameIT" Type="Edm.String" />
+        <Property Name="DefectStatusNameHU" Type="Edm.String" />
+        <Property Name="DefectStatusNameSK" Type="Edm.String" />
+        <Property Name="DefectStatusNameCZ" Type="Edm.String" />
+        <Property Name="ReportedOn" Type="Edm.DateTimeOffset" />
+        <Property Name="CreatedBy" Type="Edm.String" />
+        <Property Name="CreationDate" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="NoticedBy" Type="Edm.String" />
+        <Property Name="NoticedByEmailAddress" Type="Edm.String" />
+        <Property Name="PlannedRepairStart" Type="Edm.DateTimeOffset" />
+        <Property Name="PlannedRepairEnd" Type="Edm.DateTimeOffset" />
+        <Property Name="WorkshopName" Type="Edm.String" />
+        <Property Name="WorkshopCountry" Type="Edm.String" />
+        <Property Name="OperationsClosedBy" Type="Edm.String" />
+        <Property Name="OperationsClosedOn" Type="Edm.DateTimeOffset" />
+        <Property Name="ManagerClosedOn" Type="Edm.DateTimeOffset" />
+        <Property Name="Outsourced" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="ReferenceID3rthParty" Type="Edm.String" />
+        <Property Name="OutsourcedBy" Type="Edm.String" />
+        <Property Name="OutsourcedTo" Type="Edm.String" />
+        <Property Name="OutsourcedOn" Type="Edm.DateTimeOffset" />
+        <Property Name="Accepted3rthPartyOn" Type="Edm.DateTimeOffset" />
+        <Property Name="Closed3rthPartyOn" Type="Edm.DateTimeOffset" />
+        <Property Name="OperationsOK" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="ManagerOK" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="RailwayUndertaking" Type="Edm.String" />
+        <NavigationProperty Name="DefectRemarks" Type="Collection(RailCube.WebApi.Models.RemarkModel)" />
+      </EntityType>
+      <EntityType Name="DailyCheckModel">
+        <Key>
+          <PropertyRef Name="DailyCheckID" />
+        </Key>
+        <Property Name="LocomotiveNo" Type="Edm.String" />
+        <Property Name="LocomotiveAlias" Type="Edm.String" />
+        <Property Name="LocomotiveUser" Type="Edm.String" />
+        <Property Name="PerformedOn" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PerformedBy" Type="Edm.String" />
+        <Property Name="Location" Type="Edm.String" />
+        <Property Name="KmStand" Type="Edm.Double" />
+        <Property Name="EngineHours" Type="Edm.Double" />
+        <Property Name="TractionHours" Type="Edm.Double" />
+        <Property Name="FuelQuantity" Type="Edm.Double" />
+        <Property Name="UsedPower" Type="Edm.Double" />
+        <Property Name="ReturnedPower" Type="Edm.Double" />
+        <Property Name="MonthYear" Type="Edm.String" />
+        <Property Name="WeekYear" Type="Edm.String" />
+        <Property Name="Year" Type="Edm.Int32" Nullable="false" />
+        <Property Name="DailyCheckID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="DutyActivityModel">
+        <Key>
+          <PropertyRef Name="ID" />
+        </Key>
+        <Property Name="DutyNo" Type="Edm.String" />
+        <Property Name="DutyDescription" Type="Edm.String" />
+        <Property Name="EmployeeName" Type="Edm.String" />
+        <Property Name="EmployeeWorksFor" Type="Edm.String" />
+        <Property Name="RailwayUndertaking" Type="Edm.String" />
+        <Property Name="AcceptedByEmployee" Type="Edm.Boolean" />
+        <Property Name="AcceptedByHR" Type="Edm.Boolean" />
+        <Property Name="PlannedStart" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedEnd" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualStart" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualEnd" Type="Edm.DateTimeOffset" />
+        <Property Name="RevisedStart" Type="Edm.DateTimeOffset" />
+        <Property Name="RevisedEnd" Type="Edm.DateTimeOffset" />
+        <Property Name="DutyPlannedStart" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="DutyPlannedEnd" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="DutyCheckedIn" Type="Edm.DateTimeOffset" />
+        <Property Name="DutyCheckedOut" Type="Edm.DateTimeOffset" />
+        <Property Name="DutyTimeregistrationStart" Type="Edm.DateTimeOffset" />
+        <Property Name="DutyTimeregistrationEnd" Type="Edm.DateTimeOffset" />
+        <Property Name="ActivityDescriptionDE" Type="Edm.String" />
+        <Property Name="ActivityDescriptionEN" Type="Edm.String" />
+        <Property Name="ActivityDescriptionFR" Type="Edm.String" />
+        <Property Name="ActivityDescriptionIT" Type="Edm.String" />
+        <Property Name="ActivityDescriptionNL" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="OriginCountry" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="DestinationCountry" Type="Edm.String" />
+        <Property Name="Description" Type="Edm.String" />
+        <Property Name="IsTrainActivity" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="HoursPlanning" Type="Edm.Double" />
+        <Property Name="HoursActual" Type="Edm.Double" />
+        <Property Name="HoursAllocatedPlanning" Type="Edm.Decimal" />
+        <Property Name="HoursAllocatedActual" Type="Edm.Decimal" />
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="OurReference" Type="Edm.String" />
+        <Property Name="Order" Type="Edm.String" />
+        <Property Name="OrderOwner" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TrainNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TransportDescription" Type="Edm.String" />
+        <Property Name="DutyID" Type="Edm.Guid" />
+        <Property Name="ID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="DutyModel">
+        <Key>
+          <PropertyRef Name="DutyID" />
+        </Key>
+        <Property Name="DutyNo" Type="Edm.String" />
+        <Property Name="DutyDescription" Type="Edm.String" />
+        <Property Name="DutyOwner" Type="Edm.String" />
+        <Property Name="FullName" Type="Edm.String" />
+        <Property Name="EmployeeWorksFor" Type="Edm.String" />
+        <Property Name="EmployeePrimaryFunction" Type="Edm.String" />
+        <Property Name="IsExtraDuty" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsStayOvernight" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsPublicHoliday" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsShiftedDuty" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="HotelName" Type="Edm.String" />
+        <Property Name="HotelCheckIn" Type="Edm.DateTimeOffset" />
+        <Property Name="HotelCheckOut" Type="Edm.DateTimeOffset" />
+        <Property Name="WeekNo" Type="Edm.Int32" />
+        <Property Name="Year" Type="Edm.Int32" />
+        <Property Name="PlannedStart" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedEnd" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="OriginalStart" Type="Edm.DateTimeOffset" />
+        <Property Name="OriginalEnd" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualStart" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualEnd" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualStartBy" Type="Edm.String" />
+        <Property Name="ActualEndBy" Type="Edm.String" />
+        <Property Name="TimeregistrationStart" Type="Edm.DateTimeOffset" />
+        <Property Name="TimeregistrationEnd" Type="Edm.DateTimeOffset" />
+        <Property Name="FirstTransportOriginCode" Type="Edm.String" />
+        <Property Name="FirstTransportOriginName" Type="Edm.String" />
+        <Property Name="FirstTransportOriginCountry" Type="Edm.String" />
+        <Property Name="FirstTransportClientReference" Type="Edm.String" />
+        <Property Name="FirstTransportTrainNo" Type="Edm.String" />
+        <Property Name="FirstTransportOrderNo" Type="Edm.String" />
+        <Property Name="FirstTransportProjectNo" Type="Edm.String" />
+        <Property Name="FirstTransportActivityActualStart" Type="Edm.DateTimeOffset" />
+        <Property Name="LastTransportDestinationCode" Type="Edm.String" />
+        <Property Name="LastTransportDestinationName" Type="Edm.String" />
+        <Property Name="LastTransportDestinationCountry" Type="Edm.String" />
+        <Property Name="LastTransportTrainNo" Type="Edm.String" />
+        <Property Name="LastTransportClientReference" Type="Edm.String" />
+        <Property Name="ActivityHours" Type="Edm.Double" />
+        <Property Name="TransportHours" Type="Edm.Double" />
+        <Property Name="TransportHoursCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TotalHours" Type="Edm.Double" />
+        <Property Name="TotalActualRestHours" Type="Edm.Double" />
+        <Property Name="TotalPlannedRestHours" Type="Edm.Double" />
+        <Property Name="PlannedTotalHours" Type="Edm.Double" />
+        <Property Name="BillableTotalHours" Type="Edm.Double" />
+        <Property Name="BillableTotalHours_2" Type="Edm.Double" />
+        <Property Name="TravelTimeBefore" Type="Edm.Double" Nullable="false" />
+        <Property Name="TravelTimeAfter" Type="Edm.Double" Nullable="false" />
+        <Property Name="TravelTimeBeforeTimeSpan" Type="Edm.Duration" Nullable="false" />
+        <Property Name="TravelTimeAfterTimeSpan" Type="Edm.Duration" Nullable="false" />
+        <Property Name="TravelTimeBeforeText" Type="Edm.String" />
+        <Property Name="TravelTimeAfterText" Type="Edm.String" />
+        <Property Name="TravelTimeCompensation" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="HotelCompensation" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="ExtraDutyCompensation" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="ShiftedDutyCompensation" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="FlexORTLowCompensation" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="FlexORTHighCompensation" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="FlexORTNoneHours" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="FlexORTLowHours" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="FlexORTHighHours" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="WaitingHoursBeforeFirstTransport" Type="Edm.Double" />
+        <Property Name="DutyOwnerID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="EmployeeID" Type="Edm.Guid" />
+        <Property Name="LastRemark" Type="Edm.String" />
+        <Property Name="StartedAtStand" Type="Edm.String" />
+        <Property Name="EmployeeStand" Type="Edm.String" />
+        <Property Name="EmployeeType" Type="Edm.String" />
+        <Property Name="AcceptedByHR" Type="Edm.Boolean" />
+        <Property Name="AcceptedByHRUserName" Type="Edm.String" />
+        <Property Name="AcceptedByHROn" Type="Edm.DateTimeOffset" />
+        <Property Name="AcceptedByEmployee" Type="Edm.Boolean" />
+        <Property Name="AcceptedByEmployeeUserName" Type="Edm.String" />
+        <Property Name="AcceptedByEmployeeOn" Type="Edm.DateTimeOffset" />
+        <Property Name="LastKnownTransportLocation" Type="Edm.String" />
+        <Property Name="LastKnownTransportDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="DutyID" Type="Edm.Guid" Nullable="false" />
+        <NavigationProperty Name="Duty_Activities" Type="Collection(RailCube.WebApi.Models.DutyActivityModel)" />
+        <NavigationProperty Name="DutyRemarks" Type="Collection(RailCube.WebApi.Models.RemarkModel)" />
+      </EntityType>
+      <EntityType Name="EmployeeModel">
+        <Key>
+          <PropertyRef Name="EmployeeID" />
+        </Key>
+        <Property Name="PrimaryCompany" Type="Edm.String" />
+        <Property Name="PrimaryCompanyCity" Type="Edm.String" />
+        <Property Name="PrimaryCompanyAddress" Type="Edm.String" />
+        <Property Name="PrimaryCompanyCountry" Type="Edm.String" />
+        <Property Name="Picture" Type="Edm.Binary" />
+        <Property Name="PrimaryJobTitle" Type="Edm.String" />
+        <Property Name="EmployeeNo" Type="Edm.String" />
+        <Property Name="FirstName" Type="Edm.String" />
+        <Property Name="LastName" Type="Edm.String" />
+        <Property Name="FreeHoursPerYear" Type="Edm.Double" Nullable="false" />
+        <Property Name="HoursPerDay" Type="Edm.Double" Nullable="false" />
+        <Property Name="FullName" Type="Edm.String" />
+        <Property Name="LicenseNumber" Type="Edm.String" />
+        <Property Name="ComplementaryCertificateNo" Type="Edm.String" />
+        <Property Name="ComplementaryCertificateValidFrom" Type="Edm.DateTimeOffset" />
+        <Property Name="ComplementaryCertificateValidTo" Type="Edm.DateTimeOffset" />
+        <Property Name="MedicalCertificateValidFrom" Type="Edm.DateTimeOffset" />
+        <Property Name="MedicalCertificateValidTo" Type="Edm.DateTimeOffset" />
+        <Property Name="Address" Type="Edm.String" />
+        <Property Name="Address2" Type="Edm.String" />
+        <Property Name="PostalCode" Type="Edm.String" />
+        <Property Name="City" Type="Edm.String" />
+        <Property Name="Country" Type="Edm.String" />
+        <Property Name="Stand" Type="Edm.String" />
+        <Property Name="StandAddress" Type="Edm.String" />
+        <Property Name="StandPostalCode" Type="Edm.String" />
+        <Property Name="StandCountry" Type="Edm.String" />
+        <Property Name="TelNo" Type="Edm.String" />
+        <Property Name="MobileNo" Type="Edm.String" />
+        <Property Name="EmailAddress" Type="Edm.String" />
+        <Property Name="BirthPlace" Type="Edm.String" />
+        <Property Name="BirthDate" Type="Edm.DateTimeOffset" />
+        <Property Name="Nationality" Type="Edm.String" />
+        <Property Name="Languages" Type="Collection(RailCube.WebApi.Models.LanguageModel)" />
+        <Property Name="EmployeeID" Type="Edm.Guid" Nullable="false" />
+        <NavigationProperty Name="LocomotiveKnowledge" Type="Collection(RailCube.WebApi.Models.LocomotiveKnowledgeModel)" />
+        <NavigationProperty Name="Duties" Type="Collection(RailCube.WebApi.Models.DutyModel)" />
+        <NavigationProperty Name="Certificates" Type="Collection(RailCube.WebApi.Models.CertificateModel)" />
+        <NavigationProperty Name="RouteKnowledges" Type="Collection(RailCube.WebApi.Models.RouteKnowledgeModel)" />
+        <NavigationProperty Name="Rosters" Type="Collection(RailCube.WebApi.Models.RosterModel)" />
+      </EntityType>
+      <EntityType Name="EmployeeTypeModel">
+        <Key>
+          <PropertyRef Name="EmployeeTypeID" />
+        </Key>
+        <Property Name="Description" Type="Edm.String" />
+        <Property Name="EmployeeTypeID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="FuelModel">
+        <Key>
+          <PropertyRef Name="FuelID" />
+        </Key>
+        <Property Name="LocomotiveNo" Type="Edm.String" />
+        <Property Name="LocomotiveAlias" Type="Edm.String" />
+        <Property Name="LocomotiveUser" Type="Edm.String" />
+        <Property Name="PerformedOn" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PerformedBy" Type="Edm.String" />
+        <Property Name="Supplier" Type="Edm.String" />
+        <Property Name="Location" Type="Edm.String" />
+        <Property Name="Quantity" Type="Edm.Double" Nullable="false" />
+        <Property Name="TotalAmount" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="FuelID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="InvoicedItemModel">
+        <Key>
+          <PropertyRef Name="Invoice_TransportID" />
+        </Key>
+        <Property Name="RailwayUndertaking" Type="Edm.String" />
+        <Property Name="InvoiceNumber" Type="Edm.String" />
+        <Property Name="ClientName" Type="Edm.String" />
+        <Property Name="ProjectName" Type="Edm.String" />
+        <Property Name="OrderName" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="VATNumber" Type="Edm.String" />
+        <Property Name="Activity" Type="Edm.String" />
+        <Property Name="Description" Type="Edm.String" />
+        <Property Name="TransportStatusEN" Type="Edm.String" />
+        <Property Name="TrainDate" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="TrainNumber" Type="Edm.String" />
+        <Property Name="TrackNumber" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ClientReferenceTransport" Type="Edm.String" />
+        <Property Name="Origin" Type="Edm.String" />
+        <Property Name="Destination" Type="Edm.String" />
+        <Property Name="Quantity" Type="Edm.Double" />
+        <Property Name="UnitPrice" Type="Edm.Double" Nullable="false" />
+        <Property Name="Discount" Type="Edm.Double" />
+        <Property Name="InvoiceDate" Type="Edm.DateTimeOffset" />
+        <Property Name="InvoiceStatus" Type="Edm.String" />
+        <Property Name="SequenceID" Type="Edm.Int32" />
+        <Property Name="TrackNoOnInvoice" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="TrainNoOnInvoice" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Invoice_TransportID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="InvoiceModel">
+        <Key>
+          <PropertyRef Name="InvoiceID" />
+        </Key>
+        <Property Name="InvoiceNo" Type="Edm.String" />
+        <Property Name="InvoiceStatusEN" Type="Edm.String" />
+        <Property Name="InvoiceStatusNL" Type="Edm.String" />
+        <Property Name="InvoiceStatusDE" Type="Edm.String" />
+        <Property Name="InvoiceStatusFR" Type="Edm.String" />
+        <Property Name="InvoiceStatusIT" Type="Edm.String" />
+        <Property Name="InvoiceStatusHU" Type="Edm.String" />
+        <Property Name="InvoiceStatusSK" Type="Edm.String" />
+        <Property Name="InvoiceStatusCZ" Type="Edm.String" />
+        <Property Name="InvoiceStatusPL" Type="Edm.String" />
+        <Property Name="InvoiceStatusPT" Type="Edm.String" />
+        <Property Name="InvoiceStatusRO" Type="Edm.String" />
+        <Property Name="InvoiceStatusES" Type="Edm.String" />
+        <Property Name="InvoiceDate" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="Period" Type="Edm.String" />
+        <Property Name="SenderCompanyName" Type="Edm.String" />
+        <Property Name="SenderRelationNumber" Type="Edm.String" />
+        <Property Name="SenderContactPerson" Type="Edm.String" />
+        <Property Name="SenderAddress" Type="Edm.String" />
+        <Property Name="SenderAddress2" Type="Edm.String" />
+        <Property Name="SenderPostcalCode" Type="Edm.String" />
+        <Property Name="SenderCity" Type="Edm.String" />
+        <Property Name="SenderCountry" Type="Edm.String" />
+        <Property Name="SenderVAT" Type="Edm.String" />
+        <Property Name="SenderReference" Type="Edm.String" />
+        <Property Name="ReceiverCompanyName" Type="Edm.String" />
+        <Property Name="ReceiverRelationNumber" Type="Edm.String" />
+        <Property Name="ReceiverContactPerson" Type="Edm.String" />
+        <Property Name="ReceiverAddress" Type="Edm.String" />
+        <Property Name="ReceiverAddress2" Type="Edm.String" />
+        <Property Name="ReceiverPostcalCode" Type="Edm.String" />
+        <Property Name="ReceiverCity" Type="Edm.String" />
+        <Property Name="ReceiverCountry" Type="Edm.String" />
+        <Property Name="ReceiverVAT" Type="Edm.String" />
+        <Property Name="ReceiverReference" Type="Edm.String" />
+        <Property Name="InvoiceRemark" Type="Edm.String" />
+        <Property Name="ApplyVAT" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="VATPercentage" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="RegisteredLetter" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="PaymentCondition" Type="Edm.Int32" Nullable="false" />
+        <Property Name="PaymentConditionText" Type="Edm.String" />
+        <Property Name="CreatedBy" Type="Edm.String" />
+        <Property Name="CreatorTel" Type="Edm.String" />
+        <Property Name="CreatorEmail" Type="Edm.String" />
+        <Property Name="TotalGrossSalesAmount" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="TotalVATAmount" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="TrackNoOnInvoice" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="TrainNoOnInvoice" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="SentToFinancialSystem" Type="Edm.Boolean" />
+        <Property Name="SentToFinancialSystemOn" Type="Edm.DateTimeOffset" />
+        <Property Name="CreationDate" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="InvoiceID" Type="Edm.String" Nullable="false" />
+        <NavigationProperty Name="InvoicedItems" Type="Collection(RailCube.WebApi.Models.InvoicedItemModel)" />
+      </EntityType>
+      <EntityType Name="IMPathModel">
+        <Key>
+          <PropertyRef Name="IMPathID" />
+        </Key>
+        <Property Name="IMPathID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="TrainNo" Type="Edm.String" />
+        <Property Name="PathOwner" Type="Edm.String" />
+        <Property Name="InfraManager" Type="Edm.String" />
+        <Property Name="RailwayUndertaker" Type="Edm.String" />
+        <Property Name="IsCanceled" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="ValidFrom" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ValidTo" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="CreatedOn" Type="Edm.DateTimeOffset" />
+        <Property Name="CancelDate" Type="Edm.DateTimeOffset" />
+        <Property Name="TrainDate" Type="Edm.DateTimeOffset" />
+        <Property Name="ReferenceNo" Type="Edm.String" />
+        <Property Name="IsRealPathInstance" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="OriginCountry" Type="Edm.String" />
+        <Property Name="OriginIsBorderStation" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="OriginBorderCode" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="DestinationCountry" Type="Edm.String" />
+        <Property Name="DestinationIsBorderStation" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="DestinationBorderCode" Type="Edm.String" />
+        <Property Name="DefaultProductDescription" Type="Edm.String" />
+        <Property Name="DefaultProductNHMCode" Type="Edm.String" />
+        <Property Name="OriginBorderLocationCode" Type="Edm.String" />
+        <Property Name="OriginBorderLocationName" Type="Edm.String" />
+        <Property Name="OriginBorderActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="DestinationBorderLocationCode" Type="Edm.String" />
+        <Property Name="DestinationBorderLocationName" Type="Edm.String" />
+        <Property Name="DestinationBorderActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="TransportType" Type="Edm.String" />
+        <Property Name="TransportOrigin" Type="Edm.String" />
+        <Property Name="TransportDestination" Type="Edm.String" />
+        <Property Name="TransportPlannedDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="TransportPlannedArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="TransportActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="TransportActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="PerformingRU" Type="Edm.String" />
+        <Property Name="OrderOwner" Type="Edm.String" />
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="Order" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.Int32" />
+        <Property Name="TransportDescription" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="OurReference" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="LabourLawExceedanceModel">
+        <Key>
+          <PropertyRef Name="DutyID" />
+          <PropertyRef Name="LabourLawID" />
+        </Key>
+        <Property Name="FullName" Type="Edm.String" />
+        <Property Name="WorksFor" Type="Edm.String" />
+        <Property Name="DutyNo" Type="Edm.String" />
+        <Property Name="PlannedStart" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedEnd" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualStart" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualEnd" Type="Edm.DateTimeOffset" />
+        <Property Name="TimeregistrationStart" Type="Edm.DateTimeOffset" />
+        <Property Name="TimeregistrationEnd" Type="Edm.DateTimeOffset" />
+        <Property Name="TotalHours" Type="Edm.Decimal" />
+        <Property Name="ActivityHours" Type="Edm.Double" />
+        <Property Name="RuleNo" Type="Edm.Int32" Nullable="false" />
+        <Property Name="RuleDescription" Type="Edm.String" />
+        <Property Name="AcceptedBy" Type="Edm.String" />
+        <Property Name="AcceptedOn" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="Reason" Type="Edm.String" />
+        <Property Name="DutyID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="LabourLawID" Type="Edm.Int32" Nullable="false" />
+      </EntityType>
+      <EntityType Name="LocomotiveModel">
+        <Key>
+          <PropertyRef Name="LocomotiveID" />
+        </Key>
+        <Property Name="LocomotiveNo" Type="Edm.String" />
+        <Property Name="Alias" Type="Edm.String" />
+        <Property Name="TypeNo" Type="Edm.String" />
+        <Property Name="TypeName" Type="Edm.String" />
+        <Property Name="LocomotiveID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="LocomotiveMovementModel">
+        <Key>
+          <PropertyRef Name="TransportDetailID" />
+          <PropertyRef Name="Transport_LocomotiveID" />
+        </Key>
+        <Property Name="PerformingRU" Type="Edm.String" />
+        <Property Name="Alias" Type="Edm.String" />
+        <Property Name="TrainNo" Type="Edm.String" />
+        <Property Name="CurrentContractant" Type="Edm.String" />
+        <Property Name="LocomotiveNo" Type="Edm.String" />
+        <Property Name="TractionType" Type="Edm.String" />
+        <Property Name="LocomotiveType" Type="Edm.String" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="DelayInMinutes" Type="Edm.Double" />
+        <Property Name="TotalHours" Type="Edm.Double" />
+        <Property Name="MovementType" Type="Edm.String" />
+        <Property Name="TransportType" Type="Edm.String" />
+        <Property Name="InfraManager" Type="Edm.String" />
+        <Property Name="Country" Type="Edm.String" />
+        <Property Name="Distance" Type="Edm.Double" />
+        <Property Name="Traction" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="LocomotivePosition" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TransportDetailTransportID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="TransportDetailID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Transport_LocomotiveID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="OurReference" Type="Edm.String" />
+        <Property Name="Order" Type="Edm.String" />
+        <Property Name="OrderOwner" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="OriginBorderLocationCode" Type="Edm.String" />
+        <Property Name="OriginBorderLocationName" Type="Edm.String" />
+        <Property Name="OriginBorderActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="DestinationBorderLocationCode" Type="Edm.String" />
+        <Property Name="DestinationBorderLocationName" Type="Edm.String" />
+        <Property Name="DestinationBorderActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="SpecialTrain" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="WeekNo" Type="Edm.String" />
+        <Property Name="Year" Type="Edm.String" />
+        <Property Name="TransportDescription" Type="Edm.String" />
+        <Property Name="WagonWeight" Type="Edm.Double" />
+        <Property Name="ContainerNettWeight" Type="Edm.Double" />
+        <Property Name="ContainerTare" Type="Edm.Double" />
+        <Property Name="FreightWeight" Type="Edm.Double" />
+        <Property Name="TractionLocomotiveWeight" Type="Edm.Double" />
+        <Property Name="SendLocomotiveWeight" Type="Edm.Double" />
+        <Property Name="WagonLength" Type="Edm.Double" />
+        <Property Name="TractionLocomotiveLength" Type="Edm.Double" />
+        <Property Name="SendLocomotiveLength" Type="Edm.Double" />
+        <Property Name="TrainWeightGross" Type="Edm.Double" Nullable="false" />
+        <Property Name="TrainWeightNett" Type="Edm.Double" Nullable="false" />
+        <Property Name="TrainProductCount" Type="Edm.Double" Nullable="false" />
+        <Property Name="WagonCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonEmptyCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonLoadedCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonCountNOITSI" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonCountNotNOITSI" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TractionLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="SendLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="OriginLocationCRDCode" Type="Edm.String" />
+        <Property Name="OriginLocationLongitude" Type="Edm.Double" />
+        <Property Name="OriginLocationLatitude" Type="Edm.Double" />
+        <Property Name="OriginCountry" Type="Edm.String" />
+        <Property Name="OriginCountryISO" Type="Edm.String" />
+        <Property Name="DestinationCountry" Type="Edm.String" />
+        <Property Name="DestinationCountryISO" Type="Edm.String" />
+        <Property Name="OriginTrackNo" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="DestinationLocationCRDCode" Type="Edm.String" />
+        <Property Name="DestinationLocationLongitude" Type="Edm.Double" />
+        <Property Name="DestinationLocationLatitude" Type="Edm.Double" />
+        <Property Name="DestinationTrackNo" Type="Edm.String" />
+        <Property Name="IsInterModal" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="NoOfElectricLocomotives" Type="Edm.Int32" Nullable="false" />
+        <Property Name="NoOfDieselocomotives" Type="Edm.Int32" Nullable="false" />
+        <Property Name="MaxWagonCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TrainTypeEN" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="LocomotiveUsageModel">
+        <Key>
+          <PropertyRef Name="Transport_LocomotiveID" />
+        </Key>
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="OrderOwner" Type="Edm.String" />
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="Order" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="TransportDescription" Type="Edm.String" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.String" />
+        <Property Name="Alias" Type="Edm.String" />
+        <Property Name="LocomotiveNo" Type="Edm.String" />
+        <Property Name="CurrentContractant" Type="Edm.String" />
+        <Property Name="CurrentContractSupplier" Type="Edm.String" />
+        <Property Name="LocomotiveOwner" Type="Edm.String" />
+        <Property Name="LocomotiveHolder" Type="Edm.String" />
+        <Property Name="Traction" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="TractionType" Type="Edm.String" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="DelayInMinutes" Type="Edm.Double" />
+        <Property Name="TotalHours" Type="Edm.Double" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="OriginInfraManager" Type="Edm.String" />
+        <Property Name="OriginTrainNo" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="DestinationInfraManager" Type="Edm.String" />
+        <Property Name="DestinationTrainNo" Type="Edm.String" />
+        <Property Name="LocomotivePositionID" Type="Edm.Int32" Nullable="false" />
+        <Property Name="LocomotivePositionEN" Type="Edm.String" />
+        <Property Name="LocomotivePositionDE" Type="Edm.String" />
+        <Property Name="Distance" Type="Edm.Double" />
+        <Property Name="Transport_LocomotiveID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="UserActionLogModel">
+        <Key>
+          <PropertyRef Name="LogID" />
+        </Key>
+        <Property Name="LogID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="LogText" Type="Edm.String" />
+        <Property Name="LogTime" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="UserID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="UserName" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="MaintenanceModel">
+        <Key>
+          <PropertyRef Name="MaintenanceID" />
+        </Key>
+        <Property Name="MaintenanceID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="VehicleNo" Type="Edm.String" />
+        <Property Name="VehicleAlias" Type="Edm.String" />
+        <Property Name="Status" Type="Edm.String" />
+        <Property Name="Type" Type="Edm.String" />
+        <Property Name="Description" Type="Edm.String" />
+        <Property Name="PlannedStartDate" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedEndDate" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualStartDate" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualEndDate" Type="Edm.DateTimeOffset" />
+        <Property Name="ValidFrom" Type="Edm.DateTimeOffset" />
+        <Property Name="ValidTo" Type="Edm.DateTimeOffset" />
+        <Property Name="Hours" Type="Edm.Double" />
+        <Property Name="KmAmount" Type="Edm.Double" />
+        <Property Name="InvoiceStatus" Type="Edm.String" />
+        <Property Name="NoticedBy" Type="Edm.String" />
+        <Property Name="LocationName" Type="Edm.String" />
+        <Property Name="Workshop" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="OrderModel">
+        <Key>
+          <PropertyRef Name="OrderID" />
+        </Key>
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="OrderDescription" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="ProjectName" Type="Edm.String" />
+        <Property Name="Customer" Type="Edm.String" />
+        <Property Name="HasWagon" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="HasTransports" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="OrderID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="OutsourcedTransportPartModel">
+        <Key>
+          <PropertyRef Name="Transport_RailwayUndertakerID" />
+        </Key>
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="WeekNo" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Year" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TransportNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="OrderName" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="ProjectName" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="PerformingRU" Type="Edm.String" />
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="OriginLocationPLC" Type="Edm.String" />
+        <Property Name="OriginCountry" Type="Edm.String" />
+        <Property Name="OriginCountryISO" Type="Edm.String" />
+        <Property Name="OriginTrainNo" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="DestinationLocationPLC" Type="Edm.String" />
+        <Property Name="DestinationCountry" Type="Edm.String" />
+        <Property Name="DestinationCountryISO" Type="Edm.String" />
+        <Property Name="DestinationTrainNo" Type="Edm.String" />
+        <Property Name="ActivityEN" Type="Edm.String" />
+        <Property Name="ActivityDE" Type="Edm.String" />
+        <Property Name="MovementTypeEN" Type="Edm.String" />
+        <Property Name="MovementTypeDE" Type="Edm.String" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="RevisedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="RevisedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="WagonInspectorName" Type="Edm.String" />
+        <Property Name="WagonInspectorPhone" Type="Edm.String" />
+        <Property Name="FirstRemark" Type="Edm.String" />
+        <Property Name="Transport_RailwayUndertakerID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="ProjectModel">
+        <Key>
+          <PropertyRef Name="ProjectID" />
+        </Key>
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="ProjectName" Type="Edm.String" />
+        <Property Name="Customer" Type="Edm.String" />
+        <Property Name="ProjectID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="RecurringTransportModel">
+        <Key>
+          <PropertyRef Name="Order_ScheduleID" />
+        </Key>
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="OurReference" Type="Edm.String" />
+        <Property Name="Contract" Type="Edm.String" />
+        <Property Name="ContractOwner" Type="Edm.String" />
+        <Property Name="ContractNo" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="ContractDescription" Type="Edm.String" />
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="StartDay" Type="Edm.String" />
+        <Property Name="StartTime" Type="Edm.Duration" Nullable="false" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="OriginLocationUICCode" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationUICCode" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="TransportType" Type="Edm.String" />
+        <Property Name="OriginCountry" Type="Edm.String" />
+        <Property Name="DestinationCountry" Type="Edm.String" />
+        <Property Name="TrainNo" Type="Edm.String" />
+        <Property Name="ProductTypeNHMCode" Type="Edm.String" />
+        <Property Name="ProductTypeDescriptionEN" Type="Edm.String" />
+        <Property Name="MaxTrainLength" Type="Edm.Double" />
+        <Property Name="MaxTrainWeight" Type="Edm.Double" />
+        <Property Name="ValidFrom" Type="Edm.DateTimeOffset" />
+        <Property Name="ValidTo" Type="Edm.DateTimeOffset" />
+        <Property Name="CreatedOn" Type="Edm.DateTimeOffset" />
+        <Property Name="CreatedBy" Type="Edm.String" />
+        <Property Name="LastEditOn" Type="Edm.DateTimeOffset" />
+        <Property Name="LastEditBy" Type="Edm.String" />
+        <Property Name="Order_ScheduleID" Type="Edm.Guid" Nullable="false" />
+        <NavigationProperty Name="Locomotives" Type="Collection(RailCube.WebApi.Models.RecurringTransportLocomotiveModel)" />
+      </EntityType>
+      <EntityType Name="RecurringTransportLocomotiveModel">
+        <Key>
+          <PropertyRef Name="Order_Schedule_LocomotiveID" />
+        </Key>
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="OurReference" Type="Edm.String" />
+        <Property Name="Contract" Type="Edm.String" />
+        <Property Name="ContractOwner" Type="Edm.String" />
+        <Property Name="ContractNo" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="ContractDescription" Type="Edm.String" />
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="StartDay" Type="Edm.String" />
+        <Property Name="StartTime" Type="Edm.Duration" Nullable="false" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="OriginLocationUICCode" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationUICCode" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="TransportType" Type="Edm.String" />
+        <Property Name="OriginCountry" Type="Edm.String" />
+        <Property Name="DestinationCountry" Type="Edm.String" />
+        <Property Name="TrainNo" Type="Edm.String" />
+        <Property Name="ProductTypeNHMCode" Type="Edm.String" />
+        <Property Name="ProductTypeDescriptionEN" Type="Edm.String" />
+        <Property Name="MaxTrainLength" Type="Edm.Double" />
+        <Property Name="MaxTrainWeight" Type="Edm.Double" />
+        <Property Name="ValidFrom" Type="Edm.DateTimeOffset" />
+        <Property Name="ValidTo" Type="Edm.DateTimeOffset" />
+        <Property Name="CreatedOn" Type="Edm.DateTimeOffset" />
+        <Property Name="CreatedBy" Type="Edm.String" />
+        <Property Name="LastEditOn" Type="Edm.DateTimeOffset" />
+        <Property Name="LastEditBy" Type="Edm.String" />
+        <Property Name="LocomotiveTypeNo" Type="Edm.String" />
+        <Property Name="LocomotiveAlias" Type="Edm.String" />
+        <Property Name="Origin" Type="Edm.String" />
+        <Property Name="Destination" Type="Edm.String" />
+        <Property Name="Traction" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Order_Schedule_LocomotiveID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="RelationModel">
+        <Key>
+          <PropertyRef Name="RelationID" />
+        </Key>
+        <Property Name="CompanyName" Type="Edm.String" />
+        <Property Name="Logo" Type="Edm.Binary" />
+        <Property Name="IsRU" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsClient" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="RelationID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="RosterModel">
+        <Key>
+          <PropertyRef Name="ID" />
+        </Key>
+        <Property Name="EmployeeName" Type="Edm.String" />
+        <Property Name="EmployeeNo" Type="Edm.String" />
+        <Property Name="PrimaryJobTitle" Type="Edm.String" />
+        <Property Name="PrimaryCompany" Type="Edm.String" />
+        <Property Name="FirstName" Type="Edm.String" />
+        <Property Name="LastName" Type="Edm.String" />
+        <Property Name="Date" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedHours" Type="Edm.Double" Nullable="false" />
+        <Property Name="ActualStartTime" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualEndTime" Type="Edm.DateTimeOffset" />
+        <Property Name="OriginalStartTime" Type="Edm.DateTimeOffset" />
+        <Property Name="OriginalEndTime" Type="Edm.DateTimeOffset" />
+        <Property Name="PlannedStartTime" Type="Edm.DateTimeOffset" />
+        <Property Name="PlannedEndTime" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualHours" Type="Edm.Double" Nullable="false" />
+        <Property Name="Description" Type="Edm.String" />
+        <Property Name="DutyNo" Type="Edm.String" />
+        <Property Name="Code" Type="Edm.String" />
+        <Property Name="IsRest" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsSick" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsPublicHoliday" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsDayOff" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsTraining" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsSpecialLeave" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="ID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="RouteKnowledgeModel">
+        <Key>
+          <PropertyRef Name="ID" />
+        </Key>
+        <Property Name="EmployeeName" Type="Edm.String" />
+        <Property Name="PrimaryCompany" Type="Edm.String" />
+        <Property Name="PrimaryJobTitle" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="ArcGroupDescription" Type="Edm.String" />
+        <Property Name="CountryCodeID" Type="Edm.String" />
+        <Property Name="Country" Type="Edm.String" />
+        <Property Name="CountryCodeISO" Type="Edm.String" />
+        <Property Name="LastTraining" Type="Edm.DateTimeOffset" />
+        <Property Name="LastVisit" Type="Edm.DateTimeOffset" />
+        <Property Name="NumberOfArcGroupInGroup" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="RouteTemplateDetailModel">
+        <Key>
+          <PropertyRef Name="RouteTemplateDetailID" />
+        </Key>
+        <Property Name="RouteNumber" Type="Edm.String" />
+        <Property Name="TrainNumber" Type="Edm.String" />
+        <Property Name="RouteDetailSequenceID" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Description" Type="Edm.String" />
+        <Property Name="PlannedWait" Type="Edm.Duration" Nullable="false" />
+        <Property Name="Duration" Type="Edm.Duration" Nullable="false" />
+        <Property Name="Length" Type="Edm.Double" />
+        <Property Name="MovementType" Type="Edm.String" />
+        <Property Name="RequiredActivity" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationUICCode" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="OriginLocationLongitude" Type="Edm.Double" />
+        <Property Name="OriginLocationLatitude" Type="Edm.Double" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationUICCode" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="DestinationLocationLongitude" Type="Edm.Double" />
+        <Property Name="DestinationLocationLatitude" Type="Edm.Double" />
+        <Property Name="RouteTemplateDetailID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="TrainPathModel">
+        <Key>
+          <PropertyRef Name="Transport_IMPathID" />
+        </Key>
+        <Property Name="PathID" Type="Edm.String" />
+        <Property Name="TrainNo" Type="Edm.String" />
+        <Property Name="PathOwner" Type="Edm.String" />
+        <Property Name="InfraManager" Type="Edm.String" />
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="PerformingRU" Type="Edm.String" />
+        <Property Name="OrderOwner" Type="Edm.String" />
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="Order" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TransportDescription" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="OurReference" Type="Edm.String" />
+        <Property Name="IsCanceled" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="TransportType" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="OriginCountry" Type="Edm.String" />
+        <Property Name="OriginIsBorderStation" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="OriginBorderCode" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="DestinationCountry" Type="Edm.String" />
+        <Property Name="DestinationIsBorderStation" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="DestinationBorderCode" Type="Edm.String" />
+        <Property Name="TransportOrigin" Type="Edm.String" />
+        <Property Name="TransportDestination" Type="Edm.String" />
+        <Property Name="DefaultProductDescription" Type="Edm.String" />
+        <Property Name="DefaultProductNHMCode" Type="Edm.String" />
+        <Property Name="FirstNHMCode" Type="Edm.String" />
+        <Property Name="Distance" Type="Edm.Double" />
+        <Property Name="WagonWeight" Type="Edm.Double" />
+        <Property Name="FreightWeight" Type="Edm.Double" />
+        <Property Name="TractionLocomotiveWeight" Type="Edm.Double" />
+        <Property Name="SendLocomotiveWeight" Type="Edm.Double" />
+        <Property Name="WagonLength" Type="Edm.Double" />
+        <Property Name="TractionLocomotiveLength" Type="Edm.Double" />
+        <Property Name="SendLocomotiveLength" Type="Edm.Double" />
+        <Property Name="WagonCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TractionLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="SendLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="TransportStatus" Type="Edm.String" />
+        <Property Name="OperationallyClosed" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="CancelReason" Type="Edm.String" />
+        <Property Name="CancellationTime" Type="Edm.DateTimeOffset" />
+        <Property Name="CancelledByCustomer" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Costs" Type="Edm.Decimal" />
+        <Property Name="InvoicedByPerformingRU" Type="Edm.Decimal" />
+        <Property Name="FirstLocomotiveNo" Type="Edm.String" />
+        <Property Name="FirstLocomotiveOrigin" Type="Edm.String" />
+        <Property Name="FirstLocomotiveDestination" Type="Edm.String" />
+        <Property Name="FirstLocomotiveAlias" Type="Edm.String" />
+        <Property Name="FirstLocomotiveDistance" Type="Edm.Double" />
+        <Property Name="SecondLocomotiveNo" Type="Edm.String" />
+        <Property Name="SecondLocomotiveOrigin" Type="Edm.String" />
+        <Property Name="SecondLocomotiveDestination" Type="Edm.String" />
+        <Property Name="SecondLocomotiveAlias" Type="Edm.String" />
+        <Property Name="SecondLocomotiveDistance" Type="Edm.Double" />
+        <Property Name="ThirdLocomotiveNo" Type="Edm.String" />
+        <Property Name="ThirdLocomotiveOrigin" Type="Edm.String" />
+        <Property Name="ThirdLocomotiveDestination" Type="Edm.String" />
+        <Property Name="ThirdLocomotiveAlias" Type="Edm.String" />
+        <Property Name="ThirdLocomotiveDistance" Type="Edm.Double" />
+        <Property Name="FirstDriver" Type="Edm.String" />
+        <Property Name="SecondDriver" Type="Edm.String" />
+        <Property Name="ThirdDriver" Type="Edm.String" />
+        <Property Name="Transport_IMPathID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="OriginBorderLocationCode" Type="Edm.String" />
+        <Property Name="OriginBorderLocationName" Type="Edm.String" />
+        <Property Name="OriginBorderActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="DestinationBorderLocationCode" Type="Edm.String" />
+        <Property Name="DestinationBorderLocationName" Type="Edm.String" />
+        <Property Name="DestinationBorderActualArrival" Type="Edm.DateTimeOffset" />
+      </EntityType>
+      <EntityType Name="TransportLogModel">
+        <Key>
+          <PropertyRef Name="LogID" />
+        </Key>
+        <Property Name="LogID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.String" />
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="LogText" Type="Edm.String" />
+        <Property Name="LogTime" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="UserName" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="TransportModel">
+        <Key>
+          <PropertyRef Name="TransportID" />
+        </Key>
+        <Property Name="IsCanceled" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsSalesPriceDetermined" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="HasInvoicedActivities" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsAddedToInvoice" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="DelayInMinutes" Type="Edm.Double" />
+        <Property Name="DepartureDelayInMinutes" Type="Edm.Double" />
+        <Property Name="ArrivalDelayInMinutes" Type="Edm.Double" />
+        <Property Name="TransportType" Type="Edm.String" />
+        <Property Name="TransportNumberRU" Type="Edm.String" />
+        <Property Name="FirstTrainNo" Type="Edm.String" />
+        <Property Name="FirstTrainNoInGermany" Type="Edm.String" />
+        <Property Name="FirstLocomotiveNo" Type="Edm.String" />
+        <Property Name="FirstLocomotiveAlias" Type="Edm.String" />
+        <Property Name="FirstRU" Type="Edm.String" />
+        <Property Name="LastRU" Type="Edm.String" />
+        <Property Name="Distance" Type="Edm.Double" />
+        <Property Name="TotalInvoiced" Type="Edm.Double" />
+        <Property Name="TotalCosts" Type="Edm.Double" />
+        <Property Name="TransportStatus" Type="Edm.String" />
+        <Property Name="FirstWagonNumber" Type="Edm.String" />
+        <Property Name="FirstWagonTypeName" Type="Edm.String" />
+        <Property Name="FirstNHMCode" Type="Edm.String" />
+        <Property Name="OperationallyClosed" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="CancelReason" Type="Edm.String" />
+        <Property Name="CancelReasonCode" Type="Edm.String" />
+        <Property Name="CancellationTime" Type="Edm.DateTimeOffset" />
+        <Property Name="CancelledByCustomer" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="FirstRemark" Type="Edm.String" />
+        <Property Name="AllRemarks" Type="Edm.String" />
+        <Property Name="FirstDelayReasonCZ" Type="Edm.String" />
+        <Property Name="FirstDelayReasonDE" Type="Edm.String" />
+        <Property Name="FirstDelayReasonFR" Type="Edm.String" />
+        <Property Name="FirstDelayReasonHU" Type="Edm.String" />
+        <Property Name="FirstDelayReasonIT" Type="Edm.String" />
+        <Property Name="FirstDelayReasonEN" Type="Edm.String" />
+        <Property Name="FirstDelayReasonNL" Type="Edm.String" />
+        <Property Name="FirstDelayReasonSK" Type="Edm.String" />
+        <Property Name="AllDelayReasonsCZ" Type="Edm.String" />
+        <Property Name="AllDelayReasonsDE" Type="Edm.String" />
+        <Property Name="AllDelayReasonsFR" Type="Edm.String" />
+        <Property Name="AllDelayReasonsHU" Type="Edm.String" />
+        <Property Name="AllDelayReasonsIT" Type="Edm.String" />
+        <Property Name="AllDelayReasonsEN" Type="Edm.String" />
+        <Property Name="AllDelayReasonsNL" Type="Edm.String" />
+        <Property Name="AllDelayReasonsSK" Type="Edm.String" />
+        <Property Name="FirstDelayReasonCode" Type="Edm.String" />
+        <Property Name="FirstPickup" Type="Edm.DateTimeOffset" />
+        <Property Name="LastProvision" Type="Edm.DateTimeOffset" />
+        <Property Name="ArrivalStationName" Type="Edm.String" />
+        <Property Name="PlannedArrivalStation" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrivalStation" Type="Edm.DateTimeOffset" />
+        <Property Name="ArrivalStationDelay" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ArrivalTerminalName" Type="Edm.String" />
+        <Property Name="PlannedArrivalTerminal" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrivalTerminal" Type="Edm.DateTimeOffset" />
+        <Property Name="ArrivalTerminalDelay" Type="Edm.Int32" Nullable="false" />
+        <Property Name="HasPartsInGermany" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="ContainsWagonsWithDifferentDestination" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="CreatedOn" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="CreatedBy" Type="Edm.String" />
+        <Property Name="LastEditOn" Type="Edm.DateTimeOffset" />
+        <Property Name="LastEditBy" Type="Edm.String" />
+        <Property Name="HasIMPaths" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="DangerousGoodWeight" Type="Edm.Double" Nullable="false" />
+        <Property Name="IMPathStatus" Type="Edm.String" />
+        <Property Name="TransportID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="OurReference" Type="Edm.String" />
+        <Property Name="Order" Type="Edm.String" />
+        <Property Name="OrderOwner" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="OriginBorderLocationCode" Type="Edm.String" />
+        <Property Name="OriginBorderLocationName" Type="Edm.String" />
+        <Property Name="OriginBorderActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="DestinationBorderLocationCode" Type="Edm.String" />
+        <Property Name="DestinationBorderLocationName" Type="Edm.String" />
+        <Property Name="DestinationBorderActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="SpecialTrain" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="WeekNo" Type="Edm.String" />
+        <Property Name="Year" Type="Edm.String" />
+        <Property Name="TransportDescription" Type="Edm.String" />
+        <Property Name="WagonWeight" Type="Edm.Double" />
+        <Property Name="ContainerNettWeight" Type="Edm.Double" />
+        <Property Name="ContainerTare" Type="Edm.Double" />
+        <Property Name="FreightWeight" Type="Edm.Double" />
+        <Property Name="TractionLocomotiveWeight" Type="Edm.Double" />
+        <Property Name="SendLocomotiveWeight" Type="Edm.Double" />
+        <Property Name="WagonLength" Type="Edm.Double" />
+        <Property Name="TractionLocomotiveLength" Type="Edm.Double" />
+        <Property Name="SendLocomotiveLength" Type="Edm.Double" />
+        <Property Name="TrainWeightGross" Type="Edm.Double" Nullable="false" />
+        <Property Name="TrainWeightNett" Type="Edm.Double" Nullable="false" />
+        <Property Name="TrainProductCount" Type="Edm.Double" Nullable="false" />
+        <Property Name="WagonCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonEmptyCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonLoadedCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonCountNOITSI" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonCountNotNOITSI" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TractionLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="SendLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="OriginLocationCRDCode" Type="Edm.String" />
+        <Property Name="OriginLocationLongitude" Type="Edm.Double" />
+        <Property Name="OriginLocationLatitude" Type="Edm.Double" />
+        <Property Name="OriginCountry" Type="Edm.String" />
+        <Property Name="OriginCountryISO" Type="Edm.String" />
+        <Property Name="DestinationCountry" Type="Edm.String" />
+        <Property Name="DestinationCountryISO" Type="Edm.String" />
+        <Property Name="OriginTrackNo" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="DestinationLocationCRDCode" Type="Edm.String" />
+        <Property Name="DestinationLocationLongitude" Type="Edm.Double" />
+        <Property Name="DestinationLocationLatitude" Type="Edm.Double" />
+        <Property Name="DestinationTrackNo" Type="Edm.String" />
+        <Property Name="IsInterModal" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="NoOfElectricLocomotives" Type="Edm.Int32" Nullable="false" />
+        <Property Name="NoOfDieselocomotives" Type="Edm.Int32" Nullable="false" />
+        <Property Name="MaxWagonCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TrainTypeEN" Type="Edm.String" />
+        <NavigationProperty Name="InvoicedItems" Type="Collection(RailCube.WebApi.Models.InvoicedItemModel)" />
+      </EntityType>
+      <EntityType Name="TransportStatusModel">
+        <Key>
+          <PropertyRef Name="ID" />
+        </Key>
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TransportNumberRU" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="ResponsableRU" Type="Edm.String" />
+        <Property Name="ContractOwner" Type="Edm.String" />
+        <Property Name="OurReference" Type="Edm.String" />
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="Order" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="TrainDate" Type="Edm.DateTimeOffset" />
+        <Property Name="TransportDescription" Type="Edm.String" />
+        <Property Name="MaxTrainLength" Type="Edm.Double" />
+        <Property Name="MaxTrainWeight" Type="Edm.Double" />
+        <Property Name="PlannedTrainLengthRO" Type="Edm.Double" />
+        <Property Name="ActualTrainLength" Type="Edm.Double" />
+        <Property Name="PlannedGrossWeightRO" Type="Edm.Double" />
+        <Property Name="ActualGrossWeight" Type="Edm.Double" Nullable="false" />
+        <Property Name="PlannedNettWeight" Type="Edm.Double" />
+        <Property Name="ActualNettWeight" Type="Edm.Double" />
+        <Property Name="PlannedWagonCount" Type="Edm.Int32" />
+        <Property Name="ActualWagonCount" Type="Edm.Int32" />
+        <Property Name="AxlesLoadedCount" Type="Edm.Int32" />
+        <Property Name="AxlesEmptyCount" Type="Edm.Int32" />
+        <Property Name="IsCanceled" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="RevisedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="RevisedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="TransportType" Type="Edm.String" />
+        <Property Name="OriginCountry" Type="Edm.String" />
+        <Property Name="DestinationCountry" Type="Edm.String" />
+        <Property Name="FirstLocomotiveNo" Type="Edm.String" />
+        <Property Name="FirstTrainNo" Type="Edm.String" />
+        <Property Name="FirstWagonNo" Type="Edm.String" />
+        <Property Name="LastWagonNo" Type="Edm.String" />
+        <Property Name="TransportStatus" Type="Edm.String" />
+        <Property Name="FinancialStatus" Type="Edm.String" />
+        <Property Name="TrainWeightGross" Type="Edm.Double" Nullable="false" />
+        <Property Name="TrainWeightNett" Type="Edm.Double" Nullable="false" />
+        <Property Name="WagonCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ID" Type="Edm.String" Nullable="false" />
+        <NavigationProperty Name="RouteDetails" Type="Collection(RailCube.WebApi.Models.TransportStatusDetailModel)" />
+        <NavigationProperty Name="TransportStatusRemarks" Type="Collection(RailCube.WebApi.Models.TransportStatusRemarkModel)" />
+        <NavigationProperty Name="TransportStatusLocomotives" Type="Collection(RailCube.WebApi.Models.TransportStatusLocomotiveModel)" />
+        <NavigationProperty Name="TransportStatusActivities" Type="Collection(RailCube.WebApi.Models.TransportStatusActivityModel)" />
+      </EntityType>
+      <EntityType Name="TransportedDangerGoodsModel">
+        <Key>
+          <PropertyRef Name="Transport_Wagon_Product_UNID" />
+        </Key>
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="PerformingRU" Type="Edm.String" />
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="Order" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="OriginBorderLocationCode" Type="Edm.String" />
+        <Property Name="OriginBorderLocationName" Type="Edm.String" />
+        <Property Name="OriginBorderActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="DestinationBorderLocationCode" Type="Edm.String" />
+        <Property Name="DestinationBorderLocationName" Type="Edm.String" />
+        <Property Name="DestinationBorderActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="TrainNo" Type="Edm.String" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonNo" Type="Edm.String" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="Quantity" Type="Edm.Int32" Nullable="false" />
+        <Property Name="AmountTon" Type="Edm.Double" Nullable="false" />
+        <Property Name="ContainerNo" Type="Edm.String" />
+        <Property Name="ContainerSizeType" Type="Edm.String" />
+        <Property Name="GEVI" Type="Edm.String" />
+        <Property Name="UN" Type="Edm.String" />
+        <Property Name="NHMCode" Type="Edm.String" />
+        <Property Name="NHMDescriptionEN" Type="Edm.String" />
+        <Property Name="NHMDescriptionNL" Type="Edm.String" />
+        <Property Name="NHMDescriptionDE" Type="Edm.String" />
+        <Property Name="NHMDescriptionFR" Type="Edm.String" />
+        <Property Name="NHMDescriptionIT" Type="Edm.String" />
+        <Property Name="NHMDescriptionHU" Type="Edm.String" />
+        <Property Name="NHMDescriptionSK" Type="Edm.String" />
+        <Property Name="NHMDescriptionCZ" Type="Edm.String" />
+        <Property Name="UNDescriptionEN" Type="Edm.String" />
+        <Property Name="UNDescriptionNL" Type="Edm.String" />
+        <Property Name="UNDescriptionDE" Type="Edm.String" />
+        <Property Name="UNDescriptionFR" Type="Edm.String" />
+        <Property Name="UNDescriptionIT" Type="Edm.String" />
+        <Property Name="UNDescriptionHU" Type="Edm.String" />
+        <Property Name="UNDescriptionSK" Type="Edm.String" />
+        <Property Name="UNDescriptionCZ" Type="Edm.String" />
+        <Property Name="UNWeight" Type="Edm.Double" />
+        <Property Name="Classification" Type="Edm.Double" />
+        <Property Name="ClassificationCode" Type="Edm.String" />
+        <Property Name="PackageGroup" Type="Edm.String" />
+        <Property Name="Labels" Type="Edm.String" />
+        <Property Name="SpecialTerms" Type="Edm.String" />
+        <Property Name="PackageInstructions" Type="Edm.String" />
+        <Property Name="PackageSpecialTerms" Type="Edm.String" />
+        <Property Name="PackagingCommonPacking" Type="Edm.String" />
+        <Property Name="Transport_Wagon_Product_UNID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="TransportedGoodsModel">
+        <Key>
+          <PropertyRef Name="Transport_Wagon_ProductID" />
+        </Key>
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="PerformingRU" Type="Edm.String" />
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="Order" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="OriginBorderLocationCode" Type="Edm.String" />
+        <Property Name="OriginBorderLocationName" Type="Edm.String" />
+        <Property Name="OriginBorderActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="DestinationBorderLocationCode" Type="Edm.String" />
+        <Property Name="DestinationBorderLocationName" Type="Edm.String" />
+        <Property Name="DestinationBorderActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="TrainNo" Type="Edm.String" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonNo" Type="Edm.String" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="Quantity" Type="Edm.Int32" Nullable="false" />
+        <Property Name="AmountTon" Type="Edm.Double" Nullable="false" />
+        <Property Name="ContainerNo" Type="Edm.String" />
+        <Property Name="ContainerSizeType" Type="Edm.String" />
+        <Property Name="NHMCode" Type="Edm.String" />
+        <Property Name="NHMDescriptionEN" Type="Edm.String" />
+        <Property Name="NHMDescriptionNL" Type="Edm.String" />
+        <Property Name="NHMDescriptionDE" Type="Edm.String" />
+        <Property Name="NHMDescriptionFR" Type="Edm.String" />
+        <Property Name="NHMDescriptionIT" Type="Edm.String" />
+        <Property Name="NHMDescriptionHU" Type="Edm.String" />
+        <Property Name="NHMDescriptionSK" Type="Edm.String" />
+        <Property Name="NHMDescriptionCZ" Type="Edm.String" />
+        <Property Name="CargoDescription" Type="Edm.String" />
+        <Property Name="Transport_Wagon_ProductID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="TransportDetailModel">
+        <Key>
+          <PropertyRef Name="TransportDetailID" />
+        </Key>
+        <Property Name="OriginBorderLocationCode" Type="Edm.String" />
+        <Property Name="OriginBorderLocationName" Type="Edm.String" />
+        <Property Name="OriginBorderActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="DestinationBorderLocationCode" Type="Edm.String" />
+        <Property Name="DestinationBorderLocationName" Type="Edm.String" />
+        <Property Name="DestinationBorderActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="PerformingRU" Type="Edm.String" />
+        <Property Name="TrainNo" Type="Edm.String" />
+        <Property Name="PlannedWeek" Type="Edm.Int32" Nullable="false" />
+        <Property Name="PlannedYear" Type="Edm.Int32" Nullable="false" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="RevisedDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="RevisedArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="DepartureDelayInMinutes" Type="Edm.Int32" />
+        <Property Name="ArrivalDelayInMinutes" Type="Edm.Int32" />
+        <Property Name="ContractName" Type="Edm.String" />
+        <Property Name="DelayReasonDE" Type="Edm.String" />
+        <Property Name="DelayReasonFR" Type="Edm.String" />
+        <Property Name="DelayReasonIT" Type="Edm.String" />
+        <Property Name="DelayReasonEN" Type="Edm.String" />
+        <Property Name="DelayReasonNL" Type="Edm.String" />
+        <Property Name="MovementType" Type="Edm.String" />
+        <Property Name="TransportType" Type="Edm.String" />
+        <Property Name="InfraManager" Type="Edm.String" />
+        <Property Name="Country" Type="Edm.String" />
+        <Property Name="Distance" Type="Edm.Double" />
+        <Property Name="WagonsDelivered" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonsDeparted" Type="Edm.Int32" Nullable="false" />
+        <Property Name="FreightUnitsDelivered" Type="Edm.Int32" Nullable="false" />
+        <Property Name="FreightUnitsPickedUp" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TransportStatus" Type="Edm.String" />
+        <Property Name="OperationallyClosed" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="RequiredActivityEN" Type="Edm.String" />
+        <Property Name="FirstLocomotiveNo" Type="Edm.String" />
+        <Property Name="FirstLocomotiveAlias" Type="Edm.String" />
+        <Property Name="SecondLocomotiveNo" Type="Edm.String" />
+        <Property Name="SecondLocomotiveAlias" Type="Edm.String" />
+        <Property Name="FirstDutyNo" Type="Edm.String" />
+        <Property Name="SecondDutyNo" Type="Edm.String" />
+        <Property Name="FirstDutyEmployee" Type="Edm.String" />
+        <Property Name="SecondDutyEmployee" Type="Edm.String" />
+        <Property Name="FirstDutyActivityEN" Type="Edm.String" />
+        <Property Name="SecondDutyActivityEN" Type="Edm.String" />
+        <Property Name="LastEditOn" Type="Edm.DateTimeOffset" />
+        <Property Name="PathID" Type="Edm.String" />
+        <Property Name="DepartureSentToIMOn" Type="Edm.DateTimeOffset" />
+        <Property Name="ArrivalSentToIMOn" Type="Edm.DateTimeOffset" />
+        <Property Name="TransportOriginCountry" Type="Edm.String" />
+        <Property Name="TransportDestinationCountry" Type="Edm.String" />
+        <Property Name="TransportDetailID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="BPCode" Type="Edm.String" />
+        <Property Name="BPDescription" Type="Edm.String" />
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="OurReference" Type="Edm.String" />
+        <Property Name="Order" Type="Edm.String" />
+        <Property Name="OrderOwner" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="SpecialTrain" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="WeekNo" Type="Edm.String" />
+        <Property Name="Year" Type="Edm.String" />
+        <Property Name="TransportDescription" Type="Edm.String" />
+        <Property Name="WagonWeight" Type="Edm.Double" />
+        <Property Name="ContainerNettWeight" Type="Edm.Double" />
+        <Property Name="ContainerTare" Type="Edm.Double" />
+        <Property Name="FreightWeight" Type="Edm.Double" />
+        <Property Name="TractionLocomotiveWeight" Type="Edm.Double" />
+        <Property Name="SendLocomotiveWeight" Type="Edm.Double" />
+        <Property Name="WagonLength" Type="Edm.Double" />
+        <Property Name="TractionLocomotiveLength" Type="Edm.Double" />
+        <Property Name="SendLocomotiveLength" Type="Edm.Double" />
+        <Property Name="TrainWeightGross" Type="Edm.Double" Nullable="false" />
+        <Property Name="TrainWeightNett" Type="Edm.Double" Nullable="false" />
+        <Property Name="TrainProductCount" Type="Edm.Double" Nullable="false" />
+        <Property Name="WagonCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonEmptyCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonLoadedCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonCountNOITSI" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonCountNotNOITSI" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TractionLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="SendLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="OriginLocationCRDCode" Type="Edm.String" />
+        <Property Name="OriginLocationLongitude" Type="Edm.Double" />
+        <Property Name="OriginLocationLatitude" Type="Edm.Double" />
+        <Property Name="OriginCountry" Type="Edm.String" />
+        <Property Name="OriginCountryISO" Type="Edm.String" />
+        <Property Name="DestinationCountry" Type="Edm.String" />
+        <Property Name="DestinationCountryISO" Type="Edm.String" />
+        <Property Name="OriginTrackNo" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="DestinationLocationCRDCode" Type="Edm.String" />
+        <Property Name="DestinationLocationLongitude" Type="Edm.Double" />
+        <Property Name="DestinationLocationLatitude" Type="Edm.Double" />
+        <Property Name="DestinationTrackNo" Type="Edm.String" />
+        <Property Name="IsInterModal" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="NoOfElectricLocomotives" Type="Edm.Int32" Nullable="false" />
+        <Property Name="NoOfDieselocomotives" Type="Edm.Int32" Nullable="false" />
+        <Property Name="MaxWagonCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TrainTypeEN" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="TransportTaskModel">
+        <Key>
+          <PropertyRef Name="Transport_TaskID" />
+        </Key>
+        <Property Name="IsCanceled" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="DelayInMinutes" Type="Edm.Double" />
+        <Property Name="TransportType" Type="Edm.String" />
+        <Property Name="OriginCountry" Type="Edm.String" />
+        <Property Name="DestinationCountry" Type="Edm.String" />
+        <Property Name="FirstTrainNo" Type="Edm.String" />
+        <Property Name="Distance" Type="Edm.Double" />
+        <Property Name="TaskDescription" Type="Edm.String" />
+        <Property Name="TaskInformation" Type="Edm.String" />
+        <Property Name="TaskCreated" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="TaskClosed" Type="Edm.DateTimeOffset" />
+        <Property Name="ClosedBy" Type="Edm.String" />
+        <Property Name="CloseRemark" Type="Edm.String" />
+        <Property Name="Transport_TaskID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="OurReference" Type="Edm.String" />
+        <Property Name="Order" Type="Edm.String" />
+        <Property Name="OrderOwner" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="OriginBorderLocationCode" Type="Edm.String" />
+        <Property Name="OriginBorderLocationName" Type="Edm.String" />
+        <Property Name="OriginBorderActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="DestinationBorderLocationCode" Type="Edm.String" />
+        <Property Name="DestinationBorderLocationName" Type="Edm.String" />
+        <Property Name="DestinationBorderActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="SpecialTrain" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="WeekNo" Type="Edm.String" />
+        <Property Name="Year" Type="Edm.String" />
+        <Property Name="TransportDescription" Type="Edm.String" />
+        <Property Name="WagonWeight" Type="Edm.Double" />
+        <Property Name="ContainerNettWeight" Type="Edm.Double" />
+        <Property Name="ContainerTare" Type="Edm.Double" />
+        <Property Name="FreightWeight" Type="Edm.Double" />
+        <Property Name="TractionLocomotiveWeight" Type="Edm.Double" />
+        <Property Name="SendLocomotiveWeight" Type="Edm.Double" />
+        <Property Name="WagonLength" Type="Edm.Double" />
+        <Property Name="TractionLocomotiveLength" Type="Edm.Double" />
+        <Property Name="SendLocomotiveLength" Type="Edm.Double" />
+        <Property Name="TrainWeightGross" Type="Edm.Double" Nullable="false" />
+        <Property Name="TrainWeightNett" Type="Edm.Double" Nullable="false" />
+        <Property Name="TrainProductCount" Type="Edm.Double" Nullable="false" />
+        <Property Name="WagonCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonEmptyCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonLoadedCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonCountNOITSI" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonCountNotNOITSI" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TractionLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="SendLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="OriginLocationCRDCode" Type="Edm.String" />
+        <Property Name="OriginLocationLongitude" Type="Edm.Double" />
+        <Property Name="OriginLocationLatitude" Type="Edm.Double" />
+        <Property Name="OriginCountryISO" Type="Edm.String" />
+        <Property Name="DestinationCountryISO" Type="Edm.String" />
+        <Property Name="OriginTrackNo" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="DestinationLocationCRDCode" Type="Edm.String" />
+        <Property Name="DestinationLocationLongitude" Type="Edm.Double" />
+        <Property Name="DestinationLocationLatitude" Type="Edm.Double" />
+        <Property Name="DestinationTrackNo" Type="Edm.String" />
+        <Property Name="IsInterModal" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="NoOfElectricLocomotives" Type="Edm.Int32" Nullable="false" />
+        <Property Name="NoOfDieselocomotives" Type="Edm.Int32" Nullable="false" />
+        <Property Name="MaxWagonCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TrainTypeEN" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="TransportRailwayUndertakerModel">
+        <Key>
+          <PropertyRef Name="Transport_RailwayUndertakerID" />
+        </Key>
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TrainNos" Type="Edm.String" />
+        <Property Name="PerformingRU" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginCountry" Type="Edm.String" />
+        <Property Name="OriginCountryISO" Type="Edm.String" />
+        <Property Name="OriginTrainNo" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationCountry" Type="Edm.String" />
+        <Property Name="DestinationCountryISO" Type="Edm.String" />
+        <Property Name="OriginBorderLocationCode" Type="Edm.String" />
+        <Property Name="OriginBorderLocationName" Type="Edm.String" />
+        <Property Name="OriginBorderActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="DestinationBorderLocationCode" Type="Edm.String" />
+        <Property Name="DestinationBorderLocationName" Type="Edm.String" />
+        <Property Name="DestinationBorderActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="RevisedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="RevisedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="WagonWeight" Type="Edm.Double" Nullable="false" />
+        <Property Name="WagonLength" Type="Edm.Double" Nullable="false" />
+        <Property Name="WagonCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="FreightWeight" Type="Edm.Double" Nullable="false" />
+        <Property Name="ContainerTare" Type="Edm.Double" Nullable="false" />
+        <Property Name="TractionLocomotiveWeight" Type="Edm.Double" Nullable="false" />
+        <Property Name="SendLocomotiveWeight" Type="Edm.Double" Nullable="false" />
+        <Property Name="TractionLocomotiveLength" Type="Edm.Double" Nullable="false" />
+        <Property Name="SendLocomotiveLength" Type="Edm.Double" Nullable="false" />
+        <Property Name="SendLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TractionLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Transport_RailwayUndertakerID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="WagonDetailModel">
+        <Key>
+          <PropertyRef Name="WagonID" />
+        </Key>
+        <Property Name="WagonID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="WagonNo" Type="Edm.String" />
+        <Property Name="WagonType" Type="Edm.String" />
+        <Property Name="Owner" Type="Edm.String" />
+        <Property Name="Keeper" Type="Edm.String" />
+        <Property Name="ECM" Type="Edm.String" />
+        <Property Name="ReservedForClient" Type="Edm.String" />
+        <Property Name="CurrentWagonSet" Type="Edm.String" />
+        <Property Name="CurrentRentalContractNo" Type="Edm.String" />
+        <Property Name="CurrentRentalContractDescription" Type="Edm.String" />
+        <Property Name="CurrentRentalContractant" Type="Edm.String" />
+        <Property Name="CurrentRentalSupplier" Type="Edm.String" />
+        <Property Name="CurrentRentalEndCustomer" Type="Edm.String" />
+        <Property Name="CurrentContractContractNo" Type="Edm.String" />
+        <Property Name="CurrentContractDescription" Type="Edm.String" />
+        <Property Name="CurrentContractContractant" Type="Edm.String" />
+        <Property Name="CurrentContractSupplier" Type="Edm.String" />
+        <Property Name="CurrentContractEndCustomer" Type="Edm.String" />
+        <Property Name="CurrentContractTypeDescription" Type="Edm.String" />
+        <Property Name="CurrentRentalContractStartdate" Type="Edm.DateTimeOffset" />
+        <Property Name="CurrentRentalContractWagonStartdate" Type="Edm.DateTimeOffset" />
+        <Property Name="AssignedProductType" Type="Edm.String" />
+        <Property Name="RevisionTerm" Type="Edm.Int32" Nullable="false" />
+        <Property Name="RevisionMargin" Type="Edm.Int32" Nullable="false" />
+        <Property Name="LoadingHeight" Type="Edm.Double" />
+        <Property Name="LoadingWidth" Type="Edm.Double" />
+        <Property Name="LoadingLength" Type="Edm.Double" />
+        <Property Name="WagonWidth" Type="Edm.Double" />
+        <Property Name="WagonHeight" Type="Edm.Double" />
+        <Property Name="MaxWeight" Type="Edm.Double" />
+        <Property Name="TaraWeight" Type="Edm.Double" />
+        <Property Name="LoadAreaM2" Type="Edm.Double" />
+        <Property Name="LoadingSpaceM3" Type="Edm.Double" />
+        <Property Name="MaxBrakeWeight" Type="Edm.Double" />
+        <Property Name="MinBrakeWeight" Type="Edm.Double" />
+        <Property Name="HandBrakeWeight" Type="Edm.Double" />
+        <Property Name="AutomaticBrakeSwitch" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="NumberOfBrakeStations" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonLength" Type="Edm.Double" />
+        <Property Name="CurvRadius" Type="Edm.Double" />
+        <Property Name="Axles" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Profile" Type="Edm.String" />
+        <Property Name="MaxAxleLoad" Type="Edm.Double" />
+        <Property Name="LoadingCapacityCTrack" Type="Edm.Double" />
+        <Property Name="LoadingCapacityDTrack" Type="Edm.Double" />
+        <Property Name="TeuCapacity" Type="Edm.Double" />
+        <Property Name="LoadingFloorHeight" Type="Edm.Double" />
+        <Property Name="LoadingFloorCount" Type="Edm.Int32" />
+        <Property Name="DoorWidth" Type="Edm.Double" />
+        <Property Name="DoorHeight" Type="Edm.Double" />
+        <Property Name="BrakeSwitch" Type="Edm.Double" />
+        <Property Name="BogieType" Type="Edm.String" />
+        <Property Name="BrakeType" Type="Edm.String" />
+        <Property Name="HandBrake" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="BrakeTypeCat" Type="Edm.String" />
+        <Property Name="BrakePadType" Type="Edm.String" />
+        <Property Name="BrakePadTypeCat" Type="Edm.String" />
+        <Property Name="WheelType" Type="Edm.String" />
+        <Property Name="MaxSpeed" Type="Edm.Double" />
+        <Property Name="MaxSpeedLoaded" Type="Edm.Double" />
+        <Property Name="MaxSpeedEmpty" Type="Edm.Double" />
+        <Property Name="Gaspendel" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Heating" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Isolation" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="ReturnToCustomer" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="PrimaryRemark" Type="Edm.String" />
+        <Property Name="Information" Type="Edm.String" />
+        <Property Name="ActiveDefectNo" Type="Edm.String" />
+        <Property Name="DefectCode" Type="Edm.String" />
+        <Property Name="BrakeOutOfOrder" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="ActiveLabel" Type="Edm.String" />
+        <Property Name="ActiveDefectDefectDate" Type="Edm.DateTimeOffset" />
+        <Property Name="LastRevision" Type="Edm.DateTimeOffset" />
+        <Property Name="NextRevision" Type="Edm.DateTimeOffset" />
+        <Property Name="NextDTest" Type="Edm.DateTimeOffset" />
+        <Property Name="NextHTest" Type="Edm.DateTimeOffset" />
+        <Property Name="LastNVRID" Type="Edm.DateTimeOffset" />
+        <Property Name="NextNVRID" Type="Edm.DateTimeOffset" />
+        <Property Name="LastTankInspection" Type="Edm.DateTimeOffset" />
+        <Property Name="NextTankInspection" Type="Edm.DateTimeOffset" />
+        <Property Name="Next6M" Type="Edm.DateTimeOffset" />
+        <Property Name="Next12M" Type="Edm.DateTimeOffset" />
+        <Property Name="GPSSerialNumber" Type="Edm.String" />
+        <Property Name="LastKnownLat" Type="Edm.Double" />
+        <Property Name="LastKnownLong" Type="Edm.Double" />
+        <Property Name="LastKnownSpeed" Type="Edm.Double" />
+        <Property Name="LastKnownPositionTime" Type="Edm.DateTimeOffset" />
+        <Property Name="LastKnownAddress" Type="Edm.String" />
+        <Property Name="LastKnownLocation" Type="Edm.String" />
+        <Property Name="LastKnownActiveGeoZone" Type="Edm.String" />
+        <Property Name="LastKnownTransportTrackNo" Type="Edm.String" />
+        <Property Name="LastKnownTransportClientRef" Type="Edm.String" />
+        <Property Name="LastKnownTransportOurRef" Type="Edm.String" />
+        <Property Name="LastKnownOrigin" Type="Edm.String" />
+        <Property Name="LastKnownDestination" Type="Edm.String" />
+        <Property Name="LastKnownPlannedDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="LastKnownRevisedDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="LastKnownActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="LastKnownPlannedArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="LastKnownRevisedArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="LastKnownActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="LastKnownTrainNo" Type="Edm.String" />
+        <Property Name="LastKnownTrainNoFromWSM" Type="Edm.String" />
+        <Property Name="LastKnownLoadedWSM" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="LastTransportedNHMFromWSM" Type="Edm.String" />
+        <Property Name="LastKnownFreightWeightFromWSM" Type="Edm.Double" />
+        <Property Name="LastKnownTotalWeightFromWSM" Type="Edm.Double" />
+        <Property Name="LastKnownOriginFromWSM" Type="Edm.String" />
+        <Property Name="LastKnownDestinationFromWSM" Type="Edm.String" />
+        <Property Name="IsAlarming" Type="Edm.Boolean" />
+        <Property Name="IsMoving" Type="Edm.Boolean" />
+        <Property Name="Autonomy" Type="Edm.Double" />
+        <Property Name="TechnicalDetailsChecked" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="TechnicalDetailsCheckedOn" Type="Edm.DateTimeOffset" />
+        <Property Name="LastKnownTransportedProductNHM" Type="Edm.String" />
+        <Property Name="SecondLastKnownTransportedProductNHM" Type="Edm.String" />
+        <Property Name="ThirdLastKnownTransportedProductNHM" Type="Edm.String" />
+        <Property Name="LastKnownTransportedProduct" Type="Edm.String" />
+        <Property Name="SecondLastKnownTransportedProduct" Type="Edm.String" />
+        <Property Name="ThirdLastKnownTransportedProduct" Type="Edm.String" />
+        <Property Name="TotalDistance" Type="Edm.Double" />
+        <Property Name="LastKnownOrderDestinationNationalID" Type="Edm.String" />
+        <Property Name="LastKnownOrderDestinationLocationCode" Type="Edm.String" />
+        <Property Name="LastKnownOrderDestinationShortName" Type="Edm.String" />
+        <Property Name="LastKnownOrderDestinationTrigram" Type="Edm.String" />
+        <Property Name="LastKnownOrderOriginNationalID" Type="Edm.String" />
+        <Property Name="LastKnownOrderOriginLocationCode" Type="Edm.String" />
+        <Property Name="LastKnownOrderOriginShortName" Type="Edm.String" />
+        <Property Name="LastKnownOrderOriginTrigram" Type="Edm.String" />
+        <Property Name="LastKnownOrderConsigneeCountry" Type="Edm.String" />
+        <Property Name="LastKnownOrderConsigneeName" Type="Edm.String" />
+        <Property Name="LastKnownOrderConsignorCountry" Type="Edm.String" />
+        <Property Name="LastKnownOrderConsignorName" Type="Edm.String" />
+        <Property Name="LastKnownOrderConsignmentNumber" Type="Edm.String" />
+        <Property Name="LastKnownOrderSendDate" Type="Edm.DateTimeOffset" />
+        <Property Name="LastKnownOrderActualPickup" Type="Edm.DateTimeOffset" />
+        <Property Name="LastKnownOrderActualDelivery" Type="Edm.DateTimeOffset" />
+        <Property Name="LastKnownOrderActualLeftOrigin" Type="Edm.DateTimeOffset" />
+        <Property Name="LastKnownOrderActualReachedDestination" Type="Edm.DateTimeOffset" />
+        <Property Name="LastKnownOrderProductQuantity" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="WagonMovementModel">
+        <Key>
+          <PropertyRef Name="TransportDetailID" />
+          <PropertyRef Name="Transport_WagonID" />
+        </Key>
+        <Property Name="PerformingRU" Type="Edm.String" />
+        <Property Name="WagonNumber" Type="Edm.String" />
+        <Property Name="WagonTypeNo" Type="Edm.String" />
+        <Property Name="WagonTypeName" Type="Edm.String" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="DelayInMinutes" Type="Edm.Double" />
+        <Property Name="TotalHours" Type="Edm.Double" />
+        <Property Name="MovementType" Type="Edm.String" />
+        <Property Name="TransportType" Type="Edm.String" />
+        <Property Name="InfraManager" Type="Edm.String" />
+        <Property Name="Country" Type="Edm.String" />
+        <Property Name="WagonOrigin" Type="Edm.String" />
+        <Property Name="WagonDestination" Type="Edm.String" />
+        <Property Name="TrainNo" Type="Edm.String" />
+        <Property Name="Distance" Type="Edm.Double" />
+        <Property Name="WagonOwner" Type="Edm.String" />
+        <Property Name="WagonECM" Type="Edm.String" />
+        <Property Name="BrakePadCategory" Type="Edm.String" />
+        <Property Name="FirstNHMCode" Type="Edm.String" />
+        <Property Name="CIMConsignmentNumber" Type="Edm.String" />
+        <Property Name="CIMCountryCode" Type="Edm.String" />
+        <Property Name="CIMStationCode" Type="Edm.String" />
+        <Property Name="TransportDetailID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Transport_WagonID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="OurReference" Type="Edm.String" />
+        <Property Name="Order" Type="Edm.String" />
+        <Property Name="OrderOwner" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="OriginBorderLocationCode" Type="Edm.String" />
+        <Property Name="OriginBorderLocationName" Type="Edm.String" />
+        <Property Name="OriginBorderActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="DestinationBorderLocationCode" Type="Edm.String" />
+        <Property Name="DestinationBorderLocationName" Type="Edm.String" />
+        <Property Name="DestinationBorderActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="SpecialTrain" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="WeekNo" Type="Edm.String" />
+        <Property Name="Year" Type="Edm.String" />
+        <Property Name="TransportDescription" Type="Edm.String" />
+        <Property Name="WagonWeight" Type="Edm.Double" />
+        <Property Name="ContainerNettWeight" Type="Edm.Double" />
+        <Property Name="ContainerTare" Type="Edm.Double" />
+        <Property Name="FreightWeight" Type="Edm.Double" />
+        <Property Name="TractionLocomotiveWeight" Type="Edm.Double" />
+        <Property Name="SendLocomotiveWeight" Type="Edm.Double" />
+        <Property Name="WagonLength" Type="Edm.Double" />
+        <Property Name="TractionLocomotiveLength" Type="Edm.Double" />
+        <Property Name="SendLocomotiveLength" Type="Edm.Double" />
+        <Property Name="TrainWeightGross" Type="Edm.Double" Nullable="false" />
+        <Property Name="TrainWeightNett" Type="Edm.Double" Nullable="false" />
+        <Property Name="TrainProductCount" Type="Edm.Double" Nullable="false" />
+        <Property Name="WagonCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonEmptyCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonLoadedCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonCountNOITSI" Type="Edm.Int32" Nullable="false" />
+        <Property Name="WagonCountNotNOITSI" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TractionLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="SendLocomotiveCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="OriginLocationCRDCode" Type="Edm.String" />
+        <Property Name="OriginLocationLongitude" Type="Edm.Double" />
+        <Property Name="OriginLocationLatitude" Type="Edm.Double" />
+        <Property Name="OriginCountry" Type="Edm.String" />
+        <Property Name="OriginCountryISO" Type="Edm.String" />
+        <Property Name="DestinationCountry" Type="Edm.String" />
+        <Property Name="DestinationCountryISO" Type="Edm.String" />
+        <Property Name="OriginTrackNo" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="DestinationLocationCRDCode" Type="Edm.String" />
+        <Property Name="DestinationLocationLongitude" Type="Edm.Double" />
+        <Property Name="DestinationLocationLatitude" Type="Edm.Double" />
+        <Property Name="DestinationTrackNo" Type="Edm.String" />
+        <Property Name="IsInterModal" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="NoOfElectricLocomotives" Type="Edm.Int32" Nullable="false" />
+        <Property Name="NoOfDieselocomotives" Type="Edm.Int32" Nullable="false" />
+        <Property Name="MaxWagonCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TrainTypeEN" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="WagonPositionModel">
+        <Key>
+          <PropertyRef Name="ID" />
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="WagonID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="WagonNo" Type="Edm.String" />
+        <Property Name="WagonType" Type="Edm.String" />
+        <Property Name="WagonOwner" Type="Edm.String" />
+        <Property Name="WagonKeeper" Type="Edm.String" />
+        <Property Name="NextRevision" Type="Edm.DateTimeOffset" />
+        <Property Name="NextNVRID" Type="Edm.DateTimeOffset" />
+        <Property Name="LoadingSpaceM3" Type="Edm.Double" />
+        <Property Name="WagonTaraWeight" Type="Edm.Double" />
+        <Property Name="LoadingCapacityCTrack" Type="Edm.Double" />
+        <Property Name="LoadingCapacityDTrack" Type="Edm.Double" />
+        <Property Name="Gaspendel" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Isolation" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Heating" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="LastTransportedNHM" Type="Edm.String" />
+        <Property Name="LastTransportedNHMFromWSM" Type="Edm.String" />
+        <Property Name="LastTransportedNHMDescriptionEN" Type="Edm.String" />
+        <Property Name="LastTransportedNHMDescriptionDE" Type="Edm.String" />
+        <Property Name="LastKnownLocation" Type="Edm.String" />
+        <Property Name="LastKnownWSMLocation" Type="Edm.String" />
+        <Property Name="PositionNumber" Type="Edm.String" />
+        <Property Name="ProjectName" Type="Edm.String" />
+        <Property Name="Customer" Type="Edm.String" />
+        <Property Name="Start" Type="Edm.DateTimeOffset" />
+        <Property Name="End" Type="Edm.DateTimeOffset" />
+        <Property Name="UsageType" Type="Edm.String" />
+        <Property Name="CurrentRentalContractNo" Type="Edm.String" />
+        <Property Name="CurrentRentalContractDescription" Type="Edm.String" />
+        <Property Name="CurrentRentalContractant" Type="Edm.String" />
+        <Property Name="CurrentRentalSupplier" Type="Edm.String" />
+        <Property Name="CurrentRentalContractCostCenter" Type="Edm.String" />
+        <Property Name="CurrentRentalEndCustomer" Type="Edm.String" />
+        <Property Name="CurrentRentalContractPriceModel" Type="Edm.String" />
+        <Property Name="CurrentContractContractNo" Type="Edm.String" />
+        <Property Name="CurrentContractDescription" Type="Edm.String" />
+        <Property Name="CurrentContractContractant" Type="Edm.String" />
+        <Property Name="CurrentContractSupplier" Type="Edm.String" />
+        <Property Name="CurrentContractEndCustomer" Type="Edm.String" />
+        <Property Name="CurrentContractTypeDescription" Type="Edm.String" />
+        <Property Name="CurrentContractStart" Type="Edm.DateTimeOffset" />
+        <Property Name="CurrentContractEnd" Type="Edm.DateTimeOffset" />
+        <Property Name="CurrentRentalContractStart" Type="Edm.DateTimeOffset" />
+        <Property Name="CurrentRentalContractEnd" Type="Edm.DateTimeOffset" />
+        <Property Name="CurrentRentalContractWagonStart" Type="Edm.DateTimeOffset" />
+        <Property Name="CurrentRentalContractWagonEnd" Type="Edm.DateTimeOffset" />
+        <Property Name="CostsPerDay" Type="Edm.Double" />
+        <Property Name="DaysOnPosition" Type="Edm.Double" />
+        <Property Name="ReturnToCustomer" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Remark" Type="Edm.String" />
+        <Property Name="WagonRemark" Type="Edm.String" />
+        <Property Name="Status" Type="Edm.String" />
+        <Property Name="LastKnownLoadStatus" Type="Edm.String" />
+        <Property Name="Loaded" Type="Edm.Boolean" />
+        <Property Name="FreightWeight" Type="Edm.Double" />
+        <Property Name="BookingNumber" Type="Edm.String" />
+        <Property Name="CurrentOrigin" Type="Edm.String" />
+        <Property Name="CurrentDestination" Type="Edm.String" />
+        <Property Name="ReservedForClient" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="WagonLogModel">
+        <Key>
+          <PropertyRef Name="LogID" />
+        </Key>
+        <Property Name="LogID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="WagonNo" Type="Edm.String" />
+        <Property Name="LogText" Type="Edm.String" />
+        <Property Name="LogTime" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="UserName" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="WagonUsageModel">
+        <Key>
+          <PropertyRef Name="Transport_WagonID" />
+        </Key>
+        <Property Name="ResponsibleRU" Type="Edm.String" />
+        <Property Name="OrderOwner" Type="Edm.String" />
+        <Property Name="Client" Type="Edm.String" />
+        <Property Name="Project" Type="Edm.String" />
+        <Property Name="ProjectNo" Type="Edm.String" />
+        <Property Name="Order" Type="Edm.String" />
+        <Property Name="OrderNo" Type="Edm.String" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TransportNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ClientReference" Type="Edm.String" />
+        <Property Name="TransportDescription" Type="Edm.String" />
+        <Property Name="WagonNumber" Type="Edm.String" />
+        <Property Name="WagonTypeNo" Type="Edm.String" />
+        <Property Name="WagonTypeName" Type="Edm.String" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="OriginLocationCRDCode" Type="Edm.String" />
+        <Property Name="OriginLocationLongitude" Type="Edm.Double" />
+        <Property Name="OriginLocationLatitude" Type="Edm.Double" />
+        <Property Name="OriginTrainNo" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationLongitude" Type="Edm.Double" />
+        <Property Name="DestinationLocationLatitude" Type="Edm.Double" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="DestinationLocationCRDCode" Type="Edm.String" />
+        <Property Name="DestinationTrainNo" Type="Edm.String" />
+        <Property Name="BelgiumBorder" Type="Edm.String" />
+        <Property Name="BelgiumBorderCode" Type="Edm.String" />
+        <Property Name="WagonOrigin" Type="Edm.String" />
+        <Property Name="WagonDestination" Type="Edm.String" />
+        <Property Name="SenderCompanyName" Type="Edm.String" />
+        <Property Name="ReceiverCompanyName" Type="Edm.String" />
+        <Property Name="TotalHours" Type="Edm.Double" />
+        <Property Name="Distance" Type="Edm.Double" />
+        <Property Name="WagonOwner" Type="Edm.String" />
+        <Property Name="WagonECM" Type="Edm.String" />
+        <Property Name="RSRDLastDownloadDatasetOn" Type="Edm.DateTimeOffset" />
+        <Property Name="WagonWeight" Type="Edm.Double" />
+        <Property Name="WagonLength" Type="Edm.Double" />
+        <Property Name="FreightWeight" Type="Edm.Double" />
+        <Property Name="ProductCount" Type="Edm.Double" />
+        <Property Name="BrakePadCategory" Type="Edm.String" />
+        <Property Name="FirstNHMCode" Type="Edm.String" />
+        <Property Name="CIMConsignmentNumber" Type="Edm.String" />
+        <Property Name="CIMCountryCode" Type="Edm.String" />
+        <Property Name="CIMStationCode" Type="Edm.String" />
+        <Property Name="KMsBefore" Type="Edm.Double" />
+        <Property Name="KMsAfter" Type="Edm.Double" />
+        <Property Name="LastKnownWSMLocation" Type="Edm.String" />
+        <Property Name="BookingNumber" Type="Edm.String" />
+        <Property Name="CurrentOrigin" Type="Edm.String" />
+        <Property Name="CurrentDestination" Type="Edm.String" />
+        <Property Name="ReservedForClient" Type="Edm.String" />
+        <Property Name="Loaded" Type="Edm.Boolean" />
+        <Property Name="FreightWeightFromWSM" Type="Edm.Double" />
+        <Property Name="LastTransportedNHMFromWSM" Type="Edm.String" />
+        <Property Name="TonKM" Type="Edm.Double" />
+        <Property Name="OriginBorderLocationCode" Type="Edm.String" />
+        <Property Name="OriginBorderLocationName" Type="Edm.String" />
+        <Property Name="OriginBorderActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="DestinationBorderLocationCode" Type="Edm.String" />
+        <Property Name="DestinationBorderLocationName" Type="Edm.String" />
+        <Property Name="DestinationBorderActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="Transport_WagonID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="WagonTypeModel">
+        <Key>
+          <PropertyRef Name="ID" />
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="WagonTypeID" Type="Edm.String" />
+        <Property Name="Description" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="WagonListModel">
+        <Key>
+          <PropertyRef Name="WagonListID" />
+        </Key>
+        <Property Name="WagonListID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="WagonListTypeID" Type="Edm.Int32" Nullable="false" />
+        <Property Name="InfraManager" Type="Edm.String" />
+        <Property Name="TrainBrakeMode" Type="Edm.String" />
+        <Property Name="TrackNo" Type="Edm.String" />
+        <Property Name="TrainNo" Type="Edm.String" />
+        <Property Name="Remarks" Type="Edm.String" />
+        <Property Name="TransportStatu" Type="Edm.String" />
+        <Property Name="ProjectName" Type="Edm.String" />
+        <Property Name="TransportDescription" Type="Edm.String" />
+        <Property Name="TransportClientReference" Type="Edm.String" />
+        <Property Name="TransportOurReference" Type="Edm.String" />
+        <Property Name="TransportClientName" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginInfraManager" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationInfraManager" Type="Edm.String" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="RevisedDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="RevisedArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="SentToInfraManagerBy" Type="Edm.String" />
+        <Property Name="SentToInfraManagerOn" Type="Edm.DateTimeOffset" />
+        <Property Name="ReductionP" Type="Edm.Int32" />
+        <Property Name="ReductionG" Type="Edm.Int32" />
+        <Property Name="BP" Type="Edm.String" />
+        <Property Name="BorderCross" Type="Edm.DateTimeOffset" />
+        <Property Name="MaxSpeed" Type="Edm.String" />
+        <Property Name="RailwayUndertaking" Type="Edm.String" />
+        <Property Name="SentToInfraManager" Type="Edm.Boolean" />
+        <Property Name="TrainReadySent" Type="Edm.Boolean" />
+        <Property Name="TrainReadySentOn" Type="Edm.DateTimeOffset" />
+        <Property Name="TrainReadySentBy" Type="Edm.String" />
+        <Property Name="TotalKm" Type="Edm.Double" />
+        <Property Name="LocomotiveNos" Type="Edm.String" />
+        <Property Name="LocomotiveAlias" Type="Edm.String" />
+        <Property Name="LocomotiveLength" Type="Edm.Double" />
+        <Property Name="WagonCount" Type="Edm.Int32" />
+        <Property Name="WagonWeight" Type="Edm.Double" />
+        <Property Name="WagonOwnWeight" Type="Edm.Double" />
+        <Property Name="WagonLength" Type="Edm.Double" />
+        <Property Name="WagonTareGrossWeight" Type="Edm.Double" />
+        <Property Name="ContainerTareWeight" Type="Edm.Double" />
+        <Property Name="DocumentUpToDate" Type="Edm.Boolean" />
+      </EntityType>
+      <EntityType Name="ComplementaryCertificate_LanguageModel">
+        <Key>
+          <PropertyRef Name="Employee_IDDocument_LanguageID" />
+        </Key>
+        <Property Name="Language" Type="Edm.String" />
+        <Property Name="LanguageCode" Type="Edm.String" />
+        <Property Name="Date" Type="Edm.DateTimeOffset" />
+        <Property Name="Remark" Type="Edm.String" />
+        <Property Name="IDNumber" Type="Edm.String" />
+        <Property Name="Employee_IDDocument_LanguageID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="ComplementaryCertificate_LineModel">
+        <Key>
+          <PropertyRef Name="Employee_IDDocument_LineID" />
+        </Key>
+        <Property Name="Date" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="LineDescription" Type="Edm.String" />
+        <Property Name="Origin" Type="Edm.String" />
+        <Property Name="Destination" Type="Edm.String" />
+        <Property Name="Page" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Remark" Type="Edm.String" />
+        <Property Name="Employee_IDDocument_LineID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="ComplementaryCertificate_RollingStockModel">
+        <Key>
+          <PropertyRef Name="Employee_IDDocument_RollingStockID" />
+        </Key>
+        <Property Name="Date" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="TypeID" Type="Edm.String" />
+        <Property Name="Description" Type="Edm.String" />
+        <Property Name="Remarks" Type="Edm.String" />
+        <Property Name="Employee_IDDocument_RollingStockID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="ComplementaryCertificate_LocationModel">
+        <Key>
+          <PropertyRef Name="Employee_IDDocument_LocationID" />
+        </Key>
+        <Property Name="Date" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="TypeID" Type="Edm.String" />
+        <Property Name="Description" Type="Edm.String" />
+        <Property Name="Remarks" Type="Edm.String" />
+        <Property Name="Employee_IDDocument_LocationID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="ComplementaryCertificate_ActivityModel">
+        <Key>
+          <PropertyRef Name="Employee_IDDocument_ActivityID" />
+        </Key>
+        <Property Name="Date" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="TypeID" Type="Edm.String" />
+        <Property Name="Description" Type="Edm.String" />
+        <Property Name="Remarks" Type="Edm.String" />
+        <Property Name="Employee_IDDocument_ActivityID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="ComplementaryCertificate_OtherCertificateModel">
+        <Key>
+          <PropertyRef Name="Employee_IDDocument_ActivityID" />
+        </Key>
+        <Property Name="Date" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="Description" Type="Edm.String" />
+        <Property Name="Remarks" Type="Edm.String" />
+        <Property Name="Page" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Employee_IDDocument_ActivityID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="RemarkModel">
+        <Key>
+          <PropertyRef Name="RemarkID" />
+        </Key>
+        <Property Name="RemarkText" Type="Edm.String" />
+        <Property Name="RemarkDate" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="CreatedBy" Type="Edm.String" />
+        <Property Name="Remark" Type="Edm.String" />
+        <Property Name="WrittenOn" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="WrittenBy" Type="Edm.String" />
+        <Property Name="RemarkID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <ComplexType Name="LanguageModel">
+        <Property Name="Code" Type="Edm.String" />
+        <Property Name="CountryCodeID" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Description" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="LocomotiveKnowledgeModel">
+        <Key>
+          <PropertyRef Name="ID" />
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false" />
+        <Property Name="LocomotiveTypeNo" Type="Edm.String" />
+        <Property Name="LocomotiveTypeName" Type="Edm.String" />
+        <Property Name="Remark" Type="Edm.String" />
+        <Property Name="ValidFrom" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ValidTo" Type="Edm.DateTimeOffset" />
+      </EntityType>
+      <EntityType Name="TransportStatusDetailModel">
+        <Key>
+          <PropertyRef Name="TransportDetailID" />
+        </Key>
+        <Property Name="SequenceID" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TrainNo" Type="Edm.String" />
+        <Property Name="TransportStatus" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="Distance" Type="Edm.Double" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="RevisedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="RevisedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="DelayReasonCode" Type="Edm.String" />
+        <Property Name="DelayReasonDE" Type="Edm.String" />
+        <Property Name="DelayReasonFR" Type="Edm.String" />
+        <Property Name="DelayReasonIT" Type="Edm.String" />
+        <Property Name="DelayReasonEN" Type="Edm.String" />
+        <Property Name="DelayReasonNL" Type="Edm.String" />
+        <Property Name="TransportDetailID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="TransportStatusRemarkModel">
+        <Key>
+          <PropertyRef Name="ID" />
+        </Key>
+        <Property Name="Remark" Type="Edm.String" />
+        <Property Name="WrittenOn" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="WrittenBy" Type="Edm.String" />
+        <Property Name="RemarkText" Type="Edm.String" />
+        <Property Name="RemarkDate" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="CreatedBy" Type="Edm.String" />
+        <Property Name="ID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="TransportStatusLocomotiveModel">
+        <Key>
+          <PropertyRef Name="ID" />
+        </Key>
+        <Property Name="LocomotiveNo" Type="Edm.String" />
+        <Property Name="LocomotiveAlias" Type="Edm.String" />
+        <Property Name="LocomotivePosition" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="RevisedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="RevisedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="Distance" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="TransportStatusActivityModel">
+        <Key>
+          <PropertyRef Name="ID" />
+        </Key>
+        <Property Name="DutyNo" Type="Edm.String" />
+        <Property Name="EmployeeName" Type="Edm.String" />
+        <Property Name="ActivityDescriptionEN" Type="Edm.String" />
+        <Property Name="ActivityDescriptionNL" Type="Edm.String" />
+        <Property Name="ActivityDescriptionDE" Type="Edm.String" />
+        <Property Name="ActivityDescriptionFR" Type="Edm.String" />
+        <Property Name="ActivityDescriptionIT" Type="Edm.String" />
+        <Property Name="ActivityDescriptionHU" Type="Edm.String" />
+        <Property Name="ActivityDescriptionSK" Type="Edm.String" />
+        <Property Name="ActivityDescriptionCZ" Type="Edm.String" />
+        <Property Name="ActivityDescriptionPL" Type="Edm.String" />
+        <Property Name="ActivityDescriptionPT" Type="Edm.String" />
+        <Property Name="ActivityDescriptionRO" Type="Edm.String" />
+        <Property Name="ActivityDescriptionES" Type="Edm.String" />
+        <Property Name="ActivityDescriptionHR" Type="Edm.String" />
+        <Property Name="ActivityDescriptionSI" Type="Edm.String" />
+        <Property Name="ActivityDescriptionBG" Type="Edm.String" />
+        <Property Name="OriginLocationName" Type="Edm.String" />
+        <Property Name="OriginLocationCode" Type="Edm.String" />
+        <Property Name="DestinationLocationName" Type="Edm.String" />
+        <Property Name="DestinationLocationCode" Type="Edm.String" />
+        <Property Name="PlannedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="PlannedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="RevisedDeparture" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="RevisedArrival" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="ActualDeparture" Type="Edm.DateTimeOffset" />
+        <Property Name="ActualArrival" Type="Edm.DateTimeOffset" />
+        <Property Name="Distance" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ID" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+    </Schema>
+    <Schema Namespace="Default" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="Container">
+        <EntitySet Name="BorderCross" EntityType="RailCube.WebApi.Models.BorderCrossModel" />
+        <EntitySet Name="Certificates" EntityType="RailCube.WebApi.Models.CertificateModel" />
+        <EntitySet Name="Costs" EntityType="RailCube.WebApi.Models.CostModel" />
+        <EntitySet Name="ComplementaryCertificate" EntityType="RailCube.WebApi.Models.ComplementaryCertificateModel" />
+        <EntitySet Name="ContractLocomotive" EntityType="RailCube.WebApi.Models.ContractLocomotiveModel" />
+        <EntitySet Name="Country" EntityType="RailCube.WebApi.Models.CountryModel" />
+        <EntitySet Name="DefectCode" EntityType="RailCube.WebApi.Models.DefectCodeModel" />
+        <EntitySet Name="Defect" EntityType="RailCube.WebApi.Models.DefectModel" />
+        <EntitySet Name="DailyChecks" EntityType="RailCube.WebApi.Models.DailyCheckModel" />
+        <EntitySet Name="DutyActivities" EntityType="RailCube.WebApi.Models.DutyActivityModel" />
+        <EntitySet Name="Duties" EntityType="RailCube.WebApi.Models.DutyModel">
+          <NavigationPropertyBinding Path="Duty_Activities" Target="DutyActivities" />
+        </EntitySet>
+        <EntitySet Name="Employees" EntityType="RailCube.WebApi.Models.EmployeeModel">
+          <NavigationPropertyBinding Path="Duties" Target="Duties" />
+          <NavigationPropertyBinding Path="Certificates" Target="Certificates" />
+          <NavigationPropertyBinding Path="RouteKnowledges" Target="RouteKnowledge" />
+          <NavigationPropertyBinding Path="Rosters" Target="Roster" />
+        </EntitySet>
+        <EntitySet Name="EmployeeType" EntityType="RailCube.WebApi.Models.EmployeeTypeModel" />
+        <EntitySet Name="Fuel" EntityType="RailCube.WebApi.Models.FuelModel" />
+        <EntitySet Name="InvoicedItems" EntityType="RailCube.WebApi.Models.InvoicedItemModel" />
+        <EntitySet Name="Invoices" EntityType="RailCube.WebApi.Models.InvoiceModel">
+          <NavigationPropertyBinding Path="InvoicedItems" Target="InvoicedItems" />
+        </EntitySet>
+        <EntitySet Name="IMPaths" EntityType="RailCube.WebApi.Models.IMPathModel" />
+        <EntitySet Name="LabourLawExceedances" EntityType="RailCube.WebApi.Models.LabourLawExceedanceModel" />
+        <EntitySet Name="Locomotive" EntityType="RailCube.WebApi.Models.LocomotiveModel" />
+        <EntitySet Name="LocomotiveMovements" EntityType="RailCube.WebApi.Models.LocomotiveMovementModel" />
+        <EntitySet Name="LocomotiveUsage" EntityType="RailCube.WebApi.Models.LocomotiveUsageModel" />
+        <EntitySet Name="UserActionLog" EntityType="RailCube.WebApi.Models.UserActionLogModel" />
+        <EntitySet Name="Maintenance" EntityType="RailCube.WebApi.Models.MaintenanceModel" />
+        <EntitySet Name="Order" EntityType="RailCube.WebApi.Models.OrderModel" />
+        <EntitySet Name="OutsourcedTransportPart" EntityType="RailCube.WebApi.Models.OutsourcedTransportPartModel" />
+        <EntitySet Name="Project" EntityType="RailCube.WebApi.Models.ProjectModel" />
+        <EntitySet Name="RecurringTransport" EntityType="RailCube.WebApi.Models.RecurringTransportModel">
+          <NavigationPropertyBinding Path="Locomotives" Target="RecurringTransportLocomotive" />
+        </EntitySet>
+        <EntitySet Name="RecurringTransportLocomotive" EntityType="RailCube.WebApi.Models.RecurringTransportLocomotiveModel" />
+        <EntitySet Name="Relation" EntityType="RailCube.WebApi.Models.RelationModel" />
+        <EntitySet Name="Roster" EntityType="RailCube.WebApi.Models.RosterModel" />
+        <EntitySet Name="RouteKnowledge" EntityType="RailCube.WebApi.Models.RouteKnowledgeModel" />
+        <EntitySet Name="RouteTemplateDetails" EntityType="RailCube.WebApi.Models.RouteTemplateDetailModel" />
+        <EntitySet Name="TrainPaths" EntityType="RailCube.WebApi.Models.TrainPathModel" />
+        <EntitySet Name="TransportLog" EntityType="RailCube.WebApi.Models.TransportLogModel" />
+        <EntitySet Name="Transports" EntityType="RailCube.WebApi.Models.TransportModel">
+          <NavigationPropertyBinding Path="InvoicedItems" Target="InvoicedItems" />
+        </EntitySet>
+        <EntitySet Name="TransportStatus" EntityType="RailCube.WebApi.Models.TransportStatusModel" />
+        <EntitySet Name="TransportedDangerGoods" EntityType="RailCube.WebApi.Models.TransportedDangerGoodsModel" />
+        <EntitySet Name="TransportedGoods" EntityType="RailCube.WebApi.Models.TransportedGoodsModel" />
+        <EntitySet Name="TransportDetails" EntityType="RailCube.WebApi.Models.TransportDetailModel" />
+        <EntitySet Name="TransportTasks" EntityType="RailCube.WebApi.Models.TransportTaskModel" />
+        <EntitySet Name="TransportRailwayUndertaker" EntityType="RailCube.WebApi.Models.TransportRailwayUndertakerModel" />
+        <EntitySet Name="WagonDetails" EntityType="RailCube.WebApi.Models.WagonDetailModel" />
+        <EntitySet Name="WagonMovements" EntityType="RailCube.WebApi.Models.WagonMovementModel" />
+        <EntitySet Name="WagonPosition" EntityType="RailCube.WebApi.Models.WagonPositionModel" />
+        <EntitySet Name="WagonLog" EntityType="RailCube.WebApi.Models.WagonLogModel" />
+        <EntitySet Name="WagonUsage" EntityType="RailCube.WebApi.Models.WagonUsageModel" />
+        <EntitySet Name="WagonType" EntityType="RailCube.WebApi.Models.WagonTypeModel" />
+        <EntitySet Name="WagonList" EntityType="RailCube.WebApi.Models.WagonListModel" />
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>
