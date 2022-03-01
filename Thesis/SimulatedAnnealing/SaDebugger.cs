@@ -62,7 +62,7 @@ namespace Thesis {
 
     class FullInfo {
         public double? Cost, CostWithoutPenalty, PenaltyBase;
-        public int? PrecedenceViolationCount, WdlViolationCount, WdlViolationAmount, RtViolationCount, RtViolationAmount, CtViolationCount, CtViolationAmount;
+        public int? PrecedenceViolationCount, SlViolationCount, SlViolationAmount, RtViolationCount, RtViolationAmount, CtViolationCount, CtViolationAmount;
         public int[] DriversWorkedTime;
         readonly bool isDiff;
 
@@ -77,8 +77,8 @@ namespace Thesis {
             Console.WriteLine("Cost without penalty{0}: {1}", diffStr, ParseHelper.ToString(CostWithoutPenalty.Value));
             Console.WriteLine("Penalty base{0}: {1}", diffStr, ParseHelper.ToString(PenaltyBase.Value));
             Console.WriteLine("Precedence violation count{0}: {1}", diffStr, PrecedenceViolationCount);
-            Console.WriteLine("WDL violation count{0}: {1}", diffStr, WdlViolationCount);
-            Console.WriteLine("WDL violation amount{0}: {1}", diffStr, WdlViolationAmount);
+            Console.WriteLine("WDL violation count{0}: {1}", diffStr, SlViolationCount);
+            Console.WriteLine("WDL violation amount{0}: {1}", diffStr, SlViolationAmount);
             Console.WriteLine("RT violation count{0}: {1}", diffStr, RtViolationCount);
             Console.WriteLine("RT violation amount{0}: {1}", diffStr, RtViolationAmount);
             Console.WriteLine("CT violation count{0}: {1}", diffStr, CtViolationCount);
@@ -92,8 +92,8 @@ namespace Thesis {
                 IsFloatEqual(a.CostWithoutPenalty, b.CostWithoutPenalty) &&
                 IsFloatEqual(a.PenaltyBase, b.PenaltyBase) &&
                 a.PrecedenceViolationCount == b.PrecedenceViolationCount &&
-                a.WdlViolationCount == b.WdlViolationCount &&
-                a.WdlViolationAmount == b.WdlViolationAmount &&
+                a.SlViolationCount == b.SlViolationCount &&
+                a.SlViolationAmount == b.SlViolationAmount &&
                 a.RtViolationCount == b.RtViolationCount &&
                 a.RtViolationAmount == b.RtViolationAmount &&
                 a.CtViolationCount == b.CtViolationCount &&
@@ -110,8 +110,8 @@ namespace Thesis {
                 CostWithoutPenalty = -a.CostWithoutPenalty,
                 PenaltyBase = -a.PenaltyBase,
                 PrecedenceViolationCount = -a.PrecedenceViolationCount,
-                WdlViolationCount = -a.WdlViolationCount,
-                WdlViolationAmount = -a.WdlViolationAmount,
+                SlViolationCount = -a.SlViolationCount,
+                SlViolationAmount = -a.SlViolationAmount,
                 RtViolationCount = -a.RtViolationCount,
                 RtViolationAmount = -a.RtViolationAmount,
                 CtViolationCount = -a.CtViolationCount,
@@ -125,8 +125,8 @@ namespace Thesis {
                 CostWithoutPenalty = a.CostWithoutPenalty + b.CostWithoutPenalty,
                 PenaltyBase = a.PenaltyBase + b.PenaltyBase,
                 PrecedenceViolationCount = a.PrecedenceViolationCount + b.PrecedenceViolationCount,
-                WdlViolationCount = a.WdlViolationCount + b.WdlViolationCount,
-                WdlViolationAmount = a.WdlViolationAmount + b.WdlViolationAmount,
+                SlViolationCount = a.SlViolationCount + b.SlViolationCount,
+                SlViolationAmount = a.SlViolationAmount + b.SlViolationAmount,
                 RtViolationCount = a.RtViolationCount + b.RtViolationCount,
                 RtViolationAmount = a.RtViolationAmount + b.RtViolationAmount,
                 CtViolationCount = a.CtViolationCount + b.CtViolationCount,
@@ -157,9 +157,9 @@ namespace Thesis {
             this.instance = instance;
         }
 
-        public void StartPart(string description) {
+        public void StartPart(string description, bool isAssign) {
             if (CurrentPart != null) Parts.Add(CurrentPart);
-            CurrentPart = new OperationPartInfo(description, instance);
+            CurrentPart = new OperationPartInfo(description, isAssign, instance);
         }
 
         public FullInfo Combine() {
@@ -179,23 +179,23 @@ namespace Thesis {
     }
 
     class OperationPartInfo {
-        public Trip TripBeforeSameShift, TripAfterSameShift, TripBeforePrevShift, TripAfterNextShift;
-        public string ShiftInfoStr;
-        public double CostDiff, CostWithoutPenaltyDiff, PenaltyBaseDiff;
+        public Trip PrevTripInternal, NextTripInternal, FirstTripInternal, LastTripInternal, PrevShiftFirstTrip, PrevShiftLastTrip, NextShiftFirstTrip;
+        public string TripPosition, ShiftPosition, MergeSplitInfo;
+        public double CostDiff, CostWithoutPenaltyDiff, BasePenaltyDiff;
         public PrecedenceValueChange Precedence;
-        public ViolationValueChange WorkDayLength, RestTime, ContractTime;
+        public ViolationValueChange ShiftLength, RestTime, ContractTime;
         public int[] DriversWorkedTimeDiff;
         readonly string description;
         readonly Instance instance;
 
-        public OperationPartInfo(string description, Instance instance) {
+        public OperationPartInfo(string description, bool isAssign, Instance instance) {
             this.description = description;
             this.instance = instance;
 
-            Precedence = new PrecedenceValueChange("Precedence", instance);
-            WorkDayLength = new ViolationValueChange("WDL", instance, (workDayLength, _) => Math.Max(0, workDayLength - Config.MaxWorkDayLength));
-            RestTime = new ViolationValueChange("RT", instance, (restTime, _) => Math.Max(0, Config.MinRestTime - restTime));
-            ContractTime = new ViolationValueChange("CT", instance, (workedHours, driver) => Math.Max(0, driver.MinContractTime - workedHours) + Math.Max(0, workedHours - driver.MaxContractTime));
+            Precedence = new PrecedenceValueChange("Precedence", isAssign, instance);
+            ShiftLength = new ViolationValueChange("WDL", isAssign, instance, (workDayLength, _) => Math.Max(0, workDayLength - Config.MaxWorkDayLength));
+            RestTime = new ViolationValueChange("RT", isAssign, instance, (restTime, _) => Math.Max(0, Config.MinRestTime - restTime));
+            ContractTime = new ViolationValueChange("CT", isAssign, instance, (workedHours, driver) => Math.Max(0, driver.MinContractTime - workedHours) + Math.Max(0, workedHours - driver.MaxContractTime));
             DriversWorkedTimeDiff = new int[Config.GenDriverCount];
     }
 
@@ -203,10 +203,10 @@ namespace Thesis {
             return new FullInfo(true) {
                 Cost = CostDiff,
                 CostWithoutPenalty = CostWithoutPenaltyDiff,
-                PenaltyBase = PenaltyBaseDiff,
+                PenaltyBase = BasePenaltyDiff,
                 PrecedenceViolationCount = Precedence.NewViolationCount - Precedence.OldViolationCount,
-                WdlViolationCount = WorkDayLength.NewViolationCount - WorkDayLength.OldViolationCount,
-                WdlViolationAmount = WorkDayLength.NewViolationAmount - WorkDayLength.OldViolationAmount,
+                SlViolationCount = ShiftLength.NewViolationCount - ShiftLength.OldViolationCount,
+                SlViolationAmount = ShiftLength.NewViolationAmount - ShiftLength.OldViolationAmount,
                 RtViolationCount = RestTime.NewViolationCount - RestTime.OldViolationCount,
                 RtViolationAmount = RestTime.NewViolationAmount - RestTime.OldViolationAmount,
                 CtViolationCount = ContractTime.NewViolationCount - ContractTime.OldViolationCount,
@@ -217,14 +217,16 @@ namespace Thesis {
 
         public void Log() {
             Console.WriteLine("\n" + description);
-            Console.WriteLine(ShiftInfoStr);
-            Console.WriteLine("Before same shift: {0}; After same shift: {1}; Before prev shift: {2}; After next shift: {3}", GetTripString(TripBeforeSameShift), GetTripString(TripAfterSameShift), GetTripString(TripBeforePrevShift), GetTripString(TripAfterNextShift));
+            Console.WriteLine("Trip position: {0}", TripPosition);
+            Console.WriteLine("Shift position: {0}", ShiftPosition);
+            Console.WriteLine("Split/merge info: {0}", MergeSplitInfo);
+            Console.WriteLine("Prev trip internal: {0}; Next trip internal: {1}; First trip internal: {2}; Last trip internal: {3}; Prev shift first trip: {4}; Prev shift last trip: {5}; Next shift first trip: {6}", GetTripString(PrevTripInternal), GetTripString(NextTripInternal), GetTripString(FirstTripInternal), GetTripString(LastTripInternal), GetTripString(PrevShiftFirstTrip), GetTripString(PrevShiftLastTrip), GetTripString(NextShiftFirstTrip));
             LogValue("Cost diff", CostDiff);
             LogValue("Cost without penalty diff", CostWithoutPenaltyDiff);
-            LogValue("Penalty base diff", PenaltyBaseDiff);
+            LogValue("Base penalty diff", BasePenaltyDiff);
 
             Precedence.Log();
-            WorkDayLength.Log();
+            ShiftLength.Log();
             RestTime.Log();
         }
 
@@ -241,24 +243,26 @@ namespace Thesis {
 
 
     abstract class ValueChange<T> {
-        protected readonly string Name;
+        readonly string name;
+        readonly bool shouldReverse;
         protected readonly Instance instance;
 
-        public ValueChange(string name, Instance instance) {
-            Name = name;
+        public ValueChange(string name, bool shouldReverse, Instance instance) {
+            this.name = name;
+            this.shouldReverse = shouldReverse;
             this.instance = instance;
         }
 
-        public void Add(T oldValue, T newValue, Driver driver, bool shouldReverse) {
-            AddOld(oldValue, driver, shouldReverse);
-            AddNew(newValue, driver, shouldReverse);
+        public void Add(T oldValue, T newValue, Driver driver) {
+            AddOld(oldValue, driver);
+            AddNew(newValue, driver);
         }
 
-        public void AddOld(T oldValue, Driver driver, bool shouldReverse) {
+        public void AddOld(T oldValue, Driver driver) {
             if (shouldReverse) AddNewInternal(oldValue, driver);
             else AddOldInternal(oldValue, driver);
         }
-        public void AddNew(T newValue, Driver driver, bool shouldReverse) {
+        public void AddNew(T newValue, Driver driver) {
             if (shouldReverse) AddOldInternal(newValue, driver);
             else AddNewInternal(newValue, driver);
         }
@@ -269,14 +273,14 @@ namespace Thesis {
         public abstract void Log();
 
         protected void LogVar(string varName, int? oldVar, int? newVar) {
-            Console.WriteLine("{0} {1}: {2} ({3} -> {4})", Name, varName, newVar - oldVar, oldVar, newVar);
+            Console.WriteLine("{0} {1}: {2} ({3} -> {4})", name, varName, newVar - oldVar, oldVar, newVar);
         }
     }
 
     class PrecedenceValueChange: ValueChange<(Trip, Trip)> {
         public int OldViolationCount, NewViolationCount;
 
-        public PrecedenceValueChange(string name, Instance instance) : base(name, instance) { }
+        public PrecedenceValueChange(string name, bool shouldReverse, Instance instance) : base(name, shouldReverse, instance) { }
 
         protected override void AddOldInternal((Trip, Trip) oldConsecutiveTrips, Driver driver) => AddSpecific(oldConsecutiveTrips, driver, instance, ref OldViolationCount);
         protected override void AddNewInternal((Trip, Trip) newConsecutiveTrips, Driver driver) => AddSpecific(newConsecutiveTrips, driver, instance, ref NewViolationCount);
@@ -295,7 +299,7 @@ namespace Thesis {
         public int OldValue, NewValue, OldViolationCount, NewViolationCount, OldViolationAmount, NewViolationAmount;
         Func<int, Driver, int> getViolationAmount;
 
-        public ViolationValueChange(string name, Instance instance, Func<int, Driver, int> getViolationAmount) : base(name, instance) {
+        public ViolationValueChange(string name, bool shouldReverse, Instance instance, Func<int, Driver, int> getViolationAmount) : base(name, shouldReverse, instance) {
             this.getViolationAmount = getViolationAmount;
         }
 

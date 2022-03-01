@@ -62,8 +62,8 @@ namespace Thesis {
 
         // Penalties
         public const float PrecendenceViolationPenalty = 5000;
-        public const float WorkDayLengthViolationPenalty = 1000;
-        public const float WorkDayLengthViolationPenaltyPerMin = 200 / 60f;
+        public const float ShiftLengthViolationPenalty = 1000;
+        public const float ShiftLengthViolationPenaltyPerMin = 200 / 60f;
         public const float RestTimeViolationPenalty = 1000;
         public const float RestTimeViolationPenaltyPerMin = 200 / 60f;
         public const float ContractTimeViolationPenalty = 1000;
@@ -80,7 +80,7 @@ namespace Thesis {
         public const bool DebugCheckOperations = false;
         public const bool DebugCheckAndLogOperations = true;
         public const bool DebugRunInspector = false;
-        public const bool DebugRunOdataTest = true;
+        public const bool DebugRunOdataTest = false;
         public const bool DebugUseSeededSa = true;
     }
 }

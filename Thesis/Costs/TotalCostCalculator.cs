@@ -22,10 +22,9 @@ namespace Thesis {
                     Trip trip = driverPath[driverTripIndex];
 
                     // Working day length
-                    int waitingTime = CostHelper.WaitingTime(prevTrip, trip, instance);
-                    if (waitingTime > Config.ShiftWaitingTimeThreshold) {
+                    if (!CostHelper.AreSameShift(prevTrip, trip, instance)) {
                         // End previous day
-                        totalWorkTime += CostHelper.WorkDayLength(dayFirstTrip, prevTrip, driver, instance);
+                        totalWorkTime += CostHelper.ShiftLength(dayFirstTrip, prevTrip, driver, instance);
 
                         // Start new day
                         dayFirstTrip = trip;
@@ -35,7 +34,7 @@ namespace Thesis {
                 }
 
                 // End last day
-                totalWorkTime += CostHelper.WorkDayLength(dayFirstTrip, prevTrip, driver, instance);
+                totalWorkTime += CostHelper.ShiftLength(dayFirstTrip, prevTrip, driver, instance);
             }
 
             double cost = totalWorkTime * Config.SalaryRate;
@@ -73,10 +72,9 @@ namespace Thesis {
                     Trip trip = driverPath[driverTripIndex];
 
                     // Check working day length
-                    int waitingTime = CostHelper.WaitingTime(prevTrip, trip, instance);
-                    if (waitingTime > Config.ShiftWaitingTimeThreshold) {
+                    if (!CostHelper.AreSameShift(prevTrip, trip, instance)) {
                         /* End previous day */
-                        int workDayLength = CostHelper.WorkDayLength(dayFirstTrip, prevTrip, driver, instance);
+                        int workDayLength = CostHelper.ShiftLength(dayFirstTrip, prevTrip, driver, instance);
                         currentDriverWorkedTime += workDayLength;
                         int workDayLengthViolation = Math.Max(0, workDayLength - Config.MaxWorkDayLength);
                         if (workDayLengthViolation > 0) {
@@ -84,7 +82,7 @@ namespace Thesis {
                             totalWorkDayLengthViolation += workDayLengthViolation;
                         }
 
-                        int restTime = CostHelper.RestTime(prevTrip, trip, driver);
+                        int restTime = CostHelper.RestTime(dayFirstTrip, prevTrip, trip, driver, instance);
                         int restTimeViolation = Math.Max(0, Config.MinRestTime - restTime);
                         if (restTimeViolation > 0) {
                             totalRestTimeViolationCount++;
@@ -110,7 +108,7 @@ namespace Thesis {
                 }
 
                 // End last day
-                int lastWorkDayLength = CostHelper.WorkDayLength(dayFirstTrip, prevTrip, driver, instance);
+                int lastWorkDayLength = CostHelper.ShiftLength(dayFirstTrip, prevTrip, driver, instance);
                 currentDriverWorkedTime += lastWorkDayLength;
                 int lastWorkDayLengthViolation = Math.Max(0, lastWorkDayLength - Config.MaxWorkDayLength);
                 if (lastWorkDayLengthViolation > 0) {
@@ -134,7 +132,7 @@ namespace Thesis {
             }
 
             double precendencePenaltyBase = totalPrecedenceViolationCount * Config.PrecendenceViolationPenalty;
-            double workDayLengthPenaltyBase = totalWorkDayLengthViolationCount * Config.WorkDayLengthViolationPenalty + totalWorkDayLengthViolation * Config.WorkDayLengthViolationPenaltyPerMin;
+            double workDayLengthPenaltyBase = totalWorkDayLengthViolationCount * Config.ShiftLengthViolationPenalty + totalWorkDayLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
             double restTimePenaltyBase = totalRestTimeViolationCount * Config.RestTimeViolationPenalty + totalRestTimeViolation * Config.RestTimeViolationPenaltyPerMin;
             double contractTimePenaltyBase = totalContractTimeViolationCount * Config.ContractTimeViolationPenalty + totalContractTimeViolation * Config.ContractTimeViolationPenaltyPerMin;
             double penaltyBase = precendencePenaltyBase + workDayLengthPenaltyBase + restTimePenaltyBase + contractTimePenaltyBase;
@@ -142,8 +140,8 @@ namespace Thesis {
             // Debug
             if (Config.DebugCheckAndLogOperations) {
                 SaDebugger.CurrentChecked.Info.PrecedenceViolationCount = totalPrecedenceViolationCount;
-                SaDebugger.CurrentChecked.Info.WdlViolationCount = totalWorkDayLengthViolationCount;
-                SaDebugger.CurrentChecked.Info.WdlViolationAmount = totalWorkDayLengthViolation;
+                SaDebugger.CurrentChecked.Info.SlViolationCount = totalWorkDayLengthViolationCount;
+                SaDebugger.CurrentChecked.Info.SlViolationAmount = totalWorkDayLengthViolation;
                 SaDebugger.CurrentChecked.Info.RtViolationCount = totalRestTimeViolationCount;
                 SaDebugger.CurrentChecked.Info.RtViolationAmount = totalRestTimeViolation;
                 SaDebugger.CurrentChecked.Info.CtViolationCount = totalContractTimeViolationCount;

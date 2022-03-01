@@ -162,10 +162,10 @@ namespace Thesis {
 
         public override (double, double, double) GetCostDiff(float penaltyFactor, int debugIterationNum) {
             int oldDriverWorkedTime = driversWorkedTime[oldDriver.Index];
-            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverPenaltyBaseDiff, int oldDriverWorkDayLengthDiff) = CostDiffCalculator.UnassignTripCostDiff(trip, oldDriver, null, assignment, oldDriverWorkedTime, instance, penaltyFactor, debugIterationNum);
+            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverPenaltyBaseDiff, int oldDriverWorkDayLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip, null, oldDriver, oldDriverWorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
 
             int newDriverWorkedTime = driversWorkedTime[newDriver.Index];
-            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverPenaltyBaseDiff, int newDriverWorkDayLengthDiff) = CostDiffCalculator.AssignTripCostDiff(trip, newDriver, null, assignment, newDriverWorkedTime, instance, penaltyFactor, debugIterationNum);
+            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverPenaltyBaseDiff, int newDriverWorkDayLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip, null, newDriver, newDriverWorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
 
             oldDriverWorkedTimeDiff = oldDriverWorkDayLengthDiff;
             newDriverWorkedTimeDiff = newDriverWorkDayLengthDiff;
@@ -209,16 +209,16 @@ namespace Thesis {
 
         public override (double, double, double) GetCostDiff(float penaltyFactor, int debugIterationNum) {
             int driver1WorkedTime = driversWorkedTime[driver1.Index];
-            (double driver1UnassignCostDiff, double driver1UnassignCostWithoutPenaltyDiff, double driver1UnassignPenaltyBaseDiff, int driver1UnassignWorkDayLengthDiff) = CostDiffCalculator.UnassignTripCostDiff(trip1, driver1, null, assignment, driver1WorkedTime, instance, penaltyFactor, debugIterationNum);
+            (double driver1UnassignCostDiff, double driver1UnassignCostWithoutPenaltyDiff, double driver1UnassignPenaltyBaseDiff, int driver1UnassignWorkDayLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip1, null, driver1, driver1WorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
 
             int driver2WorkedTime = driversWorkedTime[driver2.Index];
-            (double driver2UnassignCostDiff, double driver2UnassignCostWithoutPenaltyDiff, double driver2UnassignPenaltyBaseDiff, int driver2UnassignWorkDayLengthDiff) = CostDiffCalculator.UnassignTripCostDiff(trip2, driver2, null, assignment, driver2WorkedTime, instance, penaltyFactor, debugIterationNum);
+            (double driver2UnassignCostDiff, double driver2UnassignCostWithoutPenaltyDiff, double driver2UnassignPenaltyBaseDiff, int driver2UnassignWorkDayLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip2, null, driver2, driver2WorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
 
             int driver1WorkedTimeAfterUnassign = driver1WorkedTime + driver1UnassignWorkDayLengthDiff;
-            (double driver1AssignCostDiff, double driver1AssignCostWithoutPenaltyDiff, double driver1AssignPenaltyBaseDiff, int driver1AssignWorkDayLengthDiff) = CostDiffCalculator.AssignTripCostDiff(trip2, driver1, trip1, assignment, driver1WorkedTimeAfterUnassign, instance, penaltyFactor, debugIterationNum);
+            (double driver1AssignCostDiff, double driver1AssignCostWithoutPenaltyDiff, double driver1AssignPenaltyBaseDiff, int driver1AssignWorkDayLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip2, trip1, driver1, driver1WorkedTimeAfterUnassign, assignment, instance, penaltyFactor, debugIterationNum);
 
             int driver2WorkedTimeAfterUnassign = driver2WorkedTime + driver2UnassignWorkDayLengthDiff;
-            (double driver2AssignCostDiff, double driver2AssignCostWithoutPenaltyDiff, double driver2AssignPenaltyBaseDiff, int driver2AssignWorkDayLengthDiff) = CostDiffCalculator.AssignTripCostDiff(trip1, driver2, trip2, assignment, driver2WorkedTimeAfterUnassign, instance, penaltyFactor, debugIterationNum);
+            (double driver2AssignCostDiff, double driver2AssignCostWithoutPenaltyDiff, double driver2AssignPenaltyBaseDiff, int driver2AssignWorkDayLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip1, trip2, driver2, driver2WorkedTimeAfterUnassign, assignment, instance, penaltyFactor, debugIterationNum);
 
             double costDiff = driver1UnassignCostDiff + driver2UnassignCostDiff + driver1AssignCostDiff + driver2AssignCostDiff;
             double costWithoutPenalty = driver1UnassignCostWithoutPenaltyDiff + driver2UnassignCostWithoutPenaltyDiff + driver1AssignCostWithoutPenaltyDiff + driver2AssignCostWithoutPenaltyDiff;

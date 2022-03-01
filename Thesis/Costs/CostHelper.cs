@@ -28,8 +28,15 @@ namespace Thesis {
             return instance.CarTravelTimes[trip1.LastStation, trip2.FirstStation];
         }
 
-        public static int WaitingTime(Trip trip1, Trip trip2, Instance instance) {
+
+        /* Waiting and same shift threshold */
+
+        static int WaitingTime(Trip trip1, Trip trip2, Instance instance) {
             return trip2.StartTime - trip1.EndTime - CarTravelTime(trip1, trip2, instance);
+        }
+
+        public static bool AreSameShift(Trip trip1, Trip trip2, Instance instance) {
+            return WaitingTime(trip1, trip2, instance) <= Config.ShiftWaitingTimeThreshold;
         }
 
 
@@ -43,41 +50,47 @@ namespace Thesis {
             return lastDayTrip.EndTime + instance.CarTravelTimes[lastDayTrip.LastStation, firstDayTrip.FirstStation];
         }
 
-        public static int WorkDayLength(Trip firstDayTrip, Trip lastDayTrip, Driver driver, Instance instance) {
+        public static int ShiftLength(Trip firstDayTrip, Trip lastDayTrip, Driver driver, Instance instance) {
             return WorkDayEndTimeWithoutTwoWayTravel(firstDayTrip, lastDayTrip, instance) - WorkDayStartTimeWithTwoWayTravel(firstDayTrip, driver);
         }
 
-        public static int RestTime(Trip trip1, Trip trip2, Driver driver) {
-            return trip2.StartTime - trip1.EndTime - OneWayTravelTimeToHome(trip1, driver) - OneWayTravelTimeFromHome(trip2, driver);
+        public static int RestTime(Trip shift1FirstTrip, Trip shift1LastTrip, Trip shift2FirstTrip, Driver driver, Instance instance) {
+            return shift2FirstTrip.StartTime - shift1LastTrip.EndTime - CarTravelTime(shift1LastTrip, shift1FirstTrip, instance) - OneWayTravelTimeToHome(shift1LastTrip, driver) - OneWayTravelTimeFromHome(shift2FirstTrip, driver);
         }
 
 
-        /* Getting penalties */
+        /* Base penalties */
 
-        public static float GetPrecedencePenaltyBaseDiff(Trip trip1, Trip trip2, Instance instance) {
+        public static float GetPrecedenceBasePenalty(Trip trip1, Trip trip2, Instance instance) {
             if (instance.TripSuccession[trip1.Index, trip2.Index]) return 0;
             else return Config.PrecendenceViolationPenalty;
         }
 
-        public static float GetWorkDayLengthPenaltyBaseDiff(float oldWorkDayLength, float newWorkDayLength) {
-            return GetWorkDayLengthPenaltyBase(newWorkDayLength) - GetWorkDayLengthPenaltyBase(oldWorkDayLength);
+        public static float GetShiftLengthBasePenaltyDiff(int oldShiftLength, int newShiftLength) {
+            return GetShiftLengthPenaltyBase(newShiftLength) - GetShiftLengthPenaltyBase(oldShiftLength);
         }
-        public static float GetWorkDayLengthPenaltyBase(float workDayLength) {
-            float workDayLengthViolation = Math.Max(0, workDayLength - Config.MaxWorkDayLength);
-            float amountPenaltyBase = workDayLengthViolation * Config.WorkDayLengthViolationPenaltyPerMin;
-            float countPenaltyBase = workDayLengthViolation > 0 ? Config.WorkDayLengthViolationPenalty : 0;
+        public static float GetShiftLengthPenaltyBase(int shiftLength) {
+            int shiftLengthViolation = Math.Max(0, shiftLength - Config.MaxWorkDayLength);
+            float amountPenaltyBase = shiftLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
+            float countPenaltyBase = shiftLengthViolation > 0 ? Config.ShiftLengthViolationPenalty : 0;
             return amountPenaltyBase + countPenaltyBase;
         }
 
-        public static float GetRestTimePenaltyBase(Trip trip1, Trip trip2, Driver driver) {
-            float restTime = RestTime(trip1, trip2, driver);
+        public static float GetRestTimeBasePenalty(Trip shift1FirstTrip, Trip shift1LastTrip, Trip shift2FirstTrip, Driver driver, Instance instance, bool debugIsNew) {
+            int restTime = RestTime(shift1FirstTrip, shift1LastTrip, shift2FirstTrip, driver, instance);
             float workDayLengthViolation = Math.Max(0, Config.MinRestTime - restTime);
             float amountPenaltyBase = workDayLengthViolation * Config.RestTimeViolationPenaltyPerMin;
             float countPenaltyBase = workDayLengthViolation > 0 ? Config.RestTimeViolationPenalty : 0;
+
+            if (Config.DebugCheckAndLogOperations) {
+                if (debugIsNew) SaDebugger.CurrentOperation.CurrentPart.RestTime.AddNew(restTime, driver);
+                else SaDebugger.CurrentOperation.CurrentPart.RestTime.AddOld(restTime, driver);
+            }
+
             return amountPenaltyBase + countPenaltyBase;
         }
 
-        public static float GetContractTimePenaltyBaseDiff(int oldWorkedTime, int newWorkedTime, Driver driver) {
+        public static float GetContractTimeBasePenaltyDiff(int oldWorkedTime, int newWorkedTime, Driver driver) {
             float contractTimePenaltyBaseDiff = 0;
 
             int oldContractTimeViolation = 0;
@@ -100,7 +113,7 @@ namespace Thesis {
 
             // Debug
             if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.CurrentOperation.CurrentPart.ContractTime.Add(oldWorkedTime, newWorkedTime, driver, false);
+                SaDebugger.CurrentOperation.CurrentPart.ContractTime.Add(oldWorkedTime, newWorkedTime, driver);
             }
 
             contractTimePenaltyBaseDiff += (newContractTimeViolation - oldContractTimeViolation) * Config.ContractTimeViolationPenaltyPerMin;
@@ -111,23 +124,24 @@ namespace Thesis {
 
         /* Getting trips */
 
-        public static (Trip, Trip) GetTripBeforeInSameOrPrevShift(Trip trip, Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance) {
+        /** Returns previous trip of driver; returns as first of tuple when in same shift, or second of tuple when in previous shift */
+        public static (Trip, Trip) GetPrevTrip(Trip trip, Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance) {
             int startTimeThreshold = trip.StartTime - Config.BetweenShiftsMaxStartTimeDiff;
             for (int searchTripIndex = trip.Index - 1; searchTripIndex >= 0; searchTripIndex--) {
                 Trip searchTrip = instance.Trips[searchTripIndex];
                 if (searchTrip.StartTime < startTimeThreshold) return (null, null);
 
-                // Check if this is the same day trip before for this driver
+                // Check if this is the previous trip in the same shift for this driver
                 if (assignment[searchTripIndex] == driver && searchTrip != tripToIgnore) {
-                    int waitingTime = WaitingTime(searchTrip, trip, instance);
-                    if (waitingTime <= Config.ShiftWaitingTimeThreshold) return (searchTrip, null); // Found trip is in current shift
+                    if (AreSameShift(searchTrip, trip, instance)) return (searchTrip, null); // Found trip is in current shift
                     return (null, searchTrip); // Found trip is in previous shift
                 }
             }
             return (null, null);
         }
 
-        public static (Trip, Trip) GetTripAfterInSameOrNextShift(Trip trip, Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance) {
+        /** Returns next trip of driver; returns as first of tuple when in same shift, or second of tuple when in next shift */
+        public static (Trip, Trip) GetNextTrip(Trip trip, Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance) {
             int startTimeThreshold = trip.StartTime + Config.BetweenShiftsMaxStartTimeDiff;
             for (int searchTripIndex = trip.Index + 1; searchTripIndex < instance.Trips.Length; searchTripIndex++) {
                 Trip searchTrip = instance.Trips[searchTripIndex];
@@ -135,52 +149,53 @@ namespace Thesis {
 
                 // Check if this is the same day trip after for this driver
                 if (assignment[searchTripIndex] == driver && searchTrip != tripToIgnore) {
-                    int waitingTime = WaitingTime(trip, searchTrip, instance);
-                    if (waitingTime <= Config.ShiftWaitingTimeThreshold) return (searchTrip, null); // Found trip is in current shift
+                    if (AreSameShift(trip, searchTrip, instance)) return (searchTrip, null); // Found trip is in current shift
                     return (null, searchTrip); // Found trip is in next shift
                 }
             }
             return (null, null);
         }
 
-        public static Trip GetFirstTripOfShift(Trip trip, Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance) {
+        /** Returns driver's first trip of shift, and last trip of previous shift */
+        public static (Trip, Trip) GetFirstTripInternalAndPrevShiftTrip(Trip trip, Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance) {
             int startTimeThreshold = trip.StartTime - Config.ShiftMaxStartTimeDiff;
             Trip firstDayTrip = trip;
             for (int searchTripIndex = trip.Index - 1; searchTripIndex >= 0; searchTripIndex--) {
                 Trip searchTrip = instance.Trips[searchTripIndex];
                 if (searchTrip.StartTime < startTimeThreshold) {
-                    break;
+                    return (firstDayTrip, null);
                 }
 
                 if (assignment[searchTripIndex] == driver && searchTrip != tripToIgnore) {
-                    int waitingTime = WaitingTime(searchTrip, firstDayTrip, instance);
-                    if (waitingTime <= Config.ShiftWaitingTimeThreshold) {
+                    if (AreSameShift(searchTrip, firstDayTrip, instance)) {
                         firstDayTrip = searchTrip;
                     } else {
-                        break;
+                        return (firstDayTrip, searchTrip);
                     }
                 }
             }
-            return firstDayTrip;
+            return (firstDayTrip, null);
         }
 
-        public static Trip GetLastTripOfShift(Trip trip, Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance) {
+        /** Returns driver's last trip of shift, and first trip of next shift */
+        public static (Trip, Trip) GetLastTripInternalAndNextShiftTrip(Trip trip, Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance) {
             int startTimeThreshold = trip.StartTime + Config.ShiftMaxStartTimeDiff;
             Trip lastDayTrip = trip;
             for (int searchTripIndex = trip.Index + 1; searchTripIndex < instance.Trips.Length; searchTripIndex++) {
                 Trip searchTrip = instance.Trips[searchTripIndex];
-                if (searchTrip.StartTime > startTimeThreshold) break;
+                if (searchTrip.StartTime > startTimeThreshold) {
+                    return (lastDayTrip, null);
+                }
 
                 if (assignment[searchTripIndex] == driver && searchTrip != tripToIgnore) {
-                    int waitingTime = WaitingTime(lastDayTrip, searchTrip, instance);
-                    if (waitingTime <= Config.ShiftWaitingTimeThreshold) {
+                    if (AreSameShift(lastDayTrip, searchTrip, instance)) {
                         lastDayTrip = searchTrip;
                     } else {
-                        break;
+                        return (lastDayTrip, searchTrip);
                     }
                 }
             }
-            return lastDayTrip;
+            return (lastDayTrip, null);
         }
     }
 }
