@@ -16,6 +16,9 @@ namespace Thesis {
         public static string ToString(int[] numArray) {
             return string.Join(" ", numArray);
         }
+        public static string ToString(List<int> numArray) {
+            return string.Join(" ", numArray);
+        }
 
         public static string LargeNumToString(double num, string format = "0.##") {
             if (num < 1000) {

@@ -6,87 +6,157 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class SaDebugger {
-        static CheckedInfo prevChecked = new CheckedInfo();
-        public static CheckedInfo CurrentChecked = new CheckedInfo();
-        public static OperationInfo CurrentOperation = null;
+        static OperationInfo CurrentOperation = null;
         static int iterationNum = 0;
 
-        public static void NextIteration(bool isAccepted, Instance instance) {
-            if (isAccepted) {
-                prevChecked = CurrentChecked;
-                CurrentChecked = new CheckedInfo();
-            }
+        public static OperationInfo GetCurrentOperation() {
+            return CurrentOperation;
+        }
 
-            CurrentOperation = new OperationInfo(instance);
+        public static OperationPart GetCurrentOperationPart() {
+            return CurrentOperation.CurrentPart;
+        }
+
+        public static NormalDiff GetCurrentNormalDiff() {
+            return CurrentOperation.CurrentPart.Normal;
+        }
+
+        public static CheckedTotal GetCurrentCheckedTotal() {
+            return CurrentOperation.CurrentPart.CheckedCurrent;
+        }
+
+        public static void NextIteration(Instance instance) {
             iterationNum++;
+            CurrentOperation = new OperationInfo(iterationNum, instance);
         }
 
-        public static void FinishInitialCheck(Instance instance) {
-            prevChecked = CurrentChecked;
-            CurrentChecked = new CheckedInfo();
-            CurrentOperation = new OperationInfo(instance);
+        public static void ResetIteration(Instance instance) {
+            CurrentOperation = new OperationInfo(iterationNum, instance);
+        }
+    }
+
+    class OperationInfo {
+        public readonly List<OperationPart> Parts = new List<OperationPart>();
+        public OperationPart CurrentPart = null;
+        readonly int iterationNum;
+        readonly Instance instance;
+
+        public OperationInfo(int iterationNum, Instance instance) {
+            this.iterationNum = iterationNum;
+            this.instance = instance;
         }
 
-        public static void CheckErrors() {
-            FullInfo checkedDiff = CurrentChecked.Info - prevChecked.Info;
-            FullInfo operationDiff = CurrentOperation.Combine();
-            FullInfo errorAmounts = operationDiff - checkedDiff;
+        public void StartPart(string description, bool isAssign, Driver driver) {
+            if (CurrentPart != null) Parts.Add(CurrentPart);
+            CurrentPart = new OperationPart(iterationNum, description, isAssign, driver, instance);
+        }
+    }
 
-            if (!FullInfo.AreEqual(operationDiff, checkedDiff)) {
+    class OperationPart {
+        public CheckedTotal CheckedCurrent;
+        public readonly NormalDiff Normal;
+        CheckedTotal checkedBefore, checkedAfter;
+        TotalInfo checkedDiff;
+        readonly int iterationNum;
+        readonly string description;
+        readonly Driver driver;
+
+        public OperationPart(int iterationNum, string description, bool isAssign, Driver driver, Instance instance) {
+            this.iterationNum = iterationNum;
+            this.description = description;
+            this.driver = driver;
+            CheckedCurrent = new CheckedTotal();
+            Normal = new NormalDiff(isAssign, instance);
+        }
+
+        public void FinishCheckBefore() {
+            checkedBefore = CheckedCurrent;
+            CheckedCurrent = new CheckedTotal();
+        }
+
+        public void FinishCheckAfter() {
+            checkedAfter = CheckedCurrent;
+            checkedDiff = checkedAfter.Total - checkedBefore.Total;
+        }
+
+        public void CheckErrors() {
+            TotalInfo operationDiff = Normal.ToTotal();
+            TotalInfo errorAmounts = operationDiff - checkedDiff;
+
+            if (!TotalInfo.AreEqual(operationDiff, checkedDiff)) {
                 LogErrors(checkedDiff, operationDiff, errorAmounts);
-                throw new Exception("Operation calculations were incorrect, see console");
+                throw new Exception("Operation part calculations incorrect, see console");
             }
         }
-        static void LogErrors(FullInfo checkedDiff, FullInfo operationDiff, FullInfo errorAmounts) {
+
+        void LogErrors(TotalInfo checkedDiff, TotalInfo operationDiff, TotalInfo errorAmounts) {
             Console.WriteLine("*** Error in iteration {0} ***", iterationNum);
+            Console.WriteLine("Part: {0}", description);
+
+            Console.WriteLine("\n* Error amounts *");
+            errorAmounts.Log(false);
+
+            Console.WriteLine("\n* Normal diff *");
+            operationDiff.Log();
 
             Console.WriteLine("\n* Checked diff *");
             checkedDiff.Log();
 
-            Console.WriteLine("\n* Operation diff *");
-            operationDiff.Log();
+            Console.WriteLine("\n* Normal info *");
+            Normal.Log();
 
-            Console.WriteLine("\n\n* Error amounts *");
-            errorAmounts.Log();
+            Console.WriteLine("\n* Checked total before *");
+            checkedBefore.Log();
 
-            Console.WriteLine("\n\n* Checked additional info *");
-            Console.WriteLine("\nBefore driver paths");
-            prevChecked.LogAdditionalInfo();
-            Console.WriteLine("\nAfter driver paths");
-            CurrentChecked.LogAdditionalInfo();
+            Console.WriteLine("\n* Checked total after *");
+            checkedAfter.Log();
 
-            Console.WriteLine("\n\n* Operation additional info *");
-            CurrentOperation.LogAdditionalInfo();
+            Console.WriteLine("\n* Driver info *");
+            Console.WriteLine("Min contract time: {0}", driver.MinContractTime);
+            Console.WriteLine("Max contract time: {0}", driver.MaxContractTime);
         }
     }
 
-    class FullInfo {
+    class CheckedTotal {
+        public readonly TotalInfo Total = new TotalInfo();
+        public string DriverPathString = "";
+        public List<int> ShiftLengths = new List<int>();
+        public List<int> RestTimes = new List<int>();
+
+        public void Log() {
+            Console.WriteLine("Driver path: {0}", DriverPathString);
+            Console.WriteLine("Shift lengths: {0}", ParseHelper.ToString(ShiftLengths));
+            Console.WriteLine("Rest times: {0}", ParseHelper.ToString(RestTimes));
+            Console.WriteLine("Worked time: {0}", ShiftLengths.Sum());
+            Total.Log();
+        }
+    }
+
+    class TotalInfo {
         public double? Cost, CostWithoutPenalty, PenaltyBase;
-        public int? PrecedenceViolationCount, SlViolationCount, SlViolationAmount, RtViolationCount, RtViolationAmount, CtViolationCount, CtViolationAmount;
-        public int[] DriversWorkedTime;
+        public int? PrecedenceViolationCount, SlViolationCount, SlViolationAmount, RtViolationCount, RtViolationAmount, CtValue, CtViolationCount, CtViolationAmount;
         readonly bool isDiff;
 
-        public FullInfo(bool isDiff = false) {
+        public TotalInfo(bool isDiff = false) {
             this.isDiff = isDiff;
         }
 
-        public void Log() {
+        public void Log(bool shouldLogZeros = true) {
             string diffStr = isDiff ? " diff" : "";
 
-            Console.WriteLine("Cost{0}: {1}", diffStr, ParseHelper.ToString(Cost.Value));
-            Console.WriteLine("Cost without penalty{0}: {1}", diffStr, ParseHelper.ToString(CostWithoutPenalty.Value));
-            Console.WriteLine("Penalty base{0}: {1}", diffStr, ParseHelper.ToString(PenaltyBase.Value));
-            Console.WriteLine("Precedence violation count{0}: {1}", diffStr, PrecedenceViolationCount);
-            Console.WriteLine("WDL violation count{0}: {1}", diffStr, SlViolationCount);
-            Console.WriteLine("WDL violation amount{0}: {1}", diffStr, SlViolationAmount);
-            Console.WriteLine("RT violation count{0}: {1}", diffStr, RtViolationCount);
-            Console.WriteLine("RT violation amount{0}: {1}", diffStr, RtViolationAmount);
-            Console.WriteLine("CT violation count{0}: {1}", diffStr, CtViolationCount);
-            Console.WriteLine("CT violation amount{0}: {1}", diffStr, CtViolationAmount);
-            Console.WriteLine("Worked hours{0}: {1}", diffStr, ParseHelper.ToString(DriversWorkedTime));
+            if (shouldLogZeros || PrecedenceViolationCount != 0) Console.WriteLine("Precedence violation count{0}: {1}", diffStr, PrecedenceViolationCount);
+            if (shouldLogZeros || SlViolationCount != 0) Console.WriteLine("SL violation count{0}: {1}", diffStr, SlViolationCount);
+            if (shouldLogZeros || SlViolationAmount != 0) Console.WriteLine("SL violation amount{0}: {1}", diffStr, SlViolationAmount);
+            if (shouldLogZeros || RtViolationCount != 0) Console.WriteLine("RT violation count{0}: {1}", diffStr, RtViolationCount);
+            if (shouldLogZeros || RtViolationAmount != 0) Console.WriteLine("RT violation amount{0}: {1}", diffStr, RtViolationAmount);
+            if (shouldLogZeros || CtViolationCount != 0) Console.WriteLine("CT violation count{0}: {1}", diffStr, CtViolationCount);
+            if (shouldLogZeros || CtViolationAmount != 0) Console.WriteLine("CT violation amount{0}: {1}", diffStr, CtViolationAmount);
+            if (shouldLogZeros || Math.Abs(Cost.Value) > Config.FloatingPointMargin) Console.WriteLine("Cost{0}: {1}", diffStr, ParseHelper.ToString(Cost.Value));
+            if (shouldLogZeros || Math.Abs(CostWithoutPenalty.Value) > Config.FloatingPointMargin) Console.WriteLine("Cost without penalty{0}: {1}", diffStr, ParseHelper.ToString(CostWithoutPenalty.Value));
+            if (shouldLogZeros || Math.Abs(PenaltyBase.Value) > Config.FloatingPointMargin) Console.WriteLine("Penalty base{0}: {1}", diffStr, ParseHelper.ToString(PenaltyBase.Value));
         }
 
-        public static bool AreEqual(FullInfo a, FullInfo b) {
+        public static bool AreEqual(TotalInfo a, TotalInfo b) {
             return (
                 IsFloatEqual(a.Cost, b.Cost) &&
                 IsFloatEqual(a.CostWithoutPenalty, b.CostWithoutPenalty) &&
@@ -96,6 +166,7 @@ namespace Thesis {
                 a.SlViolationAmount == b.SlViolationAmount &&
                 a.RtViolationCount == b.RtViolationCount &&
                 a.RtViolationAmount == b.RtViolationAmount &&
+                a.CtValue == b.CtValue &&
                 a.CtViolationCount == b.CtViolationCount &&
                 a.CtViolationAmount == b.CtViolationAmount
             );
@@ -104,8 +175,8 @@ namespace Thesis {
             return Math.Abs(a.Value - b.Value) < 0.01;
         }
 
-        public static FullInfo operator -(FullInfo a) {
-            return new FullInfo(true) {
+        public static TotalInfo operator -(TotalInfo a) {
+            return new TotalInfo(true) {
                 Cost = -a.Cost,
                 CostWithoutPenalty = -a.CostWithoutPenalty,
                 PenaltyBase = -a.PenaltyBase,
@@ -114,13 +185,13 @@ namespace Thesis {
                 SlViolationAmount = -a.SlViolationAmount,
                 RtViolationCount = -a.RtViolationCount,
                 RtViolationAmount = -a.RtViolationAmount,
+                CtValue = -a.CtValue,
                 CtViolationCount = -a.CtViolationCount,
                 CtViolationAmount = -a.CtViolationAmount,
-                DriversWorkedTime = a.DriversWorkedTime.Select(x => -x).ToArray(),
             };
         }
-        public static FullInfo operator +(FullInfo a, FullInfo b) {
-            return new FullInfo(true) {
+        public static TotalInfo operator +(TotalInfo a, TotalInfo b) {
+            return new TotalInfo(true) {
                 Cost = a.Cost + b.Cost,
                 CostWithoutPenalty = a.CostWithoutPenalty + b.CostWithoutPenalty,
                 PenaltyBase = a.PenaltyBase + b.PenaltyBase,
@@ -129,78 +200,30 @@ namespace Thesis {
                 SlViolationAmount = a.SlViolationAmount + b.SlViolationAmount,
                 RtViolationCount = a.RtViolationCount + b.RtViolationCount,
                 RtViolationAmount = a.RtViolationAmount + b.RtViolationAmount,
+                CtValue = a.CtValue + b.CtValue,
                 CtViolationCount = a.CtViolationCount + b.CtViolationCount,
                 CtViolationAmount = a.CtViolationAmount + b.CtViolationAmount,
-                DriversWorkedTime = a.DriversWorkedTime.Zip(b.DriversWorkedTime, (x, y) => x + y).ToArray(),
             };
         }
-        public static FullInfo operator -(FullInfo a, FullInfo b) => a + -b;
+        public static TotalInfo operator -(TotalInfo a, TotalInfo b) => a + -b;
     }
 
-    class CheckedInfo {
-        public readonly FullInfo Info = new FullInfo();
-        public string[] DriverPathStrings = new string[Config.GenDriverCount];
-
-        public void LogAdditionalInfo() {
-            for (int driverIndex = 0; driverIndex < DriverPathStrings.Length; driverIndex++) {
-                Console.WriteLine("Driver {0}: {1}", driverIndex, DriverPathStrings[driverIndex]);
-            }
-        }
-    }
-
-    class OperationInfo {
-        public readonly List<OperationPartInfo> Parts = new List<OperationPartInfo>();
-        public OperationPartInfo CurrentPart = null;
-        readonly Instance instance;
-
-        public OperationInfo(Instance instance) {
-            this.instance = instance;
-        }
-
-        public void StartPart(string description, bool isAssign) {
-            if (CurrentPart != null) Parts.Add(CurrentPart);
-            CurrentPart = new OperationPartInfo(description, isAssign, instance);
-        }
-
-        public FullInfo Combine() {
-            FullInfo combined = CurrentPart.ToFullInfo();
-            for (int i = 0; i < Parts.Count; i++) {
-                combined += Parts[i].ToFullInfo();
-            }
-            return combined;
-        }
-
-        public void LogAdditionalInfo() {
-            for (int i = 0; i < Parts.Count; i++) {
-                Parts[i].Log();
-            }
-            CurrentPart.Log();
-        }
-    }
-
-    class OperationPartInfo {
+    class NormalDiff {
         public Trip PrevTripInternal, NextTripInternal, FirstTripInternal, LastTripInternal, PrevShiftFirstTrip, PrevShiftLastTrip, NextShiftFirstTrip;
         public string TripPosition, ShiftPosition, MergeSplitInfo;
         public double CostDiff, CostWithoutPenaltyDiff, BasePenaltyDiff;
         public PrecedenceValueChange Precedence;
         public ViolationValueChange ShiftLength, RestTime, ContractTime;
-        public int[] DriversWorkedTimeDiff;
-        readonly string description;
-        readonly Instance instance;
 
-        public OperationPartInfo(string description, bool isAssign, Instance instance) {
-            this.description = description;
-            this.instance = instance;
-
+        public NormalDiff(bool isAssign, Instance instance) {
             Precedence = new PrecedenceValueChange("Precedence", isAssign, instance);
-            ShiftLength = new ViolationValueChange("WDL", isAssign, instance, (workDayLength, _) => Math.Max(0, workDayLength - Config.MaxWorkDayLength));
+            ShiftLength = new ViolationValueChange("SL", isAssign, instance, (workDayLength, _) => Math.Max(0, workDayLength - Config.MaxWorkDayLength));
             RestTime = new ViolationValueChange("RT", isAssign, instance, (restTime, _) => Math.Max(0, Config.MinRestTime - restTime));
-            ContractTime = new ViolationValueChange("CT", isAssign, instance, (workedHours, driver) => Math.Max(0, driver.MinContractTime - workedHours) + Math.Max(0, workedHours - driver.MaxContractTime));
-            DriversWorkedTimeDiff = new int[Config.GenDriverCount];
+            ContractTime = new ViolationValueChange("CT", false, instance, (workedHours, driver) => Math.Max(0, driver.MinContractTime - workedHours) + Math.Max(0, workedHours - driver.MaxContractTime));
     }
 
-        public FullInfo ToFullInfo() {
-            return new FullInfo(true) {
+        public TotalInfo ToTotal() {
+            return new TotalInfo(true) {
                 Cost = CostDiff,
                 CostWithoutPenalty = CostWithoutPenaltyDiff,
                 PenaltyBase = BasePenaltyDiff,
@@ -211,12 +234,10 @@ namespace Thesis {
                 RtViolationAmount = RestTime.NewViolationAmount - RestTime.OldViolationAmount,
                 CtViolationCount = ContractTime.NewViolationCount - ContractTime.OldViolationCount,
                 CtViolationAmount = ContractTime.NewViolationAmount - ContractTime.OldViolationAmount,
-                DriversWorkedTime = DriversWorkedTimeDiff,
             };
         }
 
         public void Log() {
-            Console.WriteLine("\n" + description);
             Console.WriteLine("Trip position: {0}", TripPosition);
             Console.WriteLine("Shift position: {0}", ShiftPosition);
             Console.WriteLine("Split/merge info: {0}", MergeSplitInfo);
@@ -228,6 +249,7 @@ namespace Thesis {
             Precedence.Log();
             ShiftLength.Log();
             RestTime.Log();
+            ContractTime.Log();
         }
 
         string GetTripString(Trip trip) {

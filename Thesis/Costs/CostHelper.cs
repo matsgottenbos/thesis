@@ -83,8 +83,8 @@ namespace Thesis {
             float countPenaltyBase = workDayLengthViolation > 0 ? Config.RestTimeViolationPenalty : 0;
 
             if (Config.DebugCheckAndLogOperations) {
-                if (debugIsNew) SaDebugger.CurrentOperation.CurrentPart.RestTime.AddNew(restTime, driver);
-                else SaDebugger.CurrentOperation.CurrentPart.RestTime.AddOld(restTime, driver);
+                if (debugIsNew) SaDebugger.GetCurrentNormalDiff().RestTime.AddNew(restTime, driver);
+                else SaDebugger.GetCurrentNormalDiff().RestTime.AddOld(restTime, driver);
             }
 
             return amountPenaltyBase + countPenaltyBase;
@@ -113,7 +113,7 @@ namespace Thesis {
 
             // Debug
             if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.CurrentOperation.CurrentPart.ContractTime.Add(oldWorkedTime, newWorkedTime, driver);
+                SaDebugger.GetCurrentNormalDiff().ContractTime.Add(oldWorkedTime, newWorkedTime, driver);
             }
 
             contractTimePenaltyBaseDiff += (newContractTimeViolation - oldContractTimeViolation) * Config.ContractTimeViolationPenaltyPerMin;

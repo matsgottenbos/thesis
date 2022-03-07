@@ -6,66 +6,46 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class TotalCostCalculator {
-        /** Get assignment cost without penalties */
+        /** Get assignment cost */
+        public static (double, double, double, int[]) GetAssignmentCost(Driver[] assignment, Instance instance, float penaltyFactor) {
+            List<Trip>[] driverPaths = GetPathPerDriver(assignment, instance);
 
-        public static double AssignmentCostWithoutPenalties(List<Trip>[] driverPaths, Instance instance) {
-            // Determine cost
-            int totalWorkTime = 0;
-            for (int driverIndex = 0; driverIndex < Config.GenDriverCount; driverIndex++) {
+            double cost = 0;
+            double costWithoutPenalty = 0;
+            double penaltyBase = 0;
+            int[] driversWorkedTime = new int[instance.Drivers.Length];
+            for (int driverIndex = 0; driverIndex < instance.Drivers.Length; driverIndex++) {
                 List<Trip> driverPath = driverPaths[driverIndex];
-                if (driverPath.Count == 0) continue;
                 Driver driver = instance.Drivers[driverIndex];
 
-                Trip dayFirstTrip = driverPath[0];
-                Trip prevTrip = driverPath[0];
-                for (int driverTripIndex = 1; driverTripIndex < driverPath.Count; driverTripIndex++) {
-                    Trip trip = driverPath[driverTripIndex];
-
-                    // Working day length
-                    if (!CostHelper.AreSameShift(prevTrip, trip, instance)) {
-                        // End previous day
-                        totalWorkTime += CostHelper.ShiftLength(dayFirstTrip, prevTrip, driver, instance);
-
-                        // Start new day
-                        dayFirstTrip = trip;
-                    }
-
-                    prevTrip = trip;
-                }
-
-                // End last day
-                totalWorkTime += CostHelper.ShiftLength(dayFirstTrip, prevTrip, driver, instance);
+                (double driverCost, double driverCostWithoutPenalty, double driverPenaltyBase, int driverWorkedTime) = GetDriverPathCost(driverPath, driver, instance, penaltyFactor, false);
+                 
+                cost += driverCost;
+                costWithoutPenalty += driverCostWithoutPenalty;
+                penaltyBase += driverPenaltyBase;
+                driversWorkedTime[driverIndex] = driverWorkedTime;
             }
 
-            double cost = totalWorkTime * Config.SalaryRate;
-            return cost;
+            return (cost, costWithoutPenalty, penaltyBase, driversWorkedTime);
         }
 
-
-        /** Get assignment base penalties */
-
-        public static (double, int[]) GetAssignmentBasePenalties(List<Trip>[] driverPaths, Instance instance, int debugIterationNum) {
+        public static (double, double, double, int) GetDriverPathCost(List<Trip> driverPath, Driver driver, Instance instance, float penaltyFactor, bool shouldDebug = true) {
             int totalPrecedenceViolationCount = 0;
-            int totalWorkDayLengthViolationCount = 0;
-            int totalWorkDayLengthViolation = 0;
+            int totalShiftLengthViolationCount = 0;
+            int totalShiftLengthViolation = 0;
             int totalRestTimeViolationCount = 0;
             int totalRestTimeViolation = 0;
             int totalContractTimeViolationCount = 0;
             int totalContractTimeViolation = 0;
-            int[] driverWorkedTime = new int[instance.Drivers.Length];
-            for (int driverIndex = 0; driverIndex < Config.GenDriverCount; driverIndex++) {
-                List<Trip> driverPath = driverPaths[driverIndex];
-                Driver driver = instance.Drivers[driverIndex];
-                if (driverPath.Count == 0) {
-                    // Empty path, so we only need to check min contract time
-                    if (driver.MinContractTime > 0) {
-                        totalContractTimeViolationCount++;
-                        totalContractTimeViolation += driver.MinContractTime;
-                    }
-                    continue;
-                }
+            int totalWorkedTime = 0;
 
-                int currentDriverWorkedTime = 0;
+            if (driverPath.Count == 0) {
+                // Empty path, so we only need to check min contract time
+                if (driver.MinContractTime > 0) {
+                    totalContractTimeViolationCount++;
+                    totalContractTimeViolation += driver.MinContractTime;
+                }
+            } else {
                 Trip dayFirstTrip = driverPath[0];
                 Trip prevTrip = driverPath[0];
                 for (int driverTripIndex = 1; driverTripIndex < driverPath.Count; driverTripIndex++) {
@@ -74,12 +54,12 @@ namespace Thesis {
                     // Check working day length
                     if (!CostHelper.AreSameShift(prevTrip, trip, instance)) {
                         /* End previous day */
-                        int workDayLength = CostHelper.ShiftLength(dayFirstTrip, prevTrip, driver, instance);
-                        currentDriverWorkedTime += workDayLength;
-                        int workDayLengthViolation = Math.Max(0, workDayLength - Config.MaxWorkDayLength);
-                        if (workDayLengthViolation > 0) {
-                            totalWorkDayLengthViolationCount++;
-                            totalWorkDayLengthViolation += workDayLengthViolation;
+                        int shiftLength = CostHelper.ShiftLength(dayFirstTrip, prevTrip, driver, instance);
+                        totalWorkedTime += shiftLength;
+                        int shiftLengthViolation = Math.Max(0, shiftLength - Config.MaxWorkDayLength);
+                        if (shiftLengthViolation > 0) {
+                            totalShiftLengthViolationCount++;
+                            totalShiftLengthViolation += shiftLengthViolation;
                         }
 
                         int restTime = CostHelper.RestTime(dayFirstTrip, prevTrip, trip, driver, instance);
@@ -92,11 +72,13 @@ namespace Thesis {
                         // Start new day
                         dayFirstTrip = trip;
 
-                        if (Config.DebugCheckAndLogOperations) {
-                            SaDebugger.CurrentChecked.DriverPathStrings[driverIndex] += prevTrip.Index + "|";
+                        if (Config.DebugCheckAndLogOperations && shouldDebug) {
+                            SaDebugger.GetCurrentCheckedTotal().DriverPathString += prevTrip.Index + "|";
+                            SaDebugger.GetCurrentCheckedTotal().ShiftLengths.Add(shiftLength);
+                            SaDebugger.GetCurrentCheckedTotal().RestTimes.Add(restTime);
                         }
-                    } else if (Config.DebugCheckAndLogOperations) {
-                        SaDebugger.CurrentChecked.DriverPathStrings[driverIndex] += prevTrip.Index + "-";
+                    } else if (Config.DebugCheckAndLogOperations && shouldDebug) {
+                        SaDebugger.GetCurrentCheckedTotal().DriverPathString += prevTrip.Index + "-";
                     }
 
                     // Check precedence
@@ -108,72 +90,57 @@ namespace Thesis {
                 }
 
                 // End last day
-                int lastWorkDayLength = CostHelper.ShiftLength(dayFirstTrip, prevTrip, driver, instance);
-                currentDriverWorkedTime += lastWorkDayLength;
-                int lastWorkDayLengthViolation = Math.Max(0, lastWorkDayLength - Config.MaxWorkDayLength);
-                if (lastWorkDayLengthViolation > 0) {
-                    totalWorkDayLengthViolationCount++;
-                    totalWorkDayLengthViolation += lastWorkDayLengthViolation;
+                int lastShiftLength = CostHelper.ShiftLength(dayFirstTrip, prevTrip, driver, instance);
+                totalWorkedTime += lastShiftLength;
+                int lastShiftLengthViolation = Math.Max(0, lastShiftLength - Config.MaxWorkDayLength);
+                if (lastShiftLengthViolation > 0) {
+                    totalShiftLengthViolationCount++;
+                    totalShiftLengthViolation += lastShiftLengthViolation;
                 }
-                if (Config.DebugCheckAndLogOperations) {
-                    SaDebugger.CurrentChecked.DriverPathStrings[driverIndex] += prevTrip.Index;
+                if (Config.DebugCheckAndLogOperations && shouldDebug) {
+                    SaDebugger.GetCurrentCheckedTotal().DriverPathString += prevTrip.Index;
+                    SaDebugger.GetCurrentCheckedTotal().ShiftLengths.Add(lastShiftLength);
                 }
 
                 // Check driver worked time
-                if (currentDriverWorkedTime < driver.MinContractTime) {
+                if (totalWorkedTime < driver.MinContractTime) {
                     totalContractTimeViolationCount++;
-                    totalContractTimeViolation += driver.MinContractTime - currentDriverWorkedTime;
-                } else if (currentDriverWorkedTime > driver.MaxContractTime) {
+                    totalContractTimeViolation += driver.MinContractTime - totalWorkedTime;
+                } else if (totalWorkedTime > driver.MaxContractTime) {
                     totalContractTimeViolationCount++;
-                    totalContractTimeViolation += currentDriverWorkedTime - driver.MaxContractTime;
+                    totalContractTimeViolation += totalWorkedTime - driver.MaxContractTime;
                 }
-
-                driverWorkedTime[driverIndex] = currentDriverWorkedTime;
             }
+            
+
+            double costWithoutPenalty = totalWorkedTime * Config.SalaryRate;
 
             double precendencePenaltyBase = totalPrecedenceViolationCount * Config.PrecendenceViolationPenalty;
-            double workDayLengthPenaltyBase = totalWorkDayLengthViolationCount * Config.ShiftLengthViolationPenalty + totalWorkDayLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
+            double workDayLengthPenaltyBase = totalShiftLengthViolationCount * Config.ShiftLengthViolationPenalty + totalShiftLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
             double restTimePenaltyBase = totalRestTimeViolationCount * Config.RestTimeViolationPenalty + totalRestTimeViolation * Config.RestTimeViolationPenaltyPerMin;
             double contractTimePenaltyBase = totalContractTimeViolationCount * Config.ContractTimeViolationPenalty + totalContractTimeViolation * Config.ContractTimeViolationPenaltyPerMin;
             double penaltyBase = precendencePenaltyBase + workDayLengthPenaltyBase + restTimePenaltyBase + contractTimePenaltyBase;
 
-            // Debug
-            if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.CurrentChecked.Info.PrecedenceViolationCount = totalPrecedenceViolationCount;
-                SaDebugger.CurrentChecked.Info.SlViolationCount = totalWorkDayLengthViolationCount;
-                SaDebugger.CurrentChecked.Info.SlViolationAmount = totalWorkDayLengthViolation;
-                SaDebugger.CurrentChecked.Info.RtViolationCount = totalRestTimeViolationCount;
-                SaDebugger.CurrentChecked.Info.RtViolationAmount = totalRestTimeViolation;
-                SaDebugger.CurrentChecked.Info.CtViolationCount = totalContractTimeViolationCount;
-                SaDebugger.CurrentChecked.Info.CtViolationAmount = totalContractTimeViolation;
-                SaDebugger.CurrentChecked.Info.DriversWorkedTime = driverWorkedTime;
+            double cost = costWithoutPenalty + penaltyBase * penaltyFactor;
+
+            if (Config.DebugCheckAndLogOperations && shouldDebug) {
+                SaDebugger.GetCurrentCheckedTotal().Total.PrecedenceViolationCount = totalPrecedenceViolationCount;
+                SaDebugger.GetCurrentCheckedTotal().Total.SlViolationCount = totalShiftLengthViolationCount;
+                SaDebugger.GetCurrentCheckedTotal().Total.SlViolationAmount = totalShiftLengthViolation;
+                SaDebugger.GetCurrentCheckedTotal().Total.RtViolationCount = totalRestTimeViolationCount;
+                SaDebugger.GetCurrentCheckedTotal().Total.RtViolationAmount = totalRestTimeViolation;
+                SaDebugger.GetCurrentCheckedTotal().Total.CtViolationCount = totalContractTimeViolationCount;
+                SaDebugger.GetCurrentCheckedTotal().Total.CtViolationAmount = totalContractTimeViolation;
+
+                SaDebugger.GetCurrentCheckedTotal().Total.Cost = cost;
+                SaDebugger.GetCurrentCheckedTotal().Total.CostWithoutPenalty = costWithoutPenalty;
+                SaDebugger.GetCurrentCheckedTotal().Total.PenaltyBase = penaltyBase;
             }
 
-            return (penaltyBase, driverWorkedTime);
+            return (cost, costWithoutPenalty, penaltyBase, totalWorkedTime);
         }
-
-
-        /** Get assignment cost with penalties */
-
-        public static (double, double, double, int[]) AssignmentCostWithPenalties(Driver[] assignment, Instance instance, float penaltyFactor, int debugIterationNum) {
-            List<Trip>[] driverPaths = GetPathPerDriver(assignment, instance);
-            double costWithoutPenalty = AssignmentCostWithoutPenalties(driverPaths, instance);
-            (double penaltyBase, int[] driverWorkedTime) = GetAssignmentBasePenalties(driverPaths, instance, debugIterationNum);
-            double penalty = penaltyBase * penaltyFactor;
-            double cost = costWithoutPenalty + penalty;
-
-            if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.CurrentChecked.Info.Cost = cost;
-                SaDebugger.CurrentChecked.Info.CostWithoutPenalty = costWithoutPenalty;
-                SaDebugger.CurrentChecked.Info.PenaltyBase = penaltyBase;
-            }
-
-            return (cost, costWithoutPenalty, penaltyBase, driverWorkedTime);
-        }
-
 
         /** Helper: get list of trips that each driver is assigned to */
-
         static List<Trip>[] GetPathPerDriver(Driver[] assignment, Instance instance) {
             List<Trip>[] driverPaths = new List<Trip>[Config.GenDriverCount];
             for (int driverIndex = 0; driverIndex < driverPaths.Length; driverIndex++) {
@@ -186,6 +153,19 @@ namespace Thesis {
                 driverPaths[driver.Index].Add(trip);
             }
             return driverPaths;
+        }
+
+        public static List<Trip> GetSingleDriverPath(Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance) {
+            List<Trip> driverPath = new List<Trip>();
+
+            for (int tripIndex = 0; tripIndex < assignment.Length; tripIndex++) {
+                Driver tripDriver = assignment[tripIndex];
+                if (tripDriver != driver) continue;
+                Trip trip = instance.Trips[tripIndex];
+                if (trip == tripToIgnore) continue;
+                driverPath.Add(trip);
+            }
+            return driverPath;
         }
     }
 }

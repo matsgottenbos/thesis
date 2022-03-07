@@ -15,7 +15,7 @@ namespace Thesis {
             float shiftLengthBasePenaltyDiff = -CostHelper.GetShiftLengthPenaltyBase(oldShiftLength);
 
             if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.CurrentOperation.CurrentPart.ShiftLength.Add(oldShiftLength, 0, driver);
+                SaDebugger.GetCurrentNormalDiff().ShiftLength.Add(oldShiftLength, 0, driver);
             }
 
             return (shiftLengthDiff, shiftLengthBasePenaltyDiff);
@@ -30,8 +30,8 @@ namespace Thesis {
             float precedenceBasePenaltyDiff = -CostHelper.GetPrecedenceBasePenalty(tripToUnassign, nextTripInternal, instance);
 
             if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.CurrentOperation.CurrentPart.ShiftLength.Add(oldShiftLength, newShiftLength, driver);
-                SaDebugger.CurrentOperation.CurrentPart.Precedence.AddOld((tripToUnassign, nextTripInternal), driver);
+                SaDebugger.GetCurrentNormalDiff().ShiftLength.Add(oldShiftLength, newShiftLength, driver);
+                SaDebugger.GetCurrentNormalDiff().Precedence.AddOld((tripToUnassign, nextTripInternal), driver);
             }
 
             return (shiftLengthDiff, shiftLengthBasePenaltyDiff + precedenceBasePenaltyDiff);
@@ -46,8 +46,8 @@ namespace Thesis {
             float precedenceBasePenaltyDiff = -CostHelper.GetPrecedenceBasePenalty(prevTripInternal, tripToUnassign, instance);
 
             if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.CurrentOperation.CurrentPart.ShiftLength.Add(oldShiftLength, newShiftLength, driver);
-                SaDebugger.CurrentOperation.CurrentPart.Precedence.AddOld((prevTripInternal, tripToUnassign), driver);
+                SaDebugger.GetCurrentNormalDiff().ShiftLength.Add(oldShiftLength, newShiftLength, driver);
+                SaDebugger.GetCurrentNormalDiff().Precedence.AddOld((prevTripInternal, tripToUnassign), driver);
             }
 
             return (shiftLengthDiff, shiftLengthBasePenaltyDiff + precedenceBasePenaltyDiff);
@@ -58,9 +58,9 @@ namespace Thesis {
             float precedenceBasePenaltyDiff = CostHelper.GetPrecedenceBasePenalty(prevTripInternal, nextTripInternal, instance) - CostHelper.GetPrecedenceBasePenalty(prevTripInternal, tripToUnassign, instance) - CostHelper.GetPrecedenceBasePenalty(tripToUnassign, nextTripInternal, instance);
 
             if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.CurrentOperation.CurrentPart.Precedence.AddOld((prevTripInternal, tripToUnassign), driver);
-                SaDebugger.CurrentOperation.CurrentPart.Precedence.AddOld((tripToUnassign, nextTripInternal), driver);
-                SaDebugger.CurrentOperation.CurrentPart.Precedence.AddNew((prevTripInternal, nextTripInternal), driver);
+                SaDebugger.GetCurrentNormalDiff().Precedence.AddOld((prevTripInternal, tripToUnassign), driver);
+                SaDebugger.GetCurrentNormalDiff().Precedence.AddOld((tripToUnassign, nextTripInternal), driver);
+                SaDebugger.GetCurrentNormalDiff().Precedence.AddNew((prevTripInternal, nextTripInternal), driver);
             }
 
             return (0, precedenceBasePenaltyDiff);
@@ -79,15 +79,15 @@ namespace Thesis {
 
             if (Config.DebugCheckAndLogOperations) {
                 if (debugIsSplit) {
-                    SaDebugger.CurrentOperation.CurrentPart.ShiftLength.AddOld(oldShift1Length, driver);
-                    SaDebugger.CurrentOperation.CurrentPart.ShiftLength.AddOld(oldShift2Length, driver);
-                    SaDebugger.CurrentOperation.CurrentPart.ShiftLength.AddNew(newShiftLength, driver);
-                    SaDebugger.CurrentOperation.CurrentPart.Precedence.AddOld((shift1LastTrip, shift2FirstTrip), driver);
+                    SaDebugger.GetCurrentNormalDiff().ShiftLength.AddOld(oldShift1Length, driver);
+                    SaDebugger.GetCurrentNormalDiff().ShiftLength.AddOld(oldShift2Length, driver);
+                    SaDebugger.GetCurrentNormalDiff().ShiftLength.AddNew(newShiftLength, driver);
+                    SaDebugger.GetCurrentNormalDiff().Precedence.AddOld((shift1LastTrip, shift2FirstTrip), driver);
                 } else {
-                    SaDebugger.CurrentOperation.CurrentPart.ShiftLength.AddOld(newShiftLength, driver);
-                    SaDebugger.CurrentOperation.CurrentPart.ShiftLength.AddNew(oldShift1Length, driver);
-                    SaDebugger.CurrentOperation.CurrentPart.ShiftLength.AddNew(oldShift2Length, driver);
-                    SaDebugger.CurrentOperation.CurrentPart.Precedence.AddNew((shift1LastTrip, shift2FirstTrip), driver);
+                    SaDebugger.GetCurrentNormalDiff().ShiftLength.AddOld(newShiftLength, driver);
+                    SaDebugger.GetCurrentNormalDiff().ShiftLength.AddNew(oldShift1Length, driver);
+                    SaDebugger.GetCurrentNormalDiff().ShiftLength.AddNew(oldShift2Length, driver);
+                    SaDebugger.GetCurrentNormalDiff().Precedence.AddNew((shift1LastTrip, shift2FirstTrip), driver);
                 }
             }
 

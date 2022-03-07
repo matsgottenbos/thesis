@@ -28,6 +28,7 @@ namespace Thesis {
         public const float MinContractTimeFraction = 0.6f;
         public const float MaxContractTimeFraction = 1.4f;
 
+
         /* Generator */
         // Counts
         public const int GenTimeframeLength = 2 * 24 * 60;
@@ -76,7 +77,11 @@ namespace Thesis {
         public static readonly string DataFolder = Path.Combine(SolutionFolder, @"data\");
 
 
-        /* Debug */
+        /* Misc */
+        // Floating point imprecision
+        public const float FloatingPointMargin = 0.0001f;
+
+        // Debug
         public const bool DebugCheckOperations = false;
         public const bool DebugCheckAndLogOperations = true;
         public const bool DebugRunInspector = false;

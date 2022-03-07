@@ -35,8 +35,9 @@ namespace Thesis {
             }
 
             // Get cost of initial assignment
-            (double cost, double costWithoutPenalty, double penaltyBase, int[] driversWorkedTime) = TotalCostCalculator.AssignmentCostWithPenalties(assignment, instance, penaltyFactor, iterationNum);
-            if (Config.DebugCheckAndLogOperations) SaDebugger.FinishInitialCheck(instance);
+            if (Config.DebugCheckAndLogOperations) SaDebugger.ResetIteration(instance);
+            (double cost, double costWithoutPenalty, double penaltyBase, int[] driversWorkedTime) = TotalCostCalculator.GetAssignmentCost(assignment, instance, penaltyFactor);
+            if (Config.DebugCheckAndLogOperations) SaDebugger.ResetIteration(instance);
 
             // Initialise best solution variables
             double bestCost = double.MaxValue;
@@ -68,15 +69,9 @@ namespace Thesis {
                     costWithoutPenalty += costWithoutPenaltyDiff;
                     penaltyBase += penaltyBaseDiff;
 
-                    // Debug
-                    if (Config.DebugCheckAndLogOperations) {
-                        TotalCostCalculator.AssignmentCostWithPenalties(assignment, instance, penaltyFactor, iterationNum);
-                        SaDebugger.CheckErrors();
-                    }
-
                     if (cost < bestCost && penaltyBase < 0.01) {
                         // Check cost to remove floating point imprecisions
-                        (cost, costWithoutPenalty, penaltyBase, driversWorkedTime) = TotalCostCalculator.AssignmentCostWithPenalties(assignment, instance, penaltyFactor, iterationNum);
+                        (cost, costWithoutPenalty, penaltyBase, driversWorkedTime) = TotalCostCalculator.GetAssignmentCost(assignment, instance, penaltyFactor);
 
                         if (cost < bestCost) {
                             bestCost = cost;
@@ -87,11 +82,11 @@ namespace Thesis {
 
                 // Update iteration number
                 iterationNum++;
-                if (Config.DebugCheckAndLogOperations) SaDebugger.NextIteration(isAccepted, instance);
+                if (Config.DebugCheckAndLogOperations) SaDebugger.NextIteration(instance);
 
                 // Check cost to remove floating point imprecisions
                 if (iterationNum % Config.SaCheckCostFrequency == 0) {
-                    (cost, costWithoutPenalty, penaltyBase, driversWorkedTime) = TotalCostCalculator.AssignmentCostWithPenalties(assignment, instance, penaltyFactor, iterationNum);
+                    (cost, costWithoutPenalty, penaltyBase, driversWorkedTime) = TotalCostCalculator.GetAssignmentCost(assignment, instance, penaltyFactor);
                 }
 
                 // Log
@@ -106,12 +101,14 @@ namespace Thesis {
                 if (iterationNum % Config.SaParameterUpdateFrequency == 0) {
                     temperature *= Config.SaTemperatureReductionFactor;
                     penaltyFactor = Math.Min(1, penaltyFactor + Config.SaPenaltyIncrement);
-                    (cost, costWithoutPenalty, penaltyBase, driversWorkedTime) = TotalCostCalculator.AssignmentCostWithPenalties(assignment, instance, penaltyFactor, iterationNum);
+                    (cost, costWithoutPenalty, penaltyBase, driversWorkedTime) = TotalCostCalculator.GetAssignmentCost(assignment, instance, penaltyFactor);
                 }
+
+                if (Config.DebugCheckAndLogOperations) SaDebugger.ResetIteration(instance);
             }
 
             // Check cost to remove floating point imprecisions
-            (bestCost, _, _, _) = TotalCostCalculator.AssignmentCostWithPenalties(bestAssignment, instance, 1f, iterationNum);
+            (bestCost, _, _, _) = TotalCostCalculator.GetAssignmentCost(bestAssignment, instance, 1f);
 
             stopwatch.Stop();
             float saDuration = stopwatch.ElapsedMilliseconds / 1000f;

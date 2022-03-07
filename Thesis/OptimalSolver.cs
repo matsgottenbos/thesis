@@ -243,7 +243,7 @@ namespace Thesis {
 
         (double, double, double, int[]) GetNodeCost(AssignmentNode node, Instance instance) {
             Driver[] assignment = NodeToAssignment(node, instance);
-            return TotalCostCalculator.AssignmentCostWithPenalties(assignment, instance, 1, -1);
+            return TotalCostCalculator.GetAssignmentCost(assignment, instance, 1);
         }
 
         Driver[] NodeToAssignment(AssignmentNode node, Instance instance) {

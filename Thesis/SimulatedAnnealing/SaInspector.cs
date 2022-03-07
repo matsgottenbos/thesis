@@ -13,7 +13,7 @@ namespace Thesis {
             string assignmentStr = optAssignmentStr;
             Driver[] assignment = assignmentStr.Split().Select(driverIndexStr => instance.Drivers[int.Parse(driverIndexStr)]).ToArray();
 
-            (double cost, double costWithoutPenalty, double penaltyBase, int[] driversWorkedTime) = TotalCostCalculator.AssignmentCostWithPenalties(assignment, instance, 1f, -1);
+            (double cost, double costWithoutPenalty, double penaltyBase, int[] driversWorkedTime) = TotalCostCalculator.GetAssignmentCost(assignment, instance, 1f);
 
             Console.WriteLine("{0}; {1}; {2}", cost, costWithoutPenalty, penaltyBase);
 

@@ -17,7 +17,7 @@ namespace Thesis {
 
                 if (Config.DebugCheckAndLogOperations) {
                     int oldRestTimeNext = CostHelper.RestTime(prevShiftFirstTrip, prevShiftLastTrip, firstTripInternal, driver, instance);
-                    SaDebugger.CurrentOperation.CurrentPart.RestTime.AddOld(oldRestTimeNext, driver);
+                    SaDebugger.GetCurrentNormalDiff().RestTime.AddOld(oldRestTimeNext, driver);
                 }
 
                 if (nextShiftFirstTrip != null) {
@@ -26,7 +26,7 @@ namespace Thesis {
 
                     if (Config.DebugCheckAndLogOperations) {
                         int oldRestTimeNext = CostHelper.RestTime(prevShiftFirstTrip, prevShiftLastTrip, firstTripInternal, driver, instance);
-                        SaDebugger.CurrentOperation.CurrentPart.RestTime.AddOld(oldRestTimeNext, driver);
+                        SaDebugger.GetCurrentNormalDiff().RestTime.AddOld(oldRestTimeNext, driver);
                     }
 
                     if (CostHelper.AreSameShift(prevShiftLastTrip, nextShiftFirstTrip, instance)) {
