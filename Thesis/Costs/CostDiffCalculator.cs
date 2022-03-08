@@ -32,7 +32,7 @@ namespace Thesis {
                     (unassignShiftLengthDiff, unassignBasePenaltyDiff) = CostDiffByTripPosition.UnassignLastTrip(trip, prevTripInternal, firstTripInternal, lastTripInternal, prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip, driver, assignment, instance);
                 } else {
                     // This is a middle trip of this shift
-                    (unassignShiftLengthDiff, unassignBasePenaltyDiff) = CostDiffByTripPosition.UnassignMiddleTrip(trip, prevTripInternal, nextTripInternal, firstTripInternal, driver, instance);
+                    (unassignShiftLengthDiff, unassignBasePenaltyDiff) = CostDiffByTripPosition.UnassignMiddleTrip(trip, prevTripInternal, nextTripInternal, firstTripInternal, lastTripInternal, driver, instance);
                 }
             }
 
@@ -78,7 +78,7 @@ namespace Thesis {
                     prevShiftFirstTrip = null;
                 } else {
                     // There is a previous shift
-                    (prevShiftFirstTrip, _) = CostHelper.GetPrevTrip(trip, driver, tripToIgnore, assignment, instance);
+                    (prevShiftFirstTrip, _) = CostHelper.GetFirstTripInternalAndPrevShiftTrip(prevShiftLastTrip, driver, tripToIgnore, assignment, instance);
                     if (prevShiftFirstTrip == null) prevShiftFirstTrip = prevShiftLastTrip;
                 }
             } else {
@@ -132,6 +132,15 @@ namespace Thesis {
                 else SaDebugger.GetCurrentNormalDiff().ShiftPosition = "Middle";
             }
 
+            if (SaDebugger.IterationNum == 63) {
+                int? prevIndex = lastTripInternal?.Index;
+                int? nextIndex = nextShiftFirstTrip?.Index;
+                bool? test;
+                if (prevIndex.HasValue && nextIndex.HasValue) {
+                    test = CostHelper.AreSameShift(lastTripInternal, nextShiftFirstTrip, instance);
+                }
+            }
+
             // Merge/split info
             SaDebugger.GetCurrentNormalDiff().MergeSplitInfo = "N/A";
             if (prevTripInternal == null) {
@@ -147,7 +156,7 @@ namespace Thesis {
                 } else {
                     // First trip
                     if (prevShiftLastTrip != null) {
-                        if (CostHelper.AreSameShift(prevShiftLastTrip, firstTripInternal, instance)) {
+                        if (CostHelper.AreSameShift(prevShiftLastTrip, nextTripInternal, instance)) {
                             SaDebugger.GetCurrentNormalDiff().MergeSplitInfo = "Merge";
                         } else {
                             SaDebugger.GetCurrentNormalDiff().MergeSplitInfo = "No merge";
@@ -158,7 +167,7 @@ namespace Thesis {
                 if (nextTripInternal == null) {
                     // Last trip
                     if (nextShiftFirstTrip != null) {
-                        if (CostHelper.AreSameShift(lastTripInternal, nextShiftFirstTrip, instance)) {
+                        if (CostHelper.AreSameShift(prevTripInternal, nextShiftFirstTrip, instance)) {
                             SaDebugger.GetCurrentNormalDiff().MergeSplitInfo = "Merge";
                         } else {
                             SaDebugger.GetCurrentNormalDiff().MergeSplitInfo = "No merge";

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class SaDebugger {
+        public static int IterationNum = 0;
         static OperationInfo CurrentOperation = null;
-        static int iterationNum = 0;
 
         public static OperationInfo GetCurrentOperation() {
             return CurrentOperation;
@@ -26,12 +26,12 @@ namespace Thesis {
         }
 
         public static void NextIteration(Instance instance) {
-            iterationNum++;
-            CurrentOperation = new OperationInfo(iterationNum, instance);
+            IterationNum++;
+            CurrentOperation = new OperationInfo(IterationNum, instance);
         }
 
         public static void ResetIteration(Instance instance) {
-            CurrentOperation = new OperationInfo(iterationNum, instance);
+            CurrentOperation = new OperationInfo(IterationNum, instance);
         }
     }
 
@@ -60,13 +60,15 @@ namespace Thesis {
         readonly int iterationNum;
         readonly string description;
         readonly Driver driver;
+        readonly Instance instance;
 
         public OperationPart(int iterationNum, string description, bool isAssign, Driver driver, Instance instance) {
             this.iterationNum = iterationNum;
             this.description = description;
             this.driver = driver;
+            this.instance = instance;
             CheckedCurrent = new CheckedTotal();
-            Normal = new NormalDiff(isAssign, instance);
+            Normal = new NormalDiff(isAssign, driver, instance);
         }
 
         public void FinishCheckBefore() {
@@ -84,12 +86,13 @@ namespace Thesis {
             TotalInfo errorAmounts = operationDiff - checkedDiff;
 
             if (!TotalInfo.AreEqual(operationDiff, checkedDiff)) {
-                LogErrors(checkedDiff, operationDiff, errorAmounts);
+                LogErrors(errorAmounts);
+                Console.ReadLine();
                 throw new Exception("Operation part calculations incorrect, see console");
             }
         }
 
-        void LogErrors(TotalInfo checkedDiff, TotalInfo operationDiff, TotalInfo errorAmounts) {
+        void LogErrors(TotalInfo errorAmounts) {
             Console.WriteLine("*** Error in iteration {0} ***", iterationNum);
             Console.WriteLine("Part: {0}", description);
 
@@ -97,7 +100,7 @@ namespace Thesis {
             errorAmounts.Log(false);
 
             Console.WriteLine("\n* Normal diff *");
-            operationDiff.Log();
+            Normal.ToTotal().Log();
 
             Console.WriteLine("\n* Checked diff *");
             checkedDiff.Log();
@@ -215,11 +218,11 @@ namespace Thesis {
         public PrecedenceValueChange Precedence;
         public ViolationValueChange ShiftLength, RestTime, ContractTime;
 
-        public NormalDiff(bool isAssign, Instance instance) {
-            Precedence = new PrecedenceValueChange("Precedence", isAssign, instance);
-            ShiftLength = new ViolationValueChange("SL", isAssign, instance, (workDayLength, _) => Math.Max(0, workDayLength - Config.MaxWorkDayLength));
-            RestTime = new ViolationValueChange("RT", isAssign, instance, (restTime, _) => Math.Max(0, Config.MinRestTime - restTime));
-            ContractTime = new ViolationValueChange("CT", false, instance, (workedHours, driver) => Math.Max(0, driver.MinContractTime - workedHours) + Math.Max(0, workedHours - driver.MaxContractTime));
+        public NormalDiff(bool isAssign, Driver driver, Instance instance) {
+            Precedence = new PrecedenceValueChange("Precedence", isAssign, driver, instance);
+            ShiftLength = new ViolationValueChange("SL", isAssign, driver, instance, (workDayLength, _) => Math.Max(0, workDayLength - Config.MaxWorkDayLength));
+            RestTime = new ViolationValueChange("RT", isAssign, driver, instance, (restTime, _) => Math.Max(0, Config.MinRestTime - restTime));
+            ContractTime = new ViolationValueChange("CT", false, driver, instance, (workedHours, driver) => Math.Max(0, driver.MinContractTime - workedHours) + Math.Max(0, workedHours - driver.MaxContractTime));
     }
 
         public TotalInfo ToTotal() {
@@ -227,7 +230,7 @@ namespace Thesis {
                 Cost = CostDiff,
                 CostWithoutPenalty = CostWithoutPenaltyDiff,
                 PenaltyBase = BasePenaltyDiff,
-                PrecedenceViolationCount = Precedence.NewViolationCount - Precedence.OldViolationCount,
+                PrecedenceViolationCount = Precedence.newViolations.Count - Precedence.oldViolations.Count,
                 SlViolationCount = ShiftLength.NewViolationCount - ShiftLength.OldViolationCount,
                 SlViolationAmount = ShiftLength.NewViolationAmount - ShiftLength.OldViolationAmount,
                 RtViolationCount = RestTime.NewViolationCount - RestTime.OldViolationCount,
@@ -265,82 +268,99 @@ namespace Thesis {
 
 
     abstract class ValueChange<T> {
-        readonly string name;
-        readonly bool shouldReverse;
+        protected readonly string name;
+        protected readonly bool shouldReverse;
+        protected readonly Driver driver;
         protected readonly Instance instance;
 
-        public ValueChange(string name, bool shouldReverse, Instance instance) {
+        public ValueChange(string name, bool shouldReverse, Driver driver, Instance instance) {
             this.name = name;
             this.shouldReverse = shouldReverse;
+            this.driver = driver;
             this.instance = instance;
         }
 
-        public void Add(T oldValue, T newValue, Driver driver) {
-            AddOld(oldValue, driver);
-            AddNew(newValue, driver);
+        public void Add(T oldValue, T newValue) {
+            AddOld(oldValue);
+            AddNew(newValue);
         }
 
-        public void AddOld(T oldValue, Driver driver) {
-            if (shouldReverse) AddNewInternal(oldValue, driver);
-            else AddOldInternal(oldValue, driver);
+        public void AddOld(T oldValue) {
+            if (shouldReverse) AddNewInternal(oldValue);
+            else AddOldInternal(oldValue);
         }
-        public void AddNew(T newValue, Driver driver) {
-            if (shouldReverse) AddOldInternal(newValue, driver);
-            else AddNewInternal(newValue, driver);
+        public void AddNew(T newValue) {
+            if (shouldReverse) AddOldInternal(newValue);
+            else AddNewInternal(newValue);
         }
 
-        protected abstract void AddOldInternal(T oldValue, Driver driver);
-        protected abstract void AddNewInternal(T oldValue, Driver driver);
+        protected abstract void AddOldInternal(T oldValue);
+        protected abstract void AddNewInternal(T oldValue);
 
         public abstract void Log();
 
-        protected void LogVar(string varName, int? oldVar, int? newVar) {
-            Console.WriteLine("{0} {1}: {2} ({3} -> {4})", name, varName, newVar - oldVar, oldVar, newVar);
+        protected void LogIntDiff(string varName, int? oldValue, int? newValue) {
+            Console.WriteLine("{0} {1}: {2} ({3} -> {4})", name, varName, newValue - oldValue, oldValue, newValue);
+        }
+
+        protected void LogStringDiff(string varName, string oldValue, string newValue) {
+            if (oldValue == "") oldValue = "-";
+            if (newValue == "") newValue = "-";
+            Console.WriteLine("{0} {1}: {2} -> {3}", name, varName, oldValue, newValue);
         }
     }
 
     class PrecedenceValueChange: ValueChange<(Trip, Trip)> {
-        public int OldViolationCount, NewViolationCount;
+        public List<(Trip, Trip)> oldViolations = new List<(Trip, Trip)>();
+        public List<(Trip, Trip)> newViolations = new List<(Trip, Trip)>();
 
-        public PrecedenceValueChange(string name, bool shouldReverse, Instance instance) : base(name, shouldReverse, instance) { }
+        public PrecedenceValueChange(string name, bool shouldReverse, Driver driver, Instance instance) : base(name, shouldReverse, driver, instance) { }
 
-        protected override void AddOldInternal((Trip, Trip) oldConsecutiveTrips, Driver driver) => AddSpecific(oldConsecutiveTrips, driver, instance, ref OldViolationCount);
-        protected override void AddNewInternal((Trip, Trip) newConsecutiveTrips, Driver driver) => AddSpecific(newConsecutiveTrips, driver, instance, ref NewViolationCount);
+        protected override void AddOldInternal((Trip, Trip) trips) => AddSpecific(trips, instance, oldViolations);
+        protected override void AddNewInternal((Trip, Trip) trips) => AddSpecific(trips, instance, newViolations);
 
-        protected void AddSpecific((Trip, Trip) consecutiveTrips, Driver driver, Instance instance, ref int violationCountVar) {
-            int violationCount = instance.TripSuccession[consecutiveTrips.Item1.Index, consecutiveTrips.Item2.Index] ? 0 : 1;
-            violationCountVar += violationCount;
+        protected void AddSpecific((Trip, Trip) trips, Instance instance, List<(Trip, Trip)> violationsList) {
+            if (!instance.TripSuccession[trips.Item1.Index, trips.Item2.Index]) {
+                violationsList.Add(trips);
+            }
         }
 
         public override void Log() {
-            LogVar("violation count", OldViolationCount, NewViolationCount);
+            LogStringDiff("violations", ParseViolationsList(oldViolations), ParseViolationsList(newViolations));
+            LogIntDiff("violation count", oldViolations.Count, newViolations.Count);
+        }
+
+        string ParseViolationsList(List<(Trip, Trip)> violationsList) {
+            return string.Join(' ', violationsList.Select(violation => violation.Item1.Index + "-" + violation.Item2.Index));
         }
     }
 
     class ViolationValueChange : ValueChange<int> {
-        public int OldValue, NewValue, OldViolationCount, NewViolationCount, OldViolationAmount, NewViolationAmount;
+        public int OldViolationCount, NewViolationCount, OldViolationAmount, NewViolationAmount;
+        List<int> oldValues = new List<int>();
+        List<int> newValues = new List<int>();
         Func<int, Driver, int> getViolationAmount;
 
-        public ViolationValueChange(string name, bool shouldReverse, Instance instance, Func<int, Driver, int> getViolationAmount) : base(name, shouldReverse, instance) {
+        public ViolationValueChange(string name, bool shouldReverse, Driver driver, Instance instance, Func<int, Driver, int> getViolationAmount) : base(name, shouldReverse, driver, instance) {
             this.getViolationAmount = getViolationAmount;
         }
 
-        protected override void AddOldInternal(int oldValue, Driver driver) => AddSpecific(oldValue, driver, ref OldValue, ref OldViolationCount, ref OldViolationAmount);
-        protected override void AddNewInternal(int newValue, Driver driver) => AddSpecific(newValue, driver, ref NewValue, ref NewViolationCount, ref NewViolationAmount);
+        protected override void AddOldInternal(int oldValue) => AddSpecific(oldValue, oldValues, ref OldViolationCount, ref OldViolationAmount);
+        protected override void AddNewInternal(int newValue) => AddSpecific(newValue, newValues, ref NewViolationCount, ref NewViolationAmount);
 
-        protected void AddSpecific(int value, Driver driver, ref int valueVar, ref int violationCountVar, ref int violationAmountVar) {
+        protected void AddSpecific(int value, List<int> valueList, ref int violationCountVar, ref int violationAmountVar) {
             int violationAmount = getViolationAmount(value, driver);
             int violationCount = violationAmount > 0 ? 1 : 0;
 
-            valueVar += value;
+            valueList.Add(value);
             violationAmountVar += violationAmount;
             violationCountVar += violationCount;
         }
 
         public override void Log() {
-            LogVar("value", OldValue, NewValue);
-            LogVar("violation count", OldViolationCount, NewViolationCount);
-            LogVar("violation amount", OldViolationAmount, NewViolationAmount);
+            LogStringDiff("value", ParseHelper.ToString(oldValues), ParseHelper.ToString(newValues));
+            LogIntDiff("violation count", OldViolationCount, NewViolationCount);
+            LogIntDiff("violation amount", OldViolationAmount, NewViolationAmount);
         }
     }
 }

@@ -12,11 +12,7 @@ namespace Thesis {
         public static (int, float) UnassignOnlyTripInternal(Trip tripToUnassign, Driver driver, Instance instance) {
             int oldShiftLength = CostHelper.ShiftLength(tripToUnassign, tripToUnassign, driver, instance);
             int shiftLengthDiff = -oldShiftLength;
-            float shiftLengthBasePenaltyDiff = -CostHelper.GetShiftLengthPenaltyBase(oldShiftLength);
-
-            if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.GetCurrentNormalDiff().ShiftLength.Add(oldShiftLength, 0, driver);
-            }
+            float shiftLengthBasePenaltyDiff = -CostHelper.GetShiftLengthPenaltyBase(oldShiftLength, false);
 
             return (shiftLengthDiff, shiftLengthBasePenaltyDiff);
         }
@@ -26,13 +22,8 @@ namespace Thesis {
             int oldShiftLength = CostHelper.ShiftLength(tripToUnassign, lastTripInternal, driver, instance);
             int newShiftLength = CostHelper.ShiftLength(nextTripInternal, lastTripInternal, driver, instance);
             int shiftLengthDiff = newShiftLength - oldShiftLength;
-            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthPenaltyBase(newShiftLength) - CostHelper.GetShiftLengthPenaltyBase(oldShiftLength);
-            float precedenceBasePenaltyDiff = -CostHelper.GetPrecedenceBasePenalty(tripToUnassign, nextTripInternal, instance);
-
-            if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.GetCurrentNormalDiff().ShiftLength.Add(oldShiftLength, newShiftLength, driver);
-                SaDebugger.GetCurrentNormalDiff().Precedence.AddOld((tripToUnassign, nextTripInternal), driver);
-            }
+            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthPenaltyBase(newShiftLength, true) - CostHelper.GetShiftLengthPenaltyBase(oldShiftLength, false);
+            float precedenceBasePenaltyDiff = -CostHelper.GetPrecedenceBasePenalty(tripToUnassign, nextTripInternal, instance, false);
 
             return (shiftLengthDiff, shiftLengthBasePenaltyDiff + precedenceBasePenaltyDiff);
         }
@@ -42,61 +33,37 @@ namespace Thesis {
             int oldShiftLength = CostHelper.ShiftLength(firstTripInternal, tripToUnassign, driver, instance);
             int newShiftLength = CostHelper.ShiftLength(firstTripInternal, prevTripInternal, driver, instance);
             int shiftLengthDiff = newShiftLength - oldShiftLength;
-            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthPenaltyBase(newShiftLength) - CostHelper.GetShiftLengthPenaltyBase(oldShiftLength);
-            float precedenceBasePenaltyDiff = -CostHelper.GetPrecedenceBasePenalty(prevTripInternal, tripToUnassign, instance);
-
-            if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.GetCurrentNormalDiff().ShiftLength.Add(oldShiftLength, newShiftLength, driver);
-                SaDebugger.GetCurrentNormalDiff().Precedence.AddOld((prevTripInternal, tripToUnassign), driver);
-            }
+            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthPenaltyBase(newShiftLength, true) - CostHelper.GetShiftLengthPenaltyBase(oldShiftLength, false);
+            float precedenceBasePenaltyDiff = -CostHelper.GetPrecedenceBasePenalty(prevTripInternal, tripToUnassign, instance, false);
 
             return (shiftLengthDiff, shiftLengthBasePenaltyDiff + precedenceBasePenaltyDiff);
         }
 
         /** Get internal differences from unassigning a middle trip in a shift; returns 1) shift length diff and 2) base penalty diff */
         public static (int, float) UnassignMiddleTripInternal(Trip tripToUnassign, Trip prevTripInternal, Trip nextTripInternal, Driver driver, Instance instance) {
-            float precedenceBasePenaltyDiff = CostHelper.GetPrecedenceBasePenalty(prevTripInternal, nextTripInternal, instance) - CostHelper.GetPrecedenceBasePenalty(prevTripInternal, tripToUnassign, instance) - CostHelper.GetPrecedenceBasePenalty(tripToUnassign, nextTripInternal, instance);
-
-            if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.GetCurrentNormalDiff().Precedence.AddOld((prevTripInternal, tripToUnassign), driver);
-                SaDebugger.GetCurrentNormalDiff().Precedence.AddOld((tripToUnassign, nextTripInternal), driver);
-                SaDebugger.GetCurrentNormalDiff().Precedence.AddNew((prevTripInternal, nextTripInternal), driver);
-            }
-
+            float precedenceBasePenaltyDiff = CostHelper.GetPrecedenceBasePenalty(prevTripInternal, nextTripInternal, instance, true) - CostHelper.GetPrecedenceBasePenalty(prevTripInternal, tripToUnassign, instance, false) - CostHelper.GetPrecedenceBasePenalty(tripToUnassign, nextTripInternal, instance, false);
             return (0, precedenceBasePenaltyDiff);
         }
 
 
         /* Merges and splits */
 
-        public static (int, float) MergeShifts(Trip shift1FirstTrip, Trip shift1LastTrip, Trip shift2FirstTrip, Trip shift2LastTrip, Driver driver, Instance instance, bool debugIsSplit = false) {
+        public static (int, float) MergeShifts(Trip shift1FirstTrip, Trip shift1LastTrip, Trip shift2FirstTrip, Trip shift2LastTrip, Driver driver, Instance instance) {
             int oldShift1Length = CostHelper.ShiftLength(shift1FirstTrip, shift1LastTrip, driver, instance);
             int oldShift2Length = CostHelper.ShiftLength(shift2FirstTrip, shift2LastTrip, driver, instance);
             int newShiftLength = CostHelper.ShiftLength(shift1FirstTrip, shift2LastTrip, driver, instance);
             int shiftLengthDiff = newShiftLength - oldShift1Length - oldShift2Length;
-            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthPenaltyBase(newShiftLength) - CostHelper.GetShiftLengthPenaltyBase(oldShift1Length) - CostHelper.GetShiftLengthPenaltyBase(oldShift2Length);
-            float precedenceBasePenaltyDiff = CostHelper.GetPrecedenceBasePenalty(shift1LastTrip, shift2FirstTrip, instance);
-
-            if (Config.DebugCheckAndLogOperations) {
-                if (debugIsSplit) {
-                    SaDebugger.GetCurrentNormalDiff().ShiftLength.AddOld(oldShift1Length, driver);
-                    SaDebugger.GetCurrentNormalDiff().ShiftLength.AddOld(oldShift2Length, driver);
-                    SaDebugger.GetCurrentNormalDiff().ShiftLength.AddNew(newShiftLength, driver);
-                    SaDebugger.GetCurrentNormalDiff().Precedence.AddOld((shift1LastTrip, shift2FirstTrip), driver);
-                } else {
-                    SaDebugger.GetCurrentNormalDiff().ShiftLength.AddOld(newShiftLength, driver);
-                    SaDebugger.GetCurrentNormalDiff().ShiftLength.AddNew(oldShift1Length, driver);
-                    SaDebugger.GetCurrentNormalDiff().ShiftLength.AddNew(oldShift2Length, driver);
-                    SaDebugger.GetCurrentNormalDiff().Precedence.AddNew((shift1LastTrip, shift2FirstTrip), driver);
-                }
-            }
-
-            return (shiftLengthDiff, shiftLengthBasePenaltyDiff + precedenceBasePenaltyDiff);
+            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthPenaltyBase(newShiftLength, true) - CostHelper.GetShiftLengthPenaltyBase(oldShift1Length, false) - CostHelper.GetShiftLengthPenaltyBase(oldShift2Length, false);
+            return (shiftLengthDiff, shiftLengthBasePenaltyDiff);
         }
 
         public static (int, float) SplitShift(Trip shift1FirstTrip, Trip shift1LastTrip, Trip shift2FirstTrip, Trip shift2LastTrip, Driver driver, Instance instance) {
-            (int shiftLengthDiff, float basePenaltyDiff) = MergeShifts(shift1FirstTrip, shift1LastTrip, shift2FirstTrip, shift2LastTrip, driver, instance, true);
-            return (-shiftLengthDiff, -basePenaltyDiff);
+            int oldShiftLength = CostHelper.ShiftLength(shift1FirstTrip, shift2LastTrip, driver, instance);
+            int newShift1Length = CostHelper.ShiftLength(shift1FirstTrip, shift1LastTrip, driver, instance);
+            int newShift2Length = CostHelper.ShiftLength(shift2FirstTrip, shift2LastTrip, driver, instance);
+            int shiftLengthDiff = newShift1Length + newShift2Length - oldShiftLength;
+            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthPenaltyBase(newShift1Length, true) + CostHelper.GetShiftLengthPenaltyBase(newShift2Length, true) - CostHelper.GetShiftLengthPenaltyBase(oldShiftLength, false);
+            return (shiftLengthDiff, shiftLengthBasePenaltyDiff);
         }
     }
 }
