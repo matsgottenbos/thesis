@@ -54,6 +54,7 @@ namespace Thesis {
             int newShiftLength = CostHelper.ShiftLength(shift1FirstTrip, shift2LastTrip, driver, instance);
             int shiftLengthDiff = newShiftLength - oldShift1Length - oldShift2Length;
             float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthPenaltyBase(newShiftLength, true) - CostHelper.GetShiftLengthPenaltyBase(oldShift1Length, false) - CostHelper.GetShiftLengthPenaltyBase(oldShift2Length, false);
+
             return (shiftLengthDiff, shiftLengthBasePenaltyDiff);
         }
 

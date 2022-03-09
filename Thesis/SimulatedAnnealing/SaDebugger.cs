@@ -36,6 +36,7 @@ namespace Thesis {
     }
 
     class OperationInfo {
+        public string Description;
         public readonly List<OperationPart> Parts = new List<OperationPart>();
         public OperationPart CurrentPart = null;
         readonly int iterationNum;
@@ -46,9 +47,9 @@ namespace Thesis {
             this.instance = instance;
         }
 
-        public void StartPart(string description, bool isAssign, Driver driver) {
+        public void StartPart(string partDescription, bool isAssign, Driver driver) {
             if (CurrentPart != null) Parts.Add(CurrentPart);
-            CurrentPart = new OperationPart(iterationNum, description, isAssign, driver, instance);
+            CurrentPart = new OperationPart(iterationNum, partDescription, isAssign, this, driver, instance);
         }
     }
 
@@ -58,13 +59,15 @@ namespace Thesis {
         CheckedTotal checkedBefore, checkedAfter;
         TotalInfo checkedDiff;
         readonly int iterationNum;
-        readonly string description;
+        public readonly string Description;
+        readonly OperationInfo operation;
         readonly Driver driver;
         readonly Instance instance;
 
-        public OperationPart(int iterationNum, string description, bool isAssign, Driver driver, Instance instance) {
+        public OperationPart(int iterationNum, string description, bool isAssign, OperationInfo operation, Driver driver, Instance instance) {
             this.iterationNum = iterationNum;
-            this.description = description;
+            Description = description;
+            this.operation = operation;
             this.driver = driver;
             this.instance = instance;
             CheckedCurrent = new CheckedTotal();
@@ -94,7 +97,9 @@ namespace Thesis {
 
         void LogErrors(TotalInfo errorAmounts) {
             Console.WriteLine("*** Error in iteration {0} ***", iterationNum);
-            Console.WriteLine("Part: {0}", description);
+            Console.WriteLine("Current operation: {0}", operation.Description);
+            for (int i = 0; i < operation.Parts.Count; i++) Console.WriteLine("Previous part: {0}", operation.Parts[i].Description);
+            Console.WriteLine("Current part:  {0}", Description);
 
             Console.WriteLine("\n* Error amounts *");
             errorAmounts.Log(false);

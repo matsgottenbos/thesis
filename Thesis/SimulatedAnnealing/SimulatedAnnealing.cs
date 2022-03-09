@@ -145,19 +145,21 @@ namespace Thesis {
     }
 
     class AssignTripOperation : Operation {
-        readonly int tripIndex;
         readonly Trip trip;
         readonly Driver oldDriver, newDriver;
         int oldDriverWorkedTimeDiff, newDriverWorkedTimeDiff;
 
         public AssignTripOperation(int tripIndex, Driver newDriver, Driver[] assignment, int[] driversWorkedTime, Instance instance, float penaltyFactor) : base(assignment, driversWorkedTime, instance, penaltyFactor) {
-            this.tripIndex = tripIndex;
             this.newDriver = newDriver;
             trip = instance.Trips[tripIndex];
             oldDriver = assignment[tripIndex];
         }
 
         public override (double, double, double) GetCostDiff(float penaltyFactor, int debugIterationNum) {
+            if (Config.DebugCheckAndLogOperations) {
+                SaDebugger.GetCurrentOperation().Description = string.Format("Re-assign trip {0} from driver {1} to driver {2}", trip.Index, oldDriver.Index, newDriver.Index);
+            }
+
             int oldDriverWorkedTime = driversWorkedTime[oldDriver.Index];
             (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverPenaltyBaseDiff, int oldDriverWorkDayLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip, null, oldDriver, oldDriverWorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
 
@@ -171,7 +173,7 @@ namespace Thesis {
         }
 
         public override void Execute() {
-            assignment[tripIndex] = newDriver;
+            assignment[trip.Index] = newDriver;
             driversWorkedTime[oldDriver.Index] += oldDriverWorkedTimeDiff;
             driversWorkedTime[newDriver.Index] += newDriverWorkedTimeDiff;
         }
@@ -190,14 +192,11 @@ namespace Thesis {
     }
 
     class SwapTripOperation : Operation {
-        readonly int tripIndex1, tripIndex2;
         readonly Trip trip1, trip2;
         readonly Driver driver1, driver2;
         int driver1WorkedTimeDiff, driver2WorkedTimeDiff;
 
         public SwapTripOperation(int tripIndex1, int tripIndex2, Driver[] assignment, int[] driversWorkedTime, Instance instance, float penaltyFactor) : base(assignment, driversWorkedTime, instance, penaltyFactor) {
-            this.tripIndex1 = tripIndex1;
-            this.tripIndex2 = tripIndex2;
             trip1 = instance.Trips[tripIndex1];
             trip2 = instance.Trips[tripIndex2];
             driver1 = assignment[tripIndex1];
@@ -205,6 +204,10 @@ namespace Thesis {
         }
 
         public override (double, double, double) GetCostDiff(float penaltyFactor, int debugIterationNum) {
+            if (Config.DebugCheckAndLogOperations) {
+                SaDebugger.GetCurrentOperation().Description = string.Format("Swap trip {0} from driver {1} with trip {2} from driver {3}", trip1.Index, driver1.Index, trip2.Index, driver2.Index);
+            }
+
             int driver1WorkedTime = driversWorkedTime[driver1.Index];
             (double driver1UnassignCostDiff, double driver1UnassignCostWithoutPenaltyDiff, double driver1UnassignPenaltyBaseDiff, int driver1UnassignWorkDayLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip1, null, driver1, driver1WorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
 
@@ -228,8 +231,8 @@ namespace Thesis {
         }
 
         public override void Execute() {
-            assignment[tripIndex2] = driver1;
-            assignment[tripIndex1] = driver2;
+            assignment[trip2.Index] = driver1;
+            assignment[trip1.Index] = driver2;
             driversWorkedTime[driver1.Index] += driver1WorkedTimeDiff;
             driversWorkedTime[driver2.Index] += driver2WorkedTimeDiff;
         }

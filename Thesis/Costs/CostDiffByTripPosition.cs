@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Thesis {
     class CostDiffByTripPosition {
         /** Unassign the only trip in a shift; returns 1) shift length diff and 2) base penalty diff */
-        public static (int, float) UnassignOnlyTrip(Trip tripToUnassign, Trip firstTripInternal, Trip lastTripInternal, Trip prevShiftFirstTrip, Trip prevShiftLastTrip, Trip nextShiftFirstTrip, Driver driver, Driver[] assignment, Instance instance) {
+        public static (int, float) UnassignOnlyTrip(Trip tripToUnassign, Trip tripToIgnore, Trip firstTripInternal, Trip lastTripInternal, Trip prevShiftFirstTrip, Trip prevShiftLastTrip, Trip nextShiftFirstTrip, Driver driver, Driver[] assignment, Instance instance) {
             // Always: internal shift length diff (-S1)
             (int shiftLengthDiff, float basePenaltyDiff) = CostDiffBasic.UnassignOnlyTripInternal(tripToUnassign, driver, instance);
 
@@ -21,7 +21,7 @@ namespace Thesis {
 
                     if (CostHelper.AreSameShift(prevShiftLastTrip, nextShiftFirstTrip, instance)) {
                         // Prev shift + next shift + merge: merge previous and next shifts (M1)
-                        (Trip nextShiftLastTrip, _) = CostHelper.GetLastTripInternalAndNextShiftTrip(nextShiftFirstTrip, driver, null, assignment, instance);
+                        (Trip nextShiftLastTrip, _) = CostHelper.GetLastTripInternalAndNextShiftTrip(nextShiftFirstTrip, driver, tripToIgnore, assignment, instance);
                         (int externalShiftLengthDiff, float externalBasePenaltyDiff) = CostDiffBasic.MergeShifts(prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip, nextShiftLastTrip, driver, instance);
                         shiftLengthDiff += externalShiftLengthDiff;
                         basePenaltyDiff += externalBasePenaltyDiff;
@@ -111,7 +111,7 @@ namespace Thesis {
         }
 
         /** Unassign the last trip in a shift; returns 1) shift length diff and 2) base penalty diff */
-        public static (int, float) UnassignLastTrip(Trip tripToUnassign, Trip prevTripInternal, Trip firstTripInternal, Trip lastTripInternal, Trip prevShiftFirstTrip, Trip prevShiftLastTrip, Trip nextShiftFirstTrip, Driver driver, Driver[] assignment, Instance instance) {
+        public static (int, float) UnassignLastTrip(Trip tripToUnassign, Trip tripToIgnore, Trip prevTripInternal, Trip firstTripInternal, Trip lastTripInternal, Trip nextShiftFirstTrip, Driver driver, Driver[] assignment, Instance instance) {
             int shiftLengthDiff;
             float basePenaltyDiff;
             if (nextShiftFirstTrip != null) {
@@ -120,11 +120,16 @@ namespace Thesis {
 
                 if (CostHelper.AreSameShift(prevTripInternal, nextShiftFirstTrip, instance)) {
                     // Next shift + merge: merge current and previous shifts (M3)
-                    (Trip nextShiftLastTrip, _) = CostHelper.GetLastTripInternalAndNextShiftTrip(nextShiftFirstTrip, driver, null, assignment, instance);
+                    (Trip nextShiftLastTrip, Trip secondNextShiftFirstTrip) = CostHelper.GetLastTripInternalAndNextShiftTrip(nextShiftFirstTrip, driver, tripToIgnore, assignment, instance);
                     float externalBasePenaltyDiff;
                     (shiftLengthDiff, externalBasePenaltyDiff) = CostDiffBasic.MergeShifts(firstTripInternal, lastTripInternal, nextShiftFirstTrip, nextShiftLastTrip, driver, instance);
                     basePenaltyDiff += externalBasePenaltyDiff;
                     basePenaltyDiff += CostHelper.GetPrecedenceBasePenalty(prevTripInternal, nextShiftFirstTrip, instance, true) - CostHelper.GetPrecedenceBasePenalty(prevTripInternal, tripToUnassign, instance, false);
+
+                    if (secondNextShiftFirstTrip != null) {
+                        // Next shift + second next shift + merge: replace rest next-next2 with current-next2
+                        basePenaltyDiff += CostHelper.GetRestTimeBasePenalty(firstTripInternal, nextShiftLastTrip, secondNextShiftFirstTrip, driver, instance, true) - CostHelper.GetRestTimeBasePenalty(nextShiftFirstTrip, nextShiftLastTrip, secondNextShiftFirstTrip, driver, instance, false);
+                    }
                 } else {
                     // No next shift and/or no merge: internal shift length diff (S3 - S1)
                     float internalBasePenaltyDiff;
@@ -143,7 +148,7 @@ namespace Thesis {
         }
 
         /** Unassign a middle trip in a shift; returns 1) shift length diff and 2) base penalty diff */
-        public static (int, float) UnassignMiddleTrip(Trip tripToUnassign, Trip prevTripInternal, Trip nextTripInternal, Trip firstTripInternal, Trip lastTripInternal, Driver driver, Instance instance) {
+        public static (int, float) UnassignMiddleTrip(Trip tripToUnassign, Trip prevTripInternal, Trip nextTripInternal, Trip firstTripInternal, Trip lastTripInternal, Trip nextShiftFirstTrip, Driver driver, Instance instance) {
             int shiftLengthDiff;
             float basePenaltyDiff;
             if (CostHelper.AreSameShift(prevTripInternal, nextTripInternal, instance)) {
@@ -156,6 +161,11 @@ namespace Thesis {
 
                 // Split: add new rest between split parts (R8)
                 basePenaltyDiff += CostHelper.GetRestTimeBasePenalty(firstTripInternal, prevTripInternal, nextTripInternal, driver, instance, true);
+
+                if (nextShiftFirstTrip != null) {
+                    // Next shift + split: replace rest current-next with part2-next
+                    basePenaltyDiff += CostHelper.GetRestTimeBasePenalty(nextTripInternal, lastTripInternal, nextShiftFirstTrip, driver, instance, true) - CostHelper.GetRestTimeBasePenalty(firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, instance, false);
+                }
             }
 
             return (shiftLengthDiff, basePenaltyDiff);

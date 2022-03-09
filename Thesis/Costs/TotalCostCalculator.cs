@@ -39,17 +39,6 @@ namespace Thesis {
             int totalContractTimeViolation = 0;
             int totalWorkedTime = 0;
 
-            if (SaDebugger.IterationNum == 63 && driverPath.Count == 3 && driverPath[0].Index == 2 && driverPath[1].Index == 5 && driverPath[2].Index == 14) {
-                bool test1 = CostHelper.AreSameShift(driverPath[0], driverPath[1], instance);
-                bool test2 = CostHelper.AreSameShift(driverPath[1], driverPath[2], instance);
-            }
-
-            if (SaDebugger.IterationNum == 63 && driverPath.Count == 4 && driverPath[0].Index == 2 && driverPath[1].Index == 3 && driverPath[2].Index == 5 && driverPath[3].Index == 14) {
-                bool test1 = CostHelper.AreSameShift(driverPath[0], driverPath[1], instance);
-                bool test2 = CostHelper.AreSameShift(driverPath[1], driverPath[2], instance);
-                bool test3 = CostHelper.AreSameShift(driverPath[2], driverPath[3], instance);
-            }
-
             if (driverPath.Count == 0) {
                 // Empty path, so we only need to check min contract time
                 if (driver.MinContractTime > 0) {
