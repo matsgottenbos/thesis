@@ -12,7 +12,7 @@ namespace Thesis {
         public const bool RunSimulatedAnnealing = true;
 
         // Shift
-        public const int MaxWorkDayLength = 10 * 60; // Maximum length of a shift (including travel)
+        public const int MaxShiftLength = 10 * 60; // Maximum length of a shift (including travel)
         public const int MinRestTime = 11 * 60; // Minimum required resting time between two shifts
         public const int ShiftWaitingTimeThreshold = 6 * 60; // Waiting times shorter than this count as the same trip; waiting time longer start a new shift
         public const int ShiftMaxStartTimeDiff = 24 * 60; // The maximum difference in start times considered when searching for trips in the same shift
@@ -20,7 +20,7 @@ namespace Thesis {
 
         // Salaries
         public const float SalaryRate = 50 / 60f;
-        public const int UnpaidTravelTimePerDay = 60;
+        public const int UnpaidTravelTimePerShift = 60;
 
         // Contract time deviations
         //public const float MinContractTimeFraction = 0.8f;
@@ -46,7 +46,6 @@ namespace Thesis {
         public const int GenMaxContractTime = GenTimeframeLength / 3;
 
         // Generator probabilities
-        public const float GenWithinDaySuccessorProb = 0.5f;
         public const float GenTrackProficiencyProb = 0.9f;
 
 

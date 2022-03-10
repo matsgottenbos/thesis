@@ -77,14 +77,14 @@ namespace Thesis {
                 trips[tripIndex].Index = tripIndex;
             }
 
-            // Generate precedence constraints within day
-            for (int dayTrip1Index = 0; dayTrip1Index < Config.GenTripCount; dayTrip1Index++) {
-                for (int dayTrip2Index = dayTrip1Index; dayTrip2Index < Config.GenTripCount; dayTrip2Index++) {
-                    Trip trip1 = trips[dayTrip1Index];
-                    Trip trip2 = trips[dayTrip2Index];
+            // Generate precedence constraints
+            for (int trip1Index = 0; trip1Index < Config.GenTripCount; trip1Index++) {
+                for (int trip2Index = trip1Index; trip2Index < Config.GenTripCount; trip2Index++) {
+                    Trip trip1 = trips[trip1Index];
+                    Trip trip2 = trips[trip2Index];
                     float travelTimeBetween = trainTravelTimes[trip1.Stations[trip1.Stations.Count - 1], trip2.Stations[0]];
                     if (trip1.EndTime + travelTimeBetween <= trip2.StartTime) {
-                        trip1.AddSuccessor(trip2, dayTrip2Index);
+                        trip1.AddSuccessor(trip2);
                     }
                 }
             }
@@ -126,7 +126,7 @@ namespace Thesis {
                 int[] twoWayPayedTravelTimes = new int[Config.GenStationCount];
                 for (int i = 0; i < Config.GenStationCount; i++) {
                     int oneWayTravelTime = (int)(rand.NextDouble() * Config.GenMaxStationTravelTime);
-                    int twoWayPayedTravelTime = Math.Max(0, 2 * oneWayTravelTime - Config.UnpaidTravelTimePerDay);
+                    int twoWayPayedTravelTime = Math.Max(0, 2 * oneWayTravelTime - Config.UnpaidTravelTimePerShift);
                     oneWayTravelTimes[i] = oneWayTravelTime;
                     twoWayPayedTravelTimes[i] = twoWayPayedTravelTime;
                 }

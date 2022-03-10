@@ -141,7 +141,7 @@ namespace Thesis {
     }
 
     class TotalInfo {
-        public double? Cost, CostWithoutPenalty, PenaltyBase;
+        public double? Cost, CostWithoutPenalty, BasePenalty;
         public int? PrecedenceViolationCount, SlViolationCount, SlViolationAmount, RtViolationCount, RtViolationAmount, CtValue, CtViolationCount, CtViolationAmount;
         readonly bool isDiff;
 
@@ -161,14 +161,14 @@ namespace Thesis {
             if (shouldLogZeros || CtViolationAmount != 0) Console.WriteLine("CT violation amount{0}: {1}", diffStr, CtViolationAmount);
             if (shouldLogZeros || Math.Abs(Cost.Value) > Config.FloatingPointMargin) Console.WriteLine("Cost{0}: {1}", diffStr, ParseHelper.ToString(Cost.Value));
             if (shouldLogZeros || Math.Abs(CostWithoutPenalty.Value) > Config.FloatingPointMargin) Console.WriteLine("Cost without penalty{0}: {1}", diffStr, ParseHelper.ToString(CostWithoutPenalty.Value));
-            if (shouldLogZeros || Math.Abs(PenaltyBase.Value) > Config.FloatingPointMargin) Console.WriteLine("Penalty base{0}: {1}", diffStr, ParseHelper.ToString(PenaltyBase.Value));
+            if (shouldLogZeros || Math.Abs(BasePenalty.Value) > Config.FloatingPointMargin) Console.WriteLine("Penalty base{0}: {1}", diffStr, ParseHelper.ToString(BasePenalty.Value));
         }
 
         public static bool AreEqual(TotalInfo a, TotalInfo b) {
             return (
                 IsFloatEqual(a.Cost, b.Cost) &&
                 IsFloatEqual(a.CostWithoutPenalty, b.CostWithoutPenalty) &&
-                IsFloatEqual(a.PenaltyBase, b.PenaltyBase) &&
+                IsFloatEqual(a.BasePenalty, b.BasePenalty) &&
                 a.PrecedenceViolationCount == b.PrecedenceViolationCount &&
                 a.SlViolationCount == b.SlViolationCount &&
                 a.SlViolationAmount == b.SlViolationAmount &&
@@ -187,7 +187,7 @@ namespace Thesis {
             return new TotalInfo(true) {
                 Cost = -a.Cost,
                 CostWithoutPenalty = -a.CostWithoutPenalty,
-                PenaltyBase = -a.PenaltyBase,
+                BasePenalty = -a.BasePenalty,
                 PrecedenceViolationCount = -a.PrecedenceViolationCount,
                 SlViolationCount = -a.SlViolationCount,
                 SlViolationAmount = -a.SlViolationAmount,
@@ -202,7 +202,7 @@ namespace Thesis {
             return new TotalInfo(true) {
                 Cost = a.Cost + b.Cost,
                 CostWithoutPenalty = a.CostWithoutPenalty + b.CostWithoutPenalty,
-                PenaltyBase = a.PenaltyBase + b.PenaltyBase,
+                BasePenalty = a.BasePenalty + b.BasePenalty,
                 PrecedenceViolationCount = a.PrecedenceViolationCount + b.PrecedenceViolationCount,
                 SlViolationCount = a.SlViolationCount + b.SlViolationCount,
                 SlViolationAmount = a.SlViolationAmount + b.SlViolationAmount,
@@ -225,7 +225,7 @@ namespace Thesis {
 
         public NormalDiff(bool isAssign, Driver driver, Instance instance) {
             Precedence = new PrecedenceValueChange("Precedence", isAssign, driver, instance);
-            ShiftLength = new ViolationValueChange("SL", isAssign, driver, instance, (workDayLength, _) => Math.Max(0, workDayLength - Config.MaxWorkDayLength));
+            ShiftLength = new ViolationValueChange("SL", isAssign, driver, instance, (shiftLength, _) => Math.Max(0, shiftLength - Config.MaxShiftLength));
             RestTime = new ViolationValueChange("RT", isAssign, driver, instance, (restTime, _) => Math.Max(0, Config.MinRestTime - restTime));
             ContractTime = new ViolationValueChange("CT", false, driver, instance, (workedHours, driver) => Math.Max(0, driver.MinContractTime - workedHours) + Math.Max(0, workedHours - driver.MaxContractTime));
     }
@@ -234,7 +234,7 @@ namespace Thesis {
             return new TotalInfo(true) {
                 Cost = CostDiff,
                 CostWithoutPenalty = CostWithoutPenaltyDiff,
-                PenaltyBase = BasePenaltyDiff,
+                BasePenalty = BasePenaltyDiff,
                 PrecedenceViolationCount = Precedence.newViolations.Count - Precedence.oldViolations.Count,
                 SlViolationCount = ShiftLength.NewViolationCount - ShiftLength.OldViolationCount,
                 SlViolationAmount = ShiftLength.NewViolationAmount - ShiftLength.OldViolationAmount,

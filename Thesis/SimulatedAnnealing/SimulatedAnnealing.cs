@@ -36,7 +36,7 @@ namespace Thesis {
 
             // Get cost of initial assignment
             if (Config.DebugCheckAndLogOperations) SaDebugger.ResetIteration(instance);
-            (double cost, double costWithoutPenalty, double penaltyBase, int[] driversWorkedTime) = TotalCostCalculator.GetAssignmentCost(assignment, instance, penaltyFactor);
+            (double cost, double costWithoutPenalty, double basePenalty, int[] driversWorkedTime) = TotalCostCalculator.GetAssignmentCost(assignment, instance, penaltyFactor);
             if (Config.DebugCheckAndLogOperations) SaDebugger.ResetIteration(instance);
 
             // Initialise best solution variables
@@ -60,18 +60,18 @@ namespace Thesis {
                     _ => throw new Exception(),
                 };
 
-                (double costDiff, double costWithoutPenaltyDiff, double penaltyBaseDiff) = operation.GetCostDiff(penaltyFactor, iterationNum);
+                (double costDiff, double costWithoutPenaltyDiff, double basePenaltyDiff) = operation.GetCostDiff(penaltyFactor, iterationNum);
 
                 bool isAccepted = costDiff < 0 || fastRand.NextDouble() < Math.Exp(-costDiff / temperature);
                 if (isAccepted) {
                     operation.Execute();
                     cost += costDiff;
                     costWithoutPenalty += costWithoutPenaltyDiff;
-                    penaltyBase += penaltyBaseDiff;
+                    basePenalty += basePenaltyDiff;
 
-                    if (cost < bestCost && penaltyBase < 0.01) {
+                    if (cost < bestCost && basePenalty < 0.01) {
                         // Check cost to remove floating point imprecisions
-                        (cost, costWithoutPenalty, penaltyBase, driversWorkedTime) = TotalCostCalculator.GetAssignmentCost(assignment, instance, penaltyFactor);
+                        (cost, costWithoutPenalty, basePenalty, driversWorkedTime) = TotalCostCalculator.GetAssignmentCost(assignment, instance, penaltyFactor);
 
                         if (cost < bestCost) {
                             bestCost = cost;
@@ -86,22 +86,22 @@ namespace Thesis {
 
                 // Check cost to remove floating point imprecisions
                 if (iterationNum % Config.SaCheckCostFrequency == 0) {
-                    (cost, costWithoutPenalty, penaltyBase, driversWorkedTime) = TotalCostCalculator.GetAssignmentCost(assignment, instance, penaltyFactor);
+                    (cost, costWithoutPenalty, basePenalty, driversWorkedTime) = TotalCostCalculator.GetAssignmentCost(assignment, instance, penaltyFactor);
                 }
 
                 // Log
                 if (iterationNum % Config.SaLogFrequency == 0) {
                     string bestCostString = bestAssignment == null ? "" : ParseHelper.ToString(bestCost);
-                    string penaltyString = penaltyBase > 0 ? ParseHelper.ToString(penaltyBase) : "-";
+                    string penaltyString = basePenalty > 0 ? ParseHelper.ToString(basePenalty, "0") : "-";
                     string assignmentStr = bestAssignment == null ? "" : string.Join(' ', bestAssignment.Select(driver => driver.Index));
-                    Console.WriteLine("# {0,4}    Best cost: {1,10}    Cost: {2,10}    Penalty: {3,11}    Temp: {4,9}    P.factor: {5,5}    Best assignment: {6}", ParseHelper.LargeNumToString(iterationNum), bestCostString, ParseHelper.ToString(costWithoutPenalty), penaltyString, ParseHelper.ToString(temperature), ParseHelper.ToString(penaltyFactor, "0.00"), assignmentStr);
+                    Console.WriteLine("# {0,4}    Best cost: {1,10}    Cost: {2,10}    Penalty: {3,6}    Temp: {4,5}    P.factor: {5,5}    Best sol.: {6}", ParseHelper.LargeNumToString(iterationNum), bestCostString, ParseHelper.ToString(costWithoutPenalty), penaltyString, ParseHelper.ToString(temperature, "0"), ParseHelper.ToString(penaltyFactor, "0.00"), assignmentStr);
                 }
 
                 // Update temperature and penalty factor
                 if (iterationNum % Config.SaParameterUpdateFrequency == 0) {
                     temperature *= Config.SaTemperatureReductionFactor;
                     penaltyFactor = Math.Min(1, penaltyFactor + Config.SaPenaltyIncrement);
-                    (cost, costWithoutPenalty, penaltyBase, driversWorkedTime) = TotalCostCalculator.GetAssignmentCost(assignment, instance, penaltyFactor);
+                    (cost, costWithoutPenalty, basePenalty, driversWorkedTime) = TotalCostCalculator.GetAssignmentCost(assignment, instance, penaltyFactor);
                 }
 
                 if (Config.DebugCheckAndLogOperations) SaDebugger.ResetIteration(instance);
@@ -161,15 +161,15 @@ namespace Thesis {
             }
 
             int oldDriverWorkedTime = driversWorkedTime[oldDriver.Index];
-            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverPenaltyBaseDiff, int oldDriverWorkDayLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip, null, oldDriver, oldDriverWorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
+            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverBasePenaltyDiff, int oldDriverShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip, null, oldDriver, oldDriverWorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
 
             int newDriverWorkedTime = driversWorkedTime[newDriver.Index];
-            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverPenaltyBaseDiff, int newDriverWorkDayLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip, null, newDriver, newDriverWorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
+            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverBasePenaltyDiff, int newDriverShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip, null, newDriver, newDriverWorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
 
-            oldDriverWorkedTimeDiff = oldDriverWorkDayLengthDiff;
-            newDriverWorkedTimeDiff = newDriverWorkDayLengthDiff;
+            oldDriverWorkedTimeDiff = oldDriverShiftLengthDiff;
+            newDriverWorkedTimeDiff = newDriverShiftLengthDiff;
 
-            return (oldDriverCostDiff + newDriverCostDiff, oldDriverCostWithoutPenaltyDiff + newDriverCostWithoutPenaltyDiff, oldDriverPenaltyBaseDiff + newDriverPenaltyBaseDiff);
+            return (oldDriverCostDiff + newDriverCostDiff, oldDriverCostWithoutPenaltyDiff + newDriverCostWithoutPenaltyDiff, oldDriverBasePenaltyDiff + newDriverBasePenaltyDiff);
         }
 
         public override void Execute() {
@@ -209,25 +209,25 @@ namespace Thesis {
             }
 
             int driver1WorkedTime = driversWorkedTime[driver1.Index];
-            (double driver1UnassignCostDiff, double driver1UnassignCostWithoutPenaltyDiff, double driver1UnassignPenaltyBaseDiff, int driver1UnassignWorkDayLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip1, null, driver1, driver1WorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
+            (double driver1UnassignCostDiff, double driver1UnassignCostWithoutPenaltyDiff, double driver1UnassignBasePenaltyDiff, int driver1UnassignShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip1, null, driver1, driver1WorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
 
             int driver2WorkedTime = driversWorkedTime[driver2.Index];
-            (double driver2UnassignCostDiff, double driver2UnassignCostWithoutPenaltyDiff, double driver2UnassignPenaltyBaseDiff, int driver2UnassignWorkDayLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip2, null, driver2, driver2WorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
+            (double driver2UnassignCostDiff, double driver2UnassignCostWithoutPenaltyDiff, double driver2UnassignBasePenaltyDiff, int driver2UnassignShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip2, null, driver2, driver2WorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
 
-            int driver1WorkedTimeAfterUnassign = driver1WorkedTime + driver1UnassignWorkDayLengthDiff;
-            (double driver1AssignCostDiff, double driver1AssignCostWithoutPenaltyDiff, double driver1AssignPenaltyBaseDiff, int driver1AssignWorkDayLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip2, trip1, driver1, driver1WorkedTimeAfterUnassign, assignment, instance, penaltyFactor, debugIterationNum);
+            int driver1WorkedTimeAfterUnassign = driver1WorkedTime + driver1UnassignShiftLengthDiff;
+            (double driver1AssignCostDiff, double driver1AssignCostWithoutPenaltyDiff, double driver1AssignBasePenaltyDiff, int driver1AssignShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip2, trip1, driver1, driver1WorkedTimeAfterUnassign, assignment, instance, penaltyFactor, debugIterationNum);
 
-            int driver2WorkedTimeAfterUnassign = driver2WorkedTime + driver2UnassignWorkDayLengthDiff;
-            (double driver2AssignCostDiff, double driver2AssignCostWithoutPenaltyDiff, double driver2AssignPenaltyBaseDiff, int driver2AssignWorkDayLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip1, trip2, driver2, driver2WorkedTimeAfterUnassign, assignment, instance, penaltyFactor, debugIterationNum);
+            int driver2WorkedTimeAfterUnassign = driver2WorkedTime + driver2UnassignShiftLengthDiff;
+            (double driver2AssignCostDiff, double driver2AssignCostWithoutPenaltyDiff, double driver2AssignBasePenaltyDiff, int driver2AssignShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip1, trip2, driver2, driver2WorkedTimeAfterUnassign, assignment, instance, penaltyFactor, debugIterationNum);
 
             double costDiff = driver1UnassignCostDiff + driver2UnassignCostDiff + driver1AssignCostDiff + driver2AssignCostDiff;
             double costWithoutPenalty = driver1UnassignCostWithoutPenaltyDiff + driver2UnassignCostWithoutPenaltyDiff + driver1AssignCostWithoutPenaltyDiff + driver2AssignCostWithoutPenaltyDiff;
-            double penaltyBaseDiff = driver1UnassignPenaltyBaseDiff + driver2UnassignPenaltyBaseDiff + driver1AssignPenaltyBaseDiff + driver2AssignPenaltyBaseDiff;
+            double basePenaltyDiff = driver1UnassignBasePenaltyDiff + driver2UnassignBasePenaltyDiff + driver1AssignBasePenaltyDiff + driver2AssignBasePenaltyDiff;
 
-            driver1WorkedTimeDiff = driver1UnassignWorkDayLengthDiff + driver1AssignWorkDayLengthDiff;
-            driver2WorkedTimeDiff = driver2UnassignWorkDayLengthDiff + driver2AssignWorkDayLengthDiff;
+            driver1WorkedTimeDiff = driver1UnassignShiftLengthDiff + driver1AssignShiftLengthDiff;
+            driver2WorkedTimeDiff = driver2UnassignShiftLengthDiff + driver2AssignShiftLengthDiff;
 
-            return (costDiff, costWithoutPenalty, penaltyBaseDiff);
+            return (costDiff, costWithoutPenalty, basePenaltyDiff);
         }
 
         public override void Execute() {

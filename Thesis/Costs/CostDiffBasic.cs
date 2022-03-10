@@ -12,7 +12,7 @@ namespace Thesis {
         public static (int, float) UnassignOnlyTripInternal(Trip tripToUnassign, Driver driver, Instance instance) {
             int oldShiftLength = CostHelper.ShiftLength(tripToUnassign, tripToUnassign, driver, instance);
             int shiftLengthDiff = -oldShiftLength;
-            float shiftLengthBasePenaltyDiff = -CostHelper.GetShiftLengthPenaltyBase(oldShiftLength, false);
+            float shiftLengthBasePenaltyDiff = -CostHelper.GetShiftLengthBasePenalty(oldShiftLength, false);
 
             return (shiftLengthDiff, shiftLengthBasePenaltyDiff);
         }
@@ -22,7 +22,7 @@ namespace Thesis {
             int oldShiftLength = CostHelper.ShiftLength(tripToUnassign, lastTripInternal, driver, instance);
             int newShiftLength = CostHelper.ShiftLength(nextTripInternal, lastTripInternal, driver, instance);
             int shiftLengthDiff = newShiftLength - oldShiftLength;
-            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthPenaltyBase(newShiftLength, true) - CostHelper.GetShiftLengthPenaltyBase(oldShiftLength, false);
+            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthBasePenalty(newShiftLength, true) - CostHelper.GetShiftLengthBasePenalty(oldShiftLength, false);
             float precedenceBasePenaltyDiff = -CostHelper.GetPrecedenceBasePenalty(tripToUnassign, nextTripInternal, instance, false);
 
             return (shiftLengthDiff, shiftLengthBasePenaltyDiff + precedenceBasePenaltyDiff);
@@ -33,7 +33,7 @@ namespace Thesis {
             int oldShiftLength = CostHelper.ShiftLength(firstTripInternal, tripToUnassign, driver, instance);
             int newShiftLength = CostHelper.ShiftLength(firstTripInternal, prevTripInternal, driver, instance);
             int shiftLengthDiff = newShiftLength - oldShiftLength;
-            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthPenaltyBase(newShiftLength, true) - CostHelper.GetShiftLengthPenaltyBase(oldShiftLength, false);
+            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthBasePenalty(newShiftLength, true) - CostHelper.GetShiftLengthBasePenalty(oldShiftLength, false);
             float precedenceBasePenaltyDiff = -CostHelper.GetPrecedenceBasePenalty(prevTripInternal, tripToUnassign, instance, false);
 
             return (shiftLengthDiff, shiftLengthBasePenaltyDiff + precedenceBasePenaltyDiff);
@@ -53,7 +53,7 @@ namespace Thesis {
             int oldShift2Length = CostHelper.ShiftLength(shift2FirstTrip, shift2LastTrip, driver, instance);
             int newShiftLength = CostHelper.ShiftLength(shift1FirstTrip, shift2LastTrip, driver, instance);
             int shiftLengthDiff = newShiftLength - oldShift1Length - oldShift2Length;
-            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthPenaltyBase(newShiftLength, true) - CostHelper.GetShiftLengthPenaltyBase(oldShift1Length, false) - CostHelper.GetShiftLengthPenaltyBase(oldShift2Length, false);
+            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthBasePenalty(newShiftLength, true) - CostHelper.GetShiftLengthBasePenalty(oldShift1Length, false) - CostHelper.GetShiftLengthBasePenalty(oldShift2Length, false);
 
             return (shiftLengthDiff, shiftLengthBasePenaltyDiff);
         }
@@ -63,7 +63,7 @@ namespace Thesis {
             int newShift1Length = CostHelper.ShiftLength(shift1FirstTrip, shift1LastTrip, driver, instance);
             int newShift2Length = CostHelper.ShiftLength(shift2FirstTrip, shift2LastTrip, driver, instance);
             int shiftLengthDiff = newShift1Length + newShift2Length - oldShiftLength;
-            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthPenaltyBase(newShift1Length, true) + CostHelper.GetShiftLengthPenaltyBase(newShift2Length, true) - CostHelper.GetShiftLengthPenaltyBase(oldShiftLength, false);
+            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthBasePenalty(newShift1Length, true) + CostHelper.GetShiftLengthBasePenalty(newShift2Length, true) - CostHelper.GetShiftLengthBasePenalty(oldShiftLength, false);
             return (shiftLengthDiff, shiftLengthBasePenaltyDiff);
         }
     }

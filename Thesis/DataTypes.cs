@@ -24,7 +24,7 @@ namespace Thesis {
             DrivingCost = drivingCost;
         }
 
-        public void AddSuccessor(Trip trip, int? dayIndex) {
+        public void AddSuccessor(Trip trip) {
             Successors.Add(trip);
         }
     }
