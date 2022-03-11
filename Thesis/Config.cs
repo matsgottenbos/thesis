@@ -8,27 +8,32 @@ using System.Threading.Tasks;
 namespace Thesis {
     static class Config {
         // App
-        public const bool RunOptimalAlgorithm = true;
+        public const bool RunOptimalAlgorithm = false;
         public const bool RunSimulatedAnnealing = true;
 
-        // Working day
-        public const int DayLength = 20 * 60;
-        public const int MaxWorkDayLength = 10 * 60;
+        // Shift
+        public const int MaxShiftLength = 10 * 60; // Maximum length of a shift (including travel)
+        public const int MinRestTime = 11 * 60; // Minimum required resting time between two shifts
+        public const int ShiftWaitingTimeThreshold = 6 * 60; // Waiting times shorter than this count as the same trip; waiting time longer start a new shift
+        public const int ShiftMaxStartTimeDiff = 24 * 60; // The maximum difference in start times considered when searching for trips in the same shift
+        public const int BetweenShiftsMaxStartTimeDiff = 36 * 60; // The maximum difference in start times considered when checking rest time between different shifts
 
         // Salaries
         public const float SalaryRate = 50 / 60f;
-        public const int UnpaidTravelTimePerDay = 60;
+        public const int UnpaidTravelTimePerShift = 60;
 
         // Contract time deviations
-        public const float MinContractTimeFraction = 0.8f;
-        public const float MaxContractTimeFraction = 1.2f;
+        //public const float MinContractTimeFraction = 0.8f;
+        //public const float MaxContractTimeFraction = 1.2f;
+        public const float MinContractTimeFraction = 0.6f;
+        public const float MaxContractTimeFraction = 1.4f;
 
 
         /* Generator */
         // Counts
-        public const int GenDayCount = 2;
+        public const int GenTimeframeLength = 2 * 24 * 60;
         public const int GenStationCount = 10;
-        public const int GenTripCountPerDay = 10;
+        public const int GenTripCount = 15;
         public const int GenDriverCount = 10;
         public const int GenMaxStationCountPerTrip = 4;
 
@@ -37,11 +42,10 @@ namespace Thesis {
         public const int GenMaxStationTravelTime = 3 * 60;
 
         // Contract times
-        public const int GenMinContractTime = 5 * 60 * GenDayCount;
-        public const int GenMaxContractTime = 10 * 60 * GenDayCount;
+        public const int GenMinContractTime = GenTimeframeLength / 6;
+        public const int GenMaxContractTime = GenTimeframeLength / 3;
 
         // Generator probabilities
-        public const float GenWithinDaySuccessorProb = 0.5f;
         public const float GenTrackProficiencyProb = 0.9f;
 
 
@@ -58,8 +62,10 @@ namespace Thesis {
 
         // Penalties
         public const float PrecendenceViolationPenalty = 5000;
-        public const float WorkDayLengthViolationPenalty = 1000;
-        public const float WorkDayLengthViolationPenaltyPerMin = 200 / 60f;
+        public const float ShiftLengthViolationPenalty = 1000;
+        public const float ShiftLengthViolationPenaltyPerMin = 200 / 60f;
+        public const float RestTimeViolationPenalty = 1000;
+        public const float RestTimeViolationPenaltyPerMin = 200 / 60f;
         public const float ContractTimeViolationPenalty = 1000;
         public const float ContractTimeViolationPenaltyPerMin = 200 / 60f;
 
@@ -70,9 +76,14 @@ namespace Thesis {
         public static readonly string DataFolder = Path.Combine(SolutionFolder, @"data\");
 
 
-        /* Debug */
-        public const bool DebugCheckOperations = false;
+        /* Misc */
+        // Floating point imprecision
+        public const float FloatingPointMargin = 0.0001f;
+
+        // Debug
         public const bool DebugCheckAndLogOperations = false;
         public const bool DebugRunInspector = false;
+        public const bool DebugRunOdataTest = false;
+        public const bool DebugUseSeededSa = true;
     }
 }

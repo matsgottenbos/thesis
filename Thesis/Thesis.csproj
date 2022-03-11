@@ -6,7 +6,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Connected Services\RailCube\RailCubeCsdl.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Connected Services\RailCube\RailCubeCsdl.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.OData.Client" Version="7.10.0" />
+    <PackageReference Include="Microsoft.OData.Core" Version="7.10.0" />
+    <PackageReference Include="Microsoft.OData.Edm" Version="7.10.0" />
+    <PackageReference Include="Microsoft.Spatial" Version="7.10.0" />
     <PackageReference Include="NPOI" Version="2.5.5" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="System.Text.Json" Version="6.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>
