@@ -62,10 +62,12 @@ namespace Thesis {
         /* Base penalties */
 
         public static float GetPrecedenceBasePenalty(Trip trip1, Trip trip2, Instance instance, bool debugIsNew) {
+            #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 if (debugIsNew) SaDebugger.GetCurrentNormalDiff().Precedence.AddNew((trip1, trip2));
                 else SaDebugger.GetCurrentNormalDiff().Precedence.AddOld((trip1, trip2));
             }
+            #endif
 
             if (instance.TripSuccession[trip1.Index, trip2.Index]) return 0;
             else return Config.PrecendenceViolationPenalty;
@@ -76,10 +78,12 @@ namespace Thesis {
             float amountBasePenalty = shiftLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
             float countBasePenalty = shiftLengthViolation > 0 ? Config.ShiftLengthViolationPenalty : 0;
 
+            #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 if (debugIsNew) SaDebugger.GetCurrentNormalDiff().ShiftLength.AddNew(shiftLength);
                 else SaDebugger.GetCurrentNormalDiff().ShiftLength.AddOld(shiftLength);
             }
+            #endif
 
             return amountBasePenalty + countBasePenalty;
         }
@@ -90,10 +94,12 @@ namespace Thesis {
             float amountBasePenalty = shiftLengthViolation * Config.RestTimeViolationPenaltyPerMin;
             float countBasePenalty = shiftLengthViolation > 0 ? Config.RestTimeViolationPenalty : 0;
 
+            #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 if (debugIsNew) SaDebugger.GetCurrentNormalDiff().RestTime.AddNew(restTime);
                 else SaDebugger.GetCurrentNormalDiff().RestTime.AddOld(restTime);
             }
+            #endif
 
             return amountBasePenalty + countBasePenalty;
         }
@@ -119,10 +125,11 @@ namespace Thesis {
                 contractTimeBasePenaltyDiff += Config.ContractTimeViolationPenalty;
             }
 
-            // Debug
+            #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentNormalDiff().ContractTime.Add(oldWorkedTime, newWorkedTime);
             }
+            #endif
 
             contractTimeBasePenaltyDiff += (newContractTimeViolation - oldContractTimeViolation) * Config.ContractTimeViolationPenaltyPerMin;
 

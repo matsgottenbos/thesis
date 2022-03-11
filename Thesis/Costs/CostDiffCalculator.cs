@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 namespace Thesis {
     class CostDiffCalculator {
         public static (double, double, double, int) AssignOrUnassignTrip(bool isAssign, Trip trip, Trip tripToIgnore, Driver driver, int driverOldWorkedTime, Driver[] assignment, Instance instance, float penaltyFactor, int debugIterationNum) {
+            #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 string templateStr = isAssign ? "Assign trip {0} to driver {1}" : "Unassign trip {0} from driver {1}";
                 SaDebugger.GetCurrentOperation().StartPart(string.Format(templateStr, trip.Index, driver.Index), isAssign, driver);
             }
+            #endif
 
             // Get related trips
             (Trip prevTripInternal, Trip nextTripInternal, Trip firstTripInternal, Trip lastTripInternal, Trip prevShiftFirstTrip, Trip prevShiftLastTrip, Trip nextShiftFirstTrip) = GetRelatedTrips(trip, tripToIgnore, driver, assignment, instance);
@@ -55,10 +57,12 @@ namespace Thesis {
             double costDiff = costWithoutPenaltyDiff + basePenaltyDiff * penaltyFactor;
 
             // Debugger
+            #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 StoreDebuggerInfo(prevTripInternal, nextTripInternal, firstTripInternal, lastTripInternal, prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip, costDiff, costWithoutPenaltyDiff, basePenaltyDiff, instance);
                 CheckErrors(isAssign, trip, tripToIgnore, driver, assignment, instance, penaltyFactor, shiftLengthDiff);
             }
+            #endif
 
             return (costDiff, costWithoutPenaltyDiff, basePenaltyDiff, shiftLengthDiff);
         }

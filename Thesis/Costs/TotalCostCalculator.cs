@@ -58,9 +58,11 @@ namespace Thesis {
                             totalPrecedenceViolationCount++;
                         }
 
+                        #if DEBUG
                         if (Config.DebugCheckAndLogOperations && shouldDebug) {
                             SaDebugger.GetCurrentCheckedTotal().DriverPathString += prevTrip.Index + "-";
                         }
+                        #endif
                     } else {
                         /* End previous shift */
                         int shiftLength = CostHelper.ShiftLength(shiftFirstTrip, prevTrip, driver, instance);
@@ -81,11 +83,13 @@ namespace Thesis {
                         // Start new shift
                         shiftFirstTrip = trip;
 
+                        #if DEBUG
                         if (Config.DebugCheckAndLogOperations && shouldDebug) {
                             SaDebugger.GetCurrentCheckedTotal().DriverPathString += prevTrip.Index + "|";
                             SaDebugger.GetCurrentCheckedTotal().ShiftLengths.Add(shiftLength);
                             SaDebugger.GetCurrentCheckedTotal().RestTimes.Add(restTime);
                         }
+                        #endif
                     }
 
                     prevTrip = trip;
@@ -99,10 +103,13 @@ namespace Thesis {
                     totalShiftLengthViolationCount++;
                     totalShiftLengthViolation += lastShiftLengthViolation;
                 }
+
+                #if DEBUG
                 if (Config.DebugCheckAndLogOperations && shouldDebug) {
                     SaDebugger.GetCurrentCheckedTotal().DriverPathString += prevTrip.Index;
                     SaDebugger.GetCurrentCheckedTotal().ShiftLengths.Add(lastShiftLength);
                 }
+                #endif
 
                 // Check driver worked time
                 if (totalWorkedTime < driver.MinContractTime) {
@@ -125,6 +132,7 @@ namespace Thesis {
 
             double cost = costWithoutPenalty + basePenalty * penaltyFactor;
 
+            #if DEBUG
             if (Config.DebugCheckAndLogOperations && shouldDebug) {
                 SaDebugger.GetCurrentCheckedTotal().Total.PrecedenceViolationCount = totalPrecedenceViolationCount;
                 SaDebugger.GetCurrentCheckedTotal().Total.SlViolationCount = totalShiftLengthViolationCount;
@@ -138,6 +146,7 @@ namespace Thesis {
                 SaDebugger.GetCurrentCheckedTotal().Total.CostWithoutPenalty = costWithoutPenalty;
                 SaDebugger.GetCurrentCheckedTotal().Total.BasePenalty = basePenalty;
             }
+            #endif
 
             return (cost, costWithoutPenalty, basePenalty, totalWorkedTime);
         }

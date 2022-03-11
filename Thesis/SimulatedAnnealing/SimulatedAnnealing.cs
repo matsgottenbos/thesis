@@ -34,10 +34,22 @@ namespace Thesis {
                 assignment[tripIndex] = driver;
             }
 
+            #if DEBUG
+            // Initialise debugger
+            if (Config.DebugCheckAndLogOperations) {
+                SaDebugger.ResetIteration(instance);
+                }
+            #endif
+
             // Get cost of initial assignment
-            if (Config.DebugCheckAndLogOperations) SaDebugger.ResetIteration(instance);
             (double cost, double costWithoutPenalty, double basePenalty, int[] driversWorkedTime) = TotalCostCalculator.GetAssignmentCost(assignment, instance, penaltyFactor);
-            if (Config.DebugCheckAndLogOperations) SaDebugger.ResetIteration(instance);
+
+            #if DEBUG
+            // Reset iteration in debugger after initial assignment cost
+            if (Config.DebugCheckAndLogOperations) {
+                SaDebugger.ResetIteration(instance);
+            }
+            #endif
 
             // Initialise best solution variables
             double bestCost = double.MaxValue;
@@ -82,7 +94,13 @@ namespace Thesis {
 
                 // Update iteration number
                 iterationNum++;
-                if (Config.DebugCheckAndLogOperations) SaDebugger.NextIteration(instance);
+
+                #if DEBUG
+                // Set debugger to next iteration
+                if (Config.DebugCheckAndLogOperations) {
+                    SaDebugger.NextIteration(instance);
+                }
+                #endif
 
                 // Check cost to remove floating point imprecisions
                 if (iterationNum % Config.SaCheckCostFrequency == 0) {
@@ -104,7 +122,12 @@ namespace Thesis {
                     (cost, costWithoutPenalty, basePenalty, driversWorkedTime) = TotalCostCalculator.GetAssignmentCost(assignment, instance, penaltyFactor);
                 }
 
-                if (Config.DebugCheckAndLogOperations) SaDebugger.ResetIteration(instance);
+                #if DEBUG
+                // Reset iteration in debugger after additional checks
+                if (Config.DebugCheckAndLogOperations) {
+                    SaDebugger.ResetIteration(instance);
+                }
+                #endif
             }
 
             // Check cost to remove floating point imprecisions
@@ -156,9 +179,11 @@ namespace Thesis {
         }
 
         public override (double, double, double) GetCostDiff(float penaltyFactor, int debugIterationNum) {
+            #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentOperation().Description = string.Format("Re-assign trip {0} from driver {1} to driver {2}", trip.Index, oldDriver.Index, newDriver.Index);
             }
+            #endif
 
             int oldDriverWorkedTime = driversWorkedTime[oldDriver.Index];
             (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverBasePenaltyDiff, int oldDriverShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip, null, oldDriver, oldDriverWorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
@@ -204,9 +229,11 @@ namespace Thesis {
         }
 
         public override (double, double, double) GetCostDiff(float penaltyFactor, int debugIterationNum) {
+            #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentOperation().Description = string.Format("Swap trip {0} from driver {1} with trip {2} from driver {3}", trip1.Index, driver1.Index, trip2.Index, driver2.Index);
             }
+            #endif
 
             int driver1WorkedTime = driversWorkedTime[driver1.Index];
             (double driver1UnassignCostDiff, double driver1UnassignCostWithoutPenaltyDiff, double driver1UnassignBasePenaltyDiff, int driver1UnassignShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip1, null, driver1, driver1WorkedTime, assignment, instance, penaltyFactor, debugIterationNum);
