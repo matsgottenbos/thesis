@@ -48,37 +48,5 @@ namespace Thesis {
 
             return amountBasePenalty + countBasePenalty;
         }
-
-        public static float GetContractTimeBasePenaltyDiff(int oldWorkedTime, int newWorkedTime, Driver driver) {
-            float contractTimeBasePenaltyDiff = 0;
-
-            int oldContractTimeViolation = 0;
-            if (oldWorkedTime < driver.MinContractTime) {
-                oldContractTimeViolation += driver.MinContractTime - oldWorkedTime;
-                contractTimeBasePenaltyDiff -= Config.ContractTimeViolationPenalty;
-            } else if (oldWorkedTime > driver.MaxContractTime) {
-                oldContractTimeViolation += oldWorkedTime - driver.MaxContractTime;
-                contractTimeBasePenaltyDiff -= Config.ContractTimeViolationPenalty;
-            }
-
-            int newContractTimeViolation = 0;
-            if (newWorkedTime < driver.MinContractTime) {
-                newContractTimeViolation += driver.MinContractTime - newWorkedTime;
-                contractTimeBasePenaltyDiff += Config.ContractTimeViolationPenalty;
-            } else if (newWorkedTime > driver.MaxContractTime) {
-                newContractTimeViolation += newWorkedTime - driver.MaxContractTime;
-                contractTimeBasePenaltyDiff += Config.ContractTimeViolationPenalty;
-            }
-
-            #if DEBUG
-            if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.GetCurrentNormalDiff().ContractTime.Add(oldWorkedTime, newWorkedTime);
-            }
-            #endif
-
-            contractTimeBasePenaltyDiff += (newContractTimeViolation - oldContractTimeViolation) * Config.ContractTimeViolationPenaltyPerMin;
-
-            return contractTimeBasePenaltyDiff;
-        }
     }
 }

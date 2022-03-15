@@ -96,7 +96,7 @@ namespace Thesis {
         public const float FloatingPointMargin = 0.0001f;
 
         // Debug
-        public const bool DebugCheckAndLogOperations = true;
+        public const bool DebugCheckAndLogOperations = false;
         public const bool DebugRunInspector = false;
         public const bool DebugRunOdataTest = false;
         public const bool DebugUseSeededSa = true;

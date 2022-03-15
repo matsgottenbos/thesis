@@ -143,7 +143,7 @@ namespace Thesis {
                 // Preprocess shift lengths and costs
                 (int[,] shiftLengths, float[,] shiftCosts) = GetDriverShiftLengthsAndCosts(trips, twoWayPayedTravelTimes, carTravelTimes);
 
-                drivers[driverIndex] = new Driver(minWorkedTime, maxWorkedTime, oneWayTravelTimes, twoWayPayedTravelTimes, trackProficiencies, shiftLengths, shiftCosts);
+                drivers[driverIndex] = new InternalDriver(oneWayTravelTimes, twoWayPayedTravelTimes, shiftLengths, shiftCosts, minWorkedTime, maxWorkedTime, trackProficiencies);
             }
 
             // Add driver indices

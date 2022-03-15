@@ -189,7 +189,7 @@ namespace Thesis {
 
         /** Check that this driver doesn't exceed his maximum contract time */
         bool CheckDriverMaxContractTime(AssignmentNode node, Trip nodeTrip, Driver driver) {
-            float driverWorkedTime = 0;
+            int driverWorkedTime = 0;
             AssignmentNode searchNode = node.Prev;
             Trip driverPrevSearchTrip = nodeTrip;
             Trip lastTripInternal = nodeTrip;
@@ -210,7 +210,7 @@ namespace Thesis {
 
             // End first shift
             driverWorkedTime += driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
-            if (driverWorkedTime > driver.MaxContractTime) return false;
+            if (driver.GetMaxContractTimeViolation(driverWorkedTime) > 0) return false;
             return true;
         }
 
@@ -220,7 +220,7 @@ namespace Thesis {
             int tripsLeftToAssign = instance.Trips.Length - node.TripIndex - 1;
             if (tripsLeftToAssign > 2) return true;
 
-            float[] allDriversWorkedTime = new float[instance.Drivers.Length];
+            int[] allDriversWorkedTime = new int[instance.Drivers.Length];
             Trip[] allDriversPrevSearchTrip = new Trip[instance.Drivers.Length];
             Trip[] allDriversLastTripInternal = new Trip[instance.Drivers.Length];
             AssignmentNode searchNode = node;
@@ -251,7 +251,7 @@ namespace Thesis {
                 Trip driverPrevSearchTrip = allDriversPrevSearchTrip[driverIndex];
                 if (driverPrevSearchTrip == null) {
                     // Driver has no assigned trips
-                    if (driver.MinContractTime > 0) {
+                    if (driver.GetMinContractTimeViolation(0) > 0) {
                         minTimeViolations++;
                         if (minTimeViolations > tripsLeftToAssign) return false;
                     }
@@ -259,10 +259,10 @@ namespace Thesis {
                 }
 
                 Trip lastTripInternal = allDriversLastTripInternal[driverIndex];
-                float driverWorkedTime = allDriversWorkedTime[driverIndex] + driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
+                int driverWorkedTime = allDriversWorkedTime[driverIndex] + driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
 
                 // Check minimum contract time
-                if (driverWorkedTime < driver.MinContractTime) {
+                if (driver.GetMinContractTimeViolation(driverWorkedTime) > 0) {
                     minTimeViolations++;
                     if (minTimeViolations > tripsLeftToAssign) return false;
                 }

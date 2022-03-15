@@ -5,19 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    class Driver {
+    abstract class Driver {
         public int Index;
-        public readonly int MinContractTime, MaxContractTime;
         public readonly int[] OneWayTravelTimes, TwoWayPayedTravelTimes;
-        public readonly bool[,] TrackProficiencies;
         public readonly int[,] ShiftLengths;
         public readonly float[,] ShiftCosts;
         Instance instance;
 
-        public Driver(int minWorkedTime, int maxWorkedTime, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, bool[,] trackProficiencies, int[,] shiftLengths, float[,] shiftCosts) {
-            MinContractTime = minWorkedTime;
-            MaxContractTime = maxWorkedTime;
-            TrackProficiencies = trackProficiencies;
+        public Driver(int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] shiftLengths, float[,] shiftCosts) {
             OneWayTravelTimes = oneWayTravelTimes;
             TwoWayPayedTravelTimes = twoWayPayedTravelTimes;
             ShiftLengths = shiftLengths;
@@ -70,13 +65,67 @@ namespace Thesis {
         public int TwoWayPayedTravelTimeFromHome(Trip trip) {
             return TwoWayPayedTravelTimes[trip.FirstStation];
         }
+
+
+        /* Contract time */
+
+        public abstract int GetMinContractTimeViolation(int workedTime);
+        public abstract int GetMaxContractTimeViolation(int workedTime);
+
+        public int GetTotalContractTimeViolation(int workedTime) {
+            return GetMinContractTimeViolation(workedTime) + GetMaxContractTimeViolation(workedTime);
+        }
+
+
+        /* Penalties */
+
+        public float GetContractTimeBasePenalty(int workedTime, bool debugIsNew) {
+            int contractTimeViolation = GetTotalContractTimeViolation(workedTime);
+
+            #if DEBUG
+            if (Config.DebugCheckAndLogOperations) {
+                if (debugIsNew) SaDebugger.GetCurrentNormalDiff().ContractTime.AddNew(workedTime);
+                else SaDebugger.GetCurrentNormalDiff().ContractTime.AddOld(workedTime);
+            }
+            #endif
+
+            if (contractTimeViolation > 0) {
+                return Config.ContractTimeViolationPenalty + contractTimeViolation * Config.ContractTimeViolationPenaltyPerMin;
+            }
+            return 0;
+        }
     }
 
-    //class InternalDriver : Driver {
+    class InternalDriver : Driver {
+        public readonly int MinContractTime, MaxContractTime;
+        public readonly bool[,] TrackProficiencies;
 
-    //}
+        public InternalDriver(int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] shiftLengths, float[,] shiftCosts, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(oneWayTravelTimes, twoWayPayedTravelTimes, shiftLengths, shiftCosts) {
+            MinContractTime = minWorkedTime;
+            MaxContractTime = maxWorkedTime;
+            TrackProficiencies = trackProficiencies;
+        }
 
-    //class ExternalDriver : Driver {
+        public override int GetMinContractTimeViolation(int workedTime) {
+            return Math.Max(0, MinContractTime - workedTime);
+        }
 
-    //}
+        public override int GetMaxContractTimeViolation(int workedTime) {
+            return Math.Max(0, workedTime - MaxContractTime);
+        }
+    }
+
+    class ExternalDriver : Driver {
+        public ExternalDriver(int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] shiftLengths, float[,] shiftCosts) : base(oneWayTravelTimes, twoWayPayedTravelTimes, shiftLengths, shiftCosts) {
+
+        }
+
+        public override int GetMinContractTimeViolation(int workedTime) {
+            return 0;
+        }
+
+        public override int GetMaxContractTimeViolation(int workedTime) {
+            return 0;
+        }
+    }
 }

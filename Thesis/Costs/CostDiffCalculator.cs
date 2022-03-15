@@ -52,7 +52,7 @@ namespace Thesis {
             }
 
             // Contract time penalty
-            basePenaltyDiff += PenaltyHelper.GetContractTimeBasePenaltyDiff(driverOldWorkedTime, driverOldWorkedTime + shiftLengthDiff, driver);
+            basePenaltyDiff += driver.GetContractTimeBasePenalty(driverOldWorkedTime + shiftLengthDiff, true) - driver.GetContractTimeBasePenalty(driverOldWorkedTime, false);
 
             // Get costs
             double costDiff = costWithoutPenaltyDiff + basePenaltyDiff * penaltyFactor;

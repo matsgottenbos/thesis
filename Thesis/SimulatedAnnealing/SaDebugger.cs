@@ -120,8 +120,13 @@ namespace Thesis {
             checkedAfter.Log();
 
             Console.WriteLine("\n* Driver info *");
-            Console.WriteLine("Min contract time: {0}", driver.MinContractTime);
-            Console.WriteLine("Max contract time: {0}", driver.MaxContractTime);
+            if (driver is InternalDriver internalDriver) {
+                Console.WriteLine("Min contract time: {0}", internalDriver.MinContractTime);
+                Console.WriteLine("Max contract time: {0}", internalDriver.MaxContractTime);
+            } else {
+                Console.WriteLine("Min contract time: -");
+                Console.WriteLine("Max contract time: -");
+            }
         }
     }
 
@@ -227,7 +232,7 @@ namespace Thesis {
             Precedence = new PrecedenceValueChange("Precedence", isAssign, driver, instance);
             ShiftLength = new ViolationValueChange("SL", isAssign, driver, instance, (shiftLength, _) => Math.Max(0, shiftLength - Config.MaxShiftLength));
             RestTime = new ViolationValueChange("RT", isAssign, driver, instance, (restTime, _) => Math.Max(0, Config.MinRestTime - restTime));
-            ContractTime = new ViolationValueChange("CT", false, driver, instance, (workedHours, driver) => Math.Max(0, driver.MinContractTime - workedHours) + Math.Max(0, workedHours - driver.MaxContractTime));
+            ContractTime = new ViolationValueChange("CT", false, driver, instance, (workedHours, driver) => driver.GetTotalContractTimeViolation(workedHours));
     }
 
         public TotalInfo ToTotal() {

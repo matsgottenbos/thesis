@@ -38,7 +38,7 @@ namespace Thesis {
             // Initialise debugger
             if (Config.DebugCheckAndLogOperations) {
                 SaDebugger.ResetIteration(instance);
-                }
+            }
             #endif
 
             // Get cost of initial assignment

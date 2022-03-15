@@ -35,17 +35,15 @@ namespace Thesis {
             int totalShiftLengthViolation = 0;
             int totalRestTimeViolationCount = 0;
             int totalRestTimeViolation = 0;
-            int totalContractTimeViolationCount = 0;
             int totalContractTimeViolation = 0;
+            int totalContractTimeViolationCount = 0;
             int totalWorkedTime = 0;
             double totalCostWithoutPenalty = 0;
 
             if (driverPath.Count == 0) {
-                // Empty path, so we only need to check min contract time
-                if (driver.MinContractTime > 0) {
-                    totalContractTimeViolationCount++;
-                    totalContractTimeViolation += driver.MinContractTime;
-                }
+                // Empty path
+                totalContractTimeViolation = driver.GetMinContractTimeViolation(0);
+                if (totalContractTimeViolation > 0) totalContractTimeViolationCount = 1;
             } else {
                 Trip shiftFirstTrip = driverPath[0];
                 Trip prevTrip = driverPath[0];
@@ -115,13 +113,8 @@ namespace Thesis {
                 #endif
 
                 // Check driver worked time
-                if (totalWorkedTime < driver.MinContractTime) {
-                    totalContractTimeViolationCount++;
-                    totalContractTimeViolation += driver.MinContractTime - totalWorkedTime;
-                } else if (totalWorkedTime > driver.MaxContractTime) {
-                    totalContractTimeViolationCount++;
-                    totalContractTimeViolation += totalWorkedTime - driver.MaxContractTime;
-                }
+                totalContractTimeViolation = driver.GetTotalContractTimeViolation(totalWorkedTime);
+                totalContractTimeViolationCount = totalContractTimeViolation > 0 ? 1 : 0;
             }
 
             double precendenceBasePenalty = totalPrecedenceViolationCount * Config.PrecendenceViolationPenalty;
