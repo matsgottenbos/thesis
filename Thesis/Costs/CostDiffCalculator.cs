@@ -52,7 +52,7 @@ namespace Thesis {
             }
 
             // Contract time penalty
-            basePenaltyDiff += CostHelper.GetContractTimeBasePenaltyDiff(driverOldWorkedTime, driverOldWorkedTime + shiftLengthDiff, driver);
+            basePenaltyDiff += PenaltyHelper.GetContractTimeBasePenaltyDiff(driverOldWorkedTime, driverOldWorkedTime + shiftLengthDiff, driver);
 
             // Get costs
             double costDiff = costWithoutPenaltyDiff + basePenaltyDiff * penaltyFactor;
@@ -71,7 +71,7 @@ namespace Thesis {
         /** Get required related trips for a given trip */
         static (Trip, Trip, Trip, Trip, Trip, Trip, Trip) GetRelatedTrips(Trip trip, Trip tripToIgnore, Driver driver, Driver[] assignment, Instance instance) {
             // Get if they exist: 1) previous internal trip, 2) first internal trip, 3) last trip of previous shift, and 4) first trip of previous shift
-            (Trip prevTripInternal, Trip prevTripExternal) = CostHelper.GetPrevTrip(trip, driver, tripToIgnore, assignment, instance);
+            (Trip prevTripInternal, Trip prevTripExternal) = AssignmentHelper.GetPrevTrip(trip, driver, tripToIgnore, assignment, instance);
             Trip firstTripInternal, prevShiftLastTrip, prevShiftFirstTrip;
             if (prevTripInternal == null) {
                 // We are unassigning first trip of shift
@@ -83,19 +83,19 @@ namespace Thesis {
                     prevShiftFirstTrip = null;
                 } else {
                     // There is a previous shift
-                    (prevShiftFirstTrip, _) = CostHelper.GetFirstTripInternalAndPrevShiftTrip(prevShiftLastTrip, driver, tripToIgnore, assignment, instance);
+                    (prevShiftFirstTrip, _) = AssignmentHelper.GetFirstTripInternalAndPrevShiftTrip(prevShiftLastTrip, driver, tripToIgnore, assignment, instance);
                     if (prevShiftFirstTrip == null) prevShiftFirstTrip = prevShiftLastTrip;
                 }
             } else {
                 // We are unassigning non-first trip of shift
-                (firstTripInternal, prevShiftLastTrip) = CostHelper.GetFirstTripInternalAndPrevShiftTrip(prevTripInternal, driver, tripToIgnore, assignment, instance);
+                (firstTripInternal, prevShiftLastTrip) = AssignmentHelper.GetFirstTripInternalAndPrevShiftTrip(prevTripInternal, driver, tripToIgnore, assignment, instance);
 
                 // There may be a previous shift, but we don't need it
                 prevShiftFirstTrip = null;
             }
 
             // Get if they exist: 1) next internal trip, 2) last internal trip, and 3) first trip of next shift
-            (Trip nextTripInternal, Trip nextTripExternal) = CostHelper.GetNextTrip(trip, driver, tripToIgnore, assignment, instance);
+            (Trip nextTripInternal, Trip nextTripExternal) = AssignmentHelper.GetNextTrip(trip, driver, tripToIgnore, assignment, instance);
             Trip lastTripInternal, nextShiftFirstTrip;
             if (nextTripInternal == null) {
                 // We are unassigning last trip of shift
@@ -103,7 +103,7 @@ namespace Thesis {
                 nextShiftFirstTrip = nextTripExternal;
             } else {
                 // We are unassigning non-last trip of shift
-                (lastTripInternal, nextShiftFirstTrip) = CostHelper.GetLastTripInternalAndNextShiftTrip(nextTripInternal, driver, tripToIgnore, assignment, instance);
+                (lastTripInternal, nextShiftFirstTrip) = AssignmentHelper.GetLastTripInternalAndNextShiftTrip(nextTripInternal, driver, tripToIgnore, assignment, instance);
             }
 
             return (prevTripInternal, nextTripInternal, firstTripInternal, lastTripInternal, prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip);
@@ -143,7 +143,7 @@ namespace Thesis {
                 if (nextTripInternal == null) {
                     // Only trip
                     if (prevShiftLastTrip != null && nextShiftFirstTrip != null) {
-                        if (CostHelper.AreSameShift(prevShiftLastTrip, nextShiftFirstTrip, instance)) {
+                        if (instance.AreSameShift(prevShiftLastTrip, nextShiftFirstTrip)) {
                             SaDebugger.GetCurrentNormalDiff().MergeSplitInfo = "Merge";
                         } else {
                             SaDebugger.GetCurrentNormalDiff().MergeSplitInfo = "No merge";
@@ -152,7 +152,7 @@ namespace Thesis {
                 } else {
                     // First trip
                     if (prevShiftLastTrip != null) {
-                        if (CostHelper.AreSameShift(prevShiftLastTrip, nextTripInternal, instance)) {
+                        if (instance.AreSameShift(prevShiftLastTrip, nextTripInternal)) {
                             SaDebugger.GetCurrentNormalDiff().MergeSplitInfo = "Merge";
                         } else {
                             SaDebugger.GetCurrentNormalDiff().MergeSplitInfo = "No merge";
@@ -163,7 +163,7 @@ namespace Thesis {
                 if (nextTripInternal == null) {
                     // Last trip
                     if (nextShiftFirstTrip != null) {
-                        if (CostHelper.AreSameShift(prevTripInternal, nextShiftFirstTrip, instance)) {
+                        if (instance.AreSameShift(prevTripInternal, nextShiftFirstTrip)) {
                             SaDebugger.GetCurrentNormalDiff().MergeSplitInfo = "Merge";
                         } else {
                             SaDebugger.GetCurrentNormalDiff().MergeSplitInfo = "No merge";
@@ -171,7 +171,7 @@ namespace Thesis {
                     }
                 } else {
                     // Middle trip
-                    if (CostHelper.AreSameShift(prevTripInternal, nextTripInternal, instance)) {
+                    if (instance.AreSameShift(prevTripInternal, nextTripInternal)) {
                         SaDebugger.GetCurrentNormalDiff().MergeSplitInfo = "No split";
                     } else {
                         SaDebugger.GetCurrentNormalDiff().MergeSplitInfo = "Split";

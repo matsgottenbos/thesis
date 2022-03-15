@@ -16,7 +16,14 @@ namespace Thesis {
             (int[,] trainTravelTimes, int[,] carTravelTimes) = GenerateTravelTimes();
             (Trip[] trips, bool[,] tripSuccession) = GenerateAllTrips(trainTravelTimes);
             Driver[] drivers = GenerateDrivers(trips, tripSuccession, carTravelTimes);
-            return new Instance(trainTravelTimes, carTravelTimes, trips, tripSuccession, drivers);
+            Instance instance = new Instance(trainTravelTimes, carTravelTimes, trips, tripSuccession, drivers);
+
+            // Pass instance object to drivers
+            for (int driverIndex = 0; driverIndex < drivers.Length; driverIndex++) {
+                drivers[driverIndex].SetInstance(instance);
+            }
+
+            return instance;
         }
 
         (int[,], int[,]) GenerateTravelTimes() {
@@ -134,21 +141,21 @@ namespace Thesis {
                 int maxWorkedTime = (int)Math.Floor(contactTime * Config.MaxContractTimeFraction);
 
                 // Preprocess shift lengths and costs
-                (int[,] shiftLengths, float[,] shiftCosts) = GetDriverShiftLengthsAndCosts(trips, tripSuccession, twoWayPayedTravelTimes, carTravelTimes, driverIndex);
+                (int[,] shiftLengths, float[,] shiftCosts) = GetDriverShiftLengthsAndCosts(trips, twoWayPayedTravelTimes, carTravelTimes);
 
-                drivers[driverIndex] = new Driver(-1, minWorkedTime, maxWorkedTime, oneWayTravelTimes, twoWayPayedTravelTimes, trackProficiencies, shiftLengths, shiftCosts);
+                drivers[driverIndex] = new Driver(minWorkedTime, maxWorkedTime, oneWayTravelTimes, twoWayPayedTravelTimes, trackProficiencies, shiftLengths, shiftCosts);
             }
 
             // Add driver indices
             for (int driverIndex = 0; driverIndex < drivers.Length; driverIndex++) {
-                drivers[driverIndex].Index = driverIndex;
+                drivers[driverIndex].SetIndex(driverIndex);
             }
 
             return drivers;
         }
 
         /** Preprocess a driver's shift lengths and costs */
-        (int[,], float[,]) GetDriverShiftLengthsAndCosts(Trip[] trips, bool[,] tripSuccession, int[] twoWayPayedTravelTimes, int[,] carTravelTimes, int debugDriverIndex) {
+        (int[,], float[,]) GetDriverShiftLengthsAndCosts(Trip[] trips, int[] twoWayPayedTravelTimes, int[,] carTravelTimes) {
             int[,] shiftLengths = new int[trips.Length, trips.Length];
             float[,] shiftCosts = new float[trips.Length, trips.Length];
             for (int firstTripIndex = 0; firstTripIndex < trips.Length; firstTripIndex++) {
@@ -181,9 +188,11 @@ namespace Thesis {
                     int shiftLengthInLastRate = Math.Max(0, drivingTime - shiftLengthBeforeLast);
                     drivingCost += shiftLengthInLastRate * lastSalaryRate.SalaryRate;
 
+                    // Determine full shift costs
                     float travelCost = payedTravelTime * Config.TravelSalaryRate;
                     float shiftCost = drivingCost + travelCost;
 
+                    // Store determine values
                     shiftLengths[firstTripIndex, lastTripIndex] = shiftLength;
                     shiftCosts[firstTripIndex, lastTripIndex] = shiftCost;
                 }

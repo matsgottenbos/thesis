@@ -122,7 +122,7 @@ namespace Thesis {
                     // Check precedence
                     if (!instance.TripSuccession[searchTrip.Index, nodeTrip.Index]) return null;
 
-                    if (CostHelper.AreSameShift(searchTrip, driverPrevSearchTrip, instance)) {
+                    if (instance.AreSameShift(searchTrip, driverPrevSearchTrip)) {
                         if (prevTripInternal == null) {
                             // This is the trip before, store it
                             prevTripInternal = searchTrip;
@@ -153,7 +153,7 @@ namespace Thesis {
                 costDiff = GetShiftCostDiff(driverPrevSearchTrip, lastTripInternal, prevTripInternal, driver);
             } else {
                 // We were at the beginning of the previous shift; check rest time, and then the check is complete
-                if (CostHelper.RestTime(driverPrevSearchTrip, prevShiftLastTrip, firstTripInternal, driver, instance) < Config.MinRestTime) return null;
+                if (driver.RestTime(driverPrevSearchTrip, prevShiftLastTrip, firstTripInternal) < Config.MinRestTime) return null;
             }
 
             if (!costDiff.HasValue) return null;
@@ -197,7 +197,7 @@ namespace Thesis {
                 Trip searchTrip = instance.Trips[searchNode.TripIndex];
 
                 if (searchNode.DriverIndex == node.DriverIndex) {
-                    if (!CostHelper.AreSameShift(searchTrip, driverPrevSearchTrip, instance)) {
+                    if (!instance.AreSameShift(searchTrip, driverPrevSearchTrip)) {
                         // End the shift
                         driverWorkedTime += driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
                         lastTripInternal = searchTrip;
@@ -233,7 +233,7 @@ namespace Thesis {
                 } else {
                     Trip lastTripInternal = allDriversLastTripInternal[searchNode.DriverIndex];
                     Driver driver = instance.Drivers[searchNode.DriverIndex];
-                    if (!CostHelper.AreSameShift(searchTrip, driverPrevSearchTrip, instance)) {
+                    if (!instance.AreSameShift(searchTrip, driverPrevSearchTrip)) {
                         // End shift for driver
                         allDriversWorkedTime[searchNode.DriverIndex] += driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
                         allDriversLastTripInternal[searchNode.DriverIndex] = searchTrip;

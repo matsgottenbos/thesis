@@ -53,7 +53,7 @@ namespace Thesis {
                     Trip trip = driverPath[driverTripIndex];
 
                     // Check shift length
-                    if (CostHelper.AreSameShift(prevTrip, trip, instance)) {
+                    if (instance.AreSameShift(prevTrip, trip)) {
                         // Check precedence
                         if (!instance.TripSuccession[prevTrip.Index, trip.Index]) {
                             totalPrecedenceViolationCount++;
@@ -75,7 +75,7 @@ namespace Thesis {
                             totalShiftLengthViolation += shiftLengthViolation;
                         }
 
-                        int restTime = CostHelper.RestTime(shiftFirstTrip, prevTrip, trip, driver, instance);
+                        int restTime = driver.RestTime(shiftFirstTrip, prevTrip, trip);
                         int restTimeViolation = Math.Max(0, Config.MinRestTime - restTime);
                         if (restTimeViolation > 0) {
                             totalRestTimeViolationCount++;

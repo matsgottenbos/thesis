@@ -13,7 +13,7 @@ namespace Thesis {
             (int oldShiftLength, float oldShiftCost) = driver.ShiftLengthAndCost(tripToUnassign, tripToUnassign);
             int shiftLengthDiff = -oldShiftLength;
             float costWithoutPenaltyDiff = -oldShiftCost;
-            float shiftLengthBasePenaltyDiff = -CostHelper.GetShiftLengthBasePenalty(oldShiftLength, false);
+            float shiftLengthBasePenaltyDiff = -PenaltyHelper.GetShiftLengthBasePenalty(oldShiftLength, false);
 
             return (shiftLengthDiff, costWithoutPenaltyDiff, shiftLengthBasePenaltyDiff);
         }
@@ -24,8 +24,8 @@ namespace Thesis {
             (int newShiftLength, float newShiftCost) = driver.ShiftLengthAndCost(nextTripInternal, lastTripInternal);
             int shiftLengthDiff = newShiftLength - oldShiftLength;
             float costWithoutPenaltyDiff = newShiftCost - oldShiftCost;
-            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthBasePenalty(newShiftLength, true) - CostHelper.GetShiftLengthBasePenalty(oldShiftLength, false);
-            float precedenceBasePenaltyDiff = -CostHelper.GetPrecedenceBasePenalty(tripToUnassign, nextTripInternal, instance, false);
+            float shiftLengthBasePenaltyDiff = PenaltyHelper.GetShiftLengthBasePenalty(newShiftLength, true) - PenaltyHelper.GetShiftLengthBasePenalty(oldShiftLength, false);
+            float precedenceBasePenaltyDiff = -PenaltyHelper.GetPrecedenceBasePenalty(tripToUnassign, nextTripInternal, instance, false);
 
             return (shiftLengthDiff, costWithoutPenaltyDiff, shiftLengthBasePenaltyDiff + precedenceBasePenaltyDiff);
         }
@@ -36,15 +36,15 @@ namespace Thesis {
             (int newShiftLength, float newShiftCost) = driver.ShiftLengthAndCost(firstTripInternal, prevTripInternal);
             int shiftLengthDiff = newShiftLength - oldShiftLength;
             float costWithoutPenaltyDiff = newShiftCost - oldShiftCost;
-            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthBasePenalty(newShiftLength, true) - CostHelper.GetShiftLengthBasePenalty(oldShiftLength, false);
-            float precedenceBasePenaltyDiff = -CostHelper.GetPrecedenceBasePenalty(prevTripInternal, tripToUnassign, instance, false);
+            float shiftLengthBasePenaltyDiff = PenaltyHelper.GetShiftLengthBasePenalty(newShiftLength, true) - PenaltyHelper.GetShiftLengthBasePenalty(oldShiftLength, false);
+            float precedenceBasePenaltyDiff = -PenaltyHelper.GetPrecedenceBasePenalty(prevTripInternal, tripToUnassign, instance, false);
 
             return (shiftLengthDiff, costWithoutPenaltyDiff, shiftLengthBasePenaltyDiff + precedenceBasePenaltyDiff);
         }
 
         /** Get internal differences from unassigning a middle trip in a shift; returns 1) shift length diff, 2) shift cost diff, and 3) base penalty diff */
         public static (int, float, float) UnassignMiddleTripInternal(Trip tripToUnassign, Trip prevTripInternal, Trip nextTripInternal, Driver driver, Instance instance) {
-            float precedenceBasePenaltyDiff = CostHelper.GetPrecedenceBasePenalty(prevTripInternal, nextTripInternal, instance, true) - CostHelper.GetPrecedenceBasePenalty(prevTripInternal, tripToUnassign, instance, false) - CostHelper.GetPrecedenceBasePenalty(tripToUnassign, nextTripInternal, instance, false);
+            float precedenceBasePenaltyDiff = PenaltyHelper.GetPrecedenceBasePenalty(prevTripInternal, nextTripInternal, instance, true) - PenaltyHelper.GetPrecedenceBasePenalty(prevTripInternal, tripToUnassign, instance, false) - PenaltyHelper.GetPrecedenceBasePenalty(tripToUnassign, nextTripInternal, instance, false);
             return (0, 0, precedenceBasePenaltyDiff);
         }
 
@@ -58,7 +58,7 @@ namespace Thesis {
             (int newShiftLength, float newShiftCost) = driver.ShiftLengthAndCost(shift1FirstTrip, shift2LastTrip);
             int shiftLengthDiff = newShiftLength - oldShift1Length - oldShift2Length;
             float costWithoutPenaltyDiff = newShiftCost - oldShift1Cost - oldShift2Cost;
-            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthBasePenalty(newShiftLength, true) - CostHelper.GetShiftLengthBasePenalty(oldShift1Length, false) - CostHelper.GetShiftLengthBasePenalty(oldShift2Length, false);
+            float shiftLengthBasePenaltyDiff = PenaltyHelper.GetShiftLengthBasePenalty(newShiftLength, true) - PenaltyHelper.GetShiftLengthBasePenalty(oldShift1Length, false) - PenaltyHelper.GetShiftLengthBasePenalty(oldShift2Length, false);
 
             return (shiftLengthDiff, costWithoutPenaltyDiff, shiftLengthBasePenaltyDiff);
         }
@@ -71,7 +71,7 @@ namespace Thesis {
             (int newShift2Length, float newShift2Cost) = driver.ShiftLengthAndCost(shift2FirstTrip, shift2LastTrip);
             int shiftLengthDiff = newShift1Length + newShift2Length - oldShiftLength;
             float costWithoutPenaltyDiff = newShift1Cost + newShift2Cost - oldShiftCost;
-            float shiftLengthBasePenaltyDiff = CostHelper.GetShiftLengthBasePenalty(newShift1Length, true) + CostHelper.GetShiftLengthBasePenalty(newShift2Length, true) - CostHelper.GetShiftLengthBasePenalty(oldShiftLength, false);
+            float shiftLengthBasePenaltyDiff = PenaltyHelper.GetShiftLengthBasePenalty(newShift1Length, true) + PenaltyHelper.GetShiftLengthBasePenalty(newShift2Length, true) - PenaltyHelper.GetShiftLengthBasePenalty(oldShiftLength, false);
             return (shiftLengthDiff, costWithoutPenaltyDiff, shiftLengthBasePenaltyDiff);
         }
     }
