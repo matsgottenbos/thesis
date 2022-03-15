@@ -20,10 +20,6 @@ namespace Thesis {
             return driver.TwoWayPayedTravelTimes[trip.FirstStation];
         }
 
-        public static float TwoWayPayedTravelCostFromHome(Trip trip, Driver driver) {
-            return TwoWayPayedTravelTimeFromHome(trip, driver) * Config.SalaryRate;
-        }
-
         public static int CarTravelTime(Trip trip1, Trip trip2, Instance instance) {
             return instance.CarTravelTimes[trip1.LastStation, trip2.FirstStation];
         }
@@ -48,10 +44,6 @@ namespace Thesis {
 
         public static int ShiftEndTimeWithoutTwoWayTravel(Trip firstTripInternal, Trip lastTripInternal, Instance instance) {
             return lastTripInternal.EndTime + instance.CarTravelTimes[lastTripInternal.LastStation, firstTripInternal.FirstStation];
-        }
-
-        public static int ShiftLength(Trip firstTripInternal, Trip lastTripInternal, Driver driver, Instance instance) {
-            return ShiftEndTimeWithoutTwoWayTravel(firstTripInternal, lastTripInternal, instance) - ShiftStartTimeWithTwoWayTravel(firstTripInternal, driver);
         }
 
         public static int RestTime(Trip shift1FirstTrip, Trip shift1LastTrip, Trip shift2FirstTrip, Driver driver, Instance instance) {

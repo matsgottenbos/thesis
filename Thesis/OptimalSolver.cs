@@ -19,8 +19,9 @@ namespace Thesis {
 
             // Calculate minimum remaning driving costs after each assigned number of trips
             double[] minRemainingDrivingCosts = new double[instance.Trips.Length];
+            float minSalaryRate = Config.SalaryRates.Select(salaryRate => salaryRate.SalaryRate).Min();
             for (int tripIndex = instance.Trips.Length - 1; tripIndex >= 1; tripIndex--) {
-                float tripMinDrivingCost = instance.Trips[tripIndex].DrivingCost;
+                float tripMinDrivingCost = instance.Trips[tripIndex].Duration * minSalaryRate;
                 minRemainingDrivingCosts[tripIndex - 1] = minRemainingDrivingCosts[tripIndex] + tripMinDrivingCost;
             }
 
@@ -165,27 +166,25 @@ namespace Thesis {
         }
 
         double? GetShiftCostDiff(Trip firstTripInternal, Trip lastTripInternal, Trip prevTripInternal, Driver driver) {
-            int shiftLengthDiff;
+            // Get new shift length
+            int newShiftLength = driver.ShiftLength(firstTripInternal, lastTripInternal);
+
+            // Check shift length
+            if (newShiftLength > Config.MaxShiftLength) return null;
+
+            // Get new shift cost
+            float newShiftCost = driver.ShiftCost(firstTripInternal, lastTripInternal);
+
+            float shiftCostDiff;
             if (prevTripInternal == null) {
-                // There is only one trip in this shift, so the shift length is the diff
-                shiftLengthDiff = CostHelper.ShiftLength(lastTripInternal, lastTripInternal, driver, instance);
-
-                // Check shift length
-                if (shiftLengthDiff > Config.MaxShiftLength) return null;
+                // There is only one trip in this shift, so the shift cost is the diff
+                shiftCostDiff = newShiftCost;
             } else {
-                // Get shift length diff
-                int shiftEndTime = CostHelper.ShiftEndTimeWithoutTwoWayTravel(firstTripInternal, lastTripInternal, instance);
-                int shiftLength = shiftEndTime - CostHelper.ShiftStartTimeWithTwoWayTravel(firstTripInternal, driver);
-
-                // Check shift length
-                if (shiftLength > Config.MaxShiftLength) return null;
-
-                shiftLengthDiff = shiftEndTime - CostHelper.ShiftEndTimeWithoutTwoWayTravel(firstTripInternal, prevTripInternal, instance);
+                // Determine difference with previous shift cost
+                shiftCostDiff = newShiftCost - driver.ShiftCost(firstTripInternal, prevTripInternal);
             }
 
-            // Get cost diff
-            double costDiff = shiftLengthDiff * Config.SalaryRate;
-            return costDiff;
+            return shiftCostDiff;
         }
 
         /** Check that this driver doesn't exceed his maximum contract time */
@@ -200,7 +199,7 @@ namespace Thesis {
                 if (searchNode.DriverIndex == node.DriverIndex) {
                     if (!CostHelper.AreSameShift(searchTrip, driverPrevSearchTrip, instance)) {
                         // End the shift
-                        driverWorkedTime += CostHelper.ShiftLength(driverPrevSearchTrip, lastTripInternal, driver, instance);
+                        driverWorkedTime += driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
                         lastTripInternal = searchTrip;
                     }
                     driverPrevSearchTrip = searchTrip;
@@ -210,7 +209,7 @@ namespace Thesis {
             }
 
             // End first shift
-            driverWorkedTime += CostHelper.ShiftLength(driverPrevSearchTrip, lastTripInternal, driver, instance);
+            driverWorkedTime += driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
             if (driverWorkedTime > driver.MaxContractTime) return false;
             return true;
         }
@@ -236,7 +235,7 @@ namespace Thesis {
                     Driver driver = instance.Drivers[searchNode.DriverIndex];
                     if (!CostHelper.AreSameShift(searchTrip, driverPrevSearchTrip, instance)) {
                         // End shift for driver
-                        allDriversWorkedTime[searchNode.DriverIndex] += CostHelper.ShiftLength(driverPrevSearchTrip, lastTripInternal, driver, instance);
+                        allDriversWorkedTime[searchNode.DriverIndex] += driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
                         allDriversLastTripInternal[searchNode.DriverIndex] = searchTrip;
                     }
                 }
@@ -260,7 +259,7 @@ namespace Thesis {
                 }
 
                 Trip lastTripInternal = allDriversLastTripInternal[driverIndex];
-                float driverWorkedTime = allDriversWorkedTime[driverIndex] + CostHelper.ShiftLength(driverPrevSearchTrip, lastTripInternal, driver, instance);
+                float driverWorkedTime = allDriversWorkedTime[driverIndex] + driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
 
                 // Check minimum contract time
                 if (driverWorkedTime < driver.MinContractTime) {

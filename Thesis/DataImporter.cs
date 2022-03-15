@@ -49,10 +49,9 @@ namespace Thesis {
                 int startTime = (int)Math.Round((tripStartDates[tripIndex] - planningStartDate).TotalMinutes);
                 int endTime = (int)Math.Round((tripEndDates[tripIndex] - planningStartDate).TotalMinutes);
                 int duration = endTime - startTime;
-                float drivingCost = duration * Config.SalaryRate;
 
                 // TODO: add stations
-                trips[tripIndex] = new Trip(-1, new List<int> { -1, -1 }, startTime, endTime, duration, drivingCost);
+                trips[tripIndex] = new Trip(-1, new List<int> { -1, -1 }, startTime, endTime, duration);
             }
 
             Console.ReadLine();

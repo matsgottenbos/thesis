@@ -11,15 +11,30 @@ namespace Thesis {
         public const bool RunOptimalAlgorithm = false;
         public const bool RunSimulatedAnnealing = true;
 
-        // Shift
+        // Shifts
         public const int MaxShiftLength = 10 * 60; // Maximum length of a shift (including travel)
         public const int MinRestTime = 11 * 60; // Minimum required resting time between two shifts
         public const int ShiftWaitingTimeThreshold = 6 * 60; // Waiting times shorter than this count as the same trip; waiting time longer start a new shift
         public const int ShiftMaxStartTimeDiff = 24 * 60; // The maximum difference in start times considered when searching for trips in the same shift
         public const int BetweenShiftsMaxStartTimeDiff = 36 * 60; // The maximum difference in start times considered when checking rest time between different shifts
 
+        // Time periods
+        public const int DayLength = 24 * 60;
+
         // Salaries
-        public const float SalaryRate = 50 / 60f;
+        public static readonly SalaryRateInfo[] SalaryRates = new SalaryRateInfo[] {
+            new SalaryRateInfo(0 * 60,  60 / 60f), // Night 0-6: hourly rate of 60
+            new SalaryRateInfo(6 * 60,  55 / 60f), // Morning 6-7, hourly rate of 55
+            new SalaryRateInfo(7 * 60,  50 / 60f), // Day 7-18, hourly rate of 50
+            new SalaryRateInfo(18 * 60, 55 / 60f), // Evening 18-23, hourly rate of 55
+            new SalaryRateInfo(23 * 60, 60 / 60f), // Night 23-6, hourly rate of 60
+            new SalaryRateInfo(30 * 60, 55 / 60f), // Repeat morning 6-7, hourly rate of 55
+            new SalaryRateInfo(31 * 60, 55 / 60f), // Repeat day 7-18, hourly rate of 50
+            new SalaryRateInfo(42 * 60, 55 / 60f), // Repeat evening 18-23, hourly rate of 55
+            new SalaryRateInfo(47 * 60, 60 / 60f), // Repeat night 23-6, hourly rate of 60
+            // TODO: add weekends and holidays
+        };
+        public const float TravelSalaryRate = 50 / 60f;
         public const int UnpaidTravelTimePerShift = 60;
 
         // Contract time deviations
@@ -81,9 +96,19 @@ namespace Thesis {
         public const float FloatingPointMargin = 0.0001f;
 
         // Debug
-        public const bool DebugCheckAndLogOperations = false;
+        public const bool DebugCheckAndLogOperations = true;
         public const bool DebugRunInspector = false;
         public const bool DebugRunOdataTest = false;
         public const bool DebugUseSeededSa = true;
+    }
+
+    class SalaryRateInfo {
+        public readonly int StartTime;
+        public readonly float SalaryRate;
+
+        public SalaryRateInfo(int startTime, float salaryRate) {
+            StartTime = startTime;
+            SalaryRate = salaryRate;
+        }
     }
 }

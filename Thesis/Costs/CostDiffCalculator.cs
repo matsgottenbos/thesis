@@ -19,33 +19,35 @@ namespace Thesis {
 
             // Cost diffs
             int unassignShiftLengthDiff;
-            float unassignBasePenaltyDiff;
+            float unassignCostWithoutPenaltyDiff, unassignBasePenaltyDiff;
             if (prevTripInternal == null) {
                 if (nextTripInternal == null) {
                     // This is the only trip of this shift
-                    (unassignShiftLengthDiff, unassignBasePenaltyDiff) = CostDiffByTripPosition.UnassignOnlyTrip(trip, tripToIgnore, firstTripInternal, lastTripInternal, prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip, driver, assignment, instance);
+                    (unassignShiftLengthDiff, unassignCostWithoutPenaltyDiff, unassignBasePenaltyDiff) = CostDiffByTripPosition.UnassignOnlyTrip(trip, tripToIgnore, firstTripInternal, lastTripInternal, prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip, driver, assignment, instance);
                 } else {
                     // This is the first trip of this shift
-                    (unassignShiftLengthDiff, unassignBasePenaltyDiff) = CostDiffByTripPosition.UnassignFirstTrip(trip, nextTripInternal, firstTripInternal, lastTripInternal, prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip, driver, assignment, instance);
+                    (unassignShiftLengthDiff, unassignCostWithoutPenaltyDiff, unassignBasePenaltyDiff) = CostDiffByTripPosition.UnassignFirstTrip(trip, nextTripInternal, firstTripInternal, lastTripInternal, prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip, driver, assignment, instance);
                 }
             } else {
                 if (nextTripInternal == null) {
                     // This is the last trip of this shift
-                    (unassignShiftLengthDiff, unassignBasePenaltyDiff) = CostDiffByTripPosition.UnassignLastTrip(trip, tripToIgnore, prevTripInternal, firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, assignment, instance);
+                    (unassignShiftLengthDiff, unassignCostWithoutPenaltyDiff, unassignBasePenaltyDiff) = CostDiffByTripPosition.UnassignLastTrip(trip, tripToIgnore, prevTripInternal, firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, assignment, instance);
                 } else {
                     // This is a middle trip of this shift
-                    (unassignShiftLengthDiff, unassignBasePenaltyDiff) = CostDiffByTripPosition.UnassignMiddleTrip(trip, prevTripInternal, nextTripInternal, firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, instance);
+                    (unassignShiftLengthDiff, unassignCostWithoutPenaltyDiff, unassignBasePenaltyDiff) = CostDiffByTripPosition.UnassignMiddleTrip(trip, prevTripInternal, nextTripInternal, firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, instance);
                 }
             }
 
             // Get correct values for this type of operation
             int shiftLengthDiff;
-            float basePenaltyDiff;
+            float costWithoutPenaltyDiff, basePenaltyDiff;
             if (isAssign) {
                 shiftLengthDiff = -unassignShiftLengthDiff;
+                costWithoutPenaltyDiff = -unassignCostWithoutPenaltyDiff;
                 basePenaltyDiff = -unassignBasePenaltyDiff;
             } else {
                 shiftLengthDiff = unassignShiftLengthDiff;
+                costWithoutPenaltyDiff = unassignCostWithoutPenaltyDiff;
                 basePenaltyDiff = unassignBasePenaltyDiff;
             }
 
@@ -53,7 +55,6 @@ namespace Thesis {
             basePenaltyDiff += CostHelper.GetContractTimeBasePenaltyDiff(driverOldWorkedTime, driverOldWorkedTime + shiftLengthDiff, driver);
 
             // Get costs
-            double costWithoutPenaltyDiff = shiftLengthDiff * Config.SalaryRate;
             double costDiff = costWithoutPenaltyDiff + basePenaltyDiff * penaltyFactor;
 
             // Debugger

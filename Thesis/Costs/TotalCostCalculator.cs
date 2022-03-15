@@ -38,6 +38,7 @@ namespace Thesis {
             int totalContractTimeViolationCount = 0;
             int totalContractTimeViolation = 0;
             int totalWorkedTime = 0;
+            double totalCostWithoutPenalty = 0;
 
             if (driverPath.Count == 0) {
                 // Empty path, so we only need to check min contract time
@@ -65,8 +66,9 @@ namespace Thesis {
                         #endif
                     } else {
                         /* End previous shift */
-                        int shiftLength = CostHelper.ShiftLength(shiftFirstTrip, prevTrip, driver, instance);
+                        int shiftLength = driver.ShiftLength(shiftFirstTrip, prevTrip);
                         totalWorkedTime += shiftLength;
+                        totalCostWithoutPenalty += driver.ShiftCost(shiftFirstTrip, prevTrip);
                         int shiftLengthViolation = Math.Max(0, shiftLength - Config.MaxShiftLength);
                         if (shiftLengthViolation > 0) {
                             totalShiftLengthViolationCount++;
@@ -96,8 +98,9 @@ namespace Thesis {
                 }
 
                 // End last shift
-                int lastShiftLength = CostHelper.ShiftLength(shiftFirstTrip, prevTrip, driver, instance);
+                int lastShiftLength = driver.ShiftLength(shiftFirstTrip, prevTrip);
                 totalWorkedTime += lastShiftLength;
+                totalCostWithoutPenalty += driver.ShiftCost(shiftFirstTrip, prevTrip);
                 int lastShiftLengthViolation = Math.Max(0, lastShiftLength - Config.MaxShiftLength);
                 if (lastShiftLengthViolation > 0) {
                     totalShiftLengthViolationCount++;
@@ -120,9 +123,6 @@ namespace Thesis {
                     totalContractTimeViolation += totalWorkedTime - driver.MaxContractTime;
                 }
             }
-            
-
-            double costWithoutPenalty = totalWorkedTime * Config.SalaryRate;
 
             double precendenceBasePenalty = totalPrecedenceViolationCount * Config.PrecendenceViolationPenalty;
             double shiftLengthBasePenalty = totalShiftLengthViolationCount * Config.ShiftLengthViolationPenalty + totalShiftLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
@@ -130,7 +130,7 @@ namespace Thesis {
             double contractTimeBasePenalty = totalContractTimeViolationCount * Config.ContractTimeViolationPenalty + totalContractTimeViolation * Config.ContractTimeViolationPenaltyPerMin;
             double basePenalty = precendenceBasePenalty + shiftLengthBasePenalty + restTimeBasePenalty + contractTimeBasePenalty;
 
-            double cost = costWithoutPenalty + basePenalty * penaltyFactor;
+            double cost = totalCostWithoutPenalty + basePenalty * penaltyFactor;
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations && shouldDebug) {
@@ -143,12 +143,12 @@ namespace Thesis {
                 SaDebugger.GetCurrentCheckedTotal().Total.CtViolationAmount = totalContractTimeViolation;
 
                 SaDebugger.GetCurrentCheckedTotal().Total.Cost = cost;
-                SaDebugger.GetCurrentCheckedTotal().Total.CostWithoutPenalty = costWithoutPenalty;
+                SaDebugger.GetCurrentCheckedTotal().Total.CostWithoutPenalty = totalCostWithoutPenalty;
                 SaDebugger.GetCurrentCheckedTotal().Total.BasePenalty = basePenalty;
             }
             #endif
 
-            return (cost, costWithoutPenalty, basePenalty, totalWorkedTime);
+            return (cost, totalCostWithoutPenalty, basePenalty, totalWorkedTime);
         }
 
         /** Helper: get list of trips that each driver is assigned to */
