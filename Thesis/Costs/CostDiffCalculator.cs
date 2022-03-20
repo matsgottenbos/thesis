@@ -10,7 +10,7 @@ namespace Thesis {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 string templateStr = isAssign ? "Assign trip {0} to driver {1}" : "Unassign trip {0} from driver {1}";
-                SaDebugger.GetCurrentOperation().StartPart(string.Format(templateStr, trip.Index, driver.Index), isAssign, driver);
+                SaDebugger.GetCurrentOperation().StartPart(string.Format(templateStr, trip.Index, driver.GetId()), isAssign, driver);
             }
             #endif
 

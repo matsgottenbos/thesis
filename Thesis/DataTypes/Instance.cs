@@ -9,14 +9,18 @@ namespace Thesis {
         public readonly int[,] TrainTravelTimes, CarTravelTimes;
         public readonly Trip[] Trips;
         public readonly bool[,] TripSuccession;
-        public readonly Driver[] Drivers;
+        public readonly InternalDriver[] InternalDrivers;
+        public readonly ExternalDriver[][] ExternalDriversByType;
+        public readonly Driver[] AllDrivers;
 
-        public Instance(int[,] trainTravelTimes, int[,] carTravelTimes, Trip[] trips, bool[,] tripSuccession, Driver[] drivers) {
+        public Instance(int[,] trainTravelTimes, int[,] carTravelTimes, Trip[] trips, bool[,] tripSuccession, InternalDriver[] internalDrivers, ExternalDriver[][] externalDriversByType, Driver[] allDrivers) {
             TrainTravelTimes = trainTravelTimes;
             CarTravelTimes = carTravelTimes;
             Trips = trips;
             TripSuccession = tripSuccession;
-            Drivers = drivers;
+            InternalDrivers = internalDrivers;
+            ExternalDriversByType = externalDriversByType;
+            AllDrivers = allDrivers;
         }
 
 

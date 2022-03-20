@@ -316,12 +316,8 @@ namespace Thesis {
 
         /* Custom additions */
 
-        public double GetIntFactor(int max) {
-            return max / (ushort.MaxValue + 1.0);
-        }
-
-        public int NextIntWithFactor(double factor) {
-            return (int)(factor * NextUInt16());
+        public int NextInt(int next) {
+            return (int)(NextUInt16() * next / (ushort.MaxValue + 1.0));
         }
     }
 }

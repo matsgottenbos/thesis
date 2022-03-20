@@ -34,15 +34,17 @@ namespace Thesis {
             }
 
             // Check cost
-            (double bestNodeCost, _, double bestNodeBasePenalty, _) = GetNodeCost(bestNode, instance);
-            if (bestNodeBasePenalty > 0) throw new Exception("Optimal algorithm returned an infeasible solution");
+            (double bestNodeCost, _, double bestNodeBasePenalty, _) = GetNodeCost(bestNode);
+            if (bestNodeBasePenalty > 0) {
+                throw new Exception("Optimal algorithm returned an infeasible solution");
+            }
 
             int tripCount = instance.Trips.Length;
-            Driver[] bestAssignmentIndices = NodeToAssignment(bestNode, instance);
+            Driver[] bestAssignmentIndices = NodeToAssignment(bestNode);
             Driver[] bestAssignment = new Driver[tripCount];
             for (int tripIndex = 0; tripIndex < tripCount; tripIndex++) {
                 Driver driver = bestAssignmentIndices[tripIndex];
-                bestAssignment[tripIndex] = instance.Drivers[driver.Index];
+                bestAssignment[tripIndex] = instance.AllDrivers[driver.AllDriversIndex];
             }
 
             stopwatch.Stop();
@@ -51,7 +53,7 @@ namespace Thesis {
             return new Solution(bestNodeCost, bestAssignment);
         }
 
-        (AssignmentNode, double) AssignmentDfs(double[] minRemainingDrivingCosts, AssignmentNode node = null, double nodeCost = 0, int newTripIndex = 0, double costUpperBound = double.MaxValue) {
+        (AssignmentNode, double) AssignmentDfs(double[] minRemainingDrivingCosts, AssignmentNode node = null, double nodeCost = 0, int newTripIndex = 0, double costUpperBound = double.MaxValue, string bestAssignmentStr = "-") {
             if (newTripIndex == instance.Trips.Length) {
                 return (node, nodeCost);
             }
@@ -61,17 +63,18 @@ namespace Thesis {
                 string logStr = "";
                 AssignmentNode searchNode = node;
                 while (searchNode != null) {
-                    logStr = string.Format("{0} / {1}  |  ", searchNode.DriverIndex, Config.GenDriverCount) + logStr;
+                    logStr = string.Format("{0} / {1}  |  ", searchNode.DriverIndex, instance.AllDrivers.Length) + logStr;
                     searchNode = searchNode.Prev;
                 }
 
                 string bestCostStr = costUpperBound < double.MaxValue ? ParseHelper.ToString(costUpperBound) : "-";
-                Console.WriteLine(bestCostStr + "  |  " + logStr);
+                Console.WriteLine("{0}  |  {1}  |  {2}", bestCostStr, bestAssignmentStr, logStr);
             }
 
             double bestNodeCost = costUpperBound;
             AssignmentNode bestNode = null;
-            for (int driverIndex = 0; driverIndex < Config.GenDriverCount; driverIndex++) {
+            string newBestAssignmentStr = bestAssignmentStr;
+            for (int driverIndex = 0; driverIndex < instance.AllDrivers.Length; driverIndex++) {
                 AssignmentNode newNode = new AssignmentNode(newTripIndex, driverIndex, node);
 
                 // Check feasibility and cost
@@ -82,24 +85,25 @@ namespace Thesis {
                 double newNodeMinFinalCost = newNodeCost + minRemainingDrivingCosts[newTripIndex];
                 if (newNodeMinFinalCost > costUpperBound) continue;
 
-                (AssignmentNode dfsResultNode, double dfsResultCost) = AssignmentDfs(minRemainingDrivingCosts, newNode, newNodeCost, newTripIndex + 1, bestNodeCost);
+                (AssignmentNode dfsResultNode, double dfsResultCost) = AssignmentDfs(minRemainingDrivingCosts, newNode, newNodeCost, newTripIndex + 1, bestNodeCost, newBestAssignmentStr);
                 if (dfsResultCost < bestNodeCost) {
                     bestNodeCost = dfsResultCost;
                     bestNode = dfsResultNode;
+                    Driver[] bestAssignment = NodeToAssignment(bestNode);
+                    newBestAssignmentStr = string.Join(' ', bestAssignment.Select(driver => driver.GetId()));
                 }
             }
 
             // Logging progress
             if (newTripIndex == 0) {
-                Console.WriteLine("{0} / {1}", Config.GenDriverCount, Config.GenDriverCount);
+                Console.WriteLine("{0} / {1}", Config.GenInternalDriverCount, Config.GenInternalDriverCount);
             }
 
             return (bestNode, bestNodeCost);
         }
 
         double? GetAdditionCostDiffIfFeasible(AssignmentNode node) {
-            int nodeDriverIndex = node.DriverIndex;
-            Driver driver = instance.Drivers[nodeDriverIndex];
+            Driver driver = instance.AllDrivers[node.DriverIndex];
             Trip nodeTrip = instance.Trips[node.TripIndex];
 
             // Get driver's trip before this one, and driver's first trip of the shift
@@ -118,7 +122,7 @@ namespace Thesis {
                     break;
                 }
 
-                if (searchNode.DriverIndex == nodeDriverIndex) {
+                if (searchNode.DriverIndex == node.DriverIndex) {
                     // Check precedence
                     if (!instance.TripSuccession[searchTrip.Index, nodeTrip.Index]) return null;
 
@@ -161,6 +165,15 @@ namespace Thesis {
             // Check contract time
             if (!CheckDriverMaxContractTime(node, nodeTrip, driver)) return null;
             if (!CheckMinContractTime(node)) return null;
+
+            #if DEBUG
+            if (Config.DebugCheckAndLogOperations) {
+                (_, _, double debugNodeBasePenalty, _) = GetNodeCost(node);
+                if (debugNodeBasePenalty > 0) {
+                    throw new Exception();
+                }
+            }
+            #endif
 
             return costDiff;
         }
@@ -220,9 +233,9 @@ namespace Thesis {
             int tripsLeftToAssign = instance.Trips.Length - node.TripIndex - 1;
             if (tripsLeftToAssign > 2) return true;
 
-            int[] allDriversWorkedTime = new int[instance.Drivers.Length];
-            Trip[] allDriversPrevSearchTrip = new Trip[instance.Drivers.Length];
-            Trip[] allDriversLastTripInternal = new Trip[instance.Drivers.Length];
+            int[] allDriversWorkedTime = new int[instance.AllDrivers.Length];
+            Trip[] allDriversPrevSearchTrip = new Trip[instance.AllDrivers.Length];
+            Trip[] allDriversLastTripInternal = new Trip[instance.AllDrivers.Length];
             AssignmentNode searchNode = node;
             while (searchNode != null) {
                 Trip searchTrip = instance.Trips[searchNode.TripIndex];
@@ -232,7 +245,7 @@ namespace Thesis {
                     allDriversLastTripInternal[searchNode.DriverIndex] = searchTrip;
                 } else {
                     Trip lastTripInternal = allDriversLastTripInternal[searchNode.DriverIndex];
-                    Driver driver = instance.Drivers[searchNode.DriverIndex];
+                    Driver driver = instance.AllDrivers[searchNode.DriverIndex];
                     if (!instance.AreSameShift(searchTrip, driverPrevSearchTrip)) {
                         // End shift for driver
                         allDriversWorkedTime[searchNode.DriverIndex] += driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
@@ -246,8 +259,8 @@ namespace Thesis {
 
             // End shift for all drivers
             int minTimeViolations = 0;
-            for (int driverIndex = 0; driverIndex < instance.Drivers.Length; driverIndex++) {
-                Driver driver = instance.Drivers[driverIndex];
+            for (int driverIndex = 0; driverIndex < instance.AllDrivers.Length; driverIndex++) {
+                Driver driver = instance.AllDrivers[driverIndex];
                 Trip driverPrevSearchTrip = allDriversPrevSearchTrip[driverIndex];
                 if (driverPrevSearchTrip == null) {
                     // Driver has no assigned trips
@@ -271,15 +284,15 @@ namespace Thesis {
             return true;
         }
 
-        (double, double, double, int[]) GetNodeCost(AssignmentNode node, Instance instance) {
-            Driver[] assignment = NodeToAssignment(node, instance);
+        (double, double, double, int[]) GetNodeCost(AssignmentNode node) {
+            Driver[] assignment = NodeToAssignment(node);
             return TotalCostCalculator.GetAssignmentCost(assignment, instance, 1);
         }
 
-        Driver[] NodeToAssignment(AssignmentNode node, Instance instance) {
+        Driver[] NodeToAssignment(AssignmentNode node) {
             Driver[] assignment = new Driver[node.TripIndex + 1];
             for (int tripIndex = node.TripIndex; tripIndex >= 0; tripIndex--) {
-                assignment[tripIndex] = instance.Drivers[node.DriverIndex];
+                assignment[tripIndex] = instance.AllDrivers[node.DriverIndex];
                 node = node.Prev;
             }
             return assignment;

@@ -38,18 +38,21 @@ namespace Thesis {
         public const int UnpaidTravelTimePerShift = 60;
 
         // Contract time deviations
-        //public const float MinContractTimeFraction = 0.8f;
-        //public const float MaxContractTimeFraction = 1.2f;
-        public const float MinContractTimeFraction = 0.6f;
-        public const float MaxContractTimeFraction = 1.4f;
+        public const float MinContractTimeFraction = 0.8f;
+        public const float MaxContractTimeFraction = 1.2f;
 
+        // Operations
+        public const float AssignExternalDriverProbability = 0.2f;
 
         /* Generator */
         // Counts
         public const int GenTimeframeLength = 2 * 24 * 60;
         public const int GenStationCount = 10;
         public const int GenTripCount = 15;
-        public const int GenDriverCount = 10;
+        public const int GenInternalDriverCount = 5;
+        public const int GenExternaDriverTypeCount = 2;
+        public const int GenExternalDriverMinCountPerType = 2;
+        public const int GenExternalDriverMaxCountPerType = 5;
         public const int GenMaxStationCountPerTrip = 4;
 
         // Distances

@@ -13,10 +13,10 @@ namespace Thesis {
             double cost = 0;
             double costWithoutPenalty = 0;
             double basePenalty = 0;
-            int[] driversWorkedTime = new int[instance.Drivers.Length];
-            for (int driverIndex = 0; driverIndex < instance.Drivers.Length; driverIndex++) {
+            int[] driversWorkedTime = new int[instance.AllDrivers.Length];
+            for (int driverIndex = 0; driverIndex < instance.AllDrivers.Length; driverIndex++) {
                 List<Trip> driverPath = driverPaths[driverIndex];
-                Driver driver = instance.Drivers[driverIndex];
+                Driver driver = instance.AllDrivers[driverIndex];
 
                 (double driverCost, double driverCostWithoutPenalty, double driverBasePenalty, int driverWorkedTime) = GetDriverPathCost(driverPath, driver, instance, penaltyFactor, false);
                  
@@ -146,7 +146,7 @@ namespace Thesis {
 
         /** Helper: get list of trips that each driver is assigned to */
         static List<Trip>[] GetPathPerDriver(Driver[] assignment, Instance instance) {
-            List<Trip>[] driverPaths = new List<Trip>[Config.GenDriverCount];
+            List<Trip>[] driverPaths = new List<Trip>[instance.AllDrivers.Length];
             for (int driverIndex = 0; driverIndex < driverPaths.Length; driverIndex++) {
                 driverPaths[driverIndex] = new List<Trip>();
             }
@@ -154,7 +154,7 @@ namespace Thesis {
             for (int tripIndex = 0; tripIndex < assignment.Length; tripIndex++) {
                 Driver driver = assignment[tripIndex];
                 Trip trip = instance.Trips[tripIndex];
-                driverPaths[driver.Index].Add(trip);
+                driverPaths[driver.AllDriversIndex].Add(trip);
             }
             return driverPaths;
         }

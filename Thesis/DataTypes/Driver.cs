@@ -6,26 +6,25 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     abstract class Driver {
-        public int Index;
+        public readonly int AllDriversIndex;
         public readonly int[] OneWayTravelTimes, TwoWayPayedTravelTimes;
         public readonly int[,] ShiftLengths;
         public readonly float[,] ShiftCosts;
         Instance instance;
 
-        public Driver(int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] shiftLengths, float[,] shiftCosts) {
+        public Driver(int allDriversIndex, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] shiftLengths, float[,] shiftCosts) {
+            AllDriversIndex = allDriversIndex;
             OneWayTravelTimes = oneWayTravelTimes;
             TwoWayPayedTravelTimes = twoWayPayedTravelTimes;
             ShiftLengths = shiftLengths;
             ShiftCosts = shiftCosts;
         }
 
-        public void SetIndex(int index) {
-            Index = index;
-        }
-
         public void SetInstance(Instance instance) {
             this.instance = instance;
         }
+
+        public abstract string GetId();
 
 
         /*** Helper methods ***/
@@ -97,13 +96,18 @@ namespace Thesis {
     }
 
     class InternalDriver : Driver {
-        public readonly int MinContractTime, MaxContractTime;
+        public readonly int InternalIndex, MinContractTime, MaxContractTime;
         public readonly bool[,] TrackProficiencies;
 
-        public InternalDriver(int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] shiftLengths, float[,] shiftCosts, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(oneWayTravelTimes, twoWayPayedTravelTimes, shiftLengths, shiftCosts) {
+        public InternalDriver(int allDriversIndex, int internalIndex, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] shiftLengths, float[,] shiftCosts, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, twoWayPayedTravelTimes, shiftLengths, shiftCosts) {
+            InternalIndex = internalIndex;
             MinContractTime = minWorkedTime;
             MaxContractTime = maxWorkedTime;
             TrackProficiencies = trackProficiencies;
+        }
+
+        public override string GetId() {
+            return InternalIndex.ToString();
         }
 
         public override int GetMinContractTimeViolation(int workedTime) {
@@ -116,8 +120,15 @@ namespace Thesis {
     }
 
     class ExternalDriver : Driver {
-        public ExternalDriver(int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] shiftLengths, float[,] shiftCosts) : base(oneWayTravelTimes, twoWayPayedTravelTimes, shiftLengths, shiftCosts) {
+        public readonly int ExternalDriverTypeIndex, IndexInType;
 
+        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] shiftLengths, float[,] shiftCosts) : base(allDriversIndex, oneWayTravelTimes, twoWayPayedTravelTimes, shiftLengths, shiftCosts) {
+            ExternalDriverTypeIndex = externalDriverTypeIndex;
+            IndexInType = indexInType;
+        }
+
+        public override string GetId() {
+            return string.Format("e{0}.{1}", ExternalDriverTypeIndex, IndexInType);
         }
 
         public override int GetMinContractTimeViolation(int workedTime) {
