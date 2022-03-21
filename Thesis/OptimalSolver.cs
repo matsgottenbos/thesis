@@ -19,7 +19,7 @@ namespace Thesis {
 
             // Calculate minimum remaning driving costs after each assigned number of trips
             double[] minRemainingDrivingCosts = new double[instance.Trips.Length];
-            float minSalaryRate = Config.SalaryRates.Select(salaryRate => salaryRate.SalaryRate).Min();
+            float minSalaryRate = Config.InternalDriverDailySalaryRates.Select(salaryRate => salaryRate.SalaryRate).Min();
             for (int tripIndex = instance.Trips.Length - 1; tripIndex >= 1; tripIndex--) {
                 float tripMinDrivingCost = instance.Trips[tripIndex].Duration * minSalaryRate;
                 minRemainingDrivingCosts[tripIndex - 1] = minRemainingDrivingCosts[tripIndex] + tripMinDrivingCost;

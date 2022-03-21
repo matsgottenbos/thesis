@@ -22,20 +22,24 @@ namespace Thesis {
         public const int DayLength = 24 * 60;
 
         // Salaries
-        public static readonly SalaryRateInfo[] SalaryRates = new SalaryRateInfo[] {
+        public static readonly SalaryRateInfo[] InternalDriverDailySalaryRates = new SalaryRateInfo[] {
             new SalaryRateInfo(0 * 60,  60 / 60f), // Night 0-6: hourly rate of 60
             new SalaryRateInfo(6 * 60,  55 / 60f), // Morning 6-7, hourly rate of 55
             new SalaryRateInfo(7 * 60,  50 / 60f), // Day 7-18, hourly rate of 50
             new SalaryRateInfo(18 * 60, 55 / 60f), // Evening 18-23, hourly rate of 55
             new SalaryRateInfo(23 * 60, 60 / 60f), // Night 23-6, hourly rate of 60
-            new SalaryRateInfo(30 * 60, 55 / 60f), // Repeat morning 6-7, hourly rate of 55
-            new SalaryRateInfo(31 * 60, 55 / 60f), // Repeat day 7-18, hourly rate of 50
-            new SalaryRateInfo(42 * 60, 55 / 60f), // Repeat evening 18-23, hourly rate of 55
-            new SalaryRateInfo(47 * 60, 60 / 60f), // Repeat night 23-6, hourly rate of 60
             // TODO: add weekends and holidays
         };
-        public const float TravelSalaryRate = 50 / 60f;
-        public const int UnpaidTravelTimePerShift = 60;
+        public const float InternalDriverTravelSalaryRate = 50 / 60f;
+        public const int InternalDriverUnpaidTravelTimePerShift = 60;
+        public static readonly SalaryRateInfo[] ExternalDriverDailySalaryRates = new SalaryRateInfo[] {
+            new SalaryRateInfo(0 * 60,  80 / 60f), // Night 0-6: hourly rate of 80
+            new SalaryRateInfo(6 * 60,  75 / 60f), // Morning 6-7, hourly rate of 75
+            new SalaryRateInfo(7 * 60,  70 / 60f), // Day 7-18, hourly rate of 70
+            new SalaryRateInfo(18 * 60, 75 / 60f), // Evening 18-23, hourly rate of 75
+            new SalaryRateInfo(23 * 60, 80 / 60f), // Night 23-6, hourly rate of 80
+            // TODO: add weekends and holidays
+        };
 
         // Contract time deviations
         public const float MinContractTimeFraction = 0.8f;
