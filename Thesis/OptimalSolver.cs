@@ -8,9 +8,13 @@ using System.Threading.Tasks;
 namespace Thesis {
     class OptimalSolver {
         readonly Instance instance;
+        readonly SaInfo dummyInfo;
 
         public OptimalSolver(Instance instance) {
             this.instance = instance;
+
+            dummyInfo = new SaInfo(instance, null, null);
+            dummyInfo.PenaltyFactor = 1f;
         }
 
         public Solution Solve() {
@@ -285,8 +289,8 @@ namespace Thesis {
         }
 
         (double, double, double, int[]) GetNodeCost(AssignmentNode node) {
-            Driver[] assignment = NodeToAssignment(node);
-            return TotalCostCalculator.GetAssignmentCost(assignment, instance, 1);
+            dummyInfo.Assignment = NodeToAssignment(node);
+            return TotalCostCalculator.GetAssignmentCost(dummyInfo);
         }
 
         Driver[] NodeToAssignment(AssignmentNode node) {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class PenaltyHelper {
-        public static float GetPrecedenceBasePenalty(Trip trip1, Trip trip2, Instance instance, bool debugIsNew) {
+        public static float GetPrecedenceBasePenalty(Trip trip1, Trip trip2, SaInfo info, bool debugIsNew) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 if (debugIsNew) SaDebugger.GetCurrentNormalDiff().Precedence.AddNew((trip1, trip2));
@@ -14,7 +14,7 @@ namespace Thesis {
             }
             #endif
 
-            if (instance.TripSuccession[trip1.Index, trip2.Index]) return 0;
+            if (info.Instance.TripSuccession[trip1.Index, trip2.Index]) return 0;
             else return Config.PrecendenceViolationPenalty;
         }
 
@@ -33,7 +33,7 @@ namespace Thesis {
             return amountBasePenalty + countBasePenalty;
         }
 
-        public static float GetRestTimeBasePenalty(Trip shift1FirstTrip, Trip shift1LastTrip, Trip shift2FirstTrip, Driver driver, Instance instance, bool debugIsNew) {
+        public static float GetRestTimeBasePenalty(Trip shift1FirstTrip, Trip shift1LastTrip, Trip shift2FirstTrip, Driver driver, bool debugIsNew) {
             int restTime = driver.RestTime(shift1FirstTrip, shift1LastTrip, shift2FirstTrip);
             float shiftLengthViolation = Math.Max(0, Config.MinRestTime - restTime);
             float amountBasePenalty = shiftLengthViolation * Config.RestTimeViolationPenaltyPerMin;

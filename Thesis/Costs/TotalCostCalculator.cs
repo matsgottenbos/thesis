@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 namespace Thesis {
     class TotalCostCalculator {
         /** Get assignment cost */
-        public static (double, double, double, int[]) GetAssignmentCost(Driver[] assignment, Instance instance, float penaltyFactor) {
-            List<Trip>[] driverPaths = GetPathPerDriver(assignment, instance);
+        public static (double, double, double, int[]) GetAssignmentCost(SaInfo info) {
+            List<Trip>[] driverPaths = GetPathPerDriver(info);
 
             double cost = 0;
             double costWithoutPenalty = 0;
             double basePenalty = 0;
-            int[] driversWorkedTime = new int[instance.AllDrivers.Length];
-            for (int driverIndex = 0; driverIndex < instance.AllDrivers.Length; driverIndex++) {
+            int[] driversWorkedTime = new int[info.Instance.AllDrivers.Length];
+            for (int driverIndex = 0; driverIndex < info.Instance.AllDrivers.Length; driverIndex++) {
                 List<Trip> driverPath = driverPaths[driverIndex];
-                Driver driver = instance.AllDrivers[driverIndex];
+                Driver driver = info.Instance.AllDrivers[driverIndex];
 
-                (double driverCost, double driverCostWithoutPenalty, double driverBasePenalty, int driverWorkedTime) = GetDriverPathCost(driverPath, driver, instance, penaltyFactor, false);
+                (double driverCost, double driverCostWithoutPenalty, double driverBasePenalty, int driverWorkedTime) = GetDriverPathCost(driverPath, driver, info, false);
                  
                 cost += driverCost;
                 costWithoutPenalty += driverCostWithoutPenalty;
@@ -29,7 +29,7 @@ namespace Thesis {
             return (cost, costWithoutPenalty, basePenalty, driversWorkedTime);
         }
 
-        public static (double, double, double, int) GetDriverPathCost(List<Trip> driverPath, Driver driver, Instance instance, float penaltyFactor, bool shouldDebug = true) {
+        public static (double, double, double, int) GetDriverPathCost(List<Trip> driverPath, Driver driver, SaInfo info, bool shouldDebug = true) {
             int totalPrecedenceViolationCount = 0;
             int totalShiftLengthViolationCount = 0;
             int totalShiftLengthViolation = 0;
@@ -51,9 +51,9 @@ namespace Thesis {
                     Trip trip = driverPath[driverTripIndex];
 
                     // Check shift length
-                    if (instance.AreSameShift(prevTrip, trip)) {
+                    if (info.Instance.AreSameShift(prevTrip, trip)) {
                         // Check precedence
-                        if (!instance.TripSuccession[prevTrip.Index, trip.Index]) {
+                        if (!info.Instance.TripSuccession[prevTrip.Index, trip.Index]) {
                             totalPrecedenceViolationCount++;
                         }
 
@@ -123,7 +123,7 @@ namespace Thesis {
             double contractTimeBasePenalty = totalContractTimeViolationCount * Config.ContractTimeViolationPenalty + totalContractTimeViolation * Config.ContractTimeViolationPenaltyPerMin;
             double basePenalty = precendenceBasePenalty + shiftLengthBasePenalty + restTimeBasePenalty + contractTimeBasePenalty;
 
-            double cost = totalCostWithoutPenalty + basePenalty * penaltyFactor;
+            double cost = totalCostWithoutPenalty + basePenalty * info.PenaltyFactor;
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations && shouldDebug) {
@@ -145,27 +145,27 @@ namespace Thesis {
         }
 
         /** Helper: get list of trips that each driver is assigned to */
-        static List<Trip>[] GetPathPerDriver(Driver[] assignment, Instance instance) {
-            List<Trip>[] driverPaths = new List<Trip>[instance.AllDrivers.Length];
+        static List<Trip>[] GetPathPerDriver(SaInfo info) {
+            List<Trip>[] driverPaths = new List<Trip>[info.Instance.AllDrivers.Length];
             for (int driverIndex = 0; driverIndex < driverPaths.Length; driverIndex++) {
                 driverPaths[driverIndex] = new List<Trip>();
             }
 
-            for (int tripIndex = 0; tripIndex < assignment.Length; tripIndex++) {
-                Driver driver = assignment[tripIndex];
-                Trip trip = instance.Trips[tripIndex];
+            for (int tripIndex = 0; tripIndex < info.Assignment.Length; tripIndex++) {
+                Driver driver = info.Assignment[tripIndex];
+                Trip trip = info.Instance.Trips[tripIndex];
                 driverPaths[driver.AllDriversIndex].Add(trip);
             }
             return driverPaths;
         }
 
-        public static List<Trip> GetSingleDriverPath(Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance) {
+        public static List<Trip> GetSingleDriverPath(Driver driver, Trip tripToIgnore, SaInfo info) {
             List<Trip> driverPath = new List<Trip>();
 
-            for (int tripIndex = 0; tripIndex < assignment.Length; tripIndex++) {
-                Driver tripDriver = assignment[tripIndex];
+            for (int tripIndex = 0; tripIndex < info.Assignment.Length; tripIndex++) {
+                Driver tripDriver = info.Assignment[tripIndex];
                 if (tripDriver != driver) continue;
-                Trip trip = instance.Trips[tripIndex];
+                Trip trip = info.Instance.Trips[tripIndex];
                 if (trip == tripToIgnore) continue;
                 driverPath.Add(trip);
             }

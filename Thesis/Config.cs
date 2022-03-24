@@ -77,8 +77,8 @@ namespace Thesis {
         public const int SaCheckCostFrequency = 100000;
         public const int SaLogFrequency = 1000000;
         public const int SaParameterUpdateFrequency = SaIterationCount / 1000;
-        public const float SaInitialTemperature = 1500f;
-        public const float SaTemperatureReductionFactor = 0.997f;
+        public const float SaInitialTemperature = 1000f;
+        public const float SaTemperatureReductionFactor = 0.998f;
         public const float SaInitialPenaltyFactor = 0.001f;
         public const float SaPenaltyIncrement = 0.001f;
 

@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 namespace Thesis {
     class AssignmentHelper {
         /** Returns previous trip of driver; returns as first of tuple when in same shift, or second of tuple when in previous shift */
-        public static (Trip, Trip) GetPrevTrip(Trip trip, Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance) {
+        public static (Trip, Trip) GetPrevTrip(Trip trip, Driver driver, Trip tripToIgnore, SaInfo info) {
             int startTimeThreshold = trip.StartTime - Config.BetweenShiftsMaxStartTimeDiff;
             for (int searchTripIndex = trip.Index - 1; searchTripIndex >= 0; searchTripIndex--) {
-                Trip searchTrip = instance.Trips[searchTripIndex];
+                Trip searchTrip = info.Instance.Trips[searchTripIndex];
                 if (searchTrip.StartTime < startTimeThreshold) return (null, null);
 
                 // Check if this is the previous trip for this driver
-                if (assignment[searchTripIndex] == driver && searchTrip != tripToIgnore) {
-                    if (instance.AreSameShift(searchTrip, trip)) return (searchTrip, null); // Found trip is in current shift
+                if (info.Assignment[searchTripIndex] == driver && searchTrip != tripToIgnore) {
+                    if (info.Instance.AreSameShift(searchTrip, trip)) return (searchTrip, null); // Found trip is in current shift
                     return (null, searchTrip); // Found trip is in previous shift
                 }
             }
@@ -23,15 +23,15 @@ namespace Thesis {
         }
 
         /** Returns next trip of driver; returns as first of tuple when in same shift, or second of tuple when in next shift */
-        public static (Trip, Trip) GetNextTrip(Trip trip, Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance) {
+        public static (Trip, Trip) GetNextTrip(Trip trip, Driver driver, Trip tripToIgnore, SaInfo info) {
             int startTimeThreshold = trip.StartTime + Config.BetweenShiftsMaxStartTimeDiff;
-            for (int searchTripIndex = trip.Index + 1; searchTripIndex < instance.Trips.Length; searchTripIndex++) {
-                Trip searchTrip = instance.Trips[searchTripIndex];
+            for (int searchTripIndex = trip.Index + 1; searchTripIndex < info.Instance.Trips.Length; searchTripIndex++) {
+                Trip searchTrip = info.Instance.Trips[searchTripIndex];
                 if (searchTrip.StartTime > startTimeThreshold) return (null, null);
 
                 // Check if this is the next trip for this driver
-                if (assignment[searchTripIndex] == driver && searchTrip != tripToIgnore) {
-                    if (instance.AreSameShift(trip, searchTrip)) return (searchTrip, null); // Found trip is in current shift
+                if (info.Assignment[searchTripIndex] == driver && searchTrip != tripToIgnore) {
+                    if (info.Instance.AreSameShift(trip, searchTrip)) return (searchTrip, null); // Found trip is in current shift
                     return (null, searchTrip); // Found trip is in next shift
                 }
             }
@@ -39,17 +39,17 @@ namespace Thesis {
         }
 
         /** Returns driver's first trip of shift, and last trip of previous shift */
-        public static (Trip, Trip) GetFirstTripInternalAndPrevShiftTrip(Trip trip, Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance) {
+        public static (Trip, Trip) GetFirstTripInternalAndPrevShiftTrip(Trip trip, Driver driver, Trip tripToIgnore, SaInfo info) {
             Trip firstTripInternal = trip;
             int startTimeThreshold = firstTripInternal.StartTime - Config.ShiftMaxStartTimeDiff;
             for (int searchTripIndex = trip.Index - 1; searchTripIndex >= 0; searchTripIndex--) {
-                Trip searchTrip = instance.Trips[searchTripIndex];
+                Trip searchTrip = info.Instance.Trips[searchTripIndex];
                 if (searchTrip.StartTime < startTimeThreshold) {
                     return (firstTripInternal, null);
                 }
 
-                if (assignment[searchTripIndex] == driver && searchTrip != tripToIgnore) {
-                    if (instance.AreSameShift(searchTrip, firstTripInternal)) {
+                if (info.Assignment[searchTripIndex] == driver && searchTrip != tripToIgnore) {
+                    if (info.Instance.AreSameShift(searchTrip, firstTripInternal)) {
                         firstTripInternal = searchTrip;
                         startTimeThreshold = firstTripInternal.StartTime - Config.ShiftMaxStartTimeDiff;
                     } else {
@@ -61,17 +61,17 @@ namespace Thesis {
         }
 
         /** Returns driver's last trip of shift, and first trip of next shift */
-        public static (Trip, Trip) GetLastTripInternalAndNextShiftTrip(Trip trip, Driver driver, Trip tripToIgnore, Driver[] assignment, Instance instance) {
+        public static (Trip, Trip) GetLastTripInternalAndNextShiftTrip(Trip trip, Driver driver, Trip tripToIgnore, SaInfo info) {
             Trip lastTripInternal = trip;
             int startTimeThreshold = lastTripInternal.StartTime + Config.ShiftMaxStartTimeDiff;
-            for (int searchTripIndex = trip.Index + 1; searchTripIndex < instance.Trips.Length; searchTripIndex++) {
-                Trip searchTrip = instance.Trips[searchTripIndex];
+            for (int searchTripIndex = trip.Index + 1; searchTripIndex < info.Instance.Trips.Length; searchTripIndex++) {
+                Trip searchTrip = info.Instance.Trips[searchTripIndex];
                 if (searchTrip.StartTime > startTimeThreshold) {
                     return (lastTripInternal, null);
                 }
 
-                if (assignment[searchTripIndex] == driver && searchTrip != tripToIgnore) {
-                    if (instance.AreSameShift(lastTripInternal, searchTrip)) {
+                if (info.Assignment[searchTripIndex] == driver && searchTrip != tripToIgnore) {
+                    if (info.Instance.AreSameShift(lastTripInternal, searchTrip)) {
                         lastTripInternal = searchTrip;
                         startTimeThreshold = lastTripInternal.StartTime + Config.ShiftMaxStartTimeDiff;
                     } else {
