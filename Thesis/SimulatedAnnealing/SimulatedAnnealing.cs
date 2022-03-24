@@ -18,6 +18,8 @@ namespace Thesis {
             info.Temperature = Config.SaInitialTemperature;
             info.PenaltyFactor = Config.SaInitialPenaltyFactor;
             info.BestCost = double.MaxValue;
+            info.ShiftLinksAfterTrip = new ShiftLink[instance.Trips.Length];
+            info.ExternalDriverCountsByType = new int[instance.ExternalDriversByType.Length];
 
             // Create a random assignment
             info.Assignment = new Driver[instance.Trips.Length];
@@ -40,9 +42,6 @@ namespace Thesis {
             // Get cost of initial assignment
             (info.Cost, info.CostWithoutPenalty,  info.BasePenalty, info.DriversWorkedTime) = TotalCostCalculator.GetAssignmentCost(info);
 
-            // Initialise external driver counts
-            info.ExternalDriverCountsByType = new int[instance.ExternalDriversByType.Length];
-
             #if DEBUG
             // Reset iteration in debugger after initial assignment cost
             if (Config.DebugCheckAndLogOperations) {
@@ -58,16 +57,16 @@ namespace Thesis {
 
             while (info.IterationNum < Config.SaIterationCount) {
                 int operationIndex = info.Rand.Next(4);
-                Operation operation = operationIndex switch {
+                AbstractOperation operation = operationIndex switch {
                     // Assign internal
-                    0 => AssignTripToInternalOperation.CreateRandom(info),
-                    1 => AssignTripToInternalOperation.CreateRandom(info),
+                    0 => AssignInternalOperation.CreateRandom(info),
+                    1 => AssignInternalOperation.CreateRandom(info),
 
                     // Assign existing external
-                    2 => AssignTripToExternalOperation.CreateRandom(info),
+                    2 => AssignExternalOperation.CreateRandom(info),
 
                     // Swap
-                    3 => SwapTripOperation.CreateRandom(info),
+                    3 => SwapOperation.CreateRandom(info),
 
                     _ => throw new Exception(),
                 };
@@ -152,168 +151,5 @@ namespace Thesis {
         }
     }
 
-    abstract class Operation {
-        protected readonly SaInfo info;
-
-        public Operation(SaInfo info) {
-            this.info = info;
-        }
-
-        public abstract (double, double, double) GetCostDiff();
-        public abstract void Execute();
-    }
-
-    abstract class AssignTripOperation : Operation {
-        readonly Trip trip;
-        readonly Driver oldDriver, newDriver;
-        int oldDriverWorkedTimeDiff, newDriverWorkedTimeDiff;
-
-        public AssignTripOperation(int tripIndex, Driver newDriver, SaInfo info) : base(info) {
-            this.newDriver = newDriver;
-            trip = info.Instance.Trips[tripIndex];
-            oldDriver = info.Assignment[tripIndex];
-        }
-
-        public override (double, double, double) GetCostDiff() {
-            #if DEBUG
-            if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.GetCurrentOperation().Description = string.Format("Re-assign trip {0} from driver {1} to driver {2}", trip.Index, oldDriver.GetId(), newDriver.GetId());
-            }
-            #endif
-
-            int oldDriverWorkedTime = info.DriversWorkedTime[oldDriver.AllDriversIndex];
-            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverBasePenaltyDiff, int oldDriverShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip, null, oldDriver, oldDriverWorkedTime, info);
-
-            int newDriverWorkedTime = info.DriversWorkedTime[newDriver.AllDriversIndex];
-            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverBasePenaltyDiff, int newDriverShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip, null, newDriver, newDriverWorkedTime, info);
-
-            oldDriverWorkedTimeDiff = oldDriverShiftLengthDiff;
-            newDriverWorkedTimeDiff = newDriverShiftLengthDiff;
-
-            return (oldDriverCostDiff + newDriverCostDiff, oldDriverCostWithoutPenaltyDiff + newDriverCostWithoutPenaltyDiff, oldDriverBasePenaltyDiff + newDriverBasePenaltyDiff);
-        }
-
-        public override void Execute() {
-            info.Assignment[trip.Index] = newDriver;
-            info.DriversWorkedTime[oldDriver.AllDriversIndex] += oldDriverWorkedTimeDiff;
-            info.DriversWorkedTime[newDriver.AllDriversIndex] += newDriverWorkedTimeDiff;
-        }
-    }
-
-    class AssignTripToInternalOperation : AssignTripOperation {
-        public AssignTripToInternalOperation(int tripIndex, InternalDriver newInternalDriver, SaInfo info) : base(tripIndex, newInternalDriver, info) {
-
-        }
-
-        public static AssignTripOperation CreateRandom(SaInfo info) {
-            int tripIndex = info.FastRand.NextInt(info.Instance.Trips.Length);
-            Driver oldDriver = info.Assignment[tripIndex];
-
-            // Select random internal driver that is not the current driver
-            InternalDriver newInternalDriver;
-            do {
-                int newInternalDriverIndex = info.FastRand.NextInt(info.Instance.InternalDrivers.Length);
-                newInternalDriver = info.Instance.InternalDrivers[newInternalDriverIndex];
-            } while (newInternalDriver == oldDriver);
-
-            return new AssignTripToInternalOperation(tripIndex, newInternalDriver, info);
-        }
-    }
-
-    class AssignTripToExternalOperation : AssignTripOperation {
-        ExternalDriver newExternalDriver;
-
-        public AssignTripToExternalOperation(int tripIndex, ExternalDriver newExternalDriver, SaInfo info) : base(tripIndex, newExternalDriver, info) {
-            this.newExternalDriver = newExternalDriver;
-        }
-
-        public static AssignTripOperation CreateRandom(SaInfo info) {
-            int tripIndex = info.FastRand.NextInt(info.Instance.Trips.Length);
-            Driver oldDriver = info.Assignment[tripIndex];
-
-            // Select random existing driver that is not the same as the current driver
-            ExternalDriver newExternalDriver;
-            do {
-                // Select random external driver type
-                int newExternalDriverTypeIndex = info.FastRand.NextInt(info.Instance.ExternalDriversByType.Length);
-                ExternalDriver[] externalDriversOfCurrentType = info.Instance.ExternalDriversByType[newExternalDriverTypeIndex];
-
-                // Select random external driver of this type; equal chance to select each existing or a new driver
-                int currentCountOfType = info.ExternalDriverCountsByType[newExternalDriverTypeIndex];
-                int maxNewIndexInTypeExclusive = Math.Min(currentCountOfType + 1, externalDriversOfCurrentType.Length);
-                int newExternalDriverIndexInType = info.FastRand.NextInt(maxNewIndexInTypeExclusive);
-                newExternalDriver = externalDriversOfCurrentType[newExternalDriverIndexInType];
-            } while (newExternalDriver == oldDriver);
-
-            return new AssignTripToExternalOperation(tripIndex, newExternalDriver, info);
-        }
-
-        public override void Execute() {
-            base.Execute();
-
-            // If this is a new driver of this type, update the corresponding count
-            info.ExternalDriverCountsByType[newExternalDriver.ExternalDriverTypeIndex] = Math.Max(info.ExternalDriverCountsByType[newExternalDriver.ExternalDriverTypeIndex], newExternalDriver.IndexInType + 1);
-        }
-    }
-
-    class SwapTripOperation : Operation {
-        readonly Trip trip1, trip2;
-        readonly Driver driver1, driver2;
-        int driver1WorkedTimeDiff, driver2WorkedTimeDiff;
-
-        public SwapTripOperation(int tripIndex1, int tripIndex2, SaInfo info) : base(info) {
-            trip1 = info.Instance.Trips[tripIndex1];
-            trip2 = info.Instance.Trips[tripIndex2];
-            driver1 = info.Assignment[tripIndex1];
-            driver2 = info.Assignment[tripIndex2];
-        }
-
-        public override (double, double, double) GetCostDiff() {
-            #if DEBUG
-            if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.GetCurrentOperation().Description = string.Format("Swap trip {0} from driver {1} with trip {2} from driver {3}", trip1.Index, driver1.AllDriversIndex, trip2.Index, driver2.AllDriversIndex);
-            }
-            #endif
-
-            int driver1WorkedTime = info.DriversWorkedTime[driver1.AllDriversIndex];
-            (double driver1UnassignCostDiff, double driver1UnassignCostWithoutPenaltyDiff, double driver1UnassignBasePenaltyDiff, int driver1UnassignShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip1, null, driver1, driver1WorkedTime, info);
-
-            int driver2WorkedTime = info.DriversWorkedTime[driver2.AllDriversIndex];
-            (double driver2UnassignCostDiff, double driver2UnassignCostWithoutPenaltyDiff, double driver2UnassignBasePenaltyDiff, int driver2UnassignShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip2, null, driver2, driver2WorkedTime, info);
-
-            int driver1WorkedTimeAfterUnassign = driver1WorkedTime + driver1UnassignShiftLengthDiff;
-            (double driver1AssignCostDiff, double driver1AssignCostWithoutPenaltyDiff, double driver1AssignBasePenaltyDiff, int driver1AssignShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip2, trip1, driver1, driver1WorkedTimeAfterUnassign, info);
-
-            int driver2WorkedTimeAfterUnassign = driver2WorkedTime + driver2UnassignShiftLengthDiff;
-            (double driver2AssignCostDiff, double driver2AssignCostWithoutPenaltyDiff, double driver2AssignBasePenaltyDiff, int driver2AssignShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip1, trip2, driver2, driver2WorkedTimeAfterUnassign, info);
-
-            double costDiff = driver1UnassignCostDiff + driver2UnassignCostDiff + driver1AssignCostDiff + driver2AssignCostDiff;
-            double costWithoutPenalty = driver1UnassignCostWithoutPenaltyDiff + driver2UnassignCostWithoutPenaltyDiff + driver1AssignCostWithoutPenaltyDiff + driver2AssignCostWithoutPenaltyDiff;
-            double basePenaltyDiff = driver1UnassignBasePenaltyDiff + driver2UnassignBasePenaltyDiff + driver1AssignBasePenaltyDiff + driver2AssignBasePenaltyDiff;
-
-            driver1WorkedTimeDiff = driver1UnassignShiftLengthDiff + driver1AssignShiftLengthDiff;
-            driver2WorkedTimeDiff = driver2UnassignShiftLengthDiff + driver2AssignShiftLengthDiff;
-
-            return (costDiff, costWithoutPenalty, basePenaltyDiff);
-        }
-
-        public override void Execute() {
-            info.Assignment[trip2.Index] = driver1;
-            info.Assignment[trip1.Index] = driver2;
-            info.DriversWorkedTime[driver1.AllDriversIndex] += driver1WorkedTimeDiff;
-            info.DriversWorkedTime[driver2.AllDriversIndex] += driver2WorkedTimeDiff;
-        }
-
-        public static SwapTripOperation CreateRandom(SaInfo info) {
-            int tripIndex1 = info.FastRand.NextInt(info.Instance.Trips.Length);
-
-            // Select random second trip that is not the first trip, and that isn't assigned to the same driver as the first trip
-            int tripIndex2;
-            do {
-                tripIndex2 = info.FastRand.NextInt(info.Instance.Trips.Length);
-            } while (tripIndex1 == tripIndex2 || info.Assignment[tripIndex1] == info.Assignment[tripIndex2]);
-
-            return new SwapTripOperation(tripIndex1, tripIndex2, info);
-        }
-    }
+    
 }

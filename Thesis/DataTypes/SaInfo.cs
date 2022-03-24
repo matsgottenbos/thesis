@@ -10,6 +10,7 @@ namespace Thesis {
         public readonly Random Rand;
         public readonly XorShiftRandom FastRand;
         public Driver[] Assignment, BestAssignment;
+        public ShiftLink[] ShiftLinksAfterTrip;
         public double Cost, CostWithoutPenalty, BasePenalty, BestCost;
         public int[] DriversWorkedTime, ExternalDriverCountsByType;
         public int IterationNum;
