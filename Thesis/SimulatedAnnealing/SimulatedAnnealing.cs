@@ -18,7 +18,7 @@ namespace Thesis {
             info.Temperature = Config.SaInitialTemperature;
             info.PenaltyFactor = Config.SaInitialPenaltyFactor;
             info.BestCost = double.MaxValue;
-            info.ShiftLinksAfterTrip = new ShiftLink[instance.Trips.Length];
+            info.IsHotelStayAfterTrip = new bool[instance.Trips.Length];
             info.ExternalDriverCountsByType = new int[instance.ExternalDriversByType.Length];
 
             // Create a random assignment
@@ -35,7 +35,7 @@ namespace Thesis {
             #if DEBUG
             // Initialise debugger
             if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.ResetIteration(instance);
+                SaDebugger.ResetIteration(info);
             }
             #endif
 
@@ -45,7 +45,7 @@ namespace Thesis {
             #if DEBUG
             // Reset iteration in debugger after initial assignment cost
             if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.ResetIteration(instance);
+                SaDebugger.ResetIteration(info);
             }
             #endif
         }
@@ -56,7 +56,7 @@ namespace Thesis {
             stopwatch.Start();
 
             while (info.IterationNum < Config.SaIterationCount) {
-                int operationIndex = info.Rand.Next(4);
+                int operationIndex = info.Rand.Next(5);
                 AbstractOperation operation = operationIndex switch {
                     // Assign internal
                     0 => AssignInternalOperation.CreateRandom(info),
@@ -68,7 +68,10 @@ namespace Thesis {
                     // Swap
                     3 => SwapOperation.CreateRandom(info),
 
-                    _ => throw new Exception(),
+                    // Hotel stay
+                    4 => ToggleHotelOperation.CreateRandom(info),
+
+                    _ => throw new Exception("Invalid operation index"),
                 };
 
                 (double costDiff, double costWithoutPenaltyDiff, double basePenaltyDiff) = operation.GetCostDiff();
@@ -97,7 +100,7 @@ namespace Thesis {
                 #if DEBUG
                 // Set debugger to next iteration
                 if (Config.DebugCheckAndLogOperations) {
-                    SaDebugger.NextIteration(info.Instance);
+                    SaDebugger.NextIteration(info);
                 }
                 #endif
 
@@ -124,7 +127,7 @@ namespace Thesis {
                 #if DEBUG
                 // Reset iteration in debugger after additional checks
                 if (Config.DebugCheckAndLogOperations) {
-                    SaDebugger.ResetIteration(info.Instance);
+                    SaDebugger.ResetIteration(info);
                 }
                 #endif
             }

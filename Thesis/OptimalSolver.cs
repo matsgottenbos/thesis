@@ -161,7 +161,7 @@ namespace Thesis {
                 costDiff = GetShiftCostDiff(driverPrevSearchTrip, lastTripInternal, prevTripInternal, driver);
             } else {
                 // We were at the beginning of the previous shift; check rest time, and then the check is complete
-                if (driver.RestTime(driverPrevSearchTrip, prevShiftLastTrip, firstTripInternal) < Config.MinRestTime) return null;
+                if (driver.RestTimeWithPickup(driverPrevSearchTrip, prevShiftLastTrip, firstTripInternal) < Config.MinRestTime) return null;
             }
 
             if (!costDiff.HasValue) return null;
@@ -184,13 +184,13 @@ namespace Thesis {
 
         double? GetShiftCostDiff(Trip firstTripInternal, Trip lastTripInternal, Trip prevTripInternal, Driver driver) {
             // Get new shift length
-            int newShiftLength = driver.ShiftLength(firstTripInternal, lastTripInternal);
+            int newShiftLength = driver.ShiftLengthWithPickup(firstTripInternal, lastTripInternal);
 
             // Check shift length
             if (newShiftLength > Config.MaxShiftLength) return null;
 
             // Get new shift cost
-            float newShiftCost = driver.ShiftCost(firstTripInternal, lastTripInternal);
+            float newShiftCost = driver.ShiftCostWithPickup(firstTripInternal, lastTripInternal);
 
             float shiftCostDiff;
             if (prevTripInternal == null) {
@@ -198,7 +198,7 @@ namespace Thesis {
                 shiftCostDiff = newShiftCost;
             } else {
                 // Determine difference with previous shift cost
-                shiftCostDiff = newShiftCost - driver.ShiftCost(firstTripInternal, prevTripInternal);
+                shiftCostDiff = newShiftCost - driver.ShiftCostWithPickup(firstTripInternal, prevTripInternal);
             }
 
             return shiftCostDiff;
@@ -216,7 +216,7 @@ namespace Thesis {
                 if (searchNode.DriverIndex == node.DriverIndex) {
                     if (!instance.AreSameShift(searchTrip, driverPrevSearchTrip)) {
                         // End the shift
-                        driverWorkedTime += driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
+                        driverWorkedTime += driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
                         lastTripInternal = searchTrip;
                     }
                     driverPrevSearchTrip = searchTrip;
@@ -226,7 +226,7 @@ namespace Thesis {
             }
 
             // End first shift
-            driverWorkedTime += driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
+            driverWorkedTime += driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
             if (driver.GetMaxContractTimeViolation(driverWorkedTime) > 0) return false;
             return true;
         }
@@ -252,7 +252,7 @@ namespace Thesis {
                     Driver driver = instance.AllDrivers[searchNode.DriverIndex];
                     if (!instance.AreSameShift(searchTrip, driverPrevSearchTrip)) {
                         // End shift for driver
-                        allDriversWorkedTime[searchNode.DriverIndex] += driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
+                        allDriversWorkedTime[searchNode.DriverIndex] += driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
                         allDriversLastTripInternal[searchNode.DriverIndex] = searchTrip;
                     }
                 }
@@ -276,7 +276,7 @@ namespace Thesis {
                 }
 
                 Trip lastTripInternal = allDriversLastTripInternal[driverIndex];
-                int driverWorkedTime = allDriversWorkedTime[driverIndex] + driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
+                int driverWorkedTime = allDriversWorkedTime[driverIndex] + driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
 
                 // Check minimum contract time
                 if (driver.GetMinContractTimeViolation(driverWorkedTime) > 0) {

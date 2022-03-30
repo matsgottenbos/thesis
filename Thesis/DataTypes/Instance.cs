@@ -30,6 +30,14 @@ namespace Thesis {
             return CarTravelTimes[trip1.LastStation, trip2.FirstStation];
         }
 
+        public int TravelTimeViaHotel(Trip trip1, Trip trip2) {
+            return CarTravelTimes[trip1.LastStation, trip2.FirstStation] + Config.HotelExtraTravelTime;
+        }
+
+        public int HalfTravelTimeViaHotel(Trip trip1, Trip trip2) {
+            return (CarTravelTimes[trip1.LastStation, trip2.FirstStation] + Config.HotelExtraTravelTime) / 2;
+        }
+
         int WaitingTime(Trip trip1, Trip trip2) {
             return trip2.StartTime - trip1.EndTime - CarTravelTime(trip1, trip2);
         }

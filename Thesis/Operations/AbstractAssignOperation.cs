@@ -23,11 +23,11 @@ namespace Thesis {
             }
             #endif
 
-            int oldDriverWorkedTime = info.DriversWorkedTime[oldDriver.AllDriversIndex];
-            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverBasePenaltyDiff, int oldDriverShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip, null, oldDriver, oldDriverWorkedTime, info);
+            int oldDriverOldWorkedTime = info.DriversWorkedTime[oldDriver.AllDriversIndex];
+            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverBasePenaltyDiff, int oldDriverShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip, null, oldDriver, oldDriverOldWorkedTime, info);
 
-            int newDriverWorkedTime = info.DriversWorkedTime[newDriver.AllDriversIndex];
-            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverBasePenaltyDiff, int newDriverShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip, null, newDriver, newDriverWorkedTime, info);
+            int newDriverOldWorkedTime = info.DriversWorkedTime[newDriver.AllDriversIndex];
+            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverBasePenaltyDiff, int newDriverShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip, null, newDriver, newDriverOldWorkedTime, info);
 
             oldDriverWorkedTimeDiff = oldDriverShiftLengthDiff;
             newDriverWorkedTimeDiff = newDriverShiftLengthDiff;

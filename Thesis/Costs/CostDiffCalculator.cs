@@ -57,6 +57,8 @@ namespace Thesis {
             // Get costs
             double costDiff = costWithoutPenaltyDiff + basePenaltyDiff * info.PenaltyFactor;
 
+            // TODO: deal with hotel stays
+
             // Debugger
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {

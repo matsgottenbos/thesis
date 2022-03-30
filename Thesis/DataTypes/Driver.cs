@@ -7,17 +7,20 @@ using System.Threading.Tasks;
 namespace Thesis {
     abstract class Driver {
         public readonly int AllDriversIndex;
-        public readonly int[] OneWayTravelTimes, TwoWayPayedTravelTimes;
-        public readonly int[,] ShiftLengths;
-        public readonly float[,] ShiftCosts;
+        readonly int[] OneWayTravelTimes, TwoWayPayedTravelTimes;
+        readonly int[,] DrivingTimes, ShiftLengthsWithoutPickup, ShiftLengthsWithPickup;
+        readonly float[,] DrivingCosts, ShiftCostsWithPickup;
         Instance instance;
 
-        public Driver(int allDriversIndex, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] shiftLengths, float[,] shiftCosts) {
+        public Driver(int allDriversIndex, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) {
             AllDriversIndex = allDriversIndex;
             OneWayTravelTimes = oneWayTravelTimes;
             TwoWayPayedTravelTimes = twoWayPayedTravelTimes;
-            ShiftLengths = shiftLengths;
-            ShiftCosts = shiftCosts;
+            DrivingTimes = drivingTimes;
+            DrivingCosts = drivingCosts;
+            ShiftLengthsWithoutPickup = shiftLengthsWithoutPickup;
+            ShiftLengthsWithPickup = shiftLengthsWithPickup;
+            ShiftCostsWithPickup = shiftCostsWithPickup;
         }
 
         public void SetInstance(Instance instance) {
@@ -31,38 +34,71 @@ namespace Thesis {
 
         /* Shift lengths and costs */
 
-        public int ShiftLength(Trip firstTripInternal, Trip lastTripInternal) {
-            return ShiftLengths[firstTripInternal.Index, lastTripInternal.Index];
+        public int DrivingTime(Trip firstTripInternal, Trip lastTripInternal) {
+            return DrivingTimes[firstTripInternal.Index, lastTripInternal.Index];
         }
 
-        public float ShiftCost(Trip firstTripInternal, Trip lastTripInternal) {
-            return ShiftCosts[firstTripInternal.Index, lastTripInternal.Index];
+        public float DrivingCost(Trip firstTripInternal, Trip lastTripInternal) {
+            return DrivingCosts[firstTripInternal.Index, lastTripInternal.Index];
         }
 
-        public (int, float) ShiftLengthAndCost(Trip firstTripInternal, Trip lastTripInternal) {
-            return (ShiftLength(firstTripInternal, lastTripInternal), ShiftCost(firstTripInternal, lastTripInternal));
+        public int ShiftLengthWithoutPickup(Trip firstTripInternal, Trip lastTripInternal) {
+            return ShiftLengthsWithoutPickup[firstTripInternal.Index, lastTripInternal.Index];
+        }
+
+        public int ShiftLengthWithPickup(Trip firstTripInternal, Trip lastTripInternal) {
+            return ShiftLengthsWithPickup[firstTripInternal.Index, lastTripInternal.Index];
+        }
+
+        public float ShiftCostWithPickup(Trip firstTripInternal, Trip lastTripInternal) {
+            return ShiftCostsWithPickup[firstTripInternal.Index, lastTripInternal.Index];
+        }
+
+        public int ShiftLengthWithCustomPickup(Trip firstTripInternal, Trip lastTripInternal, Trip parkingTrip) {
+            return DrivingTime(firstTripInternal, lastTripInternal) + HomeTravelTimeToStart(firstTripInternal) + instance.CarTravelTime(lastTripInternal, parkingTrip) + HomeTravelTimeToStart(parkingTrip);
+        }
+
+        public float ShiftCostWithCustomPickup(Trip firstTripInternal, Trip lastTripInternal, Trip parkingTrip) {
+            float drivingCost = DrivingCost(firstTripInternal, lastTripInternal);
+            int travelTime = HomeTravelTimeToStart(firstTripInternal) + instance.CarTravelTime(lastTripInternal, parkingTrip) + HomeTravelTimeToStart(parkingTrip);
+            float travelCost = GetPayedTravelCost(travelTime);
+            return drivingCost + travelCost;
+        }
+
+        public (int, float) ShiftLengthAndCostWithPickup(Trip firstTripInternal, Trip lastTripInternal) {
+            return (ShiftLengthWithPickup(firstTripInternal, lastTripInternal), ShiftCostWithPickup(firstTripInternal, lastTripInternal));
         }
 
 
         /* Rest time */
 
-        public int RestTime(Trip shift1FirstTrip, Trip shift1LastTrip, Trip shift2FirstTrip) {
-            return shift2FirstTrip.StartTime - shift1LastTrip.EndTime - instance.CarTravelTime(shift1LastTrip, shift1FirstTrip) - OneWayTravelTimeToHome(shift1LastTrip) - OneWayTravelTimeFromHome(shift2FirstTrip);
+        public int RestTimeWithPickup(Trip shift1FirstTrip, Trip shift1LastTrip, Trip shift2FirstTrip) {
+            return RestTimeWithCustomPickup(shift1LastTrip, shift2FirstTrip, shift1FirstTrip);
+        }
+
+        public int RestTimeWithCustomPickup(Trip tripBeforeTravel, Trip tripAfterTravel, Trip parkingTrip) {
+            return tripAfterTravel.StartTime - tripBeforeTravel.EndTime - instance.CarTravelTime(tripBeforeTravel, parkingTrip) - HomeTravelTimeToStart(parkingTrip) - HomeTravelTimeToStart(tripAfterTravel);
         }
 
 
         /* Travelling */
 
-        public int OneWayTravelTimeFromHome(Trip trip) {
+        public int HomeTravelTimeToStart(Trip trip) {
             return OneWayTravelTimes[trip.FirstStation];
         }
 
-        public int OneWayTravelTimeToHome(Trip trip) {
+        public int HomeTravelTimeToEnd(Trip trip) {
             return OneWayTravelTimes[trip.LastStation];
         }
 
         public int TwoWayPayedTravelTimeFromHome(Trip trip) {
             return TwoWayPayedTravelTimes[trip.FirstStation];
+        }
+
+        protected abstract int GetPayedTravelTime(int travelTime);
+
+        public float GetPayedTravelCost(int travelTime) {
+            return GetPayedTravelTime(travelTime) * Config.InternalDriverTravelSalaryRate;
         }
 
 
@@ -99,7 +135,7 @@ namespace Thesis {
         public readonly int InternalIndex, MinContractTime, MaxContractTime;
         public readonly bool[,] TrackProficiencies;
 
-        public InternalDriver(int allDriversIndex, int internalIndex, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] shiftLengths, float[,] shiftCosts, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, twoWayPayedTravelTimes, shiftLengths, shiftCosts) {
+        public InternalDriver(int allDriversIndex, int internalIndex, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, twoWayPayedTravelTimes, drivingTimes, drivingCosts, shiftLengthsWithoutPickup, shiftLengthsWithPickup, shiftCostsWithPickup) {
             InternalIndex = internalIndex;
             MinContractTime = minWorkedTime;
             MaxContractTime = maxWorkedTime;
@@ -108,6 +144,10 @@ namespace Thesis {
 
         public override string GetId() {
             return InternalIndex.ToString();
+        }
+
+        protected override int GetPayedTravelTime(int travelTime) {
+            return Math.Max(0, travelTime - Config.InternalDriverUnpaidTravelTimePerShift);
         }
 
         public override int GetMinContractTimeViolation(int workedTime) {
@@ -122,13 +162,17 @@ namespace Thesis {
     class ExternalDriver : Driver {
         public readonly int ExternalDriverTypeIndex, IndexInType;
 
-        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] shiftLengths, float[,] shiftCosts) : base(allDriversIndex, oneWayTravelTimes, twoWayPayedTravelTimes, shiftLengths, shiftCosts) {
+        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) : base(allDriversIndex, oneWayTravelTimes, twoWayPayedTravelTimes, drivingTimes, drivingCosts, shiftLengthsWithoutPickup, shiftLengthsWithPickup, shiftCostsWithPickup) {
             ExternalDriverTypeIndex = externalDriverTypeIndex;
             IndexInType = indexInType;
         }
 
         public override string GetId() {
             return string.Format("e{0}.{1}", ExternalDriverTypeIndex, IndexInType);
+        }
+
+        protected override int GetPayedTravelTime(int travelTime) {
+            return travelTime;
         }
 
         public override int GetMinContractTimeViolation(int workedTime) {

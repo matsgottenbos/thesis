@@ -17,6 +17,7 @@ namespace Thesis {
         public const int ShiftWaitingTimeThreshold = 6 * 60; // Waiting times shorter than this count as the same trip; waiting time longer start a new shift
         public const int ShiftMaxStartTimeDiff = 24 * 60; // The maximum difference in start times considered when searching for trips in the same shift
         public const int BetweenShiftsMaxStartTimeDiff = 36 * 60; // The maximum difference in start times considered when checking rest time between different shifts
+        public const int ShiftLinkCount = 3; // Number of shift link types (including 'none')
 
         // Time periods
         public const int DayLength = 24 * 60;
@@ -30,7 +31,7 @@ namespace Thesis {
             new SalaryRateInfo(23 * 60, 60 / 60f), // Night 23-6, hourly rate of 60
             // TODO: add weekends and holidays
         };
-        public const float InternalDriverTravelSalaryRate = 50 / 60f;
+        public const float InternalDriverTravelSalaryRate = 50 / 60f; // TODO: add external driver travel salary rate
         public const int InternalDriverUnpaidTravelTimePerShift = 60;
         public static readonly SalaryRateInfo[] ExternalDriverDailySalaryRates = new SalaryRateInfo[] {
             new SalaryRateInfo(0 * 60,  80 / 60f), // Night 0-6: hourly rate of 80
@@ -40,6 +41,10 @@ namespace Thesis {
             new SalaryRateInfo(23 * 60, 80 / 60f), // Night 23-6, hourly rate of 80
             // TODO: add weekends and holidays
         };
+
+        // Hotels
+        public const float HotelCosts = 130f;
+        public const int HotelExtraTravelTime = 30;
 
         // Contract time deviations
         public const float MinContractTimeFraction = 0.8f;
@@ -90,6 +95,7 @@ namespace Thesis {
         public const float RestTimeViolationPenaltyPerMin = 200 / 60f;
         public const float ContractTimeViolationPenalty = 1000;
         public const float ContractTimeViolationPenaltyPerMin = 200 / 60f;
+        public const float InvalidHotelPenalty = 5000;
 
 
         /* File structure */
@@ -103,7 +109,7 @@ namespace Thesis {
         public const float FloatingPointMargin = 0.0001f;
 
         // Debug
-        public const bool DebugCheckAndLogOperations = false;
+        public const bool DebugCheckAndLogOperations = true;
         public const bool DebugRunInspector = false;
         public const bool DebugRunOdataTest = false;
         public const bool DebugUseSeededSa = true;

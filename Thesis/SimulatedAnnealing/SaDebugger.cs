@@ -25,13 +25,13 @@ namespace Thesis {
             return CurrentOperation.CurrentPart.CheckedCurrent;
         }
 
-        public static void NextIteration(Instance instance) {
+        public static void NextIteration(SaInfo info) {
             IterationNum++;
-            CurrentOperation = new OperationInfo(IterationNum, instance);
+            CurrentOperation = new OperationInfo(IterationNum, info);
         }
 
-        public static void ResetIteration(Instance instance) {
-            CurrentOperation = new OperationInfo(IterationNum, instance);
+        public static void ResetIteration(SaInfo info) {
+            CurrentOperation = new OperationInfo(IterationNum, info);
         }
     }
 
@@ -40,16 +40,16 @@ namespace Thesis {
         public readonly List<OperationPart> Parts = new List<OperationPart>();
         public OperationPart CurrentPart = null;
         readonly int iterationNum;
-        readonly Instance instance;
+        readonly SaInfo info;
 
-        public OperationInfo(int iterationNum, Instance instance) {
+        public OperationInfo(int iterationNum, SaInfo info) {
             this.iterationNum = iterationNum;
-            this.instance = instance;
+            this.info = info;
         }
 
-        public void StartPart(string partDescription, bool isAssign, Driver driver) {
+        public void StartPart(string partDescription, bool shouldReverse, Driver driver) {
             if (CurrentPart != null) Parts.Add(CurrentPart);
-            CurrentPart = new OperationPart(iterationNum, partDescription, isAssign, this, driver, instance);
+            CurrentPart = new OperationPart(iterationNum, partDescription, shouldReverse, this, driver, info);
         }
     }
 
@@ -62,16 +62,16 @@ namespace Thesis {
         public readonly string Description;
         readonly OperationInfo operation;
         readonly Driver driver;
-        readonly Instance instance;
+        readonly SaInfo info;
 
-        public OperationPart(int iterationNum, string description, bool isAssign, OperationInfo operation, Driver driver, Instance instance) {
+        public OperationPart(int iterationNum, string description, bool shouldReverse, OperationInfo operation, Driver driver, SaInfo info) {
             this.iterationNum = iterationNum;
             Description = description;
             this.operation = operation;
             this.driver = driver;
-            this.instance = instance;
+            this.info = info;
             CheckedCurrent = new CheckedTotal();
-            Normal = new NormalDiff(isAssign, driver, instance);
+            Normal = new NormalDiff(shouldReverse, driver, info);
         }
 
         public void FinishCheckBefore() {
@@ -228,11 +228,11 @@ namespace Thesis {
         public PrecedenceValueChange Precedence;
         public ViolationValueChange ShiftLength, RestTime, ContractTime;
 
-        public NormalDiff(bool isAssign, Driver driver, Instance instance) {
-            Precedence = new PrecedenceValueChange("Precedence", isAssign, driver, instance);
-            ShiftLength = new ViolationValueChange("SL", isAssign, driver, instance, (shiftLength, _) => Math.Max(0, shiftLength - Config.MaxShiftLength));
-            RestTime = new ViolationValueChange("RT", isAssign, driver, instance, (restTime, _) => Math.Max(0, Config.MinRestTime - restTime));
-            ContractTime = new ViolationValueChange("CT", false, driver, instance, (workedHours, driver) => driver.GetTotalContractTimeViolation(workedHours));
+        public NormalDiff(bool shouldReverse, Driver driver, SaInfo info) {
+            Precedence = new PrecedenceValueChange("Precedence", shouldReverse, driver, info);
+            ShiftLength = new ViolationValueChange("SL", shouldReverse, driver, info, (shiftLength, _) => Math.Max(0, shiftLength - Config.MaxShiftLength));
+            RestTime = new ViolationValueChange("RT", shouldReverse, driver, info, (restTime, _) => Math.Max(0, Config.MinRestTime - restTime));
+            ContractTime = new ViolationValueChange("CT", false, driver, info, (workedHours, driver) => driver.GetTotalContractTimeViolation(workedHours));
     }
 
         public TotalInfo ToTotal() {
@@ -281,13 +281,13 @@ namespace Thesis {
         protected readonly string name;
         protected readonly bool shouldReverse;
         protected readonly Driver driver;
-        protected readonly Instance instance;
+        protected readonly SaInfo info;
 
-        public ValueChange(string name, bool shouldReverse, Driver driver, Instance instance) {
+        public ValueChange(string name, bool shouldReverse, Driver driver, SaInfo info) {
             this.name = name;
             this.shouldReverse = shouldReverse;
             this.driver = driver;
-            this.instance = instance;
+            this.info = info;
         }
 
         public void Add(T oldValue, T newValue) {
@@ -324,13 +324,13 @@ namespace Thesis {
         public List<(Trip, Trip)> oldViolations = new List<(Trip, Trip)>();
         public List<(Trip, Trip)> newViolations = new List<(Trip, Trip)>();
 
-        public PrecedenceValueChange(string name, bool shouldReverse, Driver driver, Instance instance) : base(name, shouldReverse, driver, instance) { }
+        public PrecedenceValueChange(string name, bool shouldReverse, Driver driver, SaInfo info) : base(name, shouldReverse, driver, info) { }
 
-        protected override void AddOldInternal((Trip, Trip) trips) => AddSpecific(trips, instance, oldViolations);
-        protected override void AddNewInternal((Trip, Trip) trips) => AddSpecific(trips, instance, newViolations);
+        protected override void AddOldInternal((Trip, Trip) trips) => AddSpecific(trips, info, oldViolations);
+        protected override void AddNewInternal((Trip, Trip) trips) => AddSpecific(trips, info, newViolations);
 
-        protected void AddSpecific((Trip, Trip) trips, Instance instance, List<(Trip, Trip)> violationsList) {
-            if (!instance.TripSuccession[trips.Item1.Index, trips.Item2.Index]) {
+        protected void AddSpecific((Trip, Trip) trips, SaInfo info, List<(Trip, Trip)> violationsList) {
+            if (!info.Instance.TripSuccession[trips.Item1.Index, trips.Item2.Index]) {
                 violationsList.Add(trips);
             }
         }
@@ -351,7 +351,7 @@ namespace Thesis {
         List<int> newValues = new List<int>();
         Func<int, Driver, int> getViolationAmount;
 
-        public ViolationValueChange(string name, bool shouldReverse, Driver driver, Instance instance, Func<int, Driver, int> getViolationAmount) : base(name, shouldReverse, driver, instance) {
+        public ViolationValueChange(string name, bool shouldReverse, Driver driver, SaInfo info, Func<int, Driver, int> getViolationAmount) : base(name, shouldReverse, driver, info) {
             this.getViolationAmount = getViolationAmount;
         }
 

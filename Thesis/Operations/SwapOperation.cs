@@ -20,7 +20,7 @@ namespace Thesis {
         public override (double, double, double) GetCostDiff() {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.GetCurrentOperation().Description = string.Format("Swap trip {0} from driver {1} with trip {2} from driver {3}", trip1.Index, driver1.AllDriversIndex, trip2.Index, driver2.AllDriversIndex);
+                SaDebugger.GetCurrentOperation().Description = string.Format("Swap trip {0} from driver {1} with trip {2} from driver {3}", trip1.Index, driver1.GetId(), trip2.Index, driver2.GetId());
             }
             #endif
 

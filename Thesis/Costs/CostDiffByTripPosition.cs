@@ -13,11 +13,11 @@ namespace Thesis {
 
             if (prevShiftLastTrip != null) {
                 // Prev shift: remove rest before-current (-R1)
-                basePenaltyDiff -= PenaltyHelper.GetRestTimeBasePenalty(prevShiftFirstTrip, prevShiftLastTrip, firstTripInternal, driver, false);
+                basePenaltyDiff -= PenaltyHelper.GetRestTimeBasePenaltyWithPickup(prevShiftFirstTrip, prevShiftLastTrip, firstTripInternal, driver, false);
 
                 if (nextShiftFirstTrip != null) {
                     // Next shift: remove rest current-after (-R2)
-                    basePenaltyDiff -= PenaltyHelper.GetRestTimeBasePenalty(firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, false);
+                    basePenaltyDiff -= PenaltyHelper.GetRestTimeBasePenaltyWithPickup(firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, false);
 
                     if (info.Instance.AreSameShift(prevShiftLastTrip, nextShiftFirstTrip)) {
                         // Prev shift + next shift + merge: merge previous and next shifts (M1)
@@ -29,13 +29,13 @@ namespace Thesis {
                         basePenaltyDiff += PenaltyHelper.GetPrecedenceBasePenalty(prevShiftLastTrip, nextShiftFirstTrip, info, true);
                     } else {
                         // Prev shift + next shift + no merge: add rest previous-next (R3)
-                        basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenalty(prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip, driver, true);
+                        basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenaltyWithPickup(prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip, driver, true);
                     }
                 }
             } else {
                 if (nextShiftFirstTrip != null) {
                     // Next shift: remove rest after (-R2)
-                    basePenaltyDiff -= PenaltyHelper.GetRestTimeBasePenalty(firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, false);
+                    basePenaltyDiff -= PenaltyHelper.GetRestTimeBasePenaltyWithPickup(firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, false);
                 }
             }
 
@@ -50,11 +50,11 @@ namespace Thesis {
 
             if (prevShiftLastTrip != null) {
                 // Prev shift: remove old rest before-current (-R1)
-                basePenaltyDiff -= PenaltyHelper.GetRestTimeBasePenalty(prevShiftFirstTrip, prevShiftLastTrip, firstTripInternal, driver, false);
+                basePenaltyDiff -= PenaltyHelper.GetRestTimeBasePenaltyWithPickup(prevShiftFirstTrip, prevShiftLastTrip, firstTripInternal, driver, false);
 
                 if (nextShiftFirstTrip != null) {
                     // Next shift: remove old rest current-after (-R2)
-                    basePenaltyDiff -= PenaltyHelper.GetRestTimeBasePenalty(firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, false);
+                    basePenaltyDiff -= PenaltyHelper.GetRestTimeBasePenaltyWithPickup(firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, false);
 
                     if (info.Instance.AreSameShift(prevShiftLastTrip, nextTripInternal)) {
                         // Prev shift + merge: merge previous and current shifts (M2)
@@ -64,7 +64,7 @@ namespace Thesis {
                         basePenaltyDiff += PenaltyHelper.GetPrecedenceBasePenalty(tripToUnassign, nextTripInternal, info, true) - PenaltyHelper.GetPrecedenceBasePenalty(prevShiftLastTrip, nextTripInternal, info, false);
 
                         // Prev shift + next shift + merge: add new rest prev/current-next (R4)
-                        basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenalty(prevShiftFirstTrip, lastTripInternal, nextShiftFirstTrip, driver, true);
+                        basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenaltyWithPickup(prevShiftFirstTrip, lastTripInternal, nextShiftFirstTrip, driver, true);
                     } else {
                         // No prev and/or no merge: internal shift length diff (S2 - S1)
                         float internalBasePenaltyDiff;
@@ -72,10 +72,10 @@ namespace Thesis {
                         basePenaltyDiff += internalBasePenaltyDiff;
 
                         // Prev shift + no merge: add new rest before-current (R5)
-                        basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenalty(prevShiftFirstTrip, prevShiftLastTrip, nextTripInternal, driver, true);
+                        basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenaltyWithPickup(prevShiftFirstTrip, prevShiftLastTrip, nextTripInternal, driver, true);
 
                         // Next shift: add new rest current-after (R6)
-                        basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenalty(nextTripInternal, lastTripInternal, nextShiftFirstTrip, driver, true);
+                        basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenaltyWithPickup(nextTripInternal, lastTripInternal, nextShiftFirstTrip, driver, true);
                     }
                 } else {
                     if (info.Instance.AreSameShift(prevShiftLastTrip, nextTripInternal)) {
@@ -91,7 +91,7 @@ namespace Thesis {
                         basePenaltyDiff += internalBasePenaltyDiff;
 
                         // Prev shift + no merge: add new rest before-current (R5)
-                        basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenalty(prevShiftFirstTrip, prevShiftLastTrip, nextTripInternal, driver, true);
+                        basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenaltyWithPickup(prevShiftFirstTrip, prevShiftLastTrip, nextTripInternal, driver, true);
                     }
                 }
             } else {
@@ -102,10 +102,10 @@ namespace Thesis {
 
                 if (nextShiftFirstTrip != null) {
                     // Next shift: remove rest after (-R2)
-                    basePenaltyDiff -= PenaltyHelper.GetRestTimeBasePenalty(firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, false);
+                    basePenaltyDiff -= PenaltyHelper.GetRestTimeBasePenaltyWithPickup(firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, false);
 
                     // Next shift + no merge: add new rest current-after (R6)
-                    basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenalty(nextTripInternal, lastTripInternal, nextShiftFirstTrip, driver, true);
+                    basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenaltyWithPickup(nextTripInternal, lastTripInternal, nextShiftFirstTrip, driver, true);
                 }
             }
 
@@ -118,7 +118,7 @@ namespace Thesis {
             float costWithoutPenaltyDiff, basePenaltyDiff;
             if (nextShiftFirstTrip != null) {
                 // Next shift: remove old rest current-after (-R2)
-                basePenaltyDiff = -PenaltyHelper.GetRestTimeBasePenalty(firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, false);
+                basePenaltyDiff = -PenaltyHelper.GetRestTimeBasePenaltyWithPickup(firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, false);
 
                 if (info.Instance.AreSameShift(prevTripInternal, nextShiftFirstTrip)) {
                     // Next shift + merge: merge current and previous shifts (M3)
@@ -130,7 +130,7 @@ namespace Thesis {
 
                     if (secondNextShiftFirstTrip != null) {
                         // Next shift + second next shift + merge: replace rest next-next2 with current-next2
-                        basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenalty(firstTripInternal, nextShiftLastTrip, secondNextShiftFirstTrip, driver, true) - PenaltyHelper.GetRestTimeBasePenalty(nextShiftFirstTrip, nextShiftLastTrip, secondNextShiftFirstTrip, driver, false);
+                        basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenaltyWithPickup(firstTripInternal, nextShiftLastTrip, secondNextShiftFirstTrip, driver, true) - PenaltyHelper.GetRestTimeBasePenaltyWithPickup(nextShiftFirstTrip, nextShiftLastTrip, secondNextShiftFirstTrip, driver, false);
                     }
                 } else {
                     // No next shift and/or no merge: internal shift length diff (S3 - S1)
@@ -139,7 +139,7 @@ namespace Thesis {
                     basePenaltyDiff += internalBasePenaltyDiff;
 
                     // Next shift + no merge: add new rest current-after (R7)
-                    basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenalty(firstTripInternal, prevTripInternal, nextShiftFirstTrip, driver, true);
+                    basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenaltyWithPickup(firstTripInternal, prevTripInternal, nextShiftFirstTrip, driver, true);
                 }
             } else {
                 // No next shift and/or no merge: internal shift length diff (S3 - S1)
@@ -162,11 +162,11 @@ namespace Thesis {
                 basePenaltyDiff -= PenaltyHelper.GetPrecedenceBasePenalty(prevTripInternal, tripToUnassign, info, false) + PenaltyHelper.GetPrecedenceBasePenalty(tripToUnassign, nextTripInternal, info, false);
 
                 // Split: add new rest between split parts (R8)
-                basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenalty(firstTripInternal, prevTripInternal, nextTripInternal, driver, true);
+                basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenaltyWithPickup(firstTripInternal, prevTripInternal, nextTripInternal, driver, true);
 
                 if (nextShiftFirstTrip != null) {
                     // Next shift + split: replace rest current-next with part2-next
-                    basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenalty(nextTripInternal, lastTripInternal, nextShiftFirstTrip, driver, true) - PenaltyHelper.GetRestTimeBasePenalty(firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, false);
+                    basePenaltyDiff += PenaltyHelper.GetRestTimeBasePenaltyWithPickup(nextTripInternal, lastTripInternal, nextShiftFirstTrip, driver, true) - PenaltyHelper.GetRestTimeBasePenaltyWithPickup(firstTripInternal, lastTripInternal, nextShiftFirstTrip, driver, false);
                 }
             }
 

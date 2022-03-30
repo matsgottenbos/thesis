@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    class PenaltyHelper {
+    static class PenaltyHelper {
         public static float GetPrecedenceBasePenalty(Trip trip1, Trip trip2, SaInfo info, bool debugIsNew) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
@@ -33,8 +33,11 @@ namespace Thesis {
             return amountBasePenalty + countBasePenalty;
         }
 
-        public static float GetRestTimeBasePenalty(Trip shift1FirstTrip, Trip shift1LastTrip, Trip shift2FirstTrip, Driver driver, bool debugIsNew) {
-            int restTime = driver.RestTime(shift1FirstTrip, shift1LastTrip, shift2FirstTrip);
+        public static float GetRestTimeBasePenaltyWithPickup(Trip shift1FirstTrip, Trip shift1LastTrip, Trip shift2FirstTrip, Driver driver, bool debugIsNew) {
+            int restTime = driver.RestTimeWithPickup(shift1FirstTrip, shift1LastTrip, shift2FirstTrip);
+            return GetRestTimeBasePenalty(restTime, debugIsNew);
+        }
+        public static float GetRestTimeBasePenalty(int restTime, bool debugIsNew) {
             float shiftLengthViolation = Math.Max(0, Config.MinRestTime - restTime);
             float amountBasePenalty = shiftLengthViolation * Config.RestTimeViolationPenaltyPerMin;
             float countBasePenalty = shiftLengthViolation > 0 ? Config.RestTimeViolationPenalty : 0;
