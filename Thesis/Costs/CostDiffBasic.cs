@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    class CostDiffBasic {
+    static class CostDiffBasic {
         /* Internal differences */
 
         /** Get internal differences from unassigning the only trip in a shift; returns 1) shift length diff, 2) shift cost diff, and 3) base penalty diff */

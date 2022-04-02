@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    class TotalCostCalculator {
+    static class TotalCostCalculator {
         /** Get assignment cost */
         public static (double, double, double, int[]) GetAssignmentCost(SaInfo info) {
             List<Trip>[] driverPaths = GetPathPerDriver(info);
@@ -47,16 +47,16 @@ namespace Thesis {
                 if (totalContractTimeViolation > 0) totalContractTimeViolationCount = 1;
             } else {
                 Trip shiftFirstTrip = driverPath[0];
-                Trip prevTrip = driverPath[0];
                 Trip parkingTrip = driverPath[0];
+                Trip prevTrip = driverPath[0];
                 Trip beforeHotelTrip = null;
                 for (int driverTripIndex = 1; driverTripIndex < driverPath.Count; driverTripIndex++) {
-                    Trip trip = driverPath[driverTripIndex];
+                    Trip searchTrip = driverPath[driverTripIndex];
 
-                    // Check shift length
-                    if (info.Instance.AreSameShift(prevTrip, trip)) {
+                    if (info.Instance.AreSameShift(prevTrip, searchTrip)) {
+                        /* Same shift */
                         // Check precedence
-                        if (!info.Instance.TripSuccession[prevTrip.Index, trip.Index]) {
+                        if (!info.Instance.TripSuccession[prevTrip.Index, searchTrip.Index]) {
                             totalPrecedenceViolationCount++;
                         }
 
@@ -71,7 +71,7 @@ namespace Thesis {
                         }
                         #endif
                     } else {
-                        /* End previous shift */
+                        /* Start of new shift */
                         // Get travel time before
                         int travelTimeBefore;
                         if (beforeHotelTrip == null) {
@@ -90,15 +90,18 @@ namespace Thesis {
                         int travelTimeAfter, restTime;
                         if (info.IsHotelStayAfterTrip[prevTrip.Index]) {
                             // Hotel stay after
-                            travelTimeAfter = info.Instance.HalfTravelTimeViaHotel(prevTrip, trip);
-                            restTime = trip.StartTime - prevTrip.EndTime - info.Instance.TravelTimeViaHotel(prevTrip, trip);
+                            travelTimeAfter = info.Instance.HalfTravelTimeViaHotel(prevTrip, searchTrip);
+                            restTime = searchTrip.StartTime - prevTrip.EndTime - info.Instance.TravelTimeViaHotel(prevTrip, searchTrip);
+
+                            beforeHotelTrip = prevTrip;
                         } else {
                             // No hotel stay after
                             travelTimeAfter = info.Instance.CarTravelTime(prevTrip, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
-                            restTime = trip.StartTime - prevTrip.EndTime - travelTimeAfter - driver.HomeTravelTimeToStart(trip);
+                            restTime = searchTrip.StartTime - prevTrip.EndTime - travelTimeAfter - driver.HomeTravelTimeToStart(searchTrip);
 
                             // Set new parking trip
-                            parkingTrip = trip;
+                            parkingTrip = searchTrip;
+                            beforeHotelTrip = null;
                         }
 
                         // Get shift length
@@ -126,7 +129,7 @@ namespace Thesis {
                         }
 
                         // Start new shift
-                        shiftFirstTrip = trip;
+                        shiftFirstTrip = searchTrip;
 
                         #if DEBUG
                         if (Config.DebugCheckAndLogOperations && shouldDebug) {
@@ -137,7 +140,7 @@ namespace Thesis {
                         #endif
                     }
 
-                    prevTrip = trip;
+                    prevTrip = searchTrip;
                 }
 
                 // End final shift
@@ -167,6 +170,7 @@ namespace Thesis {
                 totalContractTimeViolationCount = totalContractTimeViolation > 0 ? 1 : 0;
             }
 
+            // Determine penalties
             double precendenceBasePenalty = totalPrecedenceViolationCount * Config.PrecendenceViolationPenalty;
             double shiftLengthBasePenalty = totalShiftLengthViolationCount * Config.ShiftLengthViolationPenalty + totalShiftLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
             double restTimeBasePenalty = totalRestTimeViolationCount * Config.RestTimeViolationPenalty + totalRestTimeViolation * Config.RestTimeViolationPenaltyPerMin;
@@ -174,6 +178,7 @@ namespace Thesis {
             double hotelBasePenalty = totalInvalidHotelCount * Config.InvalidHotelPenalty;
             double basePenalty = precendenceBasePenalty + shiftLengthBasePenalty + restTimeBasePenalty + contractTimeBasePenalty;
 
+            // Determine cost
             double cost = totalCostWithoutPenalty + basePenalty * info.PenaltyFactor;
 
             #if DEBUG
@@ -185,10 +190,12 @@ namespace Thesis {
                 SaDebugger.GetCurrentCheckedTotal().Total.RtViolationAmount = totalRestTimeViolation;
                 SaDebugger.GetCurrentCheckedTotal().Total.CtViolationCount = totalContractTimeViolationCount;
                 SaDebugger.GetCurrentCheckedTotal().Total.CtViolationAmount = totalContractTimeViolation;
+                SaDebugger.GetCurrentCheckedTotal().Total.InvalidHotelCount = totalInvalidHotelCount;
 
                 SaDebugger.GetCurrentCheckedTotal().Total.Cost = cost;
                 SaDebugger.GetCurrentCheckedTotal().Total.CostWithoutPenalty = totalCostWithoutPenalty;
                 SaDebugger.GetCurrentCheckedTotal().Total.BasePenalty = basePenalty;
+                SaDebugger.GetCurrentCheckedTotal().Total.WorkedTime = totalWorkedTime;
             }
             #endif
 

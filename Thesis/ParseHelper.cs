@@ -13,6 +13,9 @@ namespace Thesis {
         public static string ToString(double[] numArray, string format = "0.0000") {
             return string.Join(" ", numArray.Select(num => ToString(num, format)));
         }
+        public static string ToString(int num) {
+            throw new Exception("Redundant parsing of int to string");
+        }
         public static string ToString(int[] numArray) {
             return string.Join(" ", numArray);
         }

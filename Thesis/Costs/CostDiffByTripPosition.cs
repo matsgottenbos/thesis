@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    class CostDiffByTripPosition {
+    static class CostDiffByTripPosition {
         /** Unassign the only trip in a shift; returns 1) shift length diff, 2) shift cost diff, and 3) base penalty diff */
         public static (int, float, float) UnassignOnlyTrip(Trip tripToUnassign, Trip tripToIgnore, Trip firstTripInternal, Trip lastTripInternal, Trip prevShiftFirstTrip, Trip prevShiftLastTrip, Trip nextShiftFirstTrip, Driver driver, SaInfo info) {
             // Always: internal shift length diff (-S1)

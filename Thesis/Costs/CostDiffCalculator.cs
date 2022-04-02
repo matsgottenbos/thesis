@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    class CostDiffCalculator {
+    static class CostDiffCalculator {
         public static (double, double, double, int) AssignOrUnassignTrip(bool isAssign, Trip trip, Trip tripToIgnore, Driver driver, int driverOldWorkedTime, SaInfo info) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
@@ -59,10 +59,9 @@ namespace Thesis {
 
             // TODO: deal with hotel stays
 
-            // Debugger
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
-                StoreDebuggerInfo(prevTripInternal, nextTripInternal, firstTripInternal, lastTripInternal, prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip, costDiff, costWithoutPenaltyDiff, basePenaltyDiff, info);
+                StoreDebuggerInfo(prevTripInternal, nextTripInternal, firstTripInternal, lastTripInternal, prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip, costDiff, costWithoutPenaltyDiff, basePenaltyDiff, shiftLengthDiff, info);
                 CheckErrors(isAssign, trip, tripToIgnore, driver, info);
             }
             #endif
@@ -111,7 +110,7 @@ namespace Thesis {
             return (prevTripInternal, nextTripInternal, firstTripInternal, lastTripInternal, prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip);
         }
 
-        static void StoreDebuggerInfo(Trip prevTripInternal, Trip nextTripInternal, Trip firstTripInternal, Trip lastTripInternal, Trip prevShiftFirstTrip, Trip prevShiftLastTrip, Trip nextShiftFirstTrip, double costDiff, double costWithoutPenaltyDiff, double basePenaltyDiff, SaInfo info) {
+        static void StoreDebuggerInfo(Trip prevTripInternal, Trip nextTripInternal, Trip firstTripInternal, Trip lastTripInternal, Trip prevShiftFirstTrip, Trip prevShiftLastTrip, Trip nextShiftFirstTrip, double costDiff, double costWithoutPenaltyDiff, double basePenaltyDiff, int workedTimeDiff, SaInfo info) {
             // Related trips
             SaDebugger.GetCurrentNormalDiff().PrevTripInternal = prevTripInternal;
             SaDebugger.GetCurrentNormalDiff().NextTripInternal = nextTripInternal;
