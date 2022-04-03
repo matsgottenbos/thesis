@@ -25,8 +25,13 @@ namespace Thesis {
             }
             #endif
             
-            int driverOldWorkedTime = info.DriversWorkedTime[driver.AllDriversIndex];
-            (double costDiff, double costWithoutPenalty, double basePenaltyDiff, int driverWorkedTimeDiff) = TravelHelper.AddOrRemoveHotelStay(isAddition, trip, driver, driverOldWorkedTime, info);
+            double costDiff, costWithoutPenalty, basePenaltyDiff;
+            int driverWorkedTimeDiff;
+            if (isAddition) {
+                (costDiff, costWithoutPenalty, basePenaltyDiff, driverWorkedTimeDiff) = CostDiffCalculator2.GetDriverCostDiff(null, null, trip, null, driver, info);
+            } else {
+                (costDiff, costWithoutPenalty, basePenaltyDiff, driverWorkedTimeDiff) = CostDiffCalculator2.GetDriverCostDiff(null, null, null, trip, driver, info);
+            }
 
             this.driverWorkedTimeDiff = driverWorkedTimeDiff;
             return (costDiff, costWithoutPenalty, basePenaltyDiff);

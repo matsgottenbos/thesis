@@ -24,8 +24,8 @@ namespace Thesis {
             }
             #endif
 
-            (double driver1CostDiff, double driver1CostWithoutPenaltyDiff, double driver1BasePenaltyDiff, int driver1ShiftLengthDiff) = CostDiffCalculator2.GetDriverCostDiff(trip1, trip2, driver1, info);
-            (double driver2CostDiff, double driver2CostWithoutPenaltyDiff, double driver2BasePenaltyDiff, int driver2ShiftLengthDiff) = CostDiffCalculator2.GetDriverCostDiff(trip2, trip1, driver2, info);
+            (double driver1CostDiff, double driver1CostWithoutPenaltyDiff, double driver1BasePenaltyDiff, int driver1ShiftLengthDiff) = CostDiffCalculator2.GetDriverCostDiff(trip1, trip2, null, null, driver1, info);
+            (double driver2CostDiff, double driver2CostWithoutPenaltyDiff, double driver2BasePenaltyDiff, int driver2ShiftLengthDiff) = CostDiffCalculator2.GetDriverCostDiff(trip2, trip1, null, null, driver2, info);
 
             double costDiff = driver1CostDiff + driver2CostDiff;
             double costWithoutPenalty = driver1CostWithoutPenaltyDiff + driver2CostWithoutPenaltyDiff;

@@ -95,7 +95,7 @@ namespace Thesis {
             }
         }
 
-        void LogErrors(TotalInfo errorAmounts) {
+        public void LogErrors(TotalInfo errorAmounts) {
             Console.WriteLine("*** Error in iteration {0} ***", iterationNum);
             Console.WriteLine("Current operation: {0}", operation.Description);
             for (int i = 0; i < operation.Parts.Count; i++) Console.WriteLine("Previous part: {0}", operation.Parts[i].Description);

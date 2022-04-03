@@ -18,7 +18,7 @@ namespace Thesis {
                 List<Trip> driverPath = driverPaths[driverIndex];
                 Driver driver = info.Instance.AllDrivers[driverIndex];
 
-                (double driverCost, double driverCostWithoutPenalty, double driverBasePenalty, int driverWorkedTime) = GetDriverPathCost(driverPath, driver, info, false);
+                (double driverCost, double driverCostWithoutPenalty, double driverBasePenalty, int driverWorkedTime) = GetDriverPathCost(driverPath, info.IsHotelStayAfterTrip, driver, info, false);
                  
                 cost += driverCost;
                 costWithoutPenalty += driverCostWithoutPenalty;
@@ -29,7 +29,7 @@ namespace Thesis {
             return (cost, costWithoutPenalty, basePenalty, driversWorkedTime);
         }
 
-        public static (double, double, double, int) GetDriverPathCost(List<Trip> driverPath, Driver driver, SaInfo info, bool shouldDebug = true) {
+        public static (double, double, double, int) GetDriverPathCost(List<Trip> driverPath, bool[] isHotelStayAfterTrip, Driver driver, SaInfo info, bool shouldDebug = true) {
             int totalPrecedenceViolationCount = 0;
             int totalShiftLengthViolationCount = 0;
             int totalShiftLengthViolation = 0;
@@ -61,13 +61,14 @@ namespace Thesis {
                         }
 
                         // Check for invalid hotel stay
-                        if (info.IsHotelStayAfterTrip[prevTrip.Index]) {
+                        if (isHotelStayAfterTrip[prevTrip.Index]) {
                             totalInvalidHotelCount++;
                         }
 
                         #if DEBUG
                         if (Config.DebugCheckAndLogOperations && shouldDebug) {
                             SaDebugger.GetCurrentCheckedTotal().DriverPathString += prevTrip.Index + "-";
+                            if (isHotelStayAfterTrip[prevTrip.Index]) SaDebugger.GetCurrentCheckedTotal().DriverPathString += "H-";
                         }
                         #endif
                     } else {
@@ -88,7 +89,7 @@ namespace Thesis {
 
                         // Get travel time after and rest time
                         int travelTimeAfter, restTime;
-                        if (info.IsHotelStayAfterTrip[prevTrip.Index]) {
+                        if (isHotelStayAfterTrip[prevTrip.Index]) {
                             // Hotel stay after
                             travelTimeAfter = info.Instance.HalfTravelTimeViaHotel(prevTrip, searchTrip);
                             restTime = searchTrip.StartTime - prevTrip.EndTime - info.Instance.TravelTimeViaHotel(prevTrip, searchTrip);
@@ -134,6 +135,7 @@ namespace Thesis {
                         #if DEBUG
                         if (Config.DebugCheckAndLogOperations && shouldDebug) {
                             SaDebugger.GetCurrentCheckedTotal().DriverPathString += prevTrip.Index + "|";
+                            if (isHotelStayAfterTrip[prevTrip.Index]) SaDebugger.GetCurrentCheckedTotal().DriverPathString += "H|";
                             SaDebugger.GetCurrentCheckedTotal().ShiftLengths.Add(shiftLength);
                             SaDebugger.GetCurrentCheckedTotal().RestTimes.Add(restTime);
                         }
@@ -154,13 +156,14 @@ namespace Thesis {
                 }
 
                 // Check for invalid final hotel stay
-                if (info.IsHotelStayAfterTrip[prevTrip.Index]) {
+                if (isHotelStayAfterTrip[prevTrip.Index]) {
                     totalInvalidHotelCount++;
                 }
 
                 #if DEBUG
                 if (Config.DebugCheckAndLogOperations && shouldDebug) {
                     SaDebugger.GetCurrentCheckedTotal().DriverPathString += prevTrip.Index;
+                    if (isHotelStayAfterTrip[prevTrip.Index]) SaDebugger.GetCurrentCheckedTotal().DriverPathString += "-H";
                     SaDebugger.GetCurrentCheckedTotal().ShiftLengths.Add(lastShiftLength);
                 }
                 #endif

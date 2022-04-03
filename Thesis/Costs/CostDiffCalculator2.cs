@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class CostDiffCalculator2 {
-        public static (double, double, double, int) GetDriverCostDiff(Trip unassignedTrip, Trip assignedTrip, Driver driver, SaInfo info) {
+        public static (double, double, double, int) GetDriverCostDiff(Trip unassignedTrip, Trip assignedTrip, Trip addedHotel, Trip removedHotel, Driver driver, SaInfo info) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
-                string description;
-                if (unassignedTrip != null && assignedTrip != null) description = string.Format("Unassign trip {0} and assign trip {1} to driver {2}", unassignedTrip.Index, assignedTrip.Index, driver.GetId());
-                else if (unassignedTrip != null) description = string.Format("Unassign trip {0} from driver {1}", unassignedTrip.Index, driver.GetId());
-                else if (assignedTrip != null) description = string.Format("Assign trip {0} to driver {1}", assignedTrip.Index, driver.GetId());
-                else throw new Exception("Requesting cost diff calculation without change");
+                string description = string.Format("Driver {0}: ", driver.GetId());
+                if (unassignedTrip != null) description += string.Format("Unassign trip {0}; ", unassignedTrip.Index);
+                if (assignedTrip != null) description += string.Format("Assign trip {0}; ", assignedTrip.Index);
+                if (addedHotel != null) description += string.Format("Add hotel stay after trip {0}; ", addedHotel.Index);
+                if (removedHotel != null) description += string.Format("Remove hotel stay after trip {0}; ", removedHotel.Index);
                 SaDebugger.GetCurrentOperation().StartPart(description, false, driver);
             }
             #endif
@@ -48,9 +48,9 @@ namespace Thesis {
                     if (searchTripDriver != driver) continue;
 
                     Trip searchTrip = info.Instance.Trips[tripIndex];
-                    ProcessDriverTrip(searchTrip, ref oldShiftFirstTrip, ref oldParkingTrip, ref oldPrevTrip, ref oldBeforeHotelTrip, ref oldCostWithoutPenalty, ref oldBasePenalty, ref oldWorkedTime, driver, info, false);
+                    ProcessDriverTrip(searchTrip, ref oldShiftFirstTrip, ref oldParkingTrip, ref oldPrevTrip, ref oldBeforeHotelTrip, ref oldCostWithoutPenalty, ref oldBasePenalty, ref oldWorkedTime, null, null, driver, info, false);
                 }
-                ProcessLastDriverShift(oldShiftFirstTrip, oldParkingTrip, oldPrevTrip, ref oldCostWithoutPenalty, ref oldBasePenalty, ref oldWorkedTime, driver, info, false);
+                ProcessLastDriverShift(oldShiftFirstTrip, oldParkingTrip, oldPrevTrip, ref oldCostWithoutPenalty, ref oldBasePenalty, ref oldWorkedTime, null, null, driver, info, false);
             }
             oldBasePenalty += driver.GetContractTimeBasePenalty(oldWorkedTime, false);
             double oldCost = oldCostWithoutPenalty + oldBasePenalty * info.PenaltyFactor;
@@ -69,9 +69,9 @@ namespace Thesis {
                     Trip searchTrip = info.Instance.Trips[tripIndex];
                     if (searchTripDriver != driver && searchTrip != assignedTrip || searchTrip == unassignedTrip) continue;
 
-                    ProcessDriverTrip(searchTrip, ref newShiftFirstTrip, ref newParkingTrip, ref newPrevTrip, ref newBeforeHotelTrip, ref newCostWithoutPenalty, ref newBasePenalty, ref newWorkedTime, driver, info, true);
+                    ProcessDriverTrip(searchTrip, ref newShiftFirstTrip, ref newParkingTrip, ref newPrevTrip, ref newBeforeHotelTrip, ref newCostWithoutPenalty, ref newBasePenalty, ref newWorkedTime, addedHotel, removedHotel, driver, info, true);
                 }
-                ProcessLastDriverShift(newShiftFirstTrip, newParkingTrip, newPrevTrip, ref newCostWithoutPenalty, ref newBasePenalty, ref newWorkedTime, driver, info, true);
+                ProcessLastDriverShift(newShiftFirstTrip, newParkingTrip, newPrevTrip, ref newCostWithoutPenalty, ref newBasePenalty, ref newWorkedTime, addedHotel, removedHotel, driver, info, true);
             }
             newBasePenalty += driver.GetContractTimeBasePenalty(newWorkedTime, true);
             double newCost = newCostWithoutPenalty + newBasePenalty * info.PenaltyFactor;
@@ -88,21 +88,21 @@ namespace Thesis {
                 SaDebugger.GetCurrentNormalDiff().CostWithoutPenaltyDiff = costWithoutPenaltyDiff;
                 SaDebugger.GetCurrentNormalDiff().BasePenaltyDiff = basePenaltyDiff;
 
-                CheckErrors(unassignedTrip, assignedTrip, driver, info);
+                CheckErrors(unassignedTrip, assignedTrip, addedHotel, removedHotel, driver, info);
             }
             #endif
 
             return (costDiff, costWithoutPenaltyDiff, basePenaltyDiff, workedTimeDiff);
         }
 
-        static void ProcessDriverTrip(Trip searchTrip, ref Trip shiftFirstTrip, ref Trip parkingTrip, ref Trip prevTrip, ref Trip beforeHotelTrip, ref double costWithoutPenalty, ref double basePenalty, ref int workedTime, Driver driver, SaInfo info, bool debugIsNew) {
+        static void ProcessDriverTrip(Trip searchTrip, ref Trip shiftFirstTrip, ref Trip parkingTrip, ref Trip prevTrip, ref Trip beforeHotelTrip, ref double costWithoutPenalty, ref double basePenalty, ref int workedTime, Trip addedHotel, Trip removedHotel, Driver driver, SaInfo info, bool debugIsNew) {
             if (info.Instance.AreSameShift(prevTrip, searchTrip)) {
                 /* Same shift */
                 // Check precedence
                 basePenalty += PenaltyHelper.GetPrecedenceBasePenalty(prevTrip, searchTrip, info, debugIsNew);
 
                 // Check for invalid hotel stay
-                if (info.IsHotelStayAfterTrip[prevTrip.Index]) {
+                if (IsHotelAfter(prevTrip, addedHotel, removedHotel, info)) {
                     basePenalty += PenaltyHelper.GetHotelBasePenalty(prevTrip, info, debugIsNew);
                 }
             } else {
@@ -123,7 +123,7 @@ namespace Thesis {
 
                 // Get travel time after and rest time
                 int travelTimeAfter, restTime;
-                if (info.IsHotelStayAfterTrip[prevTrip.Index]) {
+                if (IsHotelAfter(prevTrip, addedHotel, removedHotel, info)) {
                     // Hotel stay after
                     travelTimeAfter = info.Instance.HalfTravelTimeViaHotel(prevTrip, searchTrip);
                     restTime = searchTrip.StartTime - prevTrip.EndTime - info.Instance.TravelTimeViaHotel(prevTrip, searchTrip);
@@ -162,7 +162,7 @@ namespace Thesis {
             prevTrip = searchTrip;
         }
 
-        static void ProcessLastDriverShift(Trip shiftFirstTrip, Trip parkingTrip, Trip prevTrip, ref double costWithoutPenalty, ref double basePenalty, ref int workedTime, Driver driver, SaInfo info, bool debugIsNew) {
+        static void ProcessLastDriverShift(Trip shiftFirstTrip, Trip parkingTrip, Trip prevTrip, ref double costWithoutPenalty, ref double basePenalty, ref int workedTime, Trip addedHotel, Trip removedHotel, Driver driver, SaInfo info, bool debugIsNew) {
             // End final shift
             int shiftLength = driver.ShiftLengthWithCustomPickup(shiftFirstTrip, prevTrip, parkingTrip);
             workedTime += shiftLength;
@@ -170,16 +170,20 @@ namespace Thesis {
             basePenalty += PenaltyHelper.GetShiftLengthBasePenalty(shiftLength, debugIsNew);
 
             // Check for invalid final hotel stay
-            if (info.IsHotelStayAfterTrip[prevTrip.Index]) {
+            if (IsHotelAfter(prevTrip, addedHotel, removedHotel, info)) {
                 basePenalty += PenaltyHelper.GetHotelBasePenalty(prevTrip, info, debugIsNew);
             }
         }
 
-        static void CheckErrors(Trip unassignedTrip, Trip assignedTrip, Driver driver, SaInfo info) {
+        static bool IsHotelAfter(Trip trip, Trip addedHotel, Trip removedHotel, SaInfo info) {
+            return trip == addedHotel || trip != removedHotel && info.IsHotelStayAfterTrip[trip.Index];
+        }
+
+        static void CheckErrors(Trip unassignedTrip, Trip assignedTrip, Trip addedHotel, Trip removedHotel, Driver driver, SaInfo info) {
             List<Trip> driverPathBefore = TotalCostCalculator.GetSingleDriverPath(driver, null, info);
 
             // Get total before
-            TotalCostCalculator.GetDriverPathCost(driverPathBefore, driver, info);
+            TotalCostCalculator.GetDriverPathCost(driverPathBefore, info.IsHotelStayAfterTrip, driver, info);
             SaDebugger.GetCurrentOperationPart().FinishCheckBefore();
 
             // Get driver path after
@@ -193,8 +197,13 @@ namespace Thesis {
                 driverPathAfter = driverPathAfter.OrderBy(searchTrip => searchTrip.StartTime).ToList();
             }
 
+            // Get hotel stays after
+            bool[] isHotelStayAfterTripAfter = info.IsHotelStayAfterTrip.Copy();
+            if (addedHotel != null) isHotelStayAfterTripAfter[addedHotel.Index] = true;
+            if (removedHotel != null) isHotelStayAfterTripAfter[removedHotel.Index] = false;
+
             // Get total after
-            TotalCostCalculator.GetDriverPathCost(driverPathAfter, driver, info);
+            TotalCostCalculator.GetDriverPathCost(driverPathAfter, isHotelStayAfterTripAfter, driver, info);
             SaDebugger.GetCurrentOperationPart().FinishCheckAfter();
 
             // Check for errors

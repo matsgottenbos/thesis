@@ -61,7 +61,7 @@ namespace Thesis {
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
-                StoreDebuggerInfo(prevTripInternal, nextTripInternal, firstTripInternal, lastTripInternal, prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip, costDiff, costWithoutPenaltyDiff, basePenaltyDiff, shiftLengthDiff, info);
+                StoreDebuggerInfo(prevTripInternal, nextTripInternal, firstTripInternal, lastTripInternal, prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip, costDiff, costWithoutPenaltyDiff, basePenaltyDiff, info);
                 CheckErrors(isAssign, trip, tripToIgnore, driver, info);
             }
             #endif
@@ -110,7 +110,7 @@ namespace Thesis {
             return (prevTripInternal, nextTripInternal, firstTripInternal, lastTripInternal, prevShiftFirstTrip, prevShiftLastTrip, nextShiftFirstTrip);
         }
 
-        static void StoreDebuggerInfo(Trip prevTripInternal, Trip nextTripInternal, Trip firstTripInternal, Trip lastTripInternal, Trip prevShiftFirstTrip, Trip prevShiftLastTrip, Trip nextShiftFirstTrip, double costDiff, double costWithoutPenaltyDiff, double basePenaltyDiff, int workedTimeDiff, SaInfo info) {
+        static void StoreDebuggerInfo(Trip prevTripInternal, Trip nextTripInternal, Trip firstTripInternal, Trip lastTripInternal, Trip prevShiftFirstTrip, Trip prevShiftLastTrip, Trip nextShiftFirstTrip, double costDiff, double costWithoutPenaltyDiff, double basePenaltyDiff, SaInfo info) {
             // Related trips
             SaDebugger.GetCurrentNormalDiff().PrevTripInternal = prevTripInternal;
             SaDebugger.GetCurrentNormalDiff().NextTripInternal = nextTripInternal;
@@ -190,7 +190,7 @@ namespace Thesis {
             List<Trip> driverPathBefore = TotalCostCalculator.GetSingleDriverPath(driver, tripToIgnore, info);
 
             // Get total before
-            TotalCostCalculator.GetDriverPathCost(driverPathBefore, driver, info);
+            TotalCostCalculator.GetDriverPathCost(driverPathBefore, info.IsHotelStayAfterTrip, driver, info);
             SaDebugger.GetCurrentOperationPart().FinishCheckBefore();
 
             // Get driver path after
@@ -203,8 +203,11 @@ namespace Thesis {
                 if (removedCount != 1) throw new Exception("Error removing trip from driver path");
             }
 
+            // Get hotel stays after
+            bool[] isHotelStayAfterTripAfter = info.IsHotelStayAfterTrip; // WIP
+
             // Get total after
-            TotalCostCalculator.GetDriverPathCost(driverPathAfter, driver, info);
+            TotalCostCalculator.GetDriverPathCost(driverPathAfter, isHotelStayAfterTripAfter, driver, info);
             SaDebugger.GetCurrentOperationPart().FinishCheckAfter();
 
             // Check for errors

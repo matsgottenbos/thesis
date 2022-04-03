@@ -17,7 +17,6 @@ namespace Thesis {
         public const int ShiftWaitingTimeThreshold = 6 * 60; // Waiting times shorter than this count as the same trip; waiting time longer start a new shift
         public const int ShiftMaxStartTimeDiff = 24 * 60; // The maximum difference in start times considered when searching for trips in the same shift
         public const int BetweenShiftsMaxStartTimeDiff = 36 * 60; // The maximum difference in start times considered when checking rest time between different shifts
-        public const int ShiftLinkCount = 3; // Number of shift link types (including 'none')
 
         // Time periods
         public const int DayLength = 24 * 60;
@@ -65,8 +64,8 @@ namespace Thesis {
         public const int GenMaxStationCountPerTrip = 4;
 
         // Distances
-        public const int GenMinStationTravelTime = 60;
-        public const int GenMaxStationTravelTime = 3 * 60;
+        public const int GenMinStationTravelTime = 30;
+        public const int GenMaxStationTravelTime = 2 * 60;
 
         // Contract times
         public const int GenMinContractTime = GenTimeframeLength / 6;
@@ -83,7 +82,7 @@ namespace Thesis {
         public const int SaLogFrequency = 1000000;
         public const int SaParameterUpdateFrequency = SaIterationCount / 1000;
         public const float SaInitialTemperature = 1000f;
-        public const float SaTemperatureReductionFactor = 0.998f;
+        public const float SaTemperatureReductionFactor = 0.997f;
         public const float SaInitialPenaltyFactor = 0.001f;
         public const float SaPenaltyIncrement = 0.001f;
 
