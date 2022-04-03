@@ -21,8 +21,7 @@ namespace Thesis {
             // Skip till first trip of driver
             Trip driverOldFirstTrip = null;
             Trip driverNewFirstTrip = null;
-            int driverFirstTripIndex;
-            for (driverFirstTripIndex = 0; driverFirstTripIndex < info.Assignment.Length; driverFirstTripIndex++) {
+            for (int driverFirstTripIndex = 0; driverFirstTripIndex < info.Assignment.Length; driverFirstTripIndex++) {
                 Driver searchTripDriver = info.Assignment[driverFirstTripIndex];
                 if (searchTripDriver == driver) {
                     if (driverOldFirstTrip == null) driverOldFirstTrip = info.Instance.Trips[driverFirstTripIndex];
@@ -36,7 +35,6 @@ namespace Thesis {
             }
 
             // Get old driver cost
-            double oldCost = 0;
             double oldCostWithoutPenalty = 0;
             double oldBasePenalty = 0;
             int oldWorkedTime = 0;
@@ -45,7 +43,7 @@ namespace Thesis {
                 Trip oldParkingTrip = driverOldFirstTrip;
                 Trip oldPrevTrip = driverOldFirstTrip;
                 Trip oldBeforeHotelTrip = null;
-                for (int tripIndex = driverFirstTripIndex + 1; tripIndex < info.Assignment.Length; tripIndex++) {
+                for (int tripIndex = driverOldFirstTrip.Index + 1; tripIndex < info.Assignment.Length; tripIndex++) {
                     Driver searchTripDriver = info.Assignment[tripIndex];
                     if (searchTripDriver != driver) continue;
 
@@ -53,12 +51,11 @@ namespace Thesis {
                     ProcessDriverTrip(searchTrip, ref oldShiftFirstTrip, ref oldParkingTrip, ref oldPrevTrip, ref oldBeforeHotelTrip, ref oldCostWithoutPenalty, ref oldBasePenalty, ref oldWorkedTime, driver, info, false);
                 }
                 ProcessLastDriverShift(oldShiftFirstTrip, oldParkingTrip, oldPrevTrip, ref oldCostWithoutPenalty, ref oldBasePenalty, ref oldWorkedTime, driver, info, false);
-                oldBasePenalty += driver.GetContractTimeBasePenalty(oldWorkedTime, false);
-                oldCost = oldCostWithoutPenalty + oldBasePenalty * info.PenaltyFactor;
             }
+            oldBasePenalty += driver.GetContractTimeBasePenalty(oldWorkedTime, false);
+            double oldCost = oldCostWithoutPenalty + oldBasePenalty * info.PenaltyFactor;
 
             // Get new driver cost
-            double newCost = 0;
             double newCostWithoutPenalty = 0;
             double newBasePenalty = 0;
             int newWorkedTime = 0;
@@ -67,7 +64,7 @@ namespace Thesis {
                 Trip newParkingTrip = driverNewFirstTrip;
                 Trip newPrevTrip = driverNewFirstTrip;
                 Trip newBeforeHotelTrip = null;
-                for (int tripIndex = driverFirstTripIndex + 1; tripIndex < info.Assignment.Length; tripIndex++) {
+                for (int tripIndex = driverNewFirstTrip.Index + 1; tripIndex < info.Assignment.Length; tripIndex++) {
                     Driver searchTripDriver = info.Assignment[tripIndex];
                     Trip searchTrip = info.Instance.Trips[tripIndex];
                     if (searchTripDriver != driver && searchTrip != assignedTrip || searchTrip == unassignedTrip) continue;
@@ -75,9 +72,9 @@ namespace Thesis {
                     ProcessDriverTrip(searchTrip, ref newShiftFirstTrip, ref newParkingTrip, ref newPrevTrip, ref newBeforeHotelTrip, ref newCostWithoutPenalty, ref newBasePenalty, ref newWorkedTime, driver, info, true);
                 }
                 ProcessLastDriverShift(newShiftFirstTrip, newParkingTrip, newPrevTrip, ref newCostWithoutPenalty, ref newBasePenalty, ref newWorkedTime, driver, info, true);
-                newBasePenalty += driver.GetContractTimeBasePenalty(newWorkedTime, true);
-                newCost = newCostWithoutPenalty + newBasePenalty * info.PenaltyFactor;
             }
+            newBasePenalty += driver.GetContractTimeBasePenalty(newWorkedTime, true);
+            double newCost = newCostWithoutPenalty + newBasePenalty * info.PenaltyFactor;
 
             // Get diffs
             double costDiff = newCost - oldCost;
@@ -105,7 +102,9 @@ namespace Thesis {
                 basePenalty += PenaltyHelper.GetPrecedenceBasePenalty(prevTrip, searchTrip, info, debugIsNew);
 
                 // Check for invalid hotel stay
-                basePenalty += PenaltyHelper.GetHotelBasePenalty(prevTrip, info.IsHotelStayAfterTrip[prevTrip.Index], info, debugIsNew);
+                if (info.IsHotelStayAfterTrip[prevTrip.Index]) {
+                    basePenalty += PenaltyHelper.GetHotelBasePenalty(prevTrip, info, debugIsNew);
+                }
             } else {
                 /* Start of new shift */
                 // Get travel time before
@@ -171,7 +170,9 @@ namespace Thesis {
             basePenalty += PenaltyHelper.GetShiftLengthBasePenalty(shiftLength, debugIsNew);
 
             // Check for invalid final hotel stay
-            basePenalty += PenaltyHelper.GetHotelBasePenalty(prevTrip, info.IsHotelStayAfterTrip[prevTrip.Index], info, debugIsNew);
+            if (info.IsHotelStayAfterTrip[prevTrip.Index]) {
+                basePenalty += PenaltyHelper.GetHotelBasePenalty(prevTrip, info, debugIsNew);
+            }
         }
 
         static void CheckErrors(Trip unassignedTrip, Trip assignedTrip, Driver driver, SaInfo info) {

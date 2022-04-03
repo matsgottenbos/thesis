@@ -176,7 +176,7 @@ namespace Thesis {
             double restTimeBasePenalty = totalRestTimeViolationCount * Config.RestTimeViolationPenalty + totalRestTimeViolation * Config.RestTimeViolationPenaltyPerMin;
             double contractTimeBasePenalty = totalContractTimeViolationCount * Config.ContractTimeViolationPenalty + totalContractTimeViolation * Config.ContractTimeViolationPenaltyPerMin;
             double hotelBasePenalty = totalInvalidHotelCount * Config.InvalidHotelPenalty;
-            double basePenalty = precendenceBasePenalty + shiftLengthBasePenalty + restTimeBasePenalty + contractTimeBasePenalty;
+            double basePenalty = precendenceBasePenalty + shiftLengthBasePenalty + restTimeBasePenalty + contractTimeBasePenalty + hotelBasePenalty;
 
             // Determine cost
             double cost = totalCostWithoutPenalty + basePenalty * info.PenaltyFactor;

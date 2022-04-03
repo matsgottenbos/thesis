@@ -56,7 +56,7 @@ namespace Thesis {
             stopwatch.Start();
 
             while (info.IterationNum < Config.SaIterationCount) {
-                int operationIndex = info.Rand.Next(5);
+                int operationIndex = info.Rand.Next(4);
                 AbstractOperation operation = operationIndex switch {
                     // Assign internal
                     0 => AssignInternalOperation.CreateRandom(info),

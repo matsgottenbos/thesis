@@ -376,19 +376,17 @@ namespace Thesis {
         }
     }
 
-    class HotelValueChange : ValueChange<(Trip, bool)> {
+    class HotelValueChange : ValueChange<Trip> {
         public List<Trip> OldViolations = new List<Trip>();
         public List<Trip> NewViolations = new List<Trip>();
 
         public HotelValueChange(string name, bool shouldReverse, Driver driver, SaInfo info) : base(name, shouldReverse, driver, info) { }
 
-        protected override void AddOldInternal((Trip, bool) tripAndIsValid) => AddSpecific(tripAndIsValid, OldViolations);
-        protected override void AddNewInternal((Trip, bool) tripAndIsValid) => AddSpecific(tripAndIsValid, NewViolations);
+        protected override void AddOldInternal(Trip trip) => AddSpecific(trip, OldViolations);
+        protected override void AddNewInternal(Trip trip) => AddSpecific(trip, NewViolations);
 
-        protected void AddSpecific((Trip, bool) tripAndIsValid, List<Trip> violationsList) {
-            if (!tripAndIsValid.Item2) {
-                violationsList.Add(tripAndIsValid.Item1);
-            }
+        protected void AddSpecific(Trip trip, List<Trip> violationsList) {
+            violationsList.Add(trip);
         }
 
         public override void Log() {

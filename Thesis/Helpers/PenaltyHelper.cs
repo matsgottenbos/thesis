@@ -52,16 +52,15 @@ namespace Thesis {
             return amountBasePenalty + countBasePenalty;
         }
 
-        public static float GetHotelBasePenalty(Trip trip, bool isValidHotelStay, SaInfo info, bool debugIsNew) {
+        public static float GetHotelBasePenalty(Trip tripBeforeInvalidHotel, SaInfo info, bool debugIsNew) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
-                if (debugIsNew) SaDebugger.GetCurrentNormalDiff().Hotels.AddNew((trip, isValidHotelStay));
-                else SaDebugger.GetCurrentNormalDiff().Hotels.AddOld((trip, isValidHotelStay));
+                if (debugIsNew) SaDebugger.GetCurrentNormalDiff().Hotels.AddNew(tripBeforeInvalidHotel);
+                else SaDebugger.GetCurrentNormalDiff().Hotels.AddOld(tripBeforeInvalidHotel);
             }
             #endif
 
-            if (isValidHotelStay) return 0;
-            else return Config.PrecendenceViolationPenalty;
+            return Config.InvalidHotelPenalty;
         }
     }
 }
