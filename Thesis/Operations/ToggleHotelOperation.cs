@@ -28,9 +28,9 @@ namespace Thesis {
             double costDiff, costWithoutPenalty, basePenaltyDiff;
             int driverWorkedTimeDiff;
             if (isAddition) {
-                (costDiff, costWithoutPenalty, basePenaltyDiff, driverWorkedTimeDiff) = CostDiffCalculator2.GetDriverCostDiff(null, null, trip, null, driver, info);
+                (costDiff, costWithoutPenalty, basePenaltyDiff, driverWorkedTimeDiff) = CostDiffCalculator.GetDriverCostDiff(null, null, trip, null, driver, info);
             } else {
-                (costDiff, costWithoutPenalty, basePenaltyDiff, driverWorkedTimeDiff) = CostDiffCalculator2.GetDriverCostDiff(null, null, null, trip, driver, info);
+                (costDiff, costWithoutPenalty, basePenaltyDiff, driverWorkedTimeDiff) = CostDiffCalculator.GetDriverCostDiff(null, null, null, trip, driver, info);
             }
 
             this.driverWorkedTimeDiff = driverWorkedTimeDiff;

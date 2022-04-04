@@ -44,6 +44,7 @@ namespace Thesis {
         // Hotels
         public const float HotelCosts = 130f;
         public const int HotelExtraTravelTime = 30;
+        public const int HotelMaxRestTime = 24 * 60;
 
         // Contract time deviations
         public const float MinContractTimeFraction = 0.8f;

@@ -120,7 +120,7 @@ namespace Thesis {
 
                 // Log
                 if (info.IterationNum % Config.SaLogFrequency == 0) {
-                    string bestCostString = bestInfo.Assignment == null ? "" : ParseHelper.ToString(bestInfo.Cost, "0.00000000");
+                    string bestCostString = bestInfo.Assignment == null ? "" : ParseHelper.ToString(bestInfo.Cost);
                     string penaltyString = info.BasePenalty > 0 ? ParseHelper.ToString(info.BasePenalty, "0") : "-";
                     string assignmentStr = bestInfo.Assignment == null ? "" : ParseHelper.AssignmentToString(bestInfo.Assignment, bestInfo);
                     Console.WriteLine("# {0,4}    Best cost: {1,10}    Cost: {2,10}    Penalty: {3,6}    Temp: {4,5}    P.factor: {5,5}    Best sol.: {6}", ParseHelper.LargeNumToString(info.IterationNum), bestCostString, ParseHelper.ToString(info.CostWithoutPenalty), penaltyString, ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.PenaltyFactor, "0.00"), assignmentStr);
