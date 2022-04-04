@@ -61,7 +61,7 @@ namespace Thesis {
         public float ShiftCostWithCustomPickup(Trip firstTripInternal, Trip lastTripInternal, Trip parkingTrip) {
             float drivingCost = DrivingCost(firstTripInternal, lastTripInternal);
             int travelTime = HomeTravelTimeToStart(firstTripInternal) + instance.CarTravelTime(lastTripInternal, parkingTrip) + HomeTravelTimeToStart(parkingTrip);
-            float travelCost = GetPayedTravelCost(travelTime);
+            float travelCost = GetPaidTravelCost(travelTime);
             return drivingCost + travelCost;
         }
 
@@ -85,10 +85,10 @@ namespace Thesis {
             return homeTravelTimes[trip.FirstStation];
         }
 
-        protected abstract int GetPayedTravelTime(int travelTime);
+        protected abstract int GetPaidTravelTime(int travelTime);
 
-        public float GetPayedTravelCost(int travelTime) {
-            return GetPayedTravelTime(travelTime) * travelSalaryRate;
+        public float GetPaidTravelCost(int travelTime) {
+            return GetPaidTravelTime(travelTime) * travelSalaryRate;
         }
 
 
@@ -136,7 +136,7 @@ namespace Thesis {
             return InternalIndex.ToString();
         }
 
-        protected override int GetPayedTravelTime(int travelTime) {
+        protected override int GetPaidTravelTime(int travelTime) {
             return Math.Max(0, travelTime - Config.InternalDriverUnpaidTravelTimePerShift);
         }
 
@@ -161,7 +161,7 @@ namespace Thesis {
             return string.Format("e{0}.{1}", ExternalDriverTypeIndex, IndexInType);
         }
 
-        protected override int GetPayedTravelTime(int travelTime) {
+        protected override int GetPaidTravelTime(int travelTime) {
             return travelTime;
         }
 

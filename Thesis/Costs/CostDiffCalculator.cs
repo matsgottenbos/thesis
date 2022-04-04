@@ -151,7 +151,7 @@ namespace Thesis {
                 int shiftLengthWithTravel = shiftLengthWithoutTravel + travelTime;
 
                 // Get shift cost
-                float travelCost = driver.GetPayedTravelCost(travelTime);
+                float travelCost = driver.GetPaidTravelCost(travelTime);
                 float shiftCost = drivingCost + travelCost;
                 costWithoutPenalty += shiftCost;
 

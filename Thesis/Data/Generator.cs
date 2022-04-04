@@ -196,11 +196,11 @@ namespace Thesis {
 
                     // Determine driving and travel time
                     int travelTimeWithPickup = carTravelTimes[lastTripInternal.LastStation, firstTripInternal.FirstStation] + 2 * oneWayTravelTimes[firstTripInternal.FirstStation];
-                    int payedTravelTimeWithPickup = Math.Max(0, travelTimeWithPickup - unpaidTravelTimePerShift);
+                    int paidTravelTimeWithPickup = Math.Max(0, travelTimeWithPickup - unpaidTravelTimePerShift);
                     int shiftLengthWithPickup = drivingTime + travelTimeWithPickup;
 
                     // Determine full shift costs
-                    float travelCostWithPickup = payedTravelTimeWithPickup * travelSalaryRate;
+                    float travelCostWithPickup = paidTravelTimeWithPickup * travelSalaryRate;
                     float shiftCostWithPickup = drivingCost + travelCostWithPickup;
 
                     // Store determine values
