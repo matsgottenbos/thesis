@@ -8,14 +8,16 @@ namespace Thesis {
     abstract class Driver {
         public readonly int AllDriversIndex;
         readonly int[] OneWayTravelTimes, TwoWayPayedTravelTimes;
+        readonly float TravelSalaryRate;
         readonly int[,] DrivingTimes, ShiftLengthsWithoutPickup, ShiftLengthsWithPickup;
         readonly float[,] DrivingCosts, ShiftCostsWithPickup;
         Instance instance;
 
-        public Driver(int allDriversIndex, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) {
+        public Driver(int allDriversIndex, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, float travelSalaryRate, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) {
             AllDriversIndex = allDriversIndex;
             OneWayTravelTimes = oneWayTravelTimes;
             TwoWayPayedTravelTimes = twoWayPayedTravelTimes;
+            TravelSalaryRate = travelSalaryRate;
             DrivingTimes = drivingTimes;
             DrivingCosts = drivingCosts;
             ShiftLengthsWithoutPickup = shiftLengthsWithoutPickup;
@@ -98,7 +100,7 @@ namespace Thesis {
         protected abstract int GetPayedTravelTime(int travelTime);
 
         public float GetPayedTravelCost(int travelTime) {
-            return GetPayedTravelTime(travelTime) * Config.InternalDriverTravelSalaryRate;
+            return GetPayedTravelTime(travelTime) * TravelSalaryRate;
         }
 
 
@@ -135,7 +137,7 @@ namespace Thesis {
         public readonly int InternalIndex, MinContractTime, MaxContractTime;
         public readonly bool[,] TrackProficiencies;
 
-        public InternalDriver(int allDriversIndex, int internalIndex, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, twoWayPayedTravelTimes, drivingTimes, drivingCosts, shiftLengthsWithoutPickup, shiftLengthsWithPickup, shiftCostsWithPickup) {
+        public InternalDriver(int allDriversIndex, int internalIndex, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, twoWayPayedTravelTimes, Config.InternalDriverTravelSalaryRate, drivingTimes, drivingCosts, shiftLengthsWithoutPickup, shiftLengthsWithPickup, shiftCostsWithPickup) {
             InternalIndex = internalIndex;
             MinContractTime = minWorkedTime;
             MaxContractTime = maxWorkedTime;
@@ -162,7 +164,7 @@ namespace Thesis {
     class ExternalDriver : Driver {
         public readonly int ExternalDriverTypeIndex, IndexInType;
 
-        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) : base(allDriversIndex, oneWayTravelTimes, twoWayPayedTravelTimes, drivingTimes, drivingCosts, shiftLengthsWithoutPickup, shiftLengthsWithPickup, shiftCostsWithPickup) {
+        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) : base(allDriversIndex, oneWayTravelTimes, twoWayPayedTravelTimes, Config.ExternalDriverTravelSalaryRate, drivingTimes, drivingCosts, shiftLengthsWithoutPickup, shiftLengthsWithPickup, shiftCostsWithPickup) {
             ExternalDriverTypeIndex = externalDriverTypeIndex;
             IndexInType = indexInType;
         }

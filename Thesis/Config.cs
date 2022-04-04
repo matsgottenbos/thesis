@@ -30,7 +30,7 @@ namespace Thesis {
             new SalaryRateInfo(23 * 60, 60 / 60f), // Night 23-6, hourly rate of 60
             // TODO: add weekends and holidays
         };
-        public const float InternalDriverTravelSalaryRate = 50 / 60f; // TODO: add external driver travel salary rate
+        public const float InternalDriverTravelSalaryRate = 50 / 60f;
         public const int InternalDriverUnpaidTravelTimePerShift = 60;
         public static readonly SalaryRateInfo[] ExternalDriverDailySalaryRates = new SalaryRateInfo[] {
             new SalaryRateInfo(0 * 60,  80 / 60f), // Night 0-6: hourly rate of 80
@@ -40,6 +40,7 @@ namespace Thesis {
             new SalaryRateInfo(23 * 60, 80 / 60f), // Night 23-6, hourly rate of 80
             // TODO: add weekends and holidays
         };
+        public const float ExternalDriverTravelSalaryRate = 70 / 60f;
 
         // Hotels
         public const float HotelCosts = 130f;

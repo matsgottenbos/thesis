@@ -150,7 +150,7 @@ namespace Thesis {
                 int maxWorkedTime = (int)Math.Floor(contactTime * Config.MaxContractTimeFraction);
 
                 // Preprocess shift lengths and costs
-                (int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) = GetDriverShiftLengthsAndCosts(Config.InternalDriverUnpaidTravelTimePerShift, trips, oneWayTravelTimes, carTravelTimes, Config.InternalDriverDailySalaryRates);
+                (int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) = GetDriverShiftLengthsAndCosts(Config.InternalDriverUnpaidTravelTimePerShift, trips, oneWayTravelTimes, carTravelTimes, Config.InternalDriverDailySalaryRates, Config.InternalDriverTravelSalaryRate);
 
                 internalDrivers[internalDriverIndex] = new InternalDriver(internalDriverIndex, internalDriverIndex, oneWayTravelTimes, twoWayPayedTravelTimes, drivingTimes, drivingCosts, shiftLengthsWithoutPickup, shiftLengthsWithPickup, shiftCostsWithPickup, minWorkedTime, maxWorkedTime, trackProficiencies);
             }
@@ -172,7 +172,7 @@ namespace Thesis {
                 }
 
                 // Preprocess shift lengths and costs
-                (int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) = GetDriverShiftLengthsAndCosts(0, trips, oneWayTravelTimes, carTravelTimes, Config.ExternalDriverDailySalaryRates);
+                (int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) = GetDriverShiftLengthsAndCosts(0, trips, oneWayTravelTimes, carTravelTimes, Config.ExternalDriverDailySalaryRates, Config.ExternalDriverTravelSalaryRate);
 
                 // Number of external drivers of this type
                 int count = rand.Next(Config.GenExternalDriverMinCountPerType, Config.GenExternalDriverMaxCountPerType + 1);
@@ -189,7 +189,7 @@ namespace Thesis {
         }
 
         /** Preprocess an internal driver's shift lengths and costs */
-        (int[,], float[,], int[,], int[,], float[,]) GetDriverShiftLengthsAndCosts(int unpaidTravelTimePerShift, Trip[] trips, int[] oneWayTravelTimes, int[,] carTravelTimes, SalaryRateInfo[] salaryRates) {
+        (int[,], float[,], int[,], int[,], float[,]) GetDriverShiftLengthsAndCosts(int unpaidTravelTimePerShift, Trip[] trips, int[] oneWayTravelTimes, int[,] carTravelTimes, SalaryRateInfo[] salaryRates, float travelSalaryRate) {
             int[,] drivingTimes = new int[trips.Length, trips.Length];
             float[,] drivingCosts = new float[trips.Length, trips.Length];
             int[,] shiftLengthsWithoutPickup = new int[trips.Length, trips.Length];
@@ -211,7 +211,7 @@ namespace Thesis {
                     int shiftLengthWithPickup = drivingTime + travelTimeWithPickup;
 
                     // Determine full shift costs
-                    float travelCostWithPickup = payedTravelTimeWithPickup * Config.InternalDriverTravelSalaryRate;
+                    float travelCostWithPickup = payedTravelTimeWithPickup * travelSalaryRate;
                     float shiftCostWithPickup = drivingCost + travelCostWithPickup;
 
                     // Store determine values
