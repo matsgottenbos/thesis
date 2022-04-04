@@ -7,22 +7,20 @@ using System.Threading.Tasks;
 namespace Thesis {
     abstract class Driver {
         public readonly int AllDriversIndex;
-        readonly int[] OneWayTravelTimes, TwoWayPayedTravelTimes;
-        readonly float TravelSalaryRate;
-        readonly int[,] DrivingTimes, ShiftLengthsWithoutPickup, ShiftLengthsWithPickup;
-        readonly float[,] DrivingCosts, ShiftCostsWithPickup;
+        readonly int[] oneWayTravelTimes;
+        readonly float travelSalaryRate;
+        readonly int[,] drivingTimes, shiftLengthsWithPickup;
+        readonly float[,] drivingCosts, shiftCostsWithPickup;
         Instance instance;
 
-        public Driver(int allDriversIndex, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, float travelSalaryRate, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) {
+        public Driver(int allDriversIndex, int[] oneWayTravelTimes, float travelSalaryRate, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) {
             AllDriversIndex = allDriversIndex;
-            OneWayTravelTimes = oneWayTravelTimes;
-            TwoWayPayedTravelTimes = twoWayPayedTravelTimes;
-            TravelSalaryRate = travelSalaryRate;
-            DrivingTimes = drivingTimes;
-            DrivingCosts = drivingCosts;
-            ShiftLengthsWithoutPickup = shiftLengthsWithoutPickup;
-            ShiftLengthsWithPickup = shiftLengthsWithPickup;
-            ShiftCostsWithPickup = shiftCostsWithPickup;
+            this.oneWayTravelTimes = oneWayTravelTimes;
+            this.travelSalaryRate = travelSalaryRate;
+            this.drivingTimes = drivingTimes;
+            this.drivingCosts = drivingCosts;
+            this.shiftLengthsWithPickup = shiftLengthsWithPickup;
+            this.shiftCostsWithPickup = shiftCostsWithPickup;
         }
 
         public void SetInstance(Instance instance) {
@@ -37,23 +35,21 @@ namespace Thesis {
         /* Shift lengths and costs */
 
         public int DrivingTime(Trip firstTripInternal, Trip lastTripInternal) {
-            return DrivingTimes[firstTripInternal.Index, lastTripInternal.Index];
+            return drivingTimes[firstTripInternal.Index, lastTripInternal.Index];
         }
 
         public float DrivingCost(Trip firstTripInternal, Trip lastTripInternal) {
-            return DrivingCosts[firstTripInternal.Index, lastTripInternal.Index];
+            return drivingCosts[firstTripInternal.Index, lastTripInternal.Index];
         }
 
-        public int ShiftLengthWithoutPickup(Trip firstTripInternal, Trip lastTripInternal) {
-            return ShiftLengthsWithoutPickup[firstTripInternal.Index, lastTripInternal.Index];
-        }
-
+        // Obsolete; only used in old optimal solver code
         public int ShiftLengthWithPickup(Trip firstTripInternal, Trip lastTripInternal) {
-            return ShiftLengthsWithPickup[firstTripInternal.Index, lastTripInternal.Index];
+            return shiftLengthsWithPickup[firstTripInternal.Index, lastTripInternal.Index];
         }
 
+        // Obsolete; only used in old optimal solver code
         public float ShiftCostWithPickup(Trip firstTripInternal, Trip lastTripInternal) {
-            return ShiftCostsWithPickup[firstTripInternal.Index, lastTripInternal.Index];
+            return shiftCostsWithPickup[firstTripInternal.Index, lastTripInternal.Index];
         }
 
         public int ShiftLengthWithCustomPickup(Trip firstTripInternal, Trip lastTripInternal, Trip parkingTrip) {
@@ -67,17 +63,15 @@ namespace Thesis {
             return drivingCost + travelCost;
         }
 
-        public (int, float) ShiftLengthAndCostWithPickup(Trip firstTripInternal, Trip lastTripInternal) {
-            return (ShiftLengthWithPickup(firstTripInternal, lastTripInternal), ShiftCostWithPickup(firstTripInternal, lastTripInternal));
-        }
-
 
         /* Rest time */
 
+        // Obsolete; only used in old optimal solver code
         public int RestTimeWithPickup(Trip shift1FirstTrip, Trip shift1LastTrip, Trip shift2FirstTrip) {
             return RestTimeWithCustomPickup(shift1LastTrip, shift2FirstTrip, shift1FirstTrip);
         }
 
+        // Obsolete; only used in obsolete RestTimeWithPickup
         public int RestTimeWithCustomPickup(Trip tripBeforeTravel, Trip tripAfterTravel, Trip parkingTrip) {
             return tripAfterTravel.StartTime - tripBeforeTravel.EndTime - instance.CarTravelTime(tripBeforeTravel, parkingTrip) - HomeTravelTimeToStart(parkingTrip) - HomeTravelTimeToStart(tripAfterTravel);
         }
@@ -86,21 +80,13 @@ namespace Thesis {
         /* Travelling */
 
         public int HomeTravelTimeToStart(Trip trip) {
-            return OneWayTravelTimes[trip.FirstStation];
-        }
-
-        public int HomeTravelTimeToEnd(Trip trip) {
-            return OneWayTravelTimes[trip.LastStation];
-        }
-
-        public int TwoWayPayedTravelTimeFromHome(Trip trip) {
-            return TwoWayPayedTravelTimes[trip.FirstStation];
+            return oneWayTravelTimes[trip.FirstStation];
         }
 
         protected abstract int GetPayedTravelTime(int travelTime);
 
         public float GetPayedTravelCost(int travelTime) {
-            return GetPayedTravelTime(travelTime) * TravelSalaryRate;
+            return GetPayedTravelTime(travelTime) * travelSalaryRate;
         }
 
 
@@ -137,7 +123,7 @@ namespace Thesis {
         public readonly int InternalIndex, MinContractTime, MaxContractTime;
         public readonly bool[,] TrackProficiencies;
 
-        public InternalDriver(int allDriversIndex, int internalIndex, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, twoWayPayedTravelTimes, Config.InternalDriverTravelSalaryRate, drivingTimes, drivingCosts, shiftLengthsWithoutPickup, shiftLengthsWithPickup, shiftCostsWithPickup) {
+        public InternalDriver(int allDriversIndex, int internalIndex, int[] oneWayTravelTimes, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, Config.InternalDriverTravelSalaryRate, drivingTimes, drivingCosts, shiftLengthsWithPickup, shiftCostsWithPickup) {
             InternalIndex = internalIndex;
             MinContractTime = minWorkedTime;
             MaxContractTime = maxWorkedTime;
@@ -164,7 +150,7 @@ namespace Thesis {
     class ExternalDriver : Driver {
         public readonly int ExternalDriverTypeIndex, IndexInType;
 
-        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, int[] oneWayTravelTimes, int[] twoWayPayedTravelTimes, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithoutPickup, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) : base(allDriversIndex, oneWayTravelTimes, twoWayPayedTravelTimes, Config.ExternalDriverTravelSalaryRate, drivingTimes, drivingCosts, shiftLengthsWithoutPickup, shiftLengthsWithPickup, shiftCostsWithPickup) {
+        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, int[] oneWayTravelTimes, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) : base(allDriversIndex, oneWayTravelTimes, Config.ExternalDriverTravelSalaryRate, drivingTimes, drivingCosts, shiftLengthsWithPickup, shiftCostsWithPickup) {
             ExternalDriverTypeIndex = externalDriverTypeIndex;
             IndexInType = indexInType;
         }

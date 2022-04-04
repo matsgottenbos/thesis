@@ -126,7 +126,7 @@ namespace Thesis {
                 if (IsHotelAfter(prevTrip, addedHotel, removedHotel, info)) {
                     // Hotel stay after
                     travelTimeAfter = info.Instance.HalfTravelTimeViaHotel(prevTrip, searchTrip);
-                    restTime = searchTrip.StartTime - prevTrip.EndTime - info.Instance.TravelTimeViaHotel(prevTrip, searchTrip);
+                    restTime = info.Instance.RestTimeViaHotel(prevTrip, searchTrip);
                     costWithoutPenalty += Config.HotelCosts;
 
                     // Check if the hotel stay isn't too long
@@ -138,7 +138,7 @@ namespace Thesis {
                 } else {
                     // No hotel stay after
                     travelTimeAfter = info.Instance.CarTravelTime(prevTrip, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
-                    restTime = searchTrip.StartTime - prevTrip.EndTime - travelTimeAfter - driver.HomeTravelTimeToStart(searchTrip);
+                    restTime = info.Instance.RestTimeWithTravelTime(prevTrip, searchTrip, travelTimeAfter + driver.HomeTravelTimeToStart(searchTrip));
 
                     // Set new parking trip
                     parkingTrip = searchTrip;

@@ -33,10 +33,6 @@ namespace Thesis {
             return amountBasePenalty + countBasePenalty;
         }
 
-        public static float GetRestTimeBasePenaltyWithPickup(Trip shift1FirstTrip, Trip shift1LastTrip, Trip shift2FirstTrip, Driver driver, bool debugIsNew) {
-            int restTime = driver.RestTimeWithPickup(shift1FirstTrip, shift1LastTrip, shift2FirstTrip);
-            return GetRestTimeBasePenalty(restTime, debugIsNew);
-        }
         public static float GetRestTimeBasePenalty(int restTime, bool debugIsNew) {
             float shiftLengthViolation = Math.Max(0, Config.MinRestTime - restTime);
             float amountBasePenalty = shiftLengthViolation * Config.RestTimeViolationPenaltyPerMin;
