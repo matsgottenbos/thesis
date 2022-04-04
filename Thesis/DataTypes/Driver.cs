@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 namespace Thesis {
     abstract class Driver {
         public readonly int AllDriversIndex;
-        readonly int[] oneWayTravelTimes;
+        readonly int[] homeTravelTimes;
         readonly float travelSalaryRate;
         readonly int[,] drivingTimes, shiftLengthsWithPickup;
         readonly float[,] drivingCosts, shiftCostsWithPickup;
         Instance instance;
 
-        public Driver(int allDriversIndex, int[] oneWayTravelTimes, float travelSalaryRate, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) {
+        public Driver(int allDriversIndex, int[] homeTravelTimes, float travelSalaryRate, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) {
             AllDriversIndex = allDriversIndex;
-            this.oneWayTravelTimes = oneWayTravelTimes;
+            this.homeTravelTimes = homeTravelTimes;
             this.travelSalaryRate = travelSalaryRate;
             this.drivingTimes = drivingTimes;
             this.drivingCosts = drivingCosts;
@@ -80,7 +80,7 @@ namespace Thesis {
         /* Travelling */
 
         public int HomeTravelTimeToStart(Trip trip) {
-            return oneWayTravelTimes[trip.FirstStation];
+            return homeTravelTimes[trip.FirstStation];
         }
 
         protected abstract int GetPayedTravelTime(int travelTime);
