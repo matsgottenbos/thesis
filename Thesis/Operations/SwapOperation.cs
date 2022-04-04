@@ -20,28 +20,19 @@ namespace Thesis {
         public override (double, double, double) GetCostDiff() {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.GetCurrentOperation().Description = string.Format("Swap trip {0} from driver {1} with trip {2} from driver {3}", trip1.Index, driver1.AllDriversIndex, trip2.Index, driver2.AllDriversIndex);
+                SaDebugger.GetCurrentOperation().Description = string.Format("Swap trip {0} from driver {1} with trip {2} from driver {3}", trip1.Index, driver1.GetId(), trip2.Index, driver2.GetId());
             }
             #endif
 
-            int driver1WorkedTime = info.DriversWorkedTime[driver1.AllDriversIndex];
-            (double driver1UnassignCostDiff, double driver1UnassignCostWithoutPenaltyDiff, double driver1UnassignBasePenaltyDiff, int driver1UnassignShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip1, null, driver1, driver1WorkedTime, info);
+            (double driver1CostDiff, double driver1CostWithoutPenaltyDiff, double driver1BasePenaltyDiff, int driver1ShiftLengthDiff) = CostDiffCalculator.GetDriverCostDiff(trip1, trip2, null, null, driver1, info);
+            (double driver2CostDiff, double driver2CostWithoutPenaltyDiff, double driver2BasePenaltyDiff, int driver2ShiftLengthDiff) = CostDiffCalculator.GetDriverCostDiff(trip2, trip1, null, null, driver2, info);
 
-            int driver2WorkedTime = info.DriversWorkedTime[driver2.AllDriversIndex];
-            (double driver2UnassignCostDiff, double driver2UnassignCostWithoutPenaltyDiff, double driver2UnassignBasePenaltyDiff, int driver2UnassignShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(false, trip2, null, driver2, driver2WorkedTime, info);
+            double costDiff = driver1CostDiff + driver2CostDiff;
+            double costWithoutPenalty = driver1CostWithoutPenaltyDiff + driver2CostWithoutPenaltyDiff;
+            double basePenaltyDiff = driver1BasePenaltyDiff + driver2BasePenaltyDiff;
 
-            int driver1WorkedTimeAfterUnassign = driver1WorkedTime + driver1UnassignShiftLengthDiff;
-            (double driver1AssignCostDiff, double driver1AssignCostWithoutPenaltyDiff, double driver1AssignBasePenaltyDiff, int driver1AssignShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip2, trip1, driver1, driver1WorkedTimeAfterUnassign, info);
-
-            int driver2WorkedTimeAfterUnassign = driver2WorkedTime + driver2UnassignShiftLengthDiff;
-            (double driver2AssignCostDiff, double driver2AssignCostWithoutPenaltyDiff, double driver2AssignBasePenaltyDiff, int driver2AssignShiftLengthDiff) = CostDiffCalculator.AssignOrUnassignTrip(true, trip1, trip2, driver2, driver2WorkedTimeAfterUnassign, info);
-
-            double costDiff = driver1UnassignCostDiff + driver2UnassignCostDiff + driver1AssignCostDiff + driver2AssignCostDiff;
-            double costWithoutPenalty = driver1UnassignCostWithoutPenaltyDiff + driver2UnassignCostWithoutPenaltyDiff + driver1AssignCostWithoutPenaltyDiff + driver2AssignCostWithoutPenaltyDiff;
-            double basePenaltyDiff = driver1UnassignBasePenaltyDiff + driver2UnassignBasePenaltyDiff + driver1AssignBasePenaltyDiff + driver2AssignBasePenaltyDiff;
-
-            driver1WorkedTimeDiff = driver1UnassignShiftLengthDiff + driver1AssignShiftLengthDiff;
-            driver2WorkedTimeDiff = driver2UnassignShiftLengthDiff + driver2AssignShiftLengthDiff;
+            driver1WorkedTimeDiff = driver1ShiftLengthDiff;
+            driver2WorkedTimeDiff = driver2ShiftLengthDiff;
 
             return (costDiff, costWithoutPenalty, basePenaltyDiff);
         }

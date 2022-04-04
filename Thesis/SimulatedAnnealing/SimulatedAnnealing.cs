@@ -8,18 +8,24 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class SimulatedAnnealing {
-        readonly SaInfo info;
+        readonly SaInfo info, bestInfo;
 
         public SimulatedAnnealing(Instance instance, Random rand, XorShiftRandom fastRand) {
+            // Initialise info
             info = new SaInfo(instance, rand, fastRand);
-
-            // Initialise variables
             info.IterationNum = 0;
             info.Temperature = Config.SaInitialTemperature;
             info.PenaltyFactor = Config.SaInitialPenaltyFactor;
-            info.BestCost = double.MaxValue;
-            info.ShiftLinksAfterTrip = new ShiftLink[instance.Trips.Length];
+            info.IsHotelStayAfterTrip = new bool[instance.Trips.Length];
             info.ExternalDriverCountsByType = new int[instance.ExternalDriversByType.Length];
+
+            // Initialise best info
+            bestInfo = new SaInfo(instance, rand, fastRand);
+            bestInfo.IterationNum = -1;
+            bestInfo.Temperature = -1;
+            bestInfo.PenaltyFactor = 1;
+            bestInfo.Cost = double.MaxValue;
+
 
             // Create a random assignment
             info.Assignment = new Driver[instance.Trips.Length];
@@ -35,7 +41,7 @@ namespace Thesis {
             #if DEBUG
             // Initialise debugger
             if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.ResetIteration(instance);
+                SaDebugger.ResetIteration(info);
             }
             #endif
 
@@ -45,18 +51,18 @@ namespace Thesis {
             #if DEBUG
             // Reset iteration in debugger after initial assignment cost
             if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.ResetIteration(instance);
+                SaDebugger.ResetIteration(info);
             }
             #endif
         }
 
-        public (double, Driver[]) Run() {
+        public SaInfo Run() {
             // Start stopwatch
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
             while (info.IterationNum < Config.SaIterationCount) {
-                int operationIndex = info.Rand.Next(4);
+                int operationIndex = info.Rand.Next(5);
                 AbstractOperation operation = operationIndex switch {
                     // Assign internal
                     0 => AssignInternalOperation.CreateRandom(info),
@@ -68,7 +74,10 @@ namespace Thesis {
                     // Swap
                     3 => SwapOperation.CreateRandom(info),
 
-                    _ => throw new Exception(),
+                    // Hotel stay
+                    4 => ToggleHotelOperation.CreateRandom(info),
+
+                    _ => throw new Exception("Invalid operation index"),
                 };
 
                 (double costDiff, double costWithoutPenaltyDiff, double basePenaltyDiff) = operation.GetCostDiff();
@@ -80,13 +89,15 @@ namespace Thesis {
                     info.CostWithoutPenalty += costWithoutPenaltyDiff;
                     info.BasePenalty += basePenaltyDiff;
 
-                    if (info.Cost < info.BestCost && info.BasePenalty < 0.01) {
+                    if (info.Cost < bestInfo.Cost && info.BasePenalty < 0.01) {
                         // Check cost to remove floating point imprecisions
                         (info.Cost, info.CostWithoutPenalty, info.BasePenalty, info.DriversWorkedTime) = TotalCostCalculator.GetAssignmentCost(info);
+                        if (info.BasePenalty > 0.01) throw new Exception("New best solution is invalid");
 
-                        if (info.Cost < info.BestCost) {
-                            info.BestCost = info.Cost;
-                            info.BestAssignment = (Driver[])info.Assignment.Clone();
+                        if (info.Cost < bestInfo.Cost) {
+                            bestInfo.Cost = info.Cost;
+                            bestInfo.Assignment = (Driver[])info.Assignment.Clone();
+                            bestInfo.IsHotelStayAfterTrip = (bool[])info.IsHotelStayAfterTrip.Clone();
                         }
                     }
                 }
@@ -97,20 +108,21 @@ namespace Thesis {
                 #if DEBUG
                 // Set debugger to next iteration
                 if (Config.DebugCheckAndLogOperations) {
-                    SaDebugger.NextIteration(info.Instance);
+                    SaDebugger.NextIteration(info);
                 }
                 #endif
 
                 // Check cost to remove floating point imprecisions
                 if (info.IterationNum % Config.SaCheckCostFrequency == 0) {
+                    double oldCost = info.Cost;
                     (info.Cost, info.CostWithoutPenalty, info.BasePenalty, info.DriversWorkedTime) = TotalCostCalculator.GetAssignmentCost(info);
                 }
 
                 // Log
                 if (info.IterationNum % Config.SaLogFrequency == 0) {
-                    string bestCostString = info.BestAssignment == null ? "" : ParseHelper.ToString(info.BestCost);
+                    string bestCostString = bestInfo.Assignment == null ? "" : ParseHelper.ToString(bestInfo.Cost);
                     string penaltyString = info.BasePenalty > 0 ? ParseHelper.ToString(info.BasePenalty, "0") : "-";
-                    string assignmentStr = info.BestAssignment == null ? "" : string.Join(' ', info.BestAssignment.Select(driver => driver.GetId()));
+                    string assignmentStr = bestInfo.Assignment == null ? "" : ParseHelper.AssignmentToString(bestInfo.Assignment, bestInfo);
                     Console.WriteLine("# {0,4}    Best cost: {1,10}    Cost: {2,10}    Penalty: {3,6}    Temp: {4,5}    P.factor: {5,5}    Best sol.: {6}", ParseHelper.LargeNumToString(info.IterationNum), bestCostString, ParseHelper.ToString(info.CostWithoutPenalty), penaltyString, ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.PenaltyFactor, "0.00"), assignmentStr);
                 }
 
@@ -124,21 +136,24 @@ namespace Thesis {
                 #if DEBUG
                 // Reset iteration in debugger after additional checks
                 if (Config.DebugCheckAndLogOperations) {
-                    SaDebugger.ResetIteration(info.Instance);
+                    SaDebugger.ResetIteration(info);
                 }
                 #endif
             }
 
             // Check cost to remove floating point imprecisions
-            info.PenaltyFactor = 1;
-            (info.BestCost, _, _, _) = TotalCostCalculator.GetAssignmentCost(info);
+            (bestInfo.Cost, bestInfo.CostWithoutPenalty, bestInfo.BasePenalty, bestInfo.DriversWorkedTime) = TotalCostCalculator.GetAssignmentCost(bestInfo);
+            if (bestInfo.BasePenalty > 0.01) throw new Exception("Best solution is invalid");
+            bestInfo.DriversWorkedTime = info.DriversWorkedTime;
+            bestInfo.ExternalDriverCountsByType = info.ExternalDriverCountsByType;
+            bestInfo.IterationNum = info.IterationNum;
 
             stopwatch.Stop();
             float saDuration = stopwatch.ElapsedMilliseconds / 1000f;
             float saSpeed = Config.SaIterationCount / saDuration;
             Console.WriteLine("SA finished {0} iterations in {1} s  |  Speed: {2} iterations/s", ParseHelper.LargeNumToString(info.IterationNum), ParseHelper.ToString(saDuration), ParseHelper.LargeNumToString(saSpeed));
 
-            return (info.BestCost, info.BestAssignment);
+            return bestInfo;
         }
 
         int[] GetInitialAssignmentIndices() {

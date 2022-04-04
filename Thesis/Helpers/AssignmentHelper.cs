@@ -5,13 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    enum ShiftLink {
-        None,
-        LeaveCar,
-        Hotel,
-    }
-
-    class AssignmentHelper {
+    static class AssignmentHelper {
         /** Returns previous trip of driver; returns as first of tuple when in same shift, or second of tuple when in previous shift */
         public static (Trip, Trip) GetPrevTrip(Trip trip, Driver driver, Trip tripToIgnore, SaInfo info) {
             int startTimeThreshold = trip.StartTime - Config.BetweenShiftsMaxStartTimeDiff;

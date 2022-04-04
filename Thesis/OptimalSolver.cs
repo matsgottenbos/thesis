@@ -67,7 +67,8 @@ namespace Thesis {
                 string logStr = "";
                 AssignmentNode searchNode = node;
                 while (searchNode != null) {
-                    logStr = string.Format("{0} / {1}  |  ", searchNode.DriverIndex, instance.AllDrivers.Length) + logStr;
+                    int hotelIndicator = node.IsHotelStayAfter ? 1 : 0;
+                    logStr = string.Format("{0} / {1}  |  ", 2 * searchNode.DriverIndex + hotelIndicator, 2 * instance.AllDrivers.Length) + logStr;
                     searchNode = searchNode.Prev;
                 }
 
@@ -78,35 +79,41 @@ namespace Thesis {
             double bestNodeCost = costUpperBound;
             AssignmentNode bestNode = null;
             string newBestAssignmentStr = bestAssignmentStr;
-            for (int driverIndex = 0; driverIndex < instance.AllDrivers.Length; driverIndex++) {
-                AssignmentNode newNode = new AssignmentNode(newTripIndex, driverIndex, node);
+            for (int hotelIndicator = 0; hotelIndicator < 2; hotelIndicator++) {
+                for (int driverIndex = 0; driverIndex < instance.AllDrivers.Length; driverIndex++) {
+                    bool isHotelStayAfter = hotelIndicator == 1;
+                    AssignmentNode newNode = new AssignmentNode(newTripIndex, driverIndex, isHotelStayAfter, node);
 
-                // Check feasibility and cost
-                double? newNodeCostDiff = GetAdditionCostDiffIfFeasible(newNode);
-                if (!newNodeCostDiff.HasValue) continue;
+                    // Check feasibility and cost
+                    double? newNodeCostDiff = GetAdditionCostDiffIfFeasible(newNode);
+                    if (!newNodeCostDiff.HasValue) continue;
 
-                double newNodeCost = nodeCost + newNodeCostDiff.Value;
-                double newNodeMinFinalCost = newNodeCost + minRemainingDrivingCosts[newTripIndex];
-                if (newNodeMinFinalCost > costUpperBound) continue;
+                    double newNodeCost = nodeCost + newNodeCostDiff.Value;
+                    double newNodeMinFinalCost = newNodeCost + minRemainingDrivingCosts[newTripIndex];
+                    if (newNodeMinFinalCost > costUpperBound) continue;
 
-                (AssignmentNode dfsResultNode, double dfsResultCost) = AssignmentDfs(minRemainingDrivingCosts, newNode, newNodeCost, newTripIndex + 1, bestNodeCost, newBestAssignmentStr);
-                if (dfsResultCost < bestNodeCost) {
-                    bestNodeCost = dfsResultCost;
-                    bestNode = dfsResultNode;
-                    Driver[] bestAssignment = NodeToAssignment(bestNode);
-                    newBestAssignmentStr = string.Join(' ', bestAssignment.Select(driver => driver.GetId()));
+                    (AssignmentNode dfsResultNode, double dfsResultCost) = AssignmentDfs(minRemainingDrivingCosts, newNode, newNodeCost, newTripIndex + 1, bestNodeCost, newBestAssignmentStr);
+                    if (dfsResultCost < bestNodeCost) {
+                        bestNodeCost = dfsResultCost;
+                        bestNode = dfsResultNode;
+                        Driver[] bestAssignment = NodeToAssignment(bestNode);
+                        newBestAssignmentStr = string.Join(' ', bestAssignment.Select(driver => driver.GetId()));
+                    }
                 }
             }
 
             // Logging progress
             if (newTripIndex == 0) {
-                Console.WriteLine("{0} / {1}", Config.GenInternalDriverCount, Config.GenInternalDriverCount);
+                int tripOptionCount = 2 * instance.AllDrivers.Length;
+                Console.WriteLine("{0} / {1}", tripOptionCount, tripOptionCount);
             }
 
             return (bestNode, bestNodeCost);
         }
 
         double? GetAdditionCostDiffIfFeasible(AssignmentNode node) {
+            throw new NotImplementedException("TODO: include hotel stays in cost diff");
+
             Driver driver = instance.AllDrivers[node.DriverIndex];
             Trip nodeTrip = instance.Trips[node.TripIndex];
 
@@ -161,7 +168,7 @@ namespace Thesis {
                 costDiff = GetShiftCostDiff(driverPrevSearchTrip, lastTripInternal, prevTripInternal, driver);
             } else {
                 // We were at the beginning of the previous shift; check rest time, and then the check is complete
-                if (driver.RestTime(driverPrevSearchTrip, prevShiftLastTrip, firstTripInternal) < Config.MinRestTime) return null;
+                if (driver.RestTimeWithPickup(driverPrevSearchTrip, prevShiftLastTrip, firstTripInternal) < Config.MinRestTime) return null;
             }
 
             if (!costDiff.HasValue) return null;
@@ -184,13 +191,13 @@ namespace Thesis {
 
         double? GetShiftCostDiff(Trip firstTripInternal, Trip lastTripInternal, Trip prevTripInternal, Driver driver) {
             // Get new shift length
-            int newShiftLength = driver.ShiftLength(firstTripInternal, lastTripInternal);
+            int newShiftLength = driver.ShiftLengthWithPickup(firstTripInternal, lastTripInternal);
 
             // Check shift length
             if (newShiftLength > Config.MaxShiftLength) return null;
 
             // Get new shift cost
-            float newShiftCost = driver.ShiftCost(firstTripInternal, lastTripInternal);
+            float newShiftCost = driver.ShiftCostWithPickup(firstTripInternal, lastTripInternal);
 
             float shiftCostDiff;
             if (prevTripInternal == null) {
@@ -198,7 +205,7 @@ namespace Thesis {
                 shiftCostDiff = newShiftCost;
             } else {
                 // Determine difference with previous shift cost
-                shiftCostDiff = newShiftCost - driver.ShiftCost(firstTripInternal, prevTripInternal);
+                shiftCostDiff = newShiftCost - driver.ShiftCostWithPickup(firstTripInternal, prevTripInternal);
             }
 
             return shiftCostDiff;
@@ -216,7 +223,7 @@ namespace Thesis {
                 if (searchNode.DriverIndex == node.DriverIndex) {
                     if (!instance.AreSameShift(searchTrip, driverPrevSearchTrip)) {
                         // End the shift
-                        driverWorkedTime += driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
+                        driverWorkedTime += driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
                         lastTripInternal = searchTrip;
                     }
                     driverPrevSearchTrip = searchTrip;
@@ -226,7 +233,7 @@ namespace Thesis {
             }
 
             // End first shift
-            driverWorkedTime += driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
+            driverWorkedTime += driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
             if (driver.GetMaxContractTimeViolation(driverWorkedTime) > 0) return false;
             return true;
         }
@@ -252,7 +259,7 @@ namespace Thesis {
                     Driver driver = instance.AllDrivers[searchNode.DriverIndex];
                     if (!instance.AreSameShift(searchTrip, driverPrevSearchTrip)) {
                         // End shift for driver
-                        allDriversWorkedTime[searchNode.DriverIndex] += driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
+                        allDriversWorkedTime[searchNode.DriverIndex] += driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
                         allDriversLastTripInternal[searchNode.DriverIndex] = searchTrip;
                     }
                 }
@@ -276,7 +283,7 @@ namespace Thesis {
                 }
 
                 Trip lastTripInternal = allDriversLastTripInternal[driverIndex];
-                int driverWorkedTime = allDriversWorkedTime[driverIndex] + driver.ShiftLength(driverPrevSearchTrip, lastTripInternal);
+                int driverWorkedTime = allDriversWorkedTime[driverIndex] + driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
 
                 // Check minimum contract time
                 if (driver.GetMinContractTimeViolation(driverWorkedTime) > 0) {
@@ -315,11 +322,13 @@ namespace Thesis {
 
     class AssignmentNode {
         public readonly int TripIndex, DriverIndex;
+        public readonly bool IsHotelStayAfter;
         public readonly AssignmentNode Prev;
 
-        public AssignmentNode(int tripIndex, int assignedDriverIndex, AssignmentNode prev) {
+        public AssignmentNode(int tripIndex, int assignedDriverIndex, bool isHotelStayAfter, AssignmentNode prev) {
             TripIndex = tripIndex;
             DriverIndex = assignedDriverIndex;
+            IsHotelStayAfter = isHotelStayAfter;
             Prev = prev;
         }
     }

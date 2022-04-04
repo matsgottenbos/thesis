@@ -25,13 +25,13 @@ namespace Thesis {
             return CurrentOperation.CurrentPart.CheckedCurrent;
         }
 
-        public static void NextIteration(Instance instance) {
+        public static void NextIteration(SaInfo info) {
             IterationNum++;
-            CurrentOperation = new OperationInfo(IterationNum, instance);
+            CurrentOperation = new OperationInfo(IterationNum, info);
         }
 
-        public static void ResetIteration(Instance instance) {
-            CurrentOperation = new OperationInfo(IterationNum, instance);
+        public static void ResetIteration(SaInfo info) {
+            CurrentOperation = new OperationInfo(IterationNum, info);
         }
     }
 
@@ -40,16 +40,16 @@ namespace Thesis {
         public readonly List<OperationPart> Parts = new List<OperationPart>();
         public OperationPart CurrentPart = null;
         readonly int iterationNum;
-        readonly Instance instance;
+        readonly SaInfo info;
 
-        public OperationInfo(int iterationNum, Instance instance) {
+        public OperationInfo(int iterationNum, SaInfo info) {
             this.iterationNum = iterationNum;
-            this.instance = instance;
+            this.info = info;
         }
 
-        public void StartPart(string partDescription, bool isAssign, Driver driver) {
+        public void StartPart(string partDescription, bool shouldReverse, Driver driver) {
             if (CurrentPart != null) Parts.Add(CurrentPart);
-            CurrentPart = new OperationPart(iterationNum, partDescription, isAssign, this, driver, instance);
+            CurrentPart = new OperationPart(iterationNum, partDescription, shouldReverse, this, driver, info);
         }
     }
 
@@ -62,16 +62,16 @@ namespace Thesis {
         public readonly string Description;
         readonly OperationInfo operation;
         readonly Driver driver;
-        readonly Instance instance;
+        readonly SaInfo info;
 
-        public OperationPart(int iterationNum, string description, bool isAssign, OperationInfo operation, Driver driver, Instance instance) {
+        public OperationPart(int iterationNum, string description, bool shouldReverse, OperationInfo operation, Driver driver, SaInfo info) {
             this.iterationNum = iterationNum;
             Description = description;
             this.operation = operation;
             this.driver = driver;
-            this.instance = instance;
+            this.info = info;
             CheckedCurrent = new CheckedTotal();
-            Normal = new NormalDiff(isAssign, driver, instance);
+            Normal = new NormalDiff(shouldReverse, driver, info);
         }
 
         public void FinishCheckBefore() {
@@ -95,7 +95,7 @@ namespace Thesis {
             }
         }
 
-        void LogErrors(TotalInfo errorAmounts) {
+        public void LogErrors(TotalInfo errorAmounts) {
             Console.WriteLine("*** Error in iteration {0} ***", iterationNum);
             Console.WriteLine("Current operation: {0}", operation.Description);
             for (int i = 0; i < operation.Parts.Count; i++) Console.WriteLine("Previous part: {0}", operation.Parts[i].Description);
@@ -147,7 +147,7 @@ namespace Thesis {
 
     class TotalInfo {
         public double? Cost, CostWithoutPenalty, BasePenalty;
-        public int? PrecedenceViolationCount, SlViolationCount, SlViolationAmount, RtViolationCount, RtViolationAmount, CtValue, CtViolationCount, CtViolationAmount;
+        public int? WorkedTime, PrecedenceViolationCount, SlViolationCount, SlViolationAmount, RtViolationCount, RtViolationAmount, CtValue, CtViolationCount, CtViolationAmount, InvalidHotelCount;
         readonly bool isDiff;
 
         public TotalInfo(bool isDiff = false) {
@@ -157,16 +157,18 @@ namespace Thesis {
         public void Log(bool shouldLogZeros = true) {
             string diffStr = isDiff ? " diff" : "";
 
-            if (shouldLogZeros || PrecedenceViolationCount != 0) Console.WriteLine("Precedence violation count{0}: {1}", diffStr, PrecedenceViolationCount);
-            if (shouldLogZeros || SlViolationCount != 0) Console.WriteLine("SL violation count{0}: {1}", diffStr, SlViolationCount);
-            if (shouldLogZeros || SlViolationAmount != 0) Console.WriteLine("SL violation amount{0}: {1}", diffStr, SlViolationAmount);
-            if (shouldLogZeros || RtViolationCount != 0) Console.WriteLine("RT violation count{0}: {1}", diffStr, RtViolationCount);
-            if (shouldLogZeros || RtViolationAmount != 0) Console.WriteLine("RT violation amount{0}: {1}", diffStr, RtViolationAmount);
-            if (shouldLogZeros || CtViolationCount != 0) Console.WriteLine("CT violation count{0}: {1}", diffStr, CtViolationCount);
-            if (shouldLogZeros || CtViolationAmount != 0) Console.WriteLine("CT violation amount{0}: {1}", diffStr, CtViolationAmount);
+            if (shouldLogZeros || PrecedenceViolationCount.Value != 0) Console.WriteLine("Precedence violation count{0}: {1}", diffStr, PrecedenceViolationCount);
+            if (shouldLogZeros || SlViolationCount.Value != 0) Console.WriteLine("SL violation count{0}: {1}", diffStr, SlViolationCount);
+            if (shouldLogZeros || SlViolationAmount.Value != 0) Console.WriteLine("SL violation amount{0}: {1}", diffStr, SlViolationAmount);
+            if (shouldLogZeros || RtViolationCount.Value != 0) Console.WriteLine("RT violation count{0}: {1}", diffStr, RtViolationCount);
+            if (shouldLogZeros || RtViolationAmount.Value != 0) Console.WriteLine("RT violation amount{0}: {1}", diffStr, RtViolationAmount);
+            if (shouldLogZeros || CtViolationCount.Value != 0) Console.WriteLine("CT violation count{0}: {1}", diffStr, CtViolationCount);
+            if (shouldLogZeros || CtViolationAmount.Value != 0) Console.WriteLine("CT violation amount{0}: {1}", diffStr, CtViolationAmount);
+            if (shouldLogZeros || InvalidHotelCount.Value != 0) Console.WriteLine("Invalid hotel count{0}: {1}", diffStr, InvalidHotelCount);
             if (shouldLogZeros || Math.Abs(Cost.Value) > Config.FloatingPointMargin) Console.WriteLine("Cost{0}: {1}", diffStr, ParseHelper.ToString(Cost.Value));
             if (shouldLogZeros || Math.Abs(CostWithoutPenalty.Value) > Config.FloatingPointMargin) Console.WriteLine("Cost without penalty{0}: {1}", diffStr, ParseHelper.ToString(CostWithoutPenalty.Value));
             if (shouldLogZeros || Math.Abs(BasePenalty.Value) > Config.FloatingPointMargin) Console.WriteLine("Penalty base{0}: {1}", diffStr, ParseHelper.ToString(BasePenalty.Value));
+            if (shouldLogZeros || WorkedTime.Value != 0) Console.WriteLine("Worked time{0}: {1}", diffStr, WorkedTime.Value);
         }
 
         public static bool AreEqual(TotalInfo a, TotalInfo b) {
@@ -174,6 +176,7 @@ namespace Thesis {
                 IsFloatEqual(a.Cost, b.Cost) &&
                 IsFloatEqual(a.CostWithoutPenalty, b.CostWithoutPenalty) &&
                 IsFloatEqual(a.BasePenalty, b.BasePenalty) &&
+                a.WorkedTime == b.WorkedTime &&
                 a.PrecedenceViolationCount == b.PrecedenceViolationCount &&
                 a.SlViolationCount == b.SlViolationCount &&
                 a.SlViolationAmount == b.SlViolationAmount &&
@@ -181,7 +184,8 @@ namespace Thesis {
                 a.RtViolationAmount == b.RtViolationAmount &&
                 a.CtValue == b.CtValue &&
                 a.CtViolationCount == b.CtViolationCount &&
-                a.CtViolationAmount == b.CtViolationAmount
+                a.CtViolationAmount == b.CtViolationAmount &&
+                a.InvalidHotelCount == b.InvalidHotelCount
             );
         }
         static bool IsFloatEqual(double? a, double? b) {
@@ -193,6 +197,7 @@ namespace Thesis {
                 Cost = -a.Cost,
                 CostWithoutPenalty = -a.CostWithoutPenalty,
                 BasePenalty = -a.BasePenalty,
+                WorkedTime = -a.WorkedTime,
                 PrecedenceViolationCount = -a.PrecedenceViolationCount,
                 SlViolationCount = -a.SlViolationCount,
                 SlViolationAmount = -a.SlViolationAmount,
@@ -201,6 +206,7 @@ namespace Thesis {
                 CtValue = -a.CtValue,
                 CtViolationCount = -a.CtViolationCount,
                 CtViolationAmount = -a.CtViolationAmount,
+                InvalidHotelCount = -a.InvalidHotelCount,
             };
         }
         public static TotalInfo operator +(TotalInfo a, TotalInfo b) {
@@ -208,6 +214,7 @@ namespace Thesis {
                 Cost = a.Cost + b.Cost,
                 CostWithoutPenalty = a.CostWithoutPenalty + b.CostWithoutPenalty,
                 BasePenalty = a.BasePenalty + b.BasePenalty,
+                WorkedTime = a.WorkedTime + b.WorkedTime,
                 PrecedenceViolationCount = a.PrecedenceViolationCount + b.PrecedenceViolationCount,
                 SlViolationCount = a.SlViolationCount + b.SlViolationCount,
                 SlViolationAmount = a.SlViolationAmount + b.SlViolationAmount,
@@ -216,6 +223,7 @@ namespace Thesis {
                 CtValue = a.CtValue + b.CtValue,
                 CtViolationCount = a.CtViolationCount + b.CtViolationCount,
                 CtViolationAmount = a.CtViolationAmount + b.CtViolationAmount,
+                InvalidHotelCount = a.InvalidHotelCount + b.InvalidHotelCount,
             };
         }
         public static TotalInfo operator -(TotalInfo a, TotalInfo b) => a + -b;
@@ -227,12 +235,14 @@ namespace Thesis {
         public double CostDiff, CostWithoutPenaltyDiff, BasePenaltyDiff;
         public PrecedenceValueChange Precedence;
         public ViolationValueChange ShiftLength, RestTime, ContractTime;
+        public HotelValueChange Hotels;
 
-        public NormalDiff(bool isAssign, Driver driver, Instance instance) {
-            Precedence = new PrecedenceValueChange("Precedence", isAssign, driver, instance);
-            ShiftLength = new ViolationValueChange("SL", isAssign, driver, instance, (shiftLength, _) => Math.Max(0, shiftLength - Config.MaxShiftLength));
-            RestTime = new ViolationValueChange("RT", isAssign, driver, instance, (restTime, _) => Math.Max(0, Config.MinRestTime - restTime));
-            ContractTime = new ViolationValueChange("CT", false, driver, instance, (workedHours, driver) => driver.GetTotalContractTimeViolation(workedHours));
+        public NormalDiff(bool shouldReverse, Driver driver, SaInfo info) {
+            Precedence = new PrecedenceValueChange("Precedence", shouldReverse, driver, info);
+            ShiftLength = new ViolationValueChange("SL", shouldReverse, driver, info, (shiftLength, _) => Math.Max(0, shiftLength - Config.MaxShiftLength));
+            RestTime = new ViolationValueChange("RT", shouldReverse, driver, info, (restTime, _) => Math.Max(0, Config.MinRestTime - restTime));
+            ContractTime = new ViolationValueChange("CT", false, driver, info, (workedHours, driver) => driver.GetTotalContractTimeViolation(workedHours));
+            Hotels = new HotelValueChange("Hotel", shouldReverse, driver, info);
     }
 
         public TotalInfo ToTotal() {
@@ -240,13 +250,15 @@ namespace Thesis {
                 Cost = CostDiff,
                 CostWithoutPenalty = CostWithoutPenaltyDiff,
                 BasePenalty = BasePenaltyDiff,
-                PrecedenceViolationCount = Precedence.newViolations.Count - Precedence.oldViolations.Count,
+                WorkedTime = ContractTime.GetWorkedTimeDiff(),
+                PrecedenceViolationCount = Precedence.NewViolations.Count - Precedence.OldViolations.Count,
                 SlViolationCount = ShiftLength.NewViolationCount - ShiftLength.OldViolationCount,
                 SlViolationAmount = ShiftLength.NewViolationAmount - ShiftLength.OldViolationAmount,
                 RtViolationCount = RestTime.NewViolationCount - RestTime.OldViolationCount,
                 RtViolationAmount = RestTime.NewViolationAmount - RestTime.OldViolationAmount,
                 CtViolationCount = ContractTime.NewViolationCount - ContractTime.OldViolationCount,
                 CtViolationAmount = ContractTime.NewViolationAmount - ContractTime.OldViolationAmount,
+                InvalidHotelCount = Hotels.NewViolations.Count - Hotels.OldViolations.Count,
             };
         }
 
@@ -263,6 +275,7 @@ namespace Thesis {
             ShiftLength.Log();
             RestTime.Log();
             ContractTime.Log();
+            Hotels.Log();
         }
 
         string GetTripString(Trip trip) {
@@ -281,13 +294,13 @@ namespace Thesis {
         protected readonly string name;
         protected readonly bool shouldReverse;
         protected readonly Driver driver;
-        protected readonly Instance instance;
+        protected readonly SaInfo info;
 
-        public ValueChange(string name, bool shouldReverse, Driver driver, Instance instance) {
+        public ValueChange(string name, bool shouldReverse, Driver driver, SaInfo info) {
             this.name = name;
             this.shouldReverse = shouldReverse;
             this.driver = driver;
-            this.instance = instance;
+            this.info = info;
         }
 
         public void Add(T oldValue, T newValue) {
@@ -320,28 +333,69 @@ namespace Thesis {
         }
     }
 
+    class IntValueChange : ValueChange<int> {
+        List<int> oldValues = new List<int>();
+        List<int> newValues = new List<int>();
+
+        public IntValueChange(string name, bool shouldReverse, Driver driver, SaInfo info) : base(name, shouldReverse, driver, info) { }
+
+        protected override void AddOldInternal(int value) => AddSpecific(value, oldValues);
+        protected override void AddNewInternal(int value) => AddSpecific(value, newValues);
+
+        protected void AddSpecific(int value, List<int> valueList) {
+            valueList.Add(value);
+        }
+
+        public override void Log() {
+            LogStringDiff("value", ParseHelper.ToString(oldValues), ParseHelper.ToString(newValues));
+        }
+    }
+
     class PrecedenceValueChange: ValueChange<(Trip, Trip)> {
-        public List<(Trip, Trip)> oldViolations = new List<(Trip, Trip)>();
-        public List<(Trip, Trip)> newViolations = new List<(Trip, Trip)>();
+        public List<(Trip, Trip)> OldViolations = new List<(Trip, Trip)>();
+        public List<(Trip, Trip)> NewViolations = new List<(Trip, Trip)>();
 
-        public PrecedenceValueChange(string name, bool shouldReverse, Driver driver, Instance instance) : base(name, shouldReverse, driver, instance) { }
+        public PrecedenceValueChange(string name, bool shouldReverse, Driver driver, SaInfo info) : base(name, shouldReverse, driver, info) { }
 
-        protected override void AddOldInternal((Trip, Trip) trips) => AddSpecific(trips, instance, oldViolations);
-        protected override void AddNewInternal((Trip, Trip) trips) => AddSpecific(trips, instance, newViolations);
+        protected override void AddOldInternal((Trip, Trip) trips) => AddSpecific(trips, OldViolations);
+        protected override void AddNewInternal((Trip, Trip) trips) => AddSpecific(trips, NewViolations);
 
-        protected void AddSpecific((Trip, Trip) trips, Instance instance, List<(Trip, Trip)> violationsList) {
-            if (!instance.TripSuccession[trips.Item1.Index, trips.Item2.Index]) {
+        protected void AddSpecific((Trip, Trip) trips, List<(Trip, Trip)> violationsList) {
+            if (!info.Instance.TripSuccession[trips.Item1.Index, trips.Item2.Index]) {
                 violationsList.Add(trips);
             }
         }
 
         public override void Log() {
-            LogStringDiff("violations", ParseViolationsList(oldViolations), ParseViolationsList(newViolations));
-            LogIntDiff("violation count", oldViolations.Count, newViolations.Count);
+            LogStringDiff("violations", ParseViolationsList(OldViolations), ParseViolationsList(NewViolations));
+            LogIntDiff("violation count", OldViolations.Count, NewViolations.Count);
         }
 
         string ParseViolationsList(List<(Trip, Trip)> violationsList) {
             return string.Join(' ', violationsList.Select(violation => violation.Item1.Index + "-" + violation.Item2.Index));
+        }
+    }
+
+    class HotelValueChange : ValueChange<Trip> {
+        public List<Trip> OldViolations = new List<Trip>();
+        public List<Trip> NewViolations = new List<Trip>();
+
+        public HotelValueChange(string name, bool shouldReverse, Driver driver, SaInfo info) : base(name, shouldReverse, driver, info) { }
+
+        protected override void AddOldInternal(Trip trip) => AddSpecific(trip, OldViolations);
+        protected override void AddNewInternal(Trip trip) => AddSpecific(trip, NewViolations);
+
+        protected void AddSpecific(Trip trip, List<Trip> violationsList) {
+            violationsList.Add(trip);
+        }
+
+        public override void Log() {
+            LogStringDiff("violations", ParseViolationsList(OldViolations), ParseViolationsList(NewViolations));
+            LogIntDiff("violation count", OldViolations.Count, NewViolations.Count);
+        }
+
+        string ParseViolationsList(List<Trip> violationsList) {
+            return string.Join(' ', violationsList.Select(violation => violation.Index));
         }
     }
 
@@ -351,7 +405,7 @@ namespace Thesis {
         List<int> newValues = new List<int>();
         Func<int, Driver, int> getViolationAmount;
 
-        public ViolationValueChange(string name, bool shouldReverse, Driver driver, Instance instance, Func<int, Driver, int> getViolationAmount) : base(name, shouldReverse, driver, instance) {
+        public ViolationValueChange(string name, bool shouldReverse, Driver driver, SaInfo info, Func<int, Driver, int> getViolationAmount) : base(name, shouldReverse, driver, info) {
             this.getViolationAmount = getViolationAmount;
         }
 
@@ -371,6 +425,10 @@ namespace Thesis {
             LogStringDiff("value", ParseHelper.ToString(oldValues), ParseHelper.ToString(newValues));
             LogIntDiff("violation count", OldViolationCount, NewViolationCount);
             LogIntDiff("violation amount", OldViolationAmount, NewViolationAmount);
+        }
+
+        public int GetWorkedTimeDiff() {
+            return newValues.Sum() - oldValues.Sum();
         }
     }
 }

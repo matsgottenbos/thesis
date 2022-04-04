@@ -9,9 +9,9 @@ namespace Thesis {
         public readonly Instance Instance;
         public readonly Random Rand;
         public readonly XorShiftRandom FastRand;
-        public Driver[] Assignment, BestAssignment;
-        public ShiftLink[] ShiftLinksAfterTrip;
-        public double Cost, CostWithoutPenalty, BasePenalty, BestCost;
+        public Driver[] Assignment;
+        public bool[] IsHotelStayAfterTrip;
+        public double Cost, CostWithoutPenalty, BasePenalty;
         public int[] DriversWorkedTime, ExternalDriverCountsByType;
         public int IterationNum;
         public float Temperature, PenaltyFactor;

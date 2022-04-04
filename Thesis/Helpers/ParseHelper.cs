@@ -13,6 +13,9 @@ namespace Thesis {
         public static string ToString(double[] numArray, string format = "0.0000") {
             return string.Join(" ", numArray.Select(num => ToString(num, format)));
         }
+        public static string ToString(int num) {
+            throw new Exception("Redundant parsing of int to string");
+        }
         public static string ToString(int[] numArray) {
             return string.Join(" ", numArray);
         }
@@ -33,6 +36,16 @@ namespace Thesis {
                 double numMBllions = num / 1000000000;
                 return ToString(numMBllions, format) + "B";
             }
+        }
+
+        public static string AssignmentToString(Driver[] assignment, SaInfo info) {
+            string[] assignmentStrParts = new string[assignment.Length];
+            for (int tripIndex = 0; tripIndex < info.Instance.Trips.Length; tripIndex++) {
+                Driver driver = assignment[tripIndex];
+                assignmentStrParts[tripIndex] = driver.GetId();
+                if (info.IsHotelStayAfterTrip[tripIndex]) assignmentStrParts[tripIndex] += "h";
+            }
+            return string.Join(" ", assignmentStrParts);
         }
     }
 }

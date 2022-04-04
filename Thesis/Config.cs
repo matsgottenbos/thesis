@@ -40,6 +40,12 @@ namespace Thesis {
             new SalaryRateInfo(23 * 60, 80 / 60f), // Night 23-6, hourly rate of 80
             // TODO: add weekends and holidays
         };
+        public const float ExternalDriverTravelSalaryRate = 70 / 60f;
+
+        // Hotels
+        public const float HotelCosts = 130f;
+        public const int HotelExtraTravelTime = 30;
+        public const int HotelMaxRestTime = 24 * 60;
 
         // Contract time deviations
         public const float MinContractTimeFraction = 0.8f;
@@ -60,8 +66,9 @@ namespace Thesis {
         public const int GenMaxStationCountPerTrip = 4;
 
         // Distances
-        public const int GenMinStationTravelTime = 60;
-        public const int GenMaxStationTravelTime = 3 * 60;
+        public const int GenMinStationTravelTime = 30;
+        public const int GenMaxStationTravelTime = 2 * 60;
+        public const int GenMaxHomeTravelTime = 2 * 60;
 
         // Contract times
         public const int GenMinContractTime = GenTimeframeLength / 6;
@@ -78,7 +85,7 @@ namespace Thesis {
         public const int SaLogFrequency = 1000000;
         public const int SaParameterUpdateFrequency = SaIterationCount / 1000;
         public const float SaInitialTemperature = 1000f;
-        public const float SaTemperatureReductionFactor = 0.998f;
+        public const float SaTemperatureReductionFactor = 0.997f;
         public const float SaInitialPenaltyFactor = 0.001f;
         public const float SaPenaltyIncrement = 0.001f;
 
@@ -90,6 +97,7 @@ namespace Thesis {
         public const float RestTimeViolationPenaltyPerMin = 200 / 60f;
         public const float ContractTimeViolationPenalty = 1000;
         public const float ContractTimeViolationPenaltyPerMin = 200 / 60f;
+        public const float InvalidHotelPenalty = 5000;
 
 
         /* File structure */
