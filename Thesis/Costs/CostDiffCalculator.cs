@@ -129,6 +129,11 @@ namespace Thesis {
                     restTime = searchTrip.StartTime - prevTrip.EndTime - info.Instance.TravelTimeViaHotel(prevTrip, searchTrip);
                     costWithoutPenalty += Config.HotelCosts;
 
+                    // Check if the hotel stay isn't too long
+                    if (restTime > Config.HotelMaxRestTime) {
+                        basePenalty += PenaltyHelper.GetHotelBasePenalty(prevTrip, info, debugIsNew);
+                    }
+
                     beforeHotelTrip = prevTrip;
                 } else {
                     // No hotel stay after
