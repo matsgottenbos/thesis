@@ -66,6 +66,7 @@ namespace Thesis {
         // Distances
         public const int GenMinStationTravelTime = 30;
         public const int GenMaxStationTravelTime = 2 * 60;
+        public const int GenMaxHomeTravelTime = 2 * 60;
 
         // Contract times
         public const int GenMinContractTime = GenTimeframeLength / 6;

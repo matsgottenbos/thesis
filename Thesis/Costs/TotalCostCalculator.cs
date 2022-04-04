@@ -93,6 +93,7 @@ namespace Thesis {
                             // Hotel stay after
                             travelTimeAfter = info.Instance.HalfTravelTimeViaHotel(prevTrip, searchTrip);
                             restTime = searchTrip.StartTime - prevTrip.EndTime - info.Instance.TravelTimeViaHotel(prevTrip, searchTrip);
+                            totalCostWithoutPenalty += Config.HotelCosts;
 
                             beforeHotelTrip = prevTrip;
                         } else {

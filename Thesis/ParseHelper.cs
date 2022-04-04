@@ -37,5 +37,15 @@ namespace Thesis {
                 return ToString(numMBllions, format) + "B";
             }
         }
+
+        public static string AssignmentToString(Driver[] assignment, SaInfo info) {
+            string[] assignmentStrParts = new string[assignment.Length];
+            for (int tripIndex = 0; tripIndex < info.Instance.Trips.Length; tripIndex++) {
+                Driver driver = assignment[tripIndex];
+                assignmentStrParts[tripIndex] = driver.GetId();
+                if (info.IsHotelStayAfterTrip[tripIndex]) assignmentStrParts[tripIndex] += "h";
+            }
+            return string.Join(" ", assignmentStrParts);
+        }
     }
 }

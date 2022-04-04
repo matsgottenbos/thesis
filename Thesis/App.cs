@@ -70,9 +70,9 @@ namespace Thesis {
                 }
 
                 SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, rand2, fastRand2);
-                (double saCost, Driver[] saSolution) = simulatedAnnealing.Run();
-                string saAssignmentStr = string.Join(' ', saSolution.Select(driver => driver.GetId()));
-                Console.WriteLine("SA cost: {0}  |  {1}", ParseHelper.ToString(saCost), saAssignmentStr);
+                SaInfo saSolution = simulatedAnnealing.Run();
+                string saAssignmentStr = ParseHelper.AssignmentToString(saSolution.Assignment, saSolution);
+                Console.WriteLine("SA cost: {0}  |  {1}", ParseHelper.ToString(saSolution.Cost), saAssignmentStr);
             }
 
             Console.ReadLine();

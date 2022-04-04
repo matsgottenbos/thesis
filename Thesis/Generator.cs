@@ -138,7 +138,7 @@ namespace Thesis {
                 int[] oneWayTravelTimes = new int[Config.GenStationCount];
                 int[] twoWayPayedTravelTimes = new int[Config.GenStationCount];
                 for (int i = 0; i < Config.GenStationCount; i++) {
-                    int oneWayTravelTime = (int)(rand.NextDouble() * Config.GenMaxStationTravelTime);
+                    int oneWayTravelTime = rand.Next(Config.GenMaxHomeTravelTime + 1);
                     int twoWayPayedTravelTime = Math.Max(0, 2 * oneWayTravelTime - Config.InternalDriverUnpaidTravelTimePerShift);
                     oneWayTravelTimes[i] = oneWayTravelTime;
                     twoWayPayedTravelTimes[i] = twoWayPayedTravelTime;
@@ -165,7 +165,7 @@ namespace Thesis {
                 int[] oneWayTravelTimes = new int[Config.GenStationCount];
                 int[] twoWayPayedTravelTimes = new int[Config.GenStationCount];
                 for (int i = 0; i < Config.GenStationCount; i++) {
-                    int oneWayTravelTime = rand.Next(Config.GenMaxStationTravelTime + 1);
+                    int oneWayTravelTime = rand.Next(Config.GenMaxHomeTravelTime + 1);
                     int twoWayPayedTravelTime = 2 * oneWayTravelTime;
                     oneWayTravelTimes[i] = oneWayTravelTime;
                     twoWayPayedTravelTimes[i] = twoWayPayedTravelTime;

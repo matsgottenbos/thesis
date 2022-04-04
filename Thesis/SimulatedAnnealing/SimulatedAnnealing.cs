@@ -56,7 +56,7 @@ namespace Thesis {
             #endif
         }
 
-        public (double, Driver[]) Run() {
+        public SaInfo Run() {
             // Start stopwatch
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -116,14 +116,13 @@ namespace Thesis {
                 if (info.IterationNum % Config.SaCheckCostFrequency == 0) {
                     double oldCost = info.Cost;
                     (info.Cost, info.CostWithoutPenalty, info.BasePenalty, info.DriversWorkedTime) = TotalCostCalculator.GetAssignmentCost(info);
-                    if (Math.Abs(info.Cost - oldCost) > 1) throw new Exception("Cost was wrong");
                 }
 
                 // Log
                 if (info.IterationNum % Config.SaLogFrequency == 0) {
-                    string bestCostString = bestInfo.Assignment == null ? "" : ParseHelper.ToString(bestInfo.Cost);
+                    string bestCostString = bestInfo.Assignment == null ? "" : ParseHelper.ToString(bestInfo.Cost, "0.00000000");
                     string penaltyString = info.BasePenalty > 0 ? ParseHelper.ToString(info.BasePenalty, "0") : "-";
-                    string assignmentStr = bestInfo.Assignment == null ? "" : string.Join(' ', bestInfo.Assignment.Select(driver => driver.GetId()));
+                    string assignmentStr = bestInfo.Assignment == null ? "" : ParseHelper.AssignmentToString(bestInfo.Assignment, bestInfo);
                     Console.WriteLine("# {0,4}    Best cost: {1,10}    Cost: {2,10}    Penalty: {3,6}    Temp: {4,5}    P.factor: {5,5}    Best sol.: {6}", ParseHelper.LargeNumToString(info.IterationNum), bestCostString, ParseHelper.ToString(info.CostWithoutPenalty), penaltyString, ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.PenaltyFactor, "0.00"), assignmentStr);
                 }
 
@@ -145,13 +144,16 @@ namespace Thesis {
             // Check cost to remove floating point imprecisions
             (bestInfo.Cost, bestInfo.CostWithoutPenalty, bestInfo.BasePenalty, bestInfo.DriversWorkedTime) = TotalCostCalculator.GetAssignmentCost(bestInfo);
             if (bestInfo.BasePenalty > 0.01) throw new Exception("Best solution is invalid");
+            bestInfo.DriversWorkedTime = info.DriversWorkedTime;
+            bestInfo.ExternalDriverCountsByType = info.ExternalDriverCountsByType;
+            bestInfo.IterationNum = info.IterationNum;
 
             stopwatch.Stop();
             float saDuration = stopwatch.ElapsedMilliseconds / 1000f;
             float saSpeed = Config.SaIterationCount / saDuration;
             Console.WriteLine("SA finished {0} iterations in {1} s  |  Speed: {2} iterations/s", ParseHelper.LargeNumToString(info.IterationNum), ParseHelper.ToString(saDuration), ParseHelper.LargeNumToString(saSpeed));
 
-            return (bestInfo.Cost, bestInfo.Assignment);
+            return bestInfo;
         }
 
         int[] GetInitialAssignmentIndices() {
