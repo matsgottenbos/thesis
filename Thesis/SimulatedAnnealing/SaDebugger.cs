@@ -133,14 +133,16 @@ namespace Thesis {
     class CheckedTotal {
         public readonly TotalInfo Total = new TotalInfo();
         public string DriverPathString = "";
-        public List<int> ShiftLengths = new List<int>();
+        public List<int> ShiftLengthsWithoutTravel = new List<int>();
+        public List<int> ShiftLengthsWithTravel = new List<int>();
         public List<int> RestTimes = new List<int>();
 
         public void Log() {
             Console.WriteLine("Driver path: {0}", DriverPathString);
-            Console.WriteLine("Shift lengths: {0}", ParseHelper.ToString(ShiftLengths));
+            Console.WriteLine("Shift lengths without travel: {0}", ParseHelper.ToString(ShiftLengthsWithoutTravel));
+            Console.WriteLine("Shift lengths with travel: {0}", ParseHelper.ToString(ShiftLengthsWithTravel));
             Console.WriteLine("Rest times: {0}", ParseHelper.ToString(RestTimes));
-            Console.WriteLine("Worked time: {0}", ShiftLengths.Sum());
+            Console.WriteLine("Worked time: {0}", ShiftLengthsWithTravel.Sum());
             Total.Log();
         }
     }
@@ -234,12 +236,13 @@ namespace Thesis {
         public string TripPosition, ShiftPosition, MergeSplitInfo;
         public double CostDiff, CostWithoutPenaltyDiff, BasePenaltyDiff;
         public PrecedenceValueChange Precedence;
-        public ViolationValueChange ShiftLength, RestTime, ContractTime;
+        public ViolationPairValueChange ShiftLength;
+        public ViolationValueChange RestTime, ContractTime;
         public HotelValueChange Hotels;
 
         public NormalDiff(bool shouldReverse, Driver driver, SaInfo info) {
             Precedence = new PrecedenceValueChange("Precedence", shouldReverse, driver, info);
-            ShiftLength = new ViolationValueChange("SL", shouldReverse, driver, info, (shiftLength, _) => Math.Max(0, shiftLength - Config.MaxShiftLength));
+            ShiftLength = new ViolationPairValueChange("SL", shouldReverse, driver, info, (shiftLengthPair, _) => Math.Max(0, shiftLengthPair.Item1 - Config.MaxShiftLengthWithoutTravel) + Math.Max(0, shiftLengthPair.Item2 - Config.MaxShiftLengthWithTravel));
             RestTime = new ViolationValueChange("RT", shouldReverse, driver, info, (restTime, _) => Math.Max(0, Config.MinRestTime - restTime));
             ContractTime = new ViolationValueChange("CT", false, driver, info, (workedHours, driver) => driver.GetTotalContractTimeViolation(workedHours));
             Hotels = new HotelValueChange("Hotel", shouldReverse, driver, info);
@@ -429,6 +432,39 @@ namespace Thesis {
 
         public int GetWorkedTimeDiff() {
             return newValues.Sum() - oldValues.Sum();
+        }
+    }
+
+    class ViolationPairValueChange : ValueChange<(int, int)> {
+        public int OldViolationCount, NewViolationCount, OldViolationAmount, NewViolationAmount;
+        List<(int, int)> oldValuePairs = new List<(int, int)>();
+        List<(int, int)> newValuePairs = new List<(int, int)>();
+        Func<(int, int), Driver, int> getViolationAmount;
+
+        public ViolationPairValueChange(string name, bool shouldReverse, Driver driver, SaInfo info, Func<(int, int), Driver, int> getViolationAmount) : base(name, shouldReverse, driver, info) {
+            this.getViolationAmount = getViolationAmount;
+        }
+
+        protected override void AddOldInternal((int, int) oldValuePair) => AddSpecific(oldValuePair, oldValuePairs, ref OldViolationCount, ref OldViolationAmount);
+        protected override void AddNewInternal((int, int) newValuePair) => AddSpecific(newValuePair, newValuePairs, ref NewViolationCount, ref NewViolationAmount);
+
+        protected void AddSpecific((int, int) valuePair, List<(int, int)> valuePairList, ref int violationCountVar, ref int violationAmountVar) {
+            int violationAmount = getViolationAmount(valuePair, driver);
+            int violationCount = violationAmount > 0 ? 1 : 0;
+
+            valuePairList.Add(valuePair);
+            violationAmountVar += violationAmount;
+            violationCountVar += violationCount;
+        }
+
+        public override void Log() {
+            LogStringDiff("value", ParseValuePairs(oldValuePairs), ParseValuePairs(newValuePairs));
+            LogIntDiff("violation count", OldViolationCount, NewViolationCount);
+            LogIntDiff("violation amount", OldViolationAmount, NewViolationAmount);
+        }
+
+        string ParseValuePairs(List<(int, int)> valuePairs) {
+            return string.Join(" ", valuePairs.Select(valuePair => string.Format("({0}, {1})", valuePair.Item1, valuePair.Item2)));
         }
     }
 }

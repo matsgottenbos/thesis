@@ -84,8 +84,9 @@ namespace Thesis {
                         }
 
                         // Get driving time
-                        int drivingTime = driver.DrivingTime(shiftFirstTrip, prevTrip);
+                        int shiftLengthWithoutTravel = driver.DrivingTime(shiftFirstTrip, prevTrip);
                         float drivingCost = driver.DrivingCost(shiftFirstTrip, prevTrip);
+                        totalWorkedTime += shiftLengthWithoutTravel;
 
                         // Get travel time after and rest time
                         int travelTimeAfter, restTime;
@@ -113,8 +114,7 @@ namespace Thesis {
 
                         // Get shift length
                         int travelTime = travelTimeBefore + travelTimeAfter;
-                        int shiftLength = drivingTime + travelTime;
-                        totalWorkedTime += shiftLength;
+                        int shiftLengthWithTravel = shiftLengthWithoutTravel + travelTime;
 
                         // Get shift cost
                         float travelCost = driver.GetPayedTravelCost(travelTime);
@@ -122,7 +122,7 @@ namespace Thesis {
                         totalCostWithoutPenalty += shiftCost;
 
                         // Check shift length
-                        int shiftLengthViolation = Math.Max(0, shiftLength - Config.MaxShiftLength);
+                        int shiftLengthViolation = Math.Max(0, shiftLengthWithoutTravel - Config.MaxShiftLengthWithoutTravel) + Math.Max(0, shiftLengthWithTravel - Config.MaxShiftLengthWithTravel);
                         if (shiftLengthViolation > 0) {
                             totalShiftLengthViolationCount++;
                             totalShiftLengthViolation += shiftLengthViolation;
@@ -142,7 +142,8 @@ namespace Thesis {
                         if (Config.DebugCheckAndLogOperations && shouldDebug) {
                             SaDebugger.GetCurrentCheckedTotal().DriverPathString += prevTrip.Index + "|";
                             if (isHotelStayAfterTrip[prevTrip.Index]) SaDebugger.GetCurrentCheckedTotal().DriverPathString += "H|";
-                            SaDebugger.GetCurrentCheckedTotal().ShiftLengths.Add(shiftLength);
+                            SaDebugger.GetCurrentCheckedTotal().ShiftLengthsWithoutTravel.Add(shiftLengthWithoutTravel);
+                            SaDebugger.GetCurrentCheckedTotal().ShiftLengthsWithTravel.Add(shiftLengthWithTravel);
                             SaDebugger.GetCurrentCheckedTotal().RestTimes.Add(restTime);
                         }
                         #endif
@@ -152,10 +153,10 @@ namespace Thesis {
                 }
 
                 // End final shift
-                int lastShiftLength = driver.ShiftLengthWithCustomPickup(shiftFirstTrip, prevTrip, parkingTrip);
-                totalWorkedTime += lastShiftLength;
+                (int lastShiftLengthWithoutTravel, int lastShiftLengthWithTravel) = driver.ShiftLengthWithCustomPickup(shiftFirstTrip, prevTrip, parkingTrip);
+                totalWorkedTime += lastShiftLengthWithoutTravel;
                 totalCostWithoutPenalty += driver.ShiftCostWithCustomPickup(shiftFirstTrip, prevTrip, parkingTrip);
-                int lastShiftLengthViolation = Math.Max(0, lastShiftLength - Config.MaxShiftLength);
+                int lastShiftLengthViolation = Math.Max(0, lastShiftLengthWithoutTravel - Config.MaxShiftLengthWithoutTravel) + Math.Max(0, lastShiftLengthWithTravel - Config.MaxShiftLengthWithTravel);
                 if (lastShiftLengthViolation > 0) {
                     totalShiftLengthViolationCount++;
                     totalShiftLengthViolation += lastShiftLengthViolation;
@@ -170,7 +171,8 @@ namespace Thesis {
                 if (Config.DebugCheckAndLogOperations && shouldDebug) {
                     SaDebugger.GetCurrentCheckedTotal().DriverPathString += prevTrip.Index;
                     if (isHotelStayAfterTrip[prevTrip.Index]) SaDebugger.GetCurrentCheckedTotal().DriverPathString += "-H";
-                    SaDebugger.GetCurrentCheckedTotal().ShiftLengths.Add(lastShiftLength);
+                    SaDebugger.GetCurrentCheckedTotal().ShiftLengthsWithoutTravel.Add(lastShiftLengthWithoutTravel);
+                    SaDebugger.GetCurrentCheckedTotal().ShiftLengthsWithTravel.Add(lastShiftLengthWithTravel);
                 }
                 #endif
 

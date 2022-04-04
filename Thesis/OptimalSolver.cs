@@ -194,7 +194,7 @@ namespace Thesis {
             int newShiftLength = driver.ShiftLengthWithPickup(firstTripInternal, lastTripInternal);
 
             // Check shift length
-            if (newShiftLength > Config.MaxShiftLength) return null;
+            if (newShiftLength > Config.MaxShiftLengthWithTravel) return null;
 
             // Get new shift cost
             float newShiftCost = driver.ShiftCostWithPickup(firstTripInternal, lastTripInternal);

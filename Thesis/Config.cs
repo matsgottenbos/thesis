@@ -12,7 +12,8 @@ namespace Thesis {
         public const bool RunSimulatedAnnealing = true;
 
         // Shifts
-        public const int MaxShiftLength = 10 * 60; // Maximum length of a shift (including travel)
+        public const int MaxShiftLengthWithTravel = 12 * 60; // Maximum length of a shift, including travel
+        public const int MaxShiftLengthWithoutTravel = 10 * 60; // Maximum length of a shift, excluding travel
         public const int MinRestTime = 11 * 60; // Minimum required resting time between two shifts
         public const int ShiftWaitingTimeThreshold = 6 * 60; // Waiting times shorter than this count as the same trip; waiting time longer start a new shift
         public const int ShiftMaxStartTimeDiff = 24 * 60; // The maximum difference in start times considered when searching for trips in the same shift
@@ -59,7 +60,7 @@ namespace Thesis {
         public const int GenTimeframeLength = 2 * 24 * 60;
         public const int GenStationCount = 10;
         public const int GenTripCount = 15;
-        public const int GenInternalDriverCount = 5;
+        public const int GenInternalDriverCount = 4;
         public const int GenExternaDriverTypeCount = 2;
         public const int GenExternalDriverMinCountPerType = 2;
         public const int GenExternalDriverMaxCountPerType = 5;
@@ -71,8 +72,8 @@ namespace Thesis {
         public const int GenMaxHomeTravelTime = 2 * 60;
 
         // Contract times
-        public const int GenMinContractTime = GenTimeframeLength / 6;
-        public const int GenMaxContractTime = GenTimeframeLength / 3;
+        public const int GenMinContractTime = GenTimeframeLength / 8;
+        public const int GenMaxContractTime = GenTimeframeLength / 4;
 
         // Generator probabilities
         public const float GenTrackProficiencyProb = 0.9f;

@@ -18,15 +18,15 @@ namespace Thesis {
             else return Config.PrecendenceViolationPenalty;
         }
 
-        public static float GetShiftLengthBasePenalty(int shiftLength, bool debugIsNew) {
-            int shiftLengthViolation = Math.Max(0, shiftLength - Config.MaxShiftLength);
+        public static float GetShiftLengthBasePenalty(int shiftLengthWithoutTravel, int shiftLengthWithTravel, bool debugIsNew) {
+            int shiftLengthViolation = Math.Max(0, shiftLengthWithoutTravel - Config.MaxShiftLengthWithoutTravel) + Math.Max(0, shiftLengthWithTravel - Config.MaxShiftLengthWithTravel);
             float amountBasePenalty = shiftLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
             float countBasePenalty = shiftLengthViolation > 0 ? Config.ShiftLengthViolationPenalty : 0;
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
-                if (debugIsNew) SaDebugger.GetCurrentNormalDiff().ShiftLength.AddNew(shiftLength);
-                else SaDebugger.GetCurrentNormalDiff().ShiftLength.AddOld(shiftLength);
+                if (debugIsNew) SaDebugger.GetCurrentNormalDiff().ShiftLength.AddNew((shiftLengthWithoutTravel, shiftLengthWithTravel));
+                else SaDebugger.GetCurrentNormalDiff().ShiftLength.AddOld((shiftLengthWithoutTravel, shiftLengthWithTravel));
             }
             #endif
 

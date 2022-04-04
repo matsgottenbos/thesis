@@ -118,8 +118,9 @@ namespace Thesis {
                 }
 
                 // Get driving time
-                int drivingTime = driver.DrivingTime(shiftFirstTrip, prevTrip);
+                int shiftLengthWithoutTravel = driver.DrivingTime(shiftFirstTrip, prevTrip);
                 float drivingCost = driver.DrivingCost(shiftFirstTrip, prevTrip);
+                workedTime += shiftLengthWithoutTravel;
 
                 // Get travel time after and rest time
                 int travelTimeAfter, restTime;
@@ -147,8 +148,7 @@ namespace Thesis {
 
                 // Get shift length
                 int travelTime = travelTimeBefore + travelTimeAfter;
-                int shiftLength = drivingTime + travelTime;
-                workedTime += shiftLength;
+                int shiftLengthWithTravel = shiftLengthWithoutTravel + travelTime;
 
                 // Get shift cost
                 float travelCost = driver.GetPayedTravelCost(travelTime);
@@ -156,7 +156,7 @@ namespace Thesis {
                 costWithoutPenalty += shiftCost;
 
                 // Check shift length
-                basePenalty += PenaltyHelper.GetShiftLengthBasePenalty(shiftLength, debugIsNew);
+                basePenalty += PenaltyHelper.GetShiftLengthBasePenalty(shiftLengthWithoutTravel, shiftLengthWithTravel, debugIsNew);
 
                 // Check rest time
                 basePenalty += PenaltyHelper.GetRestTimeBasePenalty(restTime, debugIsNew);
@@ -170,10 +170,10 @@ namespace Thesis {
 
         static void ProcessLastDriverShift(Trip shiftFirstTrip, Trip parkingTrip, Trip prevTrip, ref double costWithoutPenalty, ref double basePenalty, ref int workedTime, Trip addedHotel, Trip removedHotel, Driver driver, SaInfo info, bool debugIsNew) {
             // End final shift
-            int shiftLength = driver.ShiftLengthWithCustomPickup(shiftFirstTrip, prevTrip, parkingTrip);
-            workedTime += shiftLength;
+            (int shiftLengthWithoutTravel, int shiftLengthWithTravel) = driver.ShiftLengthWithCustomPickup(shiftFirstTrip, prevTrip, parkingTrip);
+            workedTime += shiftLengthWithoutTravel;
             costWithoutPenalty += driver.ShiftCostWithCustomPickup(shiftFirstTrip, prevTrip, parkingTrip);
-            basePenalty += PenaltyHelper.GetShiftLengthBasePenalty(shiftLength, debugIsNew);
+            basePenalty += PenaltyHelper.GetShiftLengthBasePenalty(shiftLengthWithoutTravel, shiftLengthWithTravel, debugIsNew);
 
             // Check for invalid final hotel stay
             if (IsHotelAfter(prevTrip, addedHotel, removedHotel, info)) {

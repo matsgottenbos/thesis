@@ -52,8 +52,10 @@ namespace Thesis {
             return shiftCostsWithPickup[firstTripInternal.Index, lastTripInternal.Index];
         }
 
-        public int ShiftLengthWithCustomPickup(Trip firstTripInternal, Trip lastTripInternal, Trip parkingTrip) {
-            return DrivingTime(firstTripInternal, lastTripInternal) + HomeTravelTimeToStart(firstTripInternal) + instance.CarTravelTime(lastTripInternal, parkingTrip) + HomeTravelTimeToStart(parkingTrip);
+        public (int, int) ShiftLengthWithCustomPickup(Trip firstTripInternal, Trip lastTripInternal, Trip parkingTrip) {
+            int shiftLengthWithoutTravel = DrivingTime(firstTripInternal, lastTripInternal);
+            int shiftLengthWithTravel = shiftLengthWithoutTravel + HomeTravelTimeToStart(firstTripInternal) + instance.CarTravelTime(lastTripInternal, parkingTrip) + HomeTravelTimeToStart(parkingTrip);
+            return (shiftLengthWithoutTravel, shiftLengthWithTravel);
         }
 
         public float ShiftCostWithCustomPickup(Trip firstTripInternal, Trip lastTripInternal, Trip parkingTrip) {
