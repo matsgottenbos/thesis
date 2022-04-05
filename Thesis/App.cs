@@ -8,34 +8,25 @@ using System.Threading.Tasks;
 namespace Thesis {
     class App {
         public App() {
-            // Test
-            if (Config.DebugRunOdataTest) {
-                OdataTest.Run();
-                Console.ReadLine();
-                return;
+            Random rand = Config.DebugUseSeededSa ? new Random(1) : new Random();
+
+            Instance instance;
+            switch (Config.SelectedDataSource) {
+                case DataSource.Generator:
+                    instance = DataGenerator.GenerateInstance(rand);
+                    Console.WriteLine("Instance generation complete");
+                    break;
+
+                case DataSource.Excel:
+                    instance = ExcelDataImporter.Import(rand);
+                    Console.WriteLine("Instance import from excel data complete");
+                    break;
+
+                case DataSource.Odata:
+                    OdataImporter.Import();
+                    throw new NotImplementedException();
+                    break;
             }
-
-
-            // Import data
-            //DataImporter.Import();
-
-
-
-
-            //Random rand = new Random();
-            Random rand = new Random(1);
-
-            // Generate instance
-            Generator generator = new Generator(rand);
-            Instance instance = generator.GenerateInstance();
-            Console.WriteLine("Instance generation complete");
-
-            // Determine lower bounds
-            //LowerBoundCalculator lowerBoundCalculator = new LowerBoundCalculator(instance);
-            //float lowerBound1 = lowerBoundCalculator.CalculateLowerBound1();
-            //float lowerBound2 = lowerBoundCalculator.CalculateLowerBound2();
-            //Console.WriteLine("Lower bound 1: {0}", lowerBound1);
-            //Console.WriteLine("Lower bound 2: {0}", lowerBound2);
 
             // Debug inspector
             if (Config.DebugRunInspector) {

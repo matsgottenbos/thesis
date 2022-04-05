@@ -6,10 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
+    enum DataSource {
+        Generator,
+        Excel,
+        Odata,
+    }
+
     static class Config {
         // App
         public const bool RunOptimalAlgorithm = false;
         public const bool RunSimulatedAnnealing = true;
+        public const DataSource SelectedDataSource = DataSource.Excel;
 
         // Shifts
         public const int MaxShiftLengthWithTravel = 12 * 60; // Maximum length of a shift, including travel
@@ -64,7 +71,7 @@ namespace Thesis {
         public const int GenExternaDriverTypeCount = 2;
         public const int GenExternalDriverMinCountPerType = 2;
         public const int GenExternalDriverMaxCountPerType = 5;
-        public const int GenMaxStationCountPerTrip = 4;
+        public const int GenMaxStationCountPerTrip = 4; // TODO: obsolete
 
         // Distances
         public const int GenMinStationTravelTime = 30;
@@ -72,8 +79,7 @@ namespace Thesis {
         public const int GenMaxHomeTravelTime = 2 * 60;
 
         // Contract times
-        public const int GenMinContractTime = GenTimeframeLength / 8;
-        public const int GenMaxContractTime = GenTimeframeLength / 4;
+        public const int GenContractTime = GenTimeframeLength / 4;
 
         // Generator probabilities
         public const float GenTrackProficiencyProb = 0.9f;

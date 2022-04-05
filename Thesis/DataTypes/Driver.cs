@@ -82,7 +82,7 @@ namespace Thesis {
         /* Travelling */
 
         public int HomeTravelTimeToStart(Trip trip) {
-            return homeTravelTimes[trip.FirstStation];
+            return homeTravelTimes[trip.StartStationIndex];
         }
 
         protected abstract int GetPaidTravelTime(int travelTime);
@@ -123,10 +123,12 @@ namespace Thesis {
 
     class InternalDriver : Driver {
         public readonly int InternalIndex, MinContractTime, MaxContractTime;
+        public readonly string DriverName;
         public readonly bool[,] TrackProficiencies;
 
-        public InternalDriver(int allDriversIndex, int internalIndex, int[] oneWayTravelTimes, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, Config.InternalDriverTravelSalaryRate, drivingTimes, drivingCosts, shiftLengthsWithPickup, shiftCostsWithPickup) {
+        public InternalDriver(int allDriversIndex, int internalIndex, string driverName, int[] oneWayTravelTimes, int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, Config.InternalDriverTravelSalaryRate, drivingTimes, drivingCosts, shiftLengthsWithPickup, shiftCostsWithPickup) {
             InternalIndex = internalIndex;
+            DriverName = driverName;
             MinContractTime = minWorkedTime;
             MaxContractTime = maxWorkedTime;
             TrackProficiencies = trackProficiencies;

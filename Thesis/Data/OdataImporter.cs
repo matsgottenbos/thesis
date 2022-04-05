@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    static class OdataTest {
-        public static void Run() {
+    static class OdataImporter {
+        public static void Import() {
             string serviceRoot = "https://odata-v26.railcubecloud.com/odata";
             Default.Container context = new Default.Container(new Uri(serviceRoot));
             context.SendingRequest2 += SendAuthorization;
