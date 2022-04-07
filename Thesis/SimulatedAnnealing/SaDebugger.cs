@@ -232,8 +232,7 @@ namespace Thesis {
     }
 
     class NormalDiff {
-        public Trip PrevTripInternal, NextTripInternal, FirstTripInternal, LastTripInternal, PrevShiftFirstTrip, PrevShiftLastTrip, NextShiftFirstTrip;
-        public string TripPosition, ShiftPosition, MergeSplitInfo;
+        public Trip FirstRelevantTrip, LastRelevantTrip, OldFirstTrip, NewFirstTrip;
         public double CostDiff, CostWithoutPenaltyDiff, BasePenaltyDiff;
         public PrecedenceValueChange Precedence;
         public ViolationPairValueChange ShiftLength;
@@ -266,10 +265,7 @@ namespace Thesis {
         }
 
         public void Log() {
-            Console.WriteLine("Trip position: {0}", TripPosition);
-            Console.WriteLine("Shift position: {0}", ShiftPosition);
-            Console.WriteLine("Split/merge info: {0}", MergeSplitInfo);
-            Console.WriteLine("Prev trip internal: {0}; Next trip internal: {1}; First trip internal: {2}; Last trip internal: {3}; Prev shift first trip: {4}; Prev shift last trip: {5}; Next shift first trip: {6}", GetTripString(PrevTripInternal), GetTripString(NextTripInternal), GetTripString(FirstTripInternal), GetTripString(LastTripInternal), GetTripString(PrevShiftFirstTrip), GetTripString(PrevShiftLastTrip), GetTripString(NextShiftFirstTrip));
+            Console.WriteLine("First relevant trip: {0}; Last relevant trip: {1}; Old first trip: {2}; New first trip: {3}", GetTripString(FirstRelevantTrip), GetTripString(LastRelevantTrip), GetTripString(OldFirstTrip), GetTripString(NewFirstTrip));
             LogValue("Cost diff", CostDiff);
             LogValue("Cost without penalty diff", CostWithoutPenaltyDiff);
             LogValue("Base penalty diff", BasePenaltyDiff);
@@ -364,7 +360,7 @@ namespace Thesis {
         protected override void AddNewInternal((Trip, Trip) trips) => AddSpecific(trips, NewViolations);
 
         protected void AddSpecific((Trip, Trip) trips, List<(Trip, Trip)> violationsList) {
-            if (!info.Instance.TripSuccession[trips.Item1.Index, trips.Item2.Index]) {
+            if (!info.Instance.IsValidPrecedence(trips.Item1, trips.Item2)) {
                 violationsList.Add(trips);
             }
         }

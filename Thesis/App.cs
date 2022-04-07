@@ -8,17 +8,19 @@ using System.Threading.Tasks;
 namespace Thesis {
     class App {
         public App() {
-            Random rand = Config.DebugUseSeededSa ? new Random(1) : new Random();
+            Random generatorRand = new Random(1);
+            Random saRand = Config.DebugUseSeededSa ? generatorRand : new Random();
+            XorShiftRandom saFastSand = Config.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
 
             Instance instance;
             switch (Config.SelectedDataSource) {
                 case DataSource.Generator:
-                    instance = DataGenerator.GenerateInstance(rand);
+                    instance = DataGenerator.GenerateInstance(generatorRand);
                     Console.WriteLine("Instance generation complete");
                     break;
 
                 case DataSource.Excel:
-                    instance = ExcelDataImporter.Import(rand);
+                    instance = ExcelDataImporter.Import(generatorRand);
                     Console.WriteLine("Instance import from excel data complete");
                     break;
 
@@ -50,17 +52,7 @@ namespace Thesis {
 
             // Simulated annealing
             if (Config.RunSimulatedAnnealing) {
-                Random rand2;
-                XorShiftRandom fastRand2;
-                if (Config.DebugUseSeededSa) {
-                    rand2 = new Random(1);
-                    fastRand2 = new XorShiftRandom(1);
-                } else {
-                    rand2 = new Random();
-                    fastRand2 = new XorShiftRandom();
-                }
-
-                SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, rand2, fastRand2);
+                SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, saRand, saFastSand);
                 SaInfo saSolution = simulatedAnnealing.Run();
                 if (saSolution.Assignment == null) {
                     Console.WriteLine("SA found no valid solution");

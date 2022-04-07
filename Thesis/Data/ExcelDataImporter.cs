@@ -25,9 +25,9 @@ namespace Thesis {
             DateTime planningStartDate = new DateTime(2021, 12, 25);
             DateTime planningNextDate = planningStartDate.AddDays(7);
             int internalDriverContractTime = 40 * 60;
-            int externalDriverTypeCount = 3;
+            int externalDriverTypeCount = 5;
             int externalDriverMinCountPerType = 5;
-            int externalDriverMaxCountPerType = 10;
+            int externalDriverMaxCountPerType = 20;
 
             // Parse trips and station codes
             (Trip[] rawTrips, string[] stationCodes) = ParseRawTripsAndStationCodes(dutiesTable, planningStartDate, planningNextDate);
@@ -72,6 +72,9 @@ namespace Thesis {
                 DateTime endTimeRaw = dutyRow.GetCell(dutiesTable.GetColumnIndex("PlannedEnd")).DateCellValue;
                 int endTime = (int)Math.Round((endTimeRaw - planningStartDate).TotalMinutes);
                 int duration = endTime - startTime;
+
+                // Temp: skip trips longer than max shift length
+                if (duration > Config.MaxShiftLengthWithoutTravel) return;
 
                 rawTripList.Add(new Trip(-1, startStationIndex, endStationIndex, startTime, endTime, duration));
             });

@@ -14,7 +14,7 @@ namespace Thesis {
             }
             #endif
 
-            if (info.Instance.TripSuccession[trip1.Index, trip2.Index]) return 0;
+            if (info.Instance.IsValidPrecedence(trip1, trip2)) return 0;
             else return Config.PrecendenceViolationPenalty;
         }
 

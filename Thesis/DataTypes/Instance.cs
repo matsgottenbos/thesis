@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class Instance {
-        public readonly int[,] CarTravelTimes;
+        readonly int[,] CarTravelTimes;
         public readonly Trip[] Trips;
-        public readonly bool[,] TripSuccession, TripsAreSameShift;
+        readonly bool[,] TripSuccession, TripsAreSameShift;
         public readonly InternalDriver[] InternalDrivers;
         public readonly ExternalDriver[][] ExternalDriversByType;
         public readonly Driver[] AllDrivers;
@@ -187,6 +187,10 @@ namespace Thesis {
 
 
         /* Helper methods */
+
+        public bool IsValidPrecedence(Trip trip1, Trip trip2) {
+            return TripSuccession[trip1.Index, trip2.Index];
+        }
 
         public int CarTravelTime(Trip trip1, Trip trip2) {
             return CarTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex];

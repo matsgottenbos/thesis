@@ -67,7 +67,7 @@ namespace Thesis {
                     if (info.Instance.AreSameShift(prevTrip, searchTrip)) {
                         /* Same shift */
                         // Check precedence
-                        if (!info.Instance.TripSuccession[prevTrip.Index, searchTrip.Index]) {
+                        if (!info.Instance.IsValidPrecedence(prevTrip, searchTrip)) {
                             totalPrecedenceViolationCount++;
                         }
 

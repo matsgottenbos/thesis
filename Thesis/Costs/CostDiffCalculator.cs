@@ -22,10 +22,60 @@ namespace Thesis {
             Instance instance = info.Instance;
             Trip[] trips = instance.Trips;
 
+            // Get first and last changed trip
+            int firstChangedTripIndex = 0;
+            int lastChangedTripIndex = 0;
+            if (assignedTrip != null) {
+                firstChangedTripIndex = Math.Min(firstChangedTripIndex, assignedTrip.Index);
+                lastChangedTripIndex = Math.Max(lastChangedTripIndex, assignedTrip.Index);
+            }
+            if (unassignedTrip != null) {
+                firstChangedTripIndex = Math.Min(firstChangedTripIndex, unassignedTrip.Index);
+                lastChangedTripIndex = Math.Max(lastChangedTripIndex, unassignedTrip.Index);
+            }
+            if (addedHotelTrip != null) {
+                firstChangedTripIndex = Math.Min(firstChangedTripIndex, addedHotelTrip.Index);
+                lastChangedTripIndex = Math.Max(lastChangedTripIndex, addedHotelTrip.Index);
+            }
+            if (removedHotelTrip != null) {
+                firstChangedTripIndex = Math.Min(firstChangedTripIndex, removedHotelTrip.Index);
+                lastChangedTripIndex = Math.Max(lastChangedTripIndex, removedHotelTrip.Index);
+            }
+
+            // Get first relevant trip of driver
+            Trip driverFirstRelevantTrip = trips[firstChangedTripIndex];
+            for (int searchTripIndex = firstChangedTripIndex - 1; searchTripIndex >= 0; searchTripIndex--) {
+                Driver searchTripDriver = assignment[searchTripIndex];
+                Trip searchTrip = trips[searchTripIndex];
+                if (searchTripDriver == driver) {
+                    if (driverFirstRelevantTrip != assignedTrip && driverFirstRelevantTrip != unassignedTrip && searchTrip != unassignedTrip && !instance.AreSameShift(searchTrip, driverFirstRelevantTrip) && !info.IsHotelStayAfterTrip[searchTrip.Index] && searchTrip != addedHotelTrip) {
+                        // This is the last relevant trip for this driver
+                        driverFirstRelevantTrip = searchTrip;
+                        break;
+                    }
+                    driverFirstRelevantTrip = searchTrip;
+                }
+            }
+
+            // Get last relevant trip of driver
+            Trip driverLastRelevantTrip = trips[lastChangedTripIndex];
+            for (int searchTripIndex = lastChangedTripIndex + 1; searchTripIndex < assignment.Length; searchTripIndex++) {
+                Driver searchTripDriver = assignment[searchTripIndex];
+                Trip searchTrip = trips[searchTripIndex];
+                if (searchTripDriver == driver) {
+                    if (driverLastRelevantTrip != assignedTrip && driverLastRelevantTrip != unassignedTrip && searchTrip != unassignedTrip && !instance.AreSameShift(driverLastRelevantTrip, searchTrip) && !info.IsHotelStayAfterTrip[driverLastRelevantTrip.Index] && driverLastRelevantTrip != addedHotelTrip) {
+                        // This is the last relevant trip for this driver
+                        driverLastRelevantTrip = searchTrip;
+                        break;
+                    }
+                    driverLastRelevantTrip = searchTrip;
+                }
+            }
+
             // Get first trip of driver
             Trip driverOldFirstTrip = null;
             Trip driverNewFirstTrip = null;
-            for (int searchTripIndex = 0; searchTripIndex < assignment.Length; searchTripIndex++) {
+            for (int searchTripIndex = driverFirstRelevantTrip.Index; searchTripIndex <= driverLastRelevantTrip.Index; searchTripIndex++) {
                 Driver searchTripDriver = assignment[searchTripIndex];
                 if (searchTripDriver == driver) {
                     if (driverOldFirstTrip == null) {
@@ -41,28 +91,6 @@ namespace Thesis {
                     }
                 } else if (assignedTrip != null && searchTripIndex == assignedTrip.Index) {
                     driverNewFirstTrip = trips[searchTripIndex];
-                }
-            }
-
-            // Get last changed trip
-            int lastChangedTripIndex = 0;
-            if (assignedTrip != null) lastChangedTripIndex = Math.Max(lastChangedTripIndex, assignedTrip.Index);
-            if (unassignedTrip != null) lastChangedTripIndex = Math.Max(lastChangedTripIndex, unassignedTrip.Index);
-            if (addedHotelTrip != null) lastChangedTripIndex = Math.Max(lastChangedTripIndex, addedHotelTrip.Index);
-            if (removedHotelTrip != null) lastChangedTripIndex = Math.Max(lastChangedTripIndex, removedHotelTrip.Index);
-
-            // Get last relevant trip of driver
-            Trip driverLastRelevantTrip = trips[lastChangedTripIndex];
-            for (int searchTripIndex = lastChangedTripIndex + 1; searchTripIndex < assignment.Length; searchTripIndex++) {
-                Driver searchTripDriver = assignment[searchTripIndex];
-                if (searchTripDriver == driver) {
-                    Trip searchTrip = trips[searchTripIndex];
-                    if (driverLastRelevantTrip != assignedTrip && driverLastRelevantTrip != unassignedTrip && searchTrip != unassignedTrip && !instance.AreSameShift(driverLastRelevantTrip, searchTrip) && !info.IsHotelStayAfterTrip[driverLastRelevantTrip.Index] && driverLastRelevantTrip != addedHotelTrip) {
-                        // This is the last relevant trip for this driver
-                        driverLastRelevantTrip = searchTrip;
-                        break;
-                    }
-                    driverLastRelevantTrip = searchTrip;
                 }
             }
 
@@ -139,6 +167,11 @@ namespace Thesis {
                 SaDebugger.GetCurrentNormalDiff().CostDiff = costDiff;
                 SaDebugger.GetCurrentNormalDiff().CostWithoutPenaltyDiff = costWithoutPenaltyDiff;
                 SaDebugger.GetCurrentNormalDiff().BasePenaltyDiff = basePenaltyDiff;
+
+                SaDebugger.GetCurrentNormalDiff().FirstRelevantTrip = driverFirstRelevantTrip;
+                SaDebugger.GetCurrentNormalDiff().LastRelevantTrip = driverLastRelevantTrip;
+                SaDebugger.GetCurrentNormalDiff().OldFirstTrip = driverOldFirstTrip;
+                SaDebugger.GetCurrentNormalDiff().NewFirstTrip = driverNewFirstTrip;
 
                 CheckErrors(unassignedTrip, assignedTrip, addedHotelTrip, removedHotelTrip, driver, info);
             }

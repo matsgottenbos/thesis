@@ -37,7 +37,7 @@ namespace Thesis {
             #endif
 
             // Get cost of initial assignment
-            (info.Cost, info.CostWithoutPenalty,  info.BasePenalty, info.DriversWorkedTime, _, _, _, _, _) = TotalCostCalculator.GetAssignmentCost(info);
+            (info.Cost, info.CostWithoutPenalty, info.BasePenalty, info.DriversWorkedTime, info.PrecedenceViolationCount, info.ShiftLengthViolationCount, info.RestTimeViolationCount, info.ContractTimeViolationCount, info.InvalidHotelCount) = TotalCostCalculator.GetAssignmentCost(info);
 
             #if DEBUG
             // Reset iteration in debugger after initial assignment cost
@@ -48,9 +48,14 @@ namespace Thesis {
         }
 
         public SaInfo Run() {
+            Console.WriteLine("Starting simulated annealing");
+
             // Start stopwatch
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
+
+            // Log initial assignment
+            LogIteration();
 
             while (info.IterationNum < Config.SaIterationCount) {
                 // Pick a random operation based on the configured probabilities
@@ -96,33 +101,21 @@ namespace Thesis {
                 // Log
                 if (info.IterationNum % Config.SaLogFrequency == 0) {
                     // Check cost to remove floating point imprecisions
-                    int precedenceViolationCount, shiftLengthViolationCount, restTimeViolationCount, contractTimeViolationCount, invalidHotelCount;
-                    (info.Cost, info.CostWithoutPenalty, info.BasePenalty, info.DriversWorkedTime, precedenceViolationCount, shiftLengthViolationCount, restTimeViolationCount, contractTimeViolationCount, invalidHotelCount) = TotalCostCalculator.GetAssignmentCost(info);
+                    (info.Cost, info.CostWithoutPenalty, info.BasePenalty, info.DriversWorkedTime, info.PrecedenceViolationCount, info.ShiftLengthViolationCount, info.RestTimeViolationCount, info.ContractTimeViolationCount, info.InvalidHotelCount) = TotalCostCalculator.GetAssignmentCost(info);
 
-                    string penaltyString = "-";
-                    if (info.BasePenalty > 0) {
-                        List<string> penaltyTypes = new List<string>();
-                        if (precedenceViolationCount > 0) penaltyTypes.Add("Pr " + precedenceViolationCount);
-                        if (shiftLengthViolationCount > 0) penaltyTypes.Add("SL " + shiftLengthViolationCount);
-                        if (restTimeViolationCount > 0) penaltyTypes.Add("RT " + restTimeViolationCount);
-                        if (contractTimeViolationCount > 0) penaltyTypes.Add("CT " + contractTimeViolationCount);
-                        if (invalidHotelCount > 0) penaltyTypes.Add("IH " + invalidHotelCount);
-                        string penaltyTypesStr = string.Join(", ", penaltyTypes);
-
-                        penaltyString = string.Format("{0} ({1})", ParseHelper.ToString(info.BasePenalty, "0"), penaltyTypesStr);
-                    };
-
-                    string bestCostString = bestInfo.Assignment == null ? "" : ParseHelper.ToString(bestInfo.Cost);
-                    string bestAssignmentStr = bestInfo.Assignment == null ? "" : "\nBest sol.: " + ParseHelper.AssignmentToString(bestInfo.Assignment, bestInfo);
-                    //string bestAssignmentStr = info.Assignment == null ? "" : ParseHelper.AssignmentToString(info.Assignment, info);
-                    //string bestAssignmentStr = ParseHelper.ToString(info.DriversWorkedTime);
-                    Console.WriteLine("# {0,4}    Best cost: {1,10}    Cost: {2,10}    Penalty: {3,6}    Temp: {4,5}    P.factor: {5,5}{6}", ParseHelper.LargeNumToString(info.IterationNum), bestCostString, ParseHelper.ToString(info.CostWithoutPenalty), penaltyString, ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.PenaltyFactor, "0.00"), bestAssignmentStr);
+                    LogIteration();
                 }
 
                 // Update temperature and penalty factor
                 if (info.IterationNum % Config.SaParameterUpdateFrequency == 0) {
                     info.Temperature *= Config.SaTemperatureReductionFactor;
-                    info.PenaltyFactor = Math.Min(1, info.PenaltyFactor + Config.SaPenaltyIncrement);
+
+                    // Check if we should end the cycle
+                    if (info.Temperature <= Config.SaEndCycleTemperature) {
+                        info.CycleNum++;
+                        info.Temperature = (float)info.FastRand.NextDouble() * (Config.SaCycleInitialTemperatureMax - Config.SaCycleInitialTemperatureMin) + Config.SaCycleInitialTemperatureMin;
+                    }
+
                     (info.Cost, info.CostWithoutPenalty, info.BasePenalty, info.DriversWorkedTime, _, _, _, _, _) = TotalCostCalculator.GetAssignmentCost(info);
                 }
 
@@ -151,37 +144,114 @@ namespace Thesis {
             return bestInfo;
         }
 
+        void LogIteration() {
+            string penaltyString = "-";
+            if (info.BasePenalty > 0) {
+                List<string> penaltyTypes = new List<string>();
+                if (info.PrecedenceViolationCount > 0) penaltyTypes.Add("Pr " + info.PrecedenceViolationCount);
+                if (info.ShiftLengthViolationCount > 0) penaltyTypes.Add("SL " + info.ShiftLengthViolationCount);
+                if (info.RestTimeViolationCount > 0) penaltyTypes.Add("RT " + info.RestTimeViolationCount);
+                if (info.ContractTimeViolationCount > 0) penaltyTypes.Add("CT " + info.ContractTimeViolationCount);
+                if (info.InvalidHotelCount > 0) penaltyTypes.Add("IH " + info.InvalidHotelCount);
+                string penaltyTypesStr = string.Join(", ", penaltyTypes);
+
+                penaltyString = string.Format("{0} ({1})", ParseHelper.ToString(info.BasePenalty, "0"), penaltyTypesStr);
+            };
+
+            string bestCostString = bestInfo.Assignment == null ? "" : ParseHelper.ToString(bestInfo.Cost, "0.0");
+            Console.WriteLine("# {0,4}    Cycle: {1,3}    Best cost: {2,10}    Cost: {3,10}    Temp: {4,5}    Penalty: {5,6}", ParseHelper.LargeNumToString(info.IterationNum), info.CycleNum, bestCostString, ParseHelper.ToString(info.CostWithoutPenalty, "0.0"), ParseHelper.ToString(info.Temperature, "0"), penaltyString);
+
+            if (info.Assignment != null) {
+                Console.WriteLine("Current solution: {0}", ParseHelper.AssignmentToString(info.Assignment, info));
+            }
+
+            if (bestInfo.Assignment != null) {
+                Console.WriteLine("Best solution: {0}", ParseHelper.AssignmentToString(bestInfo.Assignment, bestInfo));
+            }
+        }
+
         (Driver[], int[]) GetInitialAssignment() {
             Driver[] assignment = new Driver[info.Instance.Trips.Length];
+            List<Trip>[] driverPaths = new List<Trip>[info.Instance.AllDrivers.Length];
+            for (int i = 0; i < driverPaths.Length; i++) driverPaths[i] = new List<Trip>();
             int[] externalDriverCountsByType = new int[info.Instance.ExternalDriversByType.Length];
+
             for (int tripIndex = 0; tripIndex < info.Instance.Trips.Length; tripIndex++) {
-                int driverIndex = info.Rand.Next(info.Instance.InternalDrivers.Length);
-                assignment[tripIndex] = info.Instance.InternalDrivers[driverIndex];
+                Trip trip = info.Instance.Trips[tripIndex];
+
+                // Greedily assign to random internal driver, if possible without precedence violations
+                InternalDriver[] internalDriversRandomOrder = Copy(info.Instance.InternalDrivers);
+                Shuffle(internalDriversRandomOrder);
+                bool isDone = false;
+                for (int shuffledInternalDriverIndex = 0; shuffledInternalDriverIndex < internalDriversRandomOrder.Length; shuffledInternalDriverIndex++) {
+                    InternalDriver internalDriver = internalDriversRandomOrder[shuffledInternalDriverIndex];
+                    List<Trip> driverPath = driverPaths[internalDriver.AllDriversIndex];
+
+                    if (driverPath.Count == 0 || info.Instance.IsValidPrecedence(driverPath[^1], trip)) {
+                        // We can add this trip to this driver without precedence violations
+                        assignment[tripIndex] = internalDriver;
+                        driverPath.Add(trip);
+                        isDone = true;
+                        break;
+                    }
+                }
+                if (isDone) continue;
+
+                // Greedily assign to random external driver, if possible without precedence violations
+                ExternalDriver[][] externalDriverTypesRandomOrder = Copy(info.Instance.ExternalDriversByType);
+                Shuffle(externalDriverTypesRandomOrder);
+                for (int shuffledExternalDriverTypeIndex = 0; shuffledExternalDriverTypeIndex < externalDriverTypesRandomOrder.Length; shuffledExternalDriverTypeIndex++) {
+                    ExternalDriver[] externalDriversInType = externalDriverTypesRandomOrder[shuffledExternalDriverTypeIndex];
+
+                    // Assign to first possible driver in type
+                    for (int externalDriverIndexInType = 0; externalDriverIndexInType < externalDriversInType.Length; externalDriverIndexInType++) {
+                        ExternalDriver externalDriver = externalDriversInType[externalDriverIndexInType];
+                        List<Trip> driverPath = driverPaths[externalDriver.AllDriversIndex];
+
+                        if (driverPath.Count == 0 || info.Instance.IsValidPrecedence(driverPath[^1], trip)) {
+                            // We can add this trip to this driver without precedence violations
+                            assignment[tripIndex] = externalDriver;
+                            driverPath.Add(trip);
+                            externalDriverCountsByType[externalDriver.ExternalDriverTypeIndex]++;
+                            isDone = true;
+                            break;
+                        }
+                    }
+                    if (isDone) break;
+                }
+                if (isDone) continue;
+
+                // Assigning without precedence violations is impossible, so assign to random external driver
+                int randomExternalDriverTypeIndex = info.FastRand.NextInt(info.Instance.ExternalDriversByType.Length);
+                ExternalDriver[] externalDriversInRandomType = info.Instance.ExternalDriversByType[randomExternalDriverTypeIndex];
+                int randomExternalDriverIndexInType = info.FastRand.NextInt(externalDriversInRandomType.Length);
+                ExternalDriver randomExternalDriver = externalDriversInRandomType[randomExternalDriverIndexInType];
+                List<Trip> randomDriverPath = driverPaths[randomExternalDriver.AllDriversIndex];
+                assignment[tripIndex] = randomExternalDriver;
+                randomDriverPath.Add(trip);
+                externalDriverCountsByType[randomExternalDriver.ExternalDriverTypeIndex]++;
             }
             return (assignment, externalDriverCountsByType);
         }
 
-        //(Driver[], int[]) GetInitialAssignment() {
-        //    Driver[] assignment = new Driver[info.Instance.Trips.Length];
-        //    int[] externalDriverCountsByType = new int[info.Instance.ExternalDriversByType.Length];
-        //    for (int tripIndex = 0; tripIndex < info.Instance.Trips.Length; tripIndex++) {
-        //        int driverIndex = info.Rand.Next(info.Instance.InternalDrivers.Length + info.Instance.ExternalDriversByType.Length);
-        //        if (driverIndex < info.Instance.InternalDrivers.Length) {
-        //            // This is an internal driver
-        //            assignment[tripIndex] = info.Instance.InternalDrivers[driverIndex];
-        //        } else {
-        //            // This is an external driver
-        //            int externalDriverTypeIndex = driverIndex - info.Instance.InternalDrivers.Length;
-        //            ExternalDriver[] externalDriversOfCurrentType = info.Instance.ExternalDriversByType[externalDriverTypeIndex];
-        //            int currentCountOfType = externalDriverCountsByType[externalDriverTypeIndex];
-        //            int maxNewIndexInTypeExclusive = Math.Min(currentCountOfType + 1, externalDriversOfCurrentType.Length);
-        //            int newExternalDriverIndexInType = info.FastRand.NextInt(maxNewIndexInTypeExclusive);
-        //            assignment[tripIndex] = externalDriversOfCurrentType[newExternalDriverIndexInType];
-        //            externalDriverCountsByType[externalDriverTypeIndex] = Math.Max(externalDriverCountsByType[externalDriverTypeIndex], newExternalDriverIndexInType + 1);
-        //        }
-        //    }
-        //    return (assignment, externalDriverCountsByType);
-        //}
+        void Shuffle<T>(T[] array) {
+            // Fisher–Yates shuffle
+            int n = array.Length;
+            while (n > 1) {
+                int k = info.FastRand.NextInt(n--);
+                T temp = array[n];
+                array[n] = array[k];
+                array[k] = temp;
+            }
+        }
+
+        T[] Copy<T>(T[] array) {
+            T[] copy = new T[array.Length];
+            for (int i = 0; i < array.Length; i++) {
+                copy[i] = array[i];
+            }
+            return copy;
+        }
     }
 
     

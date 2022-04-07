@@ -13,7 +13,7 @@ namespace Thesis {
         public bool[] IsHotelStayAfterTrip;
         public double Cost, CostWithoutPenalty, BasePenalty;
         public int[] DriversWorkedTime, ExternalDriverCountsByType;
-        public int IterationNum;
+        public int IterationNum, CycleNum, PrecedenceViolationCount, ShiftLengthViolationCount, RestTimeViolationCount, ContractTimeViolationCount, InvalidHotelCount;
         public float Temperature, PenaltyFactor;
 
         public SaInfo(Instance instance, Random rand, XorShiftRandom fastRand) {

@@ -135,7 +135,7 @@ namespace Thesis {
 
                 if (searchNode.DriverIndex == node.DriverIndex) {
                     // Check precedence
-                    if (!instance.TripSuccession[searchTrip.Index, nodeTrip.Index]) return null;
+                    if (!instance.IsValidPrecedence(searchTrip, nodeTrip)) return null;
 
                     if (instance.AreSameShift(searchTrip, driverPrevSearchTrip)) {
                         if (prevTripInternal == null) {

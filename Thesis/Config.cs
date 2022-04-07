@@ -57,8 +57,8 @@ namespace Thesis {
         public const int HotelMaxRestTime = 24 * 60;
 
         // Contract time deviations
-        public const float MinContractTimeFraction = 0.8f;
-        public const float MaxContractTimeFraction = 1.2f;
+        public const float MinContractTimeFraction = 0.6f;
+        public const float MaxContractTimeFraction = 1.4f;
 
         // Operations
         public const float AssignExternalDriverProbability = 0.2f;
@@ -87,14 +87,17 @@ namespace Thesis {
 
         /* Simulated annealing */
         // SA parameters
-        public const int SaIterationCount = 200000000;
+        public const int SaIterationCount = 500000000;
         public const int SaCheckCostFrequency = 100000;
         public const int SaLogFrequency = 1000000;
-        public const int SaParameterUpdateFrequency = SaIterationCount / 1000;
+        public const int SaParameterUpdateFrequency = 100000;
         public const float SaInitialTemperature = 1000f;
-        public const float SaTemperatureReductionFactor = 0.997f;
-        public const float SaInitialPenaltyFactor = 0.1f;
-        public const float SaPenaltyIncrement = 0.001f;
+        public const float SaCycleInitialTemperatureMin = 200f;
+        public const float SaCycleInitialTemperatureMax = 1000f;
+        public const float SaTemperatureReductionFactor = 0.99f;
+        public const float SaEndCycleTemperature = 100f;
+        public const float SaInitialPenaltyFactor = 1f; // TODO: remove penalty factor
+        public const float SaPenaltyIncrement = 0f; // TODO: remove penalty factor
 
         // Operation probabilities
         public const float AssignInternalProbCumulative = 0.59f;
@@ -110,7 +113,7 @@ namespace Thesis {
         public const float RestTimeViolationPenaltyPerMin = 200 / 60f;
         public const float ContractTimeViolationPenalty = 1000;
         public const float ContractTimeViolationPenaltyPerMin = 200 / 60f;
-        public const float InvalidHotelPenalty = 20000;
+        public const float InvalidHotelPenalty = 5000;
 
 
         /* File structure */
@@ -127,7 +130,7 @@ namespace Thesis {
         public const bool DebugCheckAndLogOperations = false;
         public const bool DebugRunInspector = false;
         public const bool DebugRunOdataTest = false;
-        public const bool DebugUseSeededSa = true;
+        public const bool DebugUseSeededSa = false;
     }
 
     class SalaryRateInfo {
