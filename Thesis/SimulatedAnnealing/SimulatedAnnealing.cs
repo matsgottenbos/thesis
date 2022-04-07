@@ -159,7 +159,7 @@ namespace Thesis {
             string bestCostString = bestInfo.Assignment == null ? "" : ParseHelper.ToString(bestInfo.Cost, "0.0");
             Console.WriteLine("# {0,4}    Cycle: {1,3}    Best cost: {2,10}    Cost: {3,10}    Temp: {4,5}    Penalty: {5,6}", ParseHelper.LargeNumToString(info.IterationNum), info.CycleNum, bestCostString, ParseHelper.ToString(info.CostWithoutPenalty, "0.0"), ParseHelper.ToString(info.Temperature, "0"), penaltyString);
 
-            if (info.Assignment != null) {
+            if (Config.DebugSaLogCurrentSolution) {
                 Console.WriteLine("Current solution: {0}", ParseHelper.AssignmentToString(info.Assignment, info));
             }
 

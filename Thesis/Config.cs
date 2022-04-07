@@ -57,8 +57,8 @@ namespace Thesis {
         public const int HotelMaxRestTime = 24 * 60;
 
         // Contract time deviations
-        public const float MinContractTimeFraction = 0.6f;
-        public const float MaxContractTimeFraction = 1.4f;
+        public const float MinContractTimeFraction = 0.8f;
+        public const float MaxContractTimeFraction = 1.2f;
 
         // Operations
         public const float AssignExternalDriverProbability = 0.2f;
@@ -126,6 +126,7 @@ namespace Thesis {
 
         // Debug
         public const bool DebugCheckAndLogOperations = false;
+        public const bool DebugSaLogCurrentSolution = false;
         public const bool DebugRunInspector = false;
         public const bool DebugRunOdataTest = false;
         public const bool DebugUseSeededSa = false;
