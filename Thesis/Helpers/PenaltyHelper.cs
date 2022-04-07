@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class PenaltyHelper {
-        public static float GetPrecedenceBasePenalty(Trip trip1, Trip trip2, SaInfo info, bool debugIsNew) {
+        public static float GetPrecedencePenalty(Trip trip1, Trip trip2, SaInfo info, bool debugIsNew) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 if (debugIsNew) SaDebugger.GetCurrentNormalDiff().Precedence.AddNew((trip1, trip2));
@@ -18,10 +18,10 @@ namespace Thesis {
             else return Config.PrecendenceViolationPenalty;
         }
 
-        public static float GetShiftLengthBasePenalty(int shiftLengthWithoutTravel, int shiftLengthWithTravel, bool debugIsNew) {
+        public static float GetShiftLengthPenalty(int shiftLengthWithoutTravel, int shiftLengthWithTravel, bool debugIsNew) {
             int shiftLengthViolation = Math.Max(0, shiftLengthWithoutTravel - Config.MaxShiftLengthWithoutTravel) + Math.Max(0, shiftLengthWithTravel - Config.MaxShiftLengthWithTravel);
-            float amountBasePenalty = shiftLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
-            float countBasePenalty = shiftLengthViolation > 0 ? Config.ShiftLengthViolationPenalty : 0;
+            float countPenalty = shiftLengthViolation > 0 ? Config.ShiftLengthViolationPenalty : 0;
+            float amountPenalty = shiftLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
@@ -30,13 +30,13 @@ namespace Thesis {
             }
             #endif
 
-            return amountBasePenalty + countBasePenalty;
+            return amountPenalty + countPenalty;
         }
 
-        public static float GetRestTimeBasePenalty(int restTime, bool debugIsNew) {
+        public static float GetRestTimePenalty(int restTime, bool debugIsNew) {
             float shiftLengthViolation = Math.Max(0, Config.MinRestTime - restTime);
-            float amountBasePenalty = shiftLengthViolation * Config.RestTimeViolationPenaltyPerMin;
-            float countBasePenalty = shiftLengthViolation > 0 ? Config.RestTimeViolationPenalty : 0;
+            float countPenalty = shiftLengthViolation > 0 ? Config.RestTimeViolationPenalty : 0;
+            float amountPenalty = shiftLengthViolation * Config.RestTimeViolationPenaltyPerMin;
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
@@ -45,10 +45,10 @@ namespace Thesis {
             }
             #endif
 
-            return amountBasePenalty + countBasePenalty;
+            return amountPenalty + countPenalty;
         }
 
-        public static float GetHotelBasePenalty(Trip tripBeforeInvalidHotel, SaInfo info, bool debugIsNew) {
+        public static float GetHotelPenalty(Trip tripBeforeInvalidHotel, SaInfo info, bool debugIsNew) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 if (debugIsNew) SaDebugger.GetCurrentNormalDiff().Hotels.AddNew(tripBeforeInvalidHotel);

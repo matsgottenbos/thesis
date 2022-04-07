@@ -104,7 +104,7 @@ namespace Thesis {
 
         /* Penalties */
 
-        public float GetContractTimeBasePenalty(int workedTime, bool debugIsNew) {
+        public float GetContractTimePenalty(int workedTime, bool debugIsNew) {
             int contractTimeViolation = GetTotalContractTimeViolation(workedTime);
 
             #if DEBUG

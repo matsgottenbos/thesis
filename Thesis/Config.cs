@@ -96,8 +96,6 @@ namespace Thesis {
         public const float SaCycleInitialTemperatureMax = 1000f;
         public const float SaTemperatureReductionFactor = 0.99f;
         public const float SaEndCycleTemperature = 100f;
-        public const float SaInitialPenaltyFactor = 1f; // TODO: remove penalty factor
-        public const float SaPenaltyIncrement = 0f; // TODO: remove penalty factor
 
         // Operation probabilities
         public const float AssignInternalProbCumulative = 0.59f;

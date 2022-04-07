@@ -23,13 +23,13 @@ namespace Thesis {
             }
             #endif
 
-            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverBasePenaltyDiff, int oldDriverShiftLengthDiff) = CostDiffCalculator.GetDriverCostDiff(trip, null, null, null, oldDriver, info);
-            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverBasePenaltyDiff, int newDriverShiftLengthDiff) = CostDiffCalculator.GetDriverCostDiff(null, trip, null, null, newDriver, info);
+            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverPenaltyDiff, int oldDriverShiftLengthDiff) = CostDiffCalculator.GetDriverCostDiff(trip, null, null, null, oldDriver, info);
+            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverPenaltyDiff, int newDriverShiftLengthDiff) = CostDiffCalculator.GetDriverCostDiff(null, trip, null, null, newDriver, info);
 
             oldDriverWorkedTimeDiff = oldDriverShiftLengthDiff;
             newDriverWorkedTimeDiff = newDriverShiftLengthDiff;
 
-            return (oldDriverCostDiff + newDriverCostDiff, oldDriverCostWithoutPenaltyDiff + newDriverCostWithoutPenaltyDiff, oldDriverBasePenaltyDiff + newDriverBasePenaltyDiff);
+            return (oldDriverCostDiff + newDriverCostDiff, oldDriverCostWithoutPenaltyDiff + newDriverCostWithoutPenaltyDiff, oldDriverPenaltyDiff + newDriverPenaltyDiff);
         }
 
         public override void Execute() {
