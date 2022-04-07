@@ -62,8 +62,12 @@ namespace Thesis {
 
                 SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, rand2, fastRand2);
                 SaInfo saSolution = simulatedAnnealing.Run();
-                string saAssignmentStr = ParseHelper.AssignmentToString(saSolution.Assignment, saSolution);
-                Console.WriteLine("SA cost: {0}  |  {1}", ParseHelper.ToString(saSolution.Cost), saAssignmentStr);
+                if (saSolution.Assignment == null) {
+                    Console.WriteLine("SA found no valid solution");
+                } else {
+                    string saAssignmentStr = ParseHelper.AssignmentToString(saSolution.Assignment, saSolution);
+                    Console.WriteLine("SA cost: {0}  |  {1}", ParseHelper.ToString(saSolution.Cost), saAssignmentStr);
+                }
             }
 
             Console.ReadLine();

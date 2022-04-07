@@ -8,16 +8,16 @@ namespace Thesis {
     class Instance {
         public readonly int[,] CarTravelTimes;
         public readonly Trip[] Trips;
-        public readonly bool[,] TripSuccession;
+        public readonly bool[,] TripSuccession, TripsAreSameShift;
         public readonly InternalDriver[] InternalDrivers;
         public readonly ExternalDriver[][] ExternalDriversByType;
         public readonly Driver[] AllDrivers;
 
-        public Instance(Trip[] rawTrips, int[,] carTravelTimes, string[] internalDriverNames, int[][] internalDriversHomeTravelTimes, bool[][,] internalDriversTrackProficiencies, int[] externalDriverCounts, int[][] externalDriversHomeTravelTimes) {
+        public Instance(Trip[] rawTrips, int[,] carTravelTimes, string[] internalDriverNames, int[][] internalDriversHomeTravelTimes, bool[][,] internalDriversTrackProficiencies, int internalDriverContractTime, int[] externalDriverCounts, int[][] externalDriversHomeTravelTimes) {
             CarTravelTimes = carTravelTimes;
-            (Trips, TripSuccession) = PrepareTrips(rawTrips, carTravelTimes);
-            InternalDrivers = CreateInternalDrivers(rawTrips, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriversTrackProficiencies);
-            ExternalDriversByType = GenerateExternalDrivers(rawTrips, carTravelTimes, externalDriverCounts, externalDriversHomeTravelTimes, InternalDrivers.Length);
+            (Trips, TripSuccession, TripsAreSameShift) = PrepareTrips(rawTrips, carTravelTimes);
+            InternalDrivers = CreateInternalDrivers(Trips, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriversTrackProficiencies, internalDriverContractTime);
+            ExternalDriversByType = GenerateExternalDrivers(Trips, carTravelTimes, externalDriverCounts, externalDriversHomeTravelTimes, InternalDrivers.Length);
 
             // Create all drivers array
             List<Driver> allDriversList = new List<Driver>();
@@ -33,7 +33,7 @@ namespace Thesis {
             }
         }
 
-        (Trip[], bool[,]) PrepareTrips(Trip[] rawTrips, int[,] carTravelTimes) {
+        (Trip[], bool[,], bool[,]) PrepareTrips(Trip[] rawTrips, int[,] carTravelTimes) {
             // Sort trips by start time
             Trip[] trips = rawTrips.OrderBy(trip => trip.StartTime).ToArray();
 
@@ -43,8 +43,8 @@ namespace Thesis {
             }
 
             // Generate precedence constraints
-            for (int trip1Index = 0; trip1Index < Config.GenTripCount; trip1Index++) {
-                for (int trip2Index = trip1Index; trip2Index < Config.GenTripCount; trip2Index++) {
+            for (int trip1Index = 0; trip1Index < trips.Length; trip1Index++) {
+                for (int trip2Index = trip1Index; trip2Index < trips.Length; trip2Index++) {
                     Trip trip1 = trips[trip1Index];
                     Trip trip2 = trips[trip2Index];
                     float travelTimeBetween = carTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex];
@@ -63,19 +63,30 @@ namespace Thesis {
                     tripSuccession[tripIndex, successor.Index] = true;
                 }
             }
-            return (trips, tripSuccession);
+
+            // Preprocess whether trips belong to the same shift
+            bool[,] tripsAreSameShift = new bool[trips.Length, trips.Length];
+            for (int trip1Index = 0; trip1Index < trips.Length; trip1Index++) {
+                Trip trip1 = trips[trip1Index];
+                for (int trip2Index = trip1Index; trip2Index < trips.Length; trip2Index++) {
+                    Trip trip2 = trips[trip2Index];
+                    tripsAreSameShift[trip1.Index, trip2.Index] = WaitingTime(trip1, trip2) <= Config.ShiftWaitingTimeThreshold;
+                }
+            }
+
+            return (trips, tripSuccession, tripsAreSameShift);
         }
 
-        InternalDriver[] CreateInternalDrivers(Trip[] trips, int[,] carTravelTimes, string[] internalDriverNames, int[][] internalDriversHomeTravelTimes, bool[][,] internalDriversTrackProficiencies) {
-            InternalDriver[] internalDrivers = new InternalDriver[Config.GenInternalDriverCount];
-            for (int internalDriverIndex = 0; internalDriverIndex < Config.GenInternalDriverCount; internalDriverIndex++) {
+        InternalDriver[] CreateInternalDrivers(Trip[] trips, int[,] carTravelTimes, string[] internalDriverNames, int[][] internalDriversHomeTravelTimes, bool[][,] internalDriversTrackProficiencies, int internalDriverContractTime) {
+            InternalDriver[] internalDrivers = new InternalDriver[internalDriverNames.Length];
+            for (int internalDriverIndex = 0; internalDriverIndex < internalDriverNames.Length; internalDriverIndex++) {
                 string driverName = internalDriverNames[internalDriverIndex];
                 int[] homeTravelTimes = internalDriversHomeTravelTimes[internalDriverIndex];
                 bool[,] trackProficiencies = internalDriversTrackProficiencies[internalDriverIndex];
 
                 // Contract time
-                int minWorkedTime = (int)Math.Ceiling(Config.GenContractTime * Config.MinContractTimeFraction);
-                int maxWorkedTime = (int)Math.Floor(Config.GenContractTime * Config.MaxContractTimeFraction);
+                int minWorkedTime = (int)Math.Ceiling(internalDriverContractTime * Config.MinContractTimeFraction);
+                int maxWorkedTime = (int)Math.Floor(internalDriverContractTime * Config.MaxContractTimeFraction);
 
                 // Preprocess shift lengths and costs
                 (int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) = GetDriverShiftLengthsAndCosts(Config.InternalDriverUnpaidTravelTimePerShift, trips, homeTravelTimes, carTravelTimes, Config.InternalDriverDailySalaryRates, Config.InternalDriverTravelSalaryRate);
@@ -86,9 +97,9 @@ namespace Thesis {
         }
 
         ExternalDriver[][] GenerateExternalDrivers(Trip[] trips, int[,] carTravelTimes, int[] externalDriverCounts, int[][] externalDriversHomeTravelTimes, int indexOffset) {
-            ExternalDriver[][] externalDriversByType = new ExternalDriver[Config.GenExternaDriverTypeCount][];
+            ExternalDriver[][] externalDriversByType = new ExternalDriver[externalDriverCounts.Length][];
             int allDriverIndex = indexOffset;
-            for (int externalDriverTypeIndex = 0; externalDriverTypeIndex < Config.GenExternaDriverTypeCount; externalDriverTypeIndex++) {
+            for (int externalDriverTypeIndex = 0; externalDriverTypeIndex < externalDriverCounts.Length; externalDriverTypeIndex++) {
                 int count = externalDriverCounts[externalDriverTypeIndex];
                 int[] homeTravelTimes = externalDriversHomeTravelTimes[externalDriverTypeIndex];
 
@@ -203,7 +214,7 @@ namespace Thesis {
 
         /** Check if two trips belong to the same shift or not, based on whether their waiting time is within the threshold */
         public bool AreSameShift(Trip trip1, Trip trip2) {
-            return WaitingTime(trip1, trip2) <= Config.ShiftWaitingTimeThreshold;
+            return TripsAreSameShift[trip1.Index, trip2.Index];
         }
     }
 }

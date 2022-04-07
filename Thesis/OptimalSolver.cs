@@ -297,7 +297,8 @@ namespace Thesis {
 
         (double, double, double, int[]) GetNodeCost(AssignmentNode node) {
             dummyInfo.Assignment = NodeToAssignment(node);
-            return TotalCostCalculator.GetAssignmentCost(dummyInfo);
+            (double cost, double costWithoutPenalty, double basePenalty, int[] driversWorkedTime, _, _, _, _, _) =  TotalCostCalculator.GetAssignmentCost(dummyInfo);
+            return (cost, costWithoutPenalty, basePenalty, driversWorkedTime);
         }
 
         Driver[] NodeToAssignment(AssignmentNode node) {

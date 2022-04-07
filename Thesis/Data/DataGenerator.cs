@@ -18,10 +18,10 @@ namespace Thesis {
             string[] internalDriverNames = new string[Config.GenInternalDriverCount]; // Names will be empty in generated data
             int[][] internalDriversHomeTravelTimes = GenerateInternalDriverHomeTravelTimes(Config.GenInternalDriverCount, Config.GenStationCount, rand);
             bool[][,] internalDriverTrackProficiencies = GenerateInternalDriverTrackProficiencies(Config.GenInternalDriverCount, Config.GenStationCount, rand);
-            int[] externalDriverCounts = GenerateExternalDriverCounts(Config.GenExternaDriverTypeCount, rand);
+            int[] externalDriverCounts = GenerateExternalDriverCounts(Config.GenExternaDriverTypeCount, Config.GenExternalDriverMinCountPerType, Config.GenExternalDriverMaxCountPerType, rand);
             int[][] externalDriversHomeTravelTimes = GenerateExternalDriverHomeTravelTimes(Config.GenExternaDriverTypeCount, Config.GenStationCount, rand);
 
-            return new Instance(rawTrips, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, externalDriverCounts, externalDriversHomeTravelTimes);
+            return new Instance(rawTrips, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.GenInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
         }
 
         public static int[,] GenerateTrainTravelTimes(int stationCount, Random rand) {
@@ -109,10 +109,10 @@ namespace Thesis {
             return internalDriverTrackProficiencies;
         }
 
-        public static int[] GenerateExternalDriverCounts(int externalDriverTypeCount, Random rand) {
+        public static int[] GenerateExternalDriverCounts(int externalDriverTypeCount, int minCountPerType, int maxCountPerType, Random rand) {
             int[] externalDriverCounts = new int[externalDriverTypeCount];
             for (int externalDriverIndex = 0; externalDriverIndex < externalDriverTypeCount; externalDriverIndex++) {
-                int count = rand.Next(Config.GenExternalDriverMinCountPerType, Config.GenExternalDriverMaxCountPerType + 1);
+                int count = rand.Next(minCountPerType, maxCountPerType + 1);
                 externalDriverCounts[externalDriverIndex] = count;
             }
             return externalDriverCounts;

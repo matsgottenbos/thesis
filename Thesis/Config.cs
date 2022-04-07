@@ -17,6 +17,7 @@ namespace Thesis {
         public const bool RunOptimalAlgorithm = false;
         public const bool RunSimulatedAnnealing = true;
         public const DataSource SelectedDataSource = DataSource.Excel;
+        //public const DataSource SelectedDataSource = DataSource.Generator;
 
         // Shifts
         public const int MaxShiftLengthWithTravel = 12 * 60; // Maximum length of a shift, including travel
@@ -71,15 +72,14 @@ namespace Thesis {
         public const int GenExternaDriverTypeCount = 2;
         public const int GenExternalDriverMinCountPerType = 2;
         public const int GenExternalDriverMaxCountPerType = 5;
-        public const int GenMaxStationCountPerTrip = 4; // TODO: obsolete
 
         // Distances
         public const int GenMinStationTravelTime = 30;
-        public const int GenMaxStationTravelTime = 2 * 60;
+        public const int GenMaxStationTravelTime = 4 * 60;
         public const int GenMaxHomeTravelTime = 2 * 60;
 
         // Contract times
-        public const int GenContractTime = GenTimeframeLength / 4;
+        public const int GenInternalDriverContractTime = GenTimeframeLength / 4;
 
         // Generator probabilities
         public const float GenTrackProficiencyProb = 0.9f;
@@ -87,14 +87,20 @@ namespace Thesis {
 
         /* Simulated annealing */
         // SA parameters
-        public const int SaIterationCount = 50000000;
+        public const int SaIterationCount = 200000000;
         public const int SaCheckCostFrequency = 100000;
         public const int SaLogFrequency = 1000000;
         public const int SaParameterUpdateFrequency = SaIterationCount / 1000;
         public const float SaInitialTemperature = 1000f;
         public const float SaTemperatureReductionFactor = 0.997f;
-        public const float SaInitialPenaltyFactor = 0.001f;
+        public const float SaInitialPenaltyFactor = 0.1f;
         public const float SaPenaltyIncrement = 0.001f;
+
+        // Operation probabilities
+        public const float AssignInternalProbCumulative = 0.59f;
+        public const float AssignExternalProbCumulative = 0.6f;
+        public const float SwapProbCumulative = 0.9999f;
+        public const float ToggleHotelProbCumulative = 1f;
 
         // Penalties
         public const float PrecendenceViolationPenalty = 5000;
@@ -104,7 +110,7 @@ namespace Thesis {
         public const float RestTimeViolationPenaltyPerMin = 200 / 60f;
         public const float ContractTimeViolationPenalty = 1000;
         public const float ContractTimeViolationPenaltyPerMin = 200 / 60f;
-        public const float InvalidHotelPenalty = 5000;
+        public const float InvalidHotelPenalty = 20000;
 
 
         /* File structure */

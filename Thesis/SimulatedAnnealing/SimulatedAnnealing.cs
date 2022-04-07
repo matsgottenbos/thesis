@@ -17,7 +17,6 @@ namespace Thesis {
             info.Temperature = Config.SaInitialTemperature;
             info.PenaltyFactor = Config.SaInitialPenaltyFactor;
             info.IsHotelStayAfterTrip = new bool[instance.Trips.Length];
-            info.ExternalDriverCountsByType = new int[instance.ExternalDriversByType.Length];
 
             // Initialise best info
             bestInfo = new SaInfo(instance, rand, fastRand);
@@ -28,15 +27,7 @@ namespace Thesis {
 
 
             // Create a random assignment
-            info.Assignment = new Driver[instance.Trips.Length];
-            int[] assignmentIndices = GetInitialAssignmentIndices();
-            Trip[] driverLastTrips = new Trip[instance.AllDrivers.Length];
-            for (int tripIndex = 0; tripIndex < assignmentIndices.Length; tripIndex++) {
-                Trip trip = instance.Trips[tripIndex];
-                int driverIndex = assignmentIndices[tripIndex];
-                Driver driver = instance.AllDrivers[driverIndex];
-                info.Assignment[tripIndex] = driver;
-            }
+            (info.Assignment, info.ExternalDriverCountsByType) = GetInitialAssignment();
 
             #if DEBUG
             // Initialise debugger
@@ -46,7 +37,7 @@ namespace Thesis {
             #endif
 
             // Get cost of initial assignment
-            (info.Cost, info.CostWithoutPenalty,  info.BasePenalty, info.DriversWorkedTime) = TotalCostCalculator.GetAssignmentCost(info);
+            (info.Cost, info.CostWithoutPenalty,  info.BasePenalty, info.DriversWorkedTime, _, _, _, _, _) = TotalCostCalculator.GetAssignmentCost(info);
 
             #if DEBUG
             // Reset iteration in debugger after initial assignment cost
@@ -62,23 +53,13 @@ namespace Thesis {
             stopwatch.Start();
 
             while (info.IterationNum < Config.SaIterationCount) {
-                int operationIndex = info.Rand.Next(5);
-                AbstractOperation operation = operationIndex switch {
-                    // Assign internal
-                    0 => AssignInternalOperation.CreateRandom(info),
-                    1 => AssignInternalOperation.CreateRandom(info),
-
-                    // Assign existing external
-                    2 => AssignExternalOperation.CreateRandom(info),
-
-                    // Swap
-                    3 => SwapOperation.CreateRandom(info),
-
-                    // Hotel stay
-                    4 => ToggleHotelOperation.CreateRandom(info),
-
-                    _ => throw new Exception("Invalid operation index"),
-                };
+                // Pick a random operation based on the configured probabilities
+                double operationDouble = info.FastRand.NextDouble();
+                AbstractOperation operation;
+                if (operationDouble < Config.AssignInternalProbCumulative) operation = AssignInternalOperation.CreateRandom(info);
+                else if (operationDouble < Config.AssignExternalProbCumulative) operation = AssignExternalOperation.CreateRandom(info);
+                else if (operationDouble < Config.SwapProbCumulative) operation = SwapOperation.CreateRandom(info);
+                else operation = ToggleHotelOperation.CreateRandom(info);
 
                 (double costDiff, double costWithoutPenaltyDiff, double basePenaltyDiff) = operation.GetCostDiff();
 
@@ -91,7 +72,7 @@ namespace Thesis {
 
                     if (info.Cost < bestInfo.Cost && info.BasePenalty < 0.01) {
                         // Check cost to remove floating point imprecisions
-                        (info.Cost, info.CostWithoutPenalty, info.BasePenalty, info.DriversWorkedTime) = TotalCostCalculator.GetAssignmentCost(info);
+                        (info.Cost, info.CostWithoutPenalty, info.BasePenalty, info.DriversWorkedTime, _, _, _, _, _) = TotalCostCalculator.GetAssignmentCost(info);
                         if (info.BasePenalty > 0.01) throw new Exception("New best solution is invalid");
 
                         if (info.Cost < bestInfo.Cost) {
@@ -112,25 +93,37 @@ namespace Thesis {
                 }
                 #endif
 
-                // Check cost to remove floating point imprecisions
-                if (info.IterationNum % Config.SaCheckCostFrequency == 0) {
-                    double oldCost = info.Cost;
-                    (info.Cost, info.CostWithoutPenalty, info.BasePenalty, info.DriversWorkedTime) = TotalCostCalculator.GetAssignmentCost(info);
-                }
-
                 // Log
                 if (info.IterationNum % Config.SaLogFrequency == 0) {
+                    // Check cost to remove floating point imprecisions
+                    int precedenceViolationCount, shiftLengthViolationCount, restTimeViolationCount, contractTimeViolationCount, invalidHotelCount;
+                    (info.Cost, info.CostWithoutPenalty, info.BasePenalty, info.DriversWorkedTime, precedenceViolationCount, shiftLengthViolationCount, restTimeViolationCount, contractTimeViolationCount, invalidHotelCount) = TotalCostCalculator.GetAssignmentCost(info);
+
+                    string penaltyString = "-";
+                    if (info.BasePenalty > 0) {
+                        List<string> penaltyTypes = new List<string>();
+                        if (precedenceViolationCount > 0) penaltyTypes.Add("Pr " + precedenceViolationCount);
+                        if (shiftLengthViolationCount > 0) penaltyTypes.Add("SL " + shiftLengthViolationCount);
+                        if (restTimeViolationCount > 0) penaltyTypes.Add("RT " + restTimeViolationCount);
+                        if (contractTimeViolationCount > 0) penaltyTypes.Add("CT " + contractTimeViolationCount);
+                        if (invalidHotelCount > 0) penaltyTypes.Add("IH " + invalidHotelCount);
+                        string penaltyTypesStr = string.Join(", ", penaltyTypes);
+
+                        penaltyString = string.Format("{0} ({1})", ParseHelper.ToString(info.BasePenalty, "0"), penaltyTypesStr);
+                    };
+
                     string bestCostString = bestInfo.Assignment == null ? "" : ParseHelper.ToString(bestInfo.Cost);
-                    string penaltyString = info.BasePenalty > 0 ? ParseHelper.ToString(info.BasePenalty, "0") : "-";
-                    string assignmentStr = bestInfo.Assignment == null ? "" : ParseHelper.AssignmentToString(bestInfo.Assignment, bestInfo);
-                    Console.WriteLine("# {0,4}    Best cost: {1,10}    Cost: {2,10}    Penalty: {3,6}    Temp: {4,5}    P.factor: {5,5}    Best sol.: {6}", ParseHelper.LargeNumToString(info.IterationNum), bestCostString, ParseHelper.ToString(info.CostWithoutPenalty), penaltyString, ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.PenaltyFactor, "0.00"), assignmentStr);
+                    string bestAssignmentStr = bestInfo.Assignment == null ? "" : "\nBest sol.: " + ParseHelper.AssignmentToString(bestInfo.Assignment, bestInfo);
+                    //string bestAssignmentStr = info.Assignment == null ? "" : ParseHelper.AssignmentToString(info.Assignment, info);
+                    //string bestAssignmentStr = ParseHelper.ToString(info.DriversWorkedTime);
+                    Console.WriteLine("# {0,4}    Best cost: {1,10}    Cost: {2,10}    Penalty: {3,6}    Temp: {4,5}    P.factor: {5,5}{6}", ParseHelper.LargeNumToString(info.IterationNum), bestCostString, ParseHelper.ToString(info.CostWithoutPenalty), penaltyString, ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.PenaltyFactor, "0.00"), bestAssignmentStr);
                 }
 
                 // Update temperature and penalty factor
                 if (info.IterationNum % Config.SaParameterUpdateFrequency == 0) {
                     info.Temperature *= Config.SaTemperatureReductionFactor;
                     info.PenaltyFactor = Math.Min(1, info.PenaltyFactor + Config.SaPenaltyIncrement);
-                    (info.Cost, info.CostWithoutPenalty, info.BasePenalty, info.DriversWorkedTime) = TotalCostCalculator.GetAssignmentCost(info);
+                    (info.Cost, info.CostWithoutPenalty, info.BasePenalty, info.DriversWorkedTime, _, _, _, _, _) = TotalCostCalculator.GetAssignmentCost(info);
                 }
 
                 #if DEBUG
@@ -142,11 +135,13 @@ namespace Thesis {
             }
 
             // Check cost to remove floating point imprecisions
-            (bestInfo.Cost, bestInfo.CostWithoutPenalty, bestInfo.BasePenalty, bestInfo.DriversWorkedTime) = TotalCostCalculator.GetAssignmentCost(bestInfo);
-            if (bestInfo.BasePenalty > 0.01) throw new Exception("Best solution is invalid");
-            bestInfo.DriversWorkedTime = info.DriversWorkedTime;
-            bestInfo.ExternalDriverCountsByType = info.ExternalDriverCountsByType;
-            bestInfo.IterationNum = info.IterationNum;
+            if (bestInfo.Assignment != null) {
+                (bestInfo.Cost, bestInfo.CostWithoutPenalty, bestInfo.BasePenalty, bestInfo.DriversWorkedTime, _, _, _, _, _) = TotalCostCalculator.GetAssignmentCost(bestInfo);
+                if (bestInfo.BasePenalty > 0.01) throw new Exception("Best solution is invalid");
+                bestInfo.DriversWorkedTime = info.DriversWorkedTime;
+                bestInfo.ExternalDriverCountsByType = info.ExternalDriverCountsByType;
+                bestInfo.IterationNum = info.IterationNum;
+            }
 
             stopwatch.Stop();
             float saDuration = stopwatch.ElapsedMilliseconds / 1000f;
@@ -156,14 +151,37 @@ namespace Thesis {
             return bestInfo;
         }
 
-        int[] GetInitialAssignmentIndices() {
-            // Create an initial assignment with only internal drivers
-            int[] assignmentIndices = new int[info.Instance.Trips.Length];
+        (Driver[], int[]) GetInitialAssignment() {
+            Driver[] assignment = new Driver[info.Instance.Trips.Length];
+            int[] externalDriverCountsByType = new int[info.Instance.ExternalDriversByType.Length];
             for (int tripIndex = 0; tripIndex < info.Instance.Trips.Length; tripIndex++) {
-                assignmentIndices[tripIndex] = info.Rand.Next(info.Instance.InternalDrivers.Length);
+                int driverIndex = info.Rand.Next(info.Instance.InternalDrivers.Length);
+                assignment[tripIndex] = info.Instance.InternalDrivers[driverIndex];
             }
-            return assignmentIndices;
+            return (assignment, externalDriverCountsByType);
         }
+
+        //(Driver[], int[]) GetInitialAssignment() {
+        //    Driver[] assignment = new Driver[info.Instance.Trips.Length];
+        //    int[] externalDriverCountsByType = new int[info.Instance.ExternalDriversByType.Length];
+        //    for (int tripIndex = 0; tripIndex < info.Instance.Trips.Length; tripIndex++) {
+        //        int driverIndex = info.Rand.Next(info.Instance.InternalDrivers.Length + info.Instance.ExternalDriversByType.Length);
+        //        if (driverIndex < info.Instance.InternalDrivers.Length) {
+        //            // This is an internal driver
+        //            assignment[tripIndex] = info.Instance.InternalDrivers[driverIndex];
+        //        } else {
+        //            // This is an external driver
+        //            int externalDriverTypeIndex = driverIndex - info.Instance.InternalDrivers.Length;
+        //            ExternalDriver[] externalDriversOfCurrentType = info.Instance.ExternalDriversByType[externalDriverTypeIndex];
+        //            int currentCountOfType = externalDriverCountsByType[externalDriverTypeIndex];
+        //            int maxNewIndexInTypeExclusive = Math.Min(currentCountOfType + 1, externalDriversOfCurrentType.Length);
+        //            int newExternalDriverIndexInType = info.FastRand.NextInt(maxNewIndexInTypeExclusive);
+        //            assignment[tripIndex] = externalDriversOfCurrentType[newExternalDriverIndexInType];
+        //            externalDriverCountsByType[externalDriverTypeIndex] = Math.Max(externalDriverCountsByType[externalDriverTypeIndex], newExternalDriverIndexInType + 1);
+        //        }
+        //    }
+        //    return (assignment, externalDriverCountsByType);
+        //}
     }
 
     

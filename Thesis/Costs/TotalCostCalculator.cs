@@ -7,36 +7,47 @@ using System.Threading.Tasks;
 namespace Thesis {
     static class TotalCostCalculator {
         /** Get assignment cost */
-        public static (double, double, double, int[]) GetAssignmentCost(SaInfo info) {
+        public static (double, double, double, int[], int, int, int, int, int) GetAssignmentCost(SaInfo info) {
             List<Trip>[] driverPaths = GetPathPerDriver(info);
 
             double cost = 0;
             double costWithoutPenalty = 0;
             double basePenalty = 0;
             int[] driversWorkedTime = new int[info.Instance.AllDrivers.Length];
+            int totalPrecedenceViolationCount = 0;
+            int totalShiftLengthViolationCount = 0;
+            int totalRestTimeViolationCount = 0;
+            int totalContractTimeViolationCount = 0;
+            int totalInvalidHotelCount = 0;
             for (int driverIndex = 0; driverIndex < info.Instance.AllDrivers.Length; driverIndex++) {
                 List<Trip> driverPath = driverPaths[driverIndex];
                 Driver driver = info.Instance.AllDrivers[driverIndex];
 
-                (double driverCost, double driverCostWithoutPenalty, double driverBasePenalty, int driverWorkedTime) = GetDriverPathCost(driverPath, info.IsHotelStayAfterTrip, driver, info, false);
+                (double driverCost, double driverCostWithoutPenalty, double driverBasePenalty, int driverWorkedTime, int precedenceViolationCount, int shiftLengthViolationCount, int restTimeViolationCount, int contractTimeViolationCount, int invalidHotelCount) = GetDriverPathCost(driverPath, info.IsHotelStayAfterTrip, driver, info, false);
                  
                 cost += driverCost;
                 costWithoutPenalty += driverCostWithoutPenalty;
                 basePenalty += driverBasePenalty;
                 driversWorkedTime[driverIndex] = driverWorkedTime;
+
+                totalPrecedenceViolationCount += precedenceViolationCount;
+                totalShiftLengthViolationCount += shiftLengthViolationCount;
+                totalRestTimeViolationCount += restTimeViolationCount;
+                totalContractTimeViolationCount += contractTimeViolationCount;
+                totalInvalidHotelCount += invalidHotelCount;
             }
 
-            return (cost, costWithoutPenalty, basePenalty, driversWorkedTime);
+            return (cost, costWithoutPenalty, basePenalty, driversWorkedTime, totalPrecedenceViolationCount, totalShiftLengthViolationCount, totalRestTimeViolationCount, totalContractTimeViolationCount, totalInvalidHotelCount);
         }
 
-        public static (double, double, double, int) GetDriverPathCost(List<Trip> driverPath, bool[] isHotelStayAfterTrip, Driver driver, SaInfo info, bool shouldDebug = true) {
+        public static (double, double, double, int, int, int, int, int, int) GetDriverPathCost(List<Trip> driverPath, bool[] isHotelStayAfterTrip, Driver driver, SaInfo info, bool shouldDebug = true) {
             int totalPrecedenceViolationCount = 0;
             int totalShiftLengthViolationCount = 0;
             int totalShiftLengthViolation = 0;
             int totalRestTimeViolationCount = 0;
             int totalRestTimeViolation = 0;
-            int totalContractTimeViolation = 0;
             int totalContractTimeViolationCount = 0;
+            int totalContractTimeViolation = 0;
             int totalInvalidHotelCount = 0;
             int totalWorkedTime = 0;
             double totalCostWithoutPenalty = 0;
@@ -210,11 +221,11 @@ namespace Thesis {
             }
             #endif
 
-            return (cost, totalCostWithoutPenalty, basePenalty, totalWorkedTime);
+            return (cost, totalCostWithoutPenalty, basePenalty, totalWorkedTime, totalPrecedenceViolationCount, totalShiftLengthViolationCount, totalRestTimeViolationCount, totalContractTimeViolationCount, totalInvalidHotelCount);
         }
 
         /** Helper: get list of trips that each driver is assigned to */
-        static List<Trip>[] GetPathPerDriver(SaInfo info) {
+        public static List<Trip>[] GetPathPerDriver(SaInfo info) {
             List<Trip>[] driverPaths = new List<Trip>[info.Instance.AllDrivers.Length];
             for (int driverIndex = 0; driverIndex < driverPaths.Length; driverIndex++) {
                 driverPaths[driverIndex] = new List<Trip>();

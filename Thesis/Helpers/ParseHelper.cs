@@ -47,5 +47,28 @@ namespace Thesis {
             }
             return string.Join(" ", assignmentStrParts);
         }
+
+        public static string DriverPathToString(List<Trip> driverPath, SaInfo info) {
+            string driverPathStr = "";
+            Trip prevTrip = null;
+            for (int driverTripIndex = 0; driverTripIndex < driverPath.Count; driverTripIndex++) {
+                Trip trip = driverPath[driverTripIndex];
+
+                if (prevTrip != null) {
+                    if (info.Instance.AreSameShift(prevTrip, trip)) {
+                        driverPathStr += "-";
+                        if (info.IsHotelStayAfterTrip[prevTrip.Index]) driverPathStr += "H-";
+                    } else {
+                        driverPathStr += "|";
+                        if (info.IsHotelStayAfterTrip[prevTrip.Index]) driverPathStr += "H|";
+                    }
+                }
+                driverPathStr += trip.Index;
+
+                prevTrip = trip;
+            }
+            if (prevTrip != null && info.IsHotelStayAfterTrip[prevTrip.Index]) driverPathStr += "|H";
+            return driverPathStr;
+        }
     }
 }

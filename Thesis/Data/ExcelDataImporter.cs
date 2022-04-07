@@ -9,36 +9,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    class DataTable {
-        readonly ISheet sheet;
-        readonly Dictionary<string, int> columnNamesToIndices;
-
-        public DataTable(string sheetName, XSSFWorkbook excelBook) {
-            sheet = excelBook.GetSheet(sheetName);
-
-            // Parse column headers
-            IRow headerRow = sheet.GetRow(0);
-            columnNamesToIndices = new Dictionary<string, int>();
-            for (int colIndex = 0; colIndex < headerRow.LastCellNum; colIndex++) {
-                string headerName = headerRow.GetCell(colIndex).StringCellValue;
-                columnNamesToIndices.Add(headerName, colIndex);
-            }
-        }
-
-        public int GetColumnIndex(string columnName) {
-            return columnNamesToIndices[columnName];
-        }
-
-        public void ForEachRow(Action<IRow> rowFunc) {
-            for (int rowIndex = 1; rowIndex <= sheet.LastRowNum; rowIndex++) {
-                IRow row = sheet.GetRow(rowIndex);
-                if (row == null) continue; // Skip empty rows
-
-                rowFunc(row);
-            }
-        }
-    }
-
     static class ExcelDataImporter {
         public static Instance Import(Random rand) {
             // Import Excel sheet
@@ -48,12 +18,16 @@ namespace Thesis {
 
             DataTable dutiesTable = new DataTable("DutyActivities", excelBook);
             DataTable employeesTable = new DataTable("Employees", excelBook);
-            DataTable certificatesTable = new DataTable("Certificates", excelBook);
+            //DataTable certificatesTable = new DataTable("Certificates", excelBook);
+            // TODO: use RouteKnowledge
 
             // Temp config
             DateTime planningStartDate = new DateTime(2021, 12, 25);
             DateTime planningNextDate = planningStartDate.AddDays(7);
-            int externalDriverTypeCount = 5;
+            int internalDriverContractTime = 40 * 60;
+            int externalDriverTypeCount = 3;
+            int externalDriverMinCountPerType = 5;
+            int externalDriverMaxCountPerType = 10;
 
             // Parse trips and station codes
             (Trip[] rawTrips, string[] stationCodes) = ParseRawTripsAndStationCodes(dutiesTable, planningStartDate, planningNextDate);
@@ -71,22 +45,25 @@ namespace Thesis {
             // Generate remaining driver data; TODO: use real data
             int[][] internalDriversHomeTravelTimes = DataGenerator.GenerateInternalDriverHomeTravelTimes(internalDriverCount, stationCount, rand);
             bool[][,] internalDriverTrackProficiencies = DataGenerator.GenerateInternalDriverTrackProficiencies(internalDriverCount, stationCount, rand);
-            int[] externalDriverCounts = DataGenerator.GenerateExternalDriverCounts(externalDriverTypeCount, rand);
+            int[] externalDriverCounts = DataGenerator.GenerateExternalDriverCounts(externalDriverTypeCount, externalDriverMinCountPerType, externalDriverMaxCountPerType, rand);
             int[][] externalDriversHomeTravelTimes = DataGenerator.GenerateExternalDriverHomeTravelTimes(externalDriverTypeCount, stationCount, rand);
 
-            return new Instance(rawTrips, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, externalDriverCounts, externalDriversHomeTravelTimes);
+            return new Instance(rawTrips, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, internalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
         }
 
         static (Trip[], string[] stationCodes) ParseRawTripsAndStationCodes(DataTable dutiesTable, DateTime planningStartDate, DateTime planningNextDate) {
             List<Trip> rawTripList = new List<Trip>();
             List<string> stationCodesList = new List<string>();
             dutiesTable.ForEachRow(dutyRow => {
+                //string activityType = dutyRow.GetCell(dutiesTable.GetColumnIndex("ActivityDescriptionEN")).StringCellValue;
+                //if (activityType != "Drive train") return; // Skip non-driving activities
+
                 // Get start and end stations
                 string startStationCode = dutyRow.GetCell(dutiesTable.GetColumnIndex("OriginLocationCode")).StringCellValue;
                 int startStationIndex = GetOrAddCodeIndex(startStationCode, stationCodesList);
                 string endStationCode = dutyRow.GetCell(dutiesTable.GetColumnIndex("DestinationLocationCode")).StringCellValue;
                 int endStationIndex = GetOrAddCodeIndex(endStationCode, stationCodesList);
-                if (startStationIndex == endStationIndex) return; // Skip non-driving activities
+                //if (startStationIndex == endStationIndex) return; // Skip non-driving activities
 
                 // Get start and end time
                 DateTime startTimeRaw = dutyRow.GetCell(dutiesTable.GetColumnIndex("PlannedStart")).DateCellValue;
@@ -131,6 +108,9 @@ namespace Thesis {
         static string[] ParseInternalDriverNames(DataTable employeesTable) {
             List<string> internalDriverNames = new List<string>();
             employeesTable.ForEachRow(employeeRow => {
+                string driverJobTitle = employeeRow.GetCell(employeesTable.GetColumnIndex("PrimaryJobTitle")).StringCellValue;
+                if (driverJobTitle != "Machinist VB nationaal" && driverJobTitle != "Machinist VB Internationaal NL-D") return;
+
                 string driverName = employeeRow.GetCell(employeesTable.GetColumnIndex("FullName")).StringCellValue;
                 internalDriverNames.Add(driverName);
             });
@@ -179,6 +159,36 @@ namespace Thesis {
             // New code
             codes.Add(code);
             return codes.Count;
+        }
+    }
+
+    class DataTable {
+        readonly ISheet sheet;
+        readonly Dictionary<string, int> columnNamesToIndices;
+
+        public DataTable(string sheetName, XSSFWorkbook excelBook) {
+            sheet = excelBook.GetSheet(sheetName);
+
+            // Parse column headers
+            IRow headerRow = sheet.GetRow(0);
+            columnNamesToIndices = new Dictionary<string, int>();
+            for (int colIndex = 0; colIndex < headerRow.LastCellNum; colIndex++) {
+                string headerName = headerRow.GetCell(colIndex).StringCellValue;
+                columnNamesToIndices.Add(headerName, colIndex);
+            }
+        }
+
+        public int GetColumnIndex(string columnName) {
+            return columnNamesToIndices[columnName];
+        }
+
+        public void ForEachRow(Action<IRow> rowFunc) {
+            for (int rowIndex = 1; rowIndex <= sheet.LastRowNum; rowIndex++) {
+                IRow row = sheet.GetRow(rowIndex);
+                if (row == null) continue; // Skip empty rows
+
+                rowFunc(row);
+            }
         }
     }
 }
