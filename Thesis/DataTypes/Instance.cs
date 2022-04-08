@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class Instance {
-        readonly int[,] CarTravelTimes;
+        readonly int[,] CarTravelTimes, ShiftDrivingTimes;
         public readonly Trip[] Trips;
         readonly bool[,] TripSuccession, TripsAreSameShift;
         public readonly InternalDriver[] InternalDrivers;
@@ -16,6 +16,7 @@ namespace Thesis {
         public Instance(Trip[] rawTrips, int[,] carTravelTimes, string[] internalDriverNames, int[][] internalDriversHomeTravelTimes, bool[][,] internalDriversTrackProficiencies, int internalDriverContractTime, int[] externalDriverCounts, int[][] externalDriversHomeTravelTimes) {
             CarTravelTimes = carTravelTimes;
             (Trips, TripSuccession, TripsAreSameShift) = PrepareTrips(rawTrips, carTravelTimes);
+            ShiftDrivingTimes = GetDrivingTimes(Trips);
             InternalDrivers = CreateInternalDrivers(Trips, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriversTrackProficiencies, internalDriverContractTime);
             ExternalDriversByType = GenerateExternalDrivers(Trips, carTravelTimes, externalDriverCounts, externalDriversHomeTravelTimes, InternalDrivers.Length);
 
@@ -89,9 +90,9 @@ namespace Thesis {
                 int maxWorkedTime = (int)Math.Floor(internalDriverContractTime * Config.MaxContractTimeFraction);
 
                 // Preprocess shift lengths and costs
-                (int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) = GetDriverShiftLengthsAndCosts(Config.InternalDriverUnpaidTravelTimePerShift, trips, homeTravelTimes, carTravelTimes, Config.InternalDriverDailySalaryRates, Config.InternalDriverTravelSalaryRate);
+                float[,] drivingCosts = GetDriverShiftCosts(trips, Config.InternalDriverDailySalaryRates);
 
-                internalDrivers[internalDriverIndex] = new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, homeTravelTimes, drivingTimes, drivingCosts, shiftLengthsWithPickup, shiftCostsWithPickup, minWorkedTime, maxWorkedTime, trackProficiencies);
+                internalDrivers[internalDriverIndex] = new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, homeTravelTimes, drivingCosts, minWorkedTime, maxWorkedTime, trackProficiencies);
             }
             return internalDrivers;
         }
@@ -104,12 +105,12 @@ namespace Thesis {
                 int[] homeTravelTimes = externalDriversHomeTravelTimes[externalDriverTypeIndex];
 
                 // Preprocess shift lengths and costs
-                (int[,] drivingTimes, float[,] drivingCosts, int[,] shiftLengthsWithPickup, float[,] shiftCostsWithPickup) = GetDriverShiftLengthsAndCosts(0, trips, homeTravelTimes, carTravelTimes, Config.ExternalDriverDailySalaryRates, Config.ExternalDriverTravelSalaryRate);
+                float[,] drivingCosts = GetDriverShiftCosts(trips, Config.ExternalDriverDailySalaryRates);
 
                 ExternalDriver[] currentTypeDrivers = new ExternalDriver[count];
                 externalDriversByType[externalDriverTypeIndex] = currentTypeDrivers;
                 for (int indexInType = 0; indexInType < count; indexInType++) {
-                    ExternalDriver newExternalDriver = new ExternalDriver(allDriverIndex, externalDriverTypeIndex, indexInType, homeTravelTimes, drivingTimes, drivingCosts, shiftLengthsWithPickup, shiftCostsWithPickup);
+                    ExternalDriver newExternalDriver = new ExternalDriver(allDriverIndex, externalDriverTypeIndex, indexInType, homeTravelTimes, drivingCosts);
                     currentTypeDrivers[indexInType] = newExternalDriver;
                     allDriverIndex++;
                 }
@@ -117,41 +118,40 @@ namespace Thesis {
             return externalDriversByType;
         }
 
-        /** Preprocess an internal driver's shift lengths and costs */
-        (int[,], float[,], int[,], float[,]) GetDriverShiftLengthsAndCosts(int unpaidTravelTimePerShift, Trip[] trips, int[] oneWayTravelTimes, int[,] carTravelTimes, SalaryRateInfo[] salaryRates, float travelSalaryRate) {
+        /** Preprocess shift driving times */
+        int[,] GetDrivingTimes(Trip[] trips) {
             int[,] drivingTimes = new int[trips.Length, trips.Length];
+            for (int firstTripIndex = 0; firstTripIndex < trips.Length; firstTripIndex++) {
+                for (int lastTripIndex = 0; lastTripIndex < trips.Length; lastTripIndex++) {
+                    Trip firstTripInternal = trips[firstTripIndex];
+                    Trip lastTripInternal = trips[lastTripIndex];
+
+                    int drivingTime = Math.Max(0, lastTripInternal.EndTime - firstTripInternal.StartTime);
+                    drivingTimes[firstTripIndex, lastTripIndex] = drivingTime;
+                }
+            }
+
+            return drivingTimes;
+        }
+
+        /** Preprocess an internal driver's shift lengths and costs */
+        float[,] GetDriverShiftCosts(Trip[] trips, SalaryRateInfo[] salaryRates) {
             float[,] drivingCosts = new float[trips.Length, trips.Length];
-            int[,] shiftLengthsWithPickup = new int[trips.Length, trips.Length];
-            float[,] shiftCostsWithPickup = new float[trips.Length, trips.Length];
             for (int firstTripIndex = 0; firstTripIndex < trips.Length; firstTripIndex++) {
                 for (int lastTripIndex = 0; lastTripIndex < trips.Length; lastTripIndex++) {
                     Trip firstTripInternal = trips[firstTripIndex];
                     Trip lastTripInternal = trips[lastTripIndex];
 
                     // Determine driving cost from the different salary rates
-                    (int drivingTime, float drivingCost) = GetDrivingTimeAndCost(firstTripInternal, lastTripInternal, salaryRates);
-
-                    // Determine driving and travel time
-                    int travelTimeWithPickup = carTravelTimes[lastTripInternal.EndStationIndex, firstTripInternal.StartStationIndex] + 2 * oneWayTravelTimes[firstTripInternal.StartStationIndex];
-                    int paidTravelTimeWithPickup = Math.Max(0, travelTimeWithPickup - unpaidTravelTimePerShift);
-                    int shiftLengthWithPickup = drivingTime + travelTimeWithPickup;
-
-                    // Determine full shift costs
-                    float travelCostWithPickup = paidTravelTimeWithPickup * travelSalaryRate;
-                    float shiftCostWithPickup = drivingCost + travelCostWithPickup;
-
-                    // Store determine values
-                    drivingTimes[firstTripIndex, lastTripIndex] = drivingTime;
+                    float drivingCost = GetDrivingCost(firstTripInternal, lastTripInternal, salaryRates);
                     drivingCosts[firstTripIndex, lastTripIndex] = drivingCost;
-                    shiftLengthsWithPickup[firstTripIndex, lastTripIndex] = shiftLengthWithPickup;
-                    shiftCostsWithPickup[firstTripIndex, lastTripIndex] = shiftCostWithPickup;
                 }
             }
 
-            return (drivingTimes, drivingCosts, shiftLengthsWithPickup, shiftCostsWithPickup);
+            return drivingCosts;
         }
 
-        (int, float) GetDrivingTimeAndCost(Trip firstTripInternal, Trip lastTripInternal, SalaryRateInfo[] salaryRates) {
+        float GetDrivingCost(Trip firstTripInternal, Trip lastTripInternal, SalaryRateInfo[] salaryRates) {
             // Process salary rate to cover two days
             SalaryRateInfo[] processedSalaryRates = new SalaryRateInfo[2 * salaryRates.Length];
             for (int i = 0; i < salaryRates.Length; i++) {
@@ -182,7 +182,7 @@ namespace Thesis {
             int shiftLengthInLastRate = Math.Max(0, drivingTime - shiftLengthBeforeLast);
             drivingCost += shiftLengthInLastRate * lastSalaryRate.SalaryRate;
 
-            return (drivingTime, drivingCost);
+            return drivingCost;
         }
 
 
@@ -194,6 +194,10 @@ namespace Thesis {
 
         public int CarTravelTime(Trip trip1, Trip trip2) {
             return CarTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex];
+        }
+
+        public int DrivingTime(Trip trip1, Trip trip2) {
+            return ShiftDrivingTimes[trip1.EndStationIndex, trip2.StartStationIndex];
         }
 
         public int TravelTimeViaHotel(Trip trip1, Trip trip2) {

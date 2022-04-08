@@ -95,7 +95,7 @@ namespace Thesis {
                         }
 
                         // Get driving time
-                        int shiftLengthWithoutTravel = driver.DrivingTime(shiftFirstTrip, prevTrip);
+                        int shiftLengthWithoutTravel = info.Instance.DrivingTime(shiftFirstTrip, prevTrip);
                         float drivingCost = driver.DrivingCost(shiftFirstTrip, prevTrip);
                         totalWorkedTime += shiftLengthWithoutTravel;
 

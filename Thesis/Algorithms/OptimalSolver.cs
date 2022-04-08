@@ -167,7 +167,8 @@ namespace Thesis {
                 costDiff = GetShiftCostDiff(driverPrevSearchTrip, lastTripInternal, prevTripInternal, driver);
             } else {
                 // We were at the beginning of the previous shift; check rest time, and then the check is complete
-                if (driver.RestTimeWithPickup(driverPrevSearchTrip, prevShiftLastTrip, firstTripInternal) < Config.MinRestTime) return null;
+                throw new NotImplementedException();
+                //if (driver.RestTimeWithPickup(driverPrevSearchTrip, prevShiftLastTrip, firstTripInternal) < Config.MinRestTime) return null;
             }
 
             if (!costDiff.HasValue) return null;
@@ -189,109 +190,115 @@ namespace Thesis {
         }
 
         double? GetShiftCostDiff(Trip firstTripInternal, Trip lastTripInternal, Trip prevTripInternal, Driver driver) {
-            // Get new shift length
-            int newShiftLength = driver.ShiftLengthWithPickup(firstTripInternal, lastTripInternal);
+            throw new NotImplementedException();
 
-            // Check shift length
-            if (newShiftLength > Config.MaxShiftLengthWithTravel) return null;
+            //// Get new shift length
+            //int newShiftLength = driver.ShiftLengthWithPickup(firstTripInternal, lastTripInternal);
 
-            // Get new shift cost
-            float newShiftCost = driver.ShiftCostWithPickup(firstTripInternal, lastTripInternal);
+            //// Check shift length
+            //if (newShiftLength > Config.MaxShiftLengthWithTravel) return null;
 
-            float shiftCostDiff;
-            if (prevTripInternal == null) {
-                // There is only one trip in this shift, so the shift cost is the diff
-                shiftCostDiff = newShiftCost;
-            } else {
-                // Determine difference with previous shift cost
-                shiftCostDiff = newShiftCost - driver.ShiftCostWithPickup(firstTripInternal, prevTripInternal);
-            }
+            //// Get new shift cost
+            //float newShiftCost = driver.ShiftCostWithPickup(firstTripInternal, lastTripInternal);
 
-            return shiftCostDiff;
+            //float shiftCostDiff;
+            //if (prevTripInternal == null) {
+            //    // There is only one trip in this shift, so the shift cost is the diff
+            //    shiftCostDiff = newShiftCost;
+            //} else {
+            //    // Determine difference with previous shift cost
+            //    shiftCostDiff = newShiftCost - driver.ShiftCostWithPickup(firstTripInternal, prevTripInternal);
+            //}
+
+            //return shiftCostDiff;
         }
 
         /** Check that this driver doesn't exceed his maximum contract time */
         bool CheckDriverMaxContractTime(AssignmentNode node, Trip nodeTrip, Driver driver) {
-            int driverWorkedTime = 0;
-            AssignmentNode searchNode = node.Prev;
-            Trip driverPrevSearchTrip = nodeTrip;
-            Trip lastTripInternal = nodeTrip;
-            while (searchNode != null) {
-                Trip searchTrip = instance.Trips[searchNode.TripIndex];
+            throw new NotImplementedException();
 
-                if (searchNode.DriverIndex == node.DriverIndex) {
-                    if (!instance.AreSameShift(searchTrip, driverPrevSearchTrip)) {
-                        // End the shift
-                        driverWorkedTime += driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
-                        lastTripInternal = searchTrip;
-                    }
-                    driverPrevSearchTrip = searchTrip;
-                }
+            //int driverWorkedTime = 0;
+            //AssignmentNode searchNode = node.Prev;
+            //Trip driverPrevSearchTrip = nodeTrip;
+            //Trip lastTripInternal = nodeTrip;
+            //while (searchNode != null) {
+            //    Trip searchTrip = instance.Trips[searchNode.TripIndex];
 
-                searchNode = searchNode.Prev;
-            }
+            //    if (searchNode.DriverIndex == node.DriverIndex) {
+            //        if (!instance.AreSameShift(searchTrip, driverPrevSearchTrip)) {
+            //            // End the shift
+            //            driverWorkedTime += driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
+            //            lastTripInternal = searchTrip;
+            //        }
+            //        driverPrevSearchTrip = searchTrip;
+            //    }
 
-            // End first shift
-            driverWorkedTime += driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
-            if (driver.GetMaxContractTimeViolation(driverWorkedTime) > 0) return false;
-            return true;
+            //    searchNode = searchNode.Prev;
+            //}
+
+            //// End first shift
+            //driverWorkedTime += driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
+            //if (driver.GetMaxContractTimeViolation(driverWorkedTime) > 0) return false;
+            //return true;
         }
 
         /** Check if minimum contract time can still be achieved for all drivers */
         bool CheckMinContractTime(AssignmentNode node) {
-            // Only check for the last two trips; before that, hardly any branches can be cut
-            int tripsLeftToAssign = instance.Trips.Length - node.TripIndex - 1;
-            if (tripsLeftToAssign > 2) return true;
+            throw new NotImplementedException();
 
-            int[] allDriversWorkedTime = new int[instance.AllDrivers.Length];
-            Trip[] allDriversPrevSearchTrip = new Trip[instance.AllDrivers.Length];
-            Trip[] allDriversLastTripInternal = new Trip[instance.AllDrivers.Length];
-            AssignmentNode searchNode = node;
-            while (searchNode != null) {
-                Trip searchTrip = instance.Trips[searchNode.TripIndex];
-                Trip driverPrevSearchTrip = allDriversPrevSearchTrip[searchNode.DriverIndex];
+            //// Only check for the last two trips; before that, hardly any branches can be cut
+            //int tripsLeftToAssign = instance.Trips.Length - node.TripIndex - 1;
+            //if (tripsLeftToAssign > 2) return true;
 
-                if (driverPrevSearchTrip == null) {
-                    allDriversLastTripInternal[searchNode.DriverIndex] = searchTrip;
-                } else {
-                    Trip lastTripInternal = allDriversLastTripInternal[searchNode.DriverIndex];
-                    Driver driver = instance.AllDrivers[searchNode.DriverIndex];
-                    if (!instance.AreSameShift(searchTrip, driverPrevSearchTrip)) {
-                        // End shift for driver
-                        allDriversWorkedTime[searchNode.DriverIndex] += driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
-                        allDriversLastTripInternal[searchNode.DriverIndex] = searchTrip;
-                    }
-                }
+            //int[] allDriversWorkedTime = new int[instance.AllDrivers.Length];
+            //Trip[] allDriversPrevSearchTrip = new Trip[instance.AllDrivers.Length];
+            //Trip[] allDriversLastTripInternal = new Trip[instance.AllDrivers.Length];
+            //AssignmentNode searchNode = node;
+            //while (searchNode != null) {
+            //    Trip searchTrip = instance.Trips[searchNode.TripIndex];
+            //    Trip driverPrevSearchTrip = allDriversPrevSearchTrip[searchNode.DriverIndex];
 
-                allDriversPrevSearchTrip[searchNode.DriverIndex] = searchTrip;
-                searchNode = searchNode.Prev;
-            }
+            //    if (driverPrevSearchTrip == null) {
+            //        allDriversLastTripInternal[searchNode.DriverIndex] = searchTrip;
+            //    } else {
+            //        Trip lastTripInternal = allDriversLastTripInternal[searchNode.DriverIndex];
+            //        Driver driver = instance.AllDrivers[searchNode.DriverIndex];
+            //        if (!instance.AreSameShift(searchTrip, driverPrevSearchTrip)) {
+            //            // End shift for driver
+            //            allDriversWorkedTime[searchNode.DriverIndex] += driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
+            //            allDriversLastTripInternal[searchNode.DriverIndex] = searchTrip;
+            //        }
+            //    }
 
-            // End shift for all drivers
-            int minTimeViolations = 0;
-            for (int driverIndex = 0; driverIndex < instance.AllDrivers.Length; driverIndex++) {
-                Driver driver = instance.AllDrivers[driverIndex];
-                Trip driverPrevSearchTrip = allDriversPrevSearchTrip[driverIndex];
-                if (driverPrevSearchTrip == null) {
-                    // Driver has no assigned trips
-                    if (driver.GetMinContractTimeViolation(0) > 0) {
-                        minTimeViolations++;
-                        if (minTimeViolations > tripsLeftToAssign) return false;
-                    }
-                    continue;
-                }
+            //    allDriversPrevSearchTrip[searchNode.DriverIndex] = searchTrip;
+            //    searchNode = searchNode.Prev;
+            //}
 
-                Trip lastTripInternal = allDriversLastTripInternal[driverIndex];
-                int driverWorkedTime = allDriversWorkedTime[driverIndex] + driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
+            //// End shift for all drivers
+            //int minTimeViolations = 0;
+            //for (int driverIndex = 0; driverIndex < instance.AllDrivers.Length; driverIndex++) {
+            //    Driver driver = instance.AllDrivers[driverIndex];
+            //    Trip driverPrevSearchTrip = allDriversPrevSearchTrip[driverIndex];
+            //    if (driverPrevSearchTrip == null) {
+            //        // Driver has no assigned trips
+            //        if (driver.GetMinContractTimeViolation(0) > 0) {
+            //            minTimeViolations++;
+            //            if (minTimeViolations > tripsLeftToAssign) return false;
+            //        }
+            //        continue;
+            //    }
 
-                // Check minimum contract time
-                if (driver.GetMinContractTimeViolation(driverWorkedTime) > 0) {
-                    minTimeViolations++;
-                    if (minTimeViolations > tripsLeftToAssign) return false;
-                }
-            }
+            //    Trip lastTripInternal = allDriversLastTripInternal[driverIndex];
+            //    int driverWorkedTime = allDriversWorkedTime[driverIndex] + driver.ShiftLengthWithPickup(driverPrevSearchTrip, lastTripInternal);
 
-            return true;
+            //    // Check minimum contract time
+            //    if (driver.GetMinContractTimeViolation(driverWorkedTime) > 0) {
+            //        minTimeViolations++;
+            //        if (minTimeViolations > tripsLeftToAssign) return false;
+            //    }
+            //}
+
+            //return true;
         }
 
         (double, double, double, int[]) GetNodeCost(AssignmentNode node) {
