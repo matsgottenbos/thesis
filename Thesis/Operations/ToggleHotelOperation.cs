@@ -25,16 +25,16 @@ namespace Thesis {
             }
             #endif
             
-            double costDiff, costWithoutPenalty, basePenaltyDiff;
+            double costDiff, costWithoutPenalty, penaltyDiff;
             int driverWorkedTimeDiff;
             if (isAddition) {
-                (costDiff, costWithoutPenalty, basePenaltyDiff, driverWorkedTimeDiff) = CostDiffCalculator.GetDriverCostDiff(null, null, trip, null, driver, info);
+                (costDiff, costWithoutPenalty, penaltyDiff, driverWorkedTimeDiff) = CostDiffCalculator.GetDriverCostDiff(null, null, trip, null, driver, info);
             } else {
-                (costDiff, costWithoutPenalty, basePenaltyDiff, driverWorkedTimeDiff) = CostDiffCalculator.GetDriverCostDiff(null, null, null, trip, driver, info);
+                (costDiff, costWithoutPenalty, penaltyDiff, driverWorkedTimeDiff) = CostDiffCalculator.GetDriverCostDiff(null, null, null, trip, driver, info);
             }
 
             this.driverWorkedTimeDiff = driverWorkedTimeDiff;
-            return (costDiff, costWithoutPenalty, basePenaltyDiff);
+            return (costDiff, costWithoutPenalty, penaltyDiff);
         }
 
         public override void Execute() {

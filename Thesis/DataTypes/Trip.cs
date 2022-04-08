@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 namespace Thesis {
     class Trip {
         public int Index;
-        public readonly List<int> Stations;
-        public readonly int FirstStation, LastStation, StartTime, EndTime, Duration;
+        public readonly int StartStationIndex, EndStationIndex, StartTime, EndTime, Duration;
         public readonly List<Trip> Successors;
 
-        public Trip(int index, List<int> stations, int startTime, int endTime, int duration) {
+        public Trip(int index, int startStationIndex, int endStationIndex, int startTime, int endTime, int duration) {
             Index = index;
-            Stations = stations;
-            FirstStation = stations[0];
-            LastStation = stations[^1];
+            StartStationIndex = startStationIndex;
+            EndStationIndex = endStationIndex;
             Successors = new List<Trip>();
             StartTime = startTime;
             EndTime = endTime;

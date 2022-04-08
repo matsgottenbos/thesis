@@ -11,10 +11,10 @@ namespace Thesis {
         public readonly XorShiftRandom FastRand;
         public Driver[] Assignment;
         public bool[] IsHotelStayAfterTrip;
-        public double Cost, CostWithoutPenalty, BasePenalty;
+        public double Cost, CostWithoutPenalty, Penalty;
         public int[] DriversWorkedTime, ExternalDriverCountsByType;
-        public int IterationNum;
-        public float Temperature, PenaltyFactor;
+        public int IterationNum, CycleNum, PrecedenceViolationCount, ShiftLengthViolationCount, RestTimeViolationCount, ContractTimeViolationCount, InvalidHotelCount;
+        public float Temperature;
 
         public SaInfo(Instance instance, Random rand, XorShiftRandom fastRand) {
             Instance = instance;

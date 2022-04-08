@@ -14,7 +14,6 @@ namespace Thesis {
             this.instance = instance;
 
             dummyInfo = new SaInfo(instance, null, null);
-            dummyInfo.PenaltyFactor = 1f;
         }
 
         public Solution Solve() {
@@ -38,8 +37,8 @@ namespace Thesis {
             }
 
             // Check cost
-            (double bestNodeCost, _, double bestNodeBasePenalty, _) = GetNodeCost(bestNode);
-            if (bestNodeBasePenalty > 0) {
+            (double bestNodeCost, _, double bestNodePenalty, _) = GetNodeCost(bestNode);
+            if (bestNodePenalty > 0) {
                 throw new Exception("Optimal algorithm returned an infeasible solution");
             }
 
@@ -135,7 +134,7 @@ namespace Thesis {
 
                 if (searchNode.DriverIndex == node.DriverIndex) {
                     // Check precedence
-                    if (!instance.TripSuccession[searchTrip.Index, nodeTrip.Index]) return null;
+                    if (!instance.IsValidPrecedence(searchTrip, nodeTrip)) return null;
 
                     if (instance.AreSameShift(searchTrip, driverPrevSearchTrip)) {
                         if (prevTripInternal == null) {
@@ -179,8 +178,8 @@ namespace Thesis {
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
-                (_, _, double debugNodeBasePenalty, _) = GetNodeCost(node);
-                if (debugNodeBasePenalty > 0) {
+                (_, _, double debugNodePenalty, _) = GetNodeCost(node);
+                if (debugNodePenalty > 0) {
                     throw new Exception();
                 }
             }
@@ -297,7 +296,8 @@ namespace Thesis {
 
         (double, double, double, int[]) GetNodeCost(AssignmentNode node) {
             dummyInfo.Assignment = NodeToAssignment(node);
-            return TotalCostCalculator.GetAssignmentCost(dummyInfo);
+            (double cost, double costWithoutPenalty, double penalty, int[] driversWorkedTime, _, _, _, _, _) =  TotalCostCalculator.GetAssignmentCost(dummyInfo);
+            return (cost, costWithoutPenalty, penalty, driversWorkedTime);
         }
 
         Driver[] NodeToAssignment(AssignmentNode node) {

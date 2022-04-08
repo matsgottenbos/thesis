@@ -7,36 +7,47 @@ using System.Threading.Tasks;
 namespace Thesis {
     static class TotalCostCalculator {
         /** Get assignment cost */
-        public static (double, double, double, int[]) GetAssignmentCost(SaInfo info) {
+        public static (double, double, double, int[], int, int, int, int, int) GetAssignmentCost(SaInfo info) {
             List<Trip>[] driverPaths = GetPathPerDriver(info);
 
             double cost = 0;
             double costWithoutPenalty = 0;
-            double basePenalty = 0;
+            double penalty = 0;
             int[] driversWorkedTime = new int[info.Instance.AllDrivers.Length];
+            int totalPrecedenceViolationCount = 0;
+            int totalShiftLengthViolationCount = 0;
+            int totalRestTimeViolationCount = 0;
+            int totalContractTimeViolationCount = 0;
+            int totalInvalidHotelCount = 0;
             for (int driverIndex = 0; driverIndex < info.Instance.AllDrivers.Length; driverIndex++) {
                 List<Trip> driverPath = driverPaths[driverIndex];
                 Driver driver = info.Instance.AllDrivers[driverIndex];
 
-                (double driverCost, double driverCostWithoutPenalty, double driverBasePenalty, int driverWorkedTime) = GetDriverPathCost(driverPath, info.IsHotelStayAfterTrip, driver, info, false);
+                (double driverCost, double driverCostWithoutPenalty, double driverPenalty, int driverWorkedTime, int precedenceViolationCount, int shiftLengthViolationCount, int restTimeViolationCount, int contractTimeViolationCount, int invalidHotelCount) = GetDriverPathCost(driverPath, info.IsHotelStayAfterTrip, driver, info, false);
                  
                 cost += driverCost;
                 costWithoutPenalty += driverCostWithoutPenalty;
-                basePenalty += driverBasePenalty;
+                penalty += driverPenalty;
                 driversWorkedTime[driverIndex] = driverWorkedTime;
+
+                totalPrecedenceViolationCount += precedenceViolationCount;
+                totalShiftLengthViolationCount += shiftLengthViolationCount;
+                totalRestTimeViolationCount += restTimeViolationCount;
+                totalContractTimeViolationCount += contractTimeViolationCount;
+                totalInvalidHotelCount += invalidHotelCount;
             }
 
-            return (cost, costWithoutPenalty, basePenalty, driversWorkedTime);
+            return (cost, costWithoutPenalty, penalty, driversWorkedTime, totalPrecedenceViolationCount, totalShiftLengthViolationCount, totalRestTimeViolationCount, totalContractTimeViolationCount, totalInvalidHotelCount);
         }
 
-        public static (double, double, double, int) GetDriverPathCost(List<Trip> driverPath, bool[] isHotelStayAfterTrip, Driver driver, SaInfo info, bool shouldDebug = true) {
+        public static (double, double, double, int, int, int, int, int, int) GetDriverPathCost(List<Trip> driverPath, bool[] isHotelStayAfterTrip, Driver driver, SaInfo info, bool shouldDebug = true) {
             int totalPrecedenceViolationCount = 0;
             int totalShiftLengthViolationCount = 0;
             int totalShiftLengthViolation = 0;
             int totalRestTimeViolationCount = 0;
             int totalRestTimeViolation = 0;
-            int totalContractTimeViolation = 0;
             int totalContractTimeViolationCount = 0;
+            int totalContractTimeViolation = 0;
             int totalInvalidHotelCount = 0;
             int totalWorkedTime = 0;
             double totalCostWithoutPenalty = 0;
@@ -56,7 +67,7 @@ namespace Thesis {
                     if (info.Instance.AreSameShift(prevTrip, searchTrip)) {
                         /* Same shift */
                         // Check precedence
-                        if (!info.Instance.TripSuccession[prevTrip.Index, searchTrip.Index]) {
+                        if (!info.Instance.IsValidPrecedence(prevTrip, searchTrip)) {
                             totalPrecedenceViolationCount++;
                         }
 
@@ -182,15 +193,15 @@ namespace Thesis {
             }
 
             // Determine penalties
-            double precendenceBasePenalty = totalPrecedenceViolationCount * Config.PrecendenceViolationPenalty;
-            double shiftLengthBasePenalty = totalShiftLengthViolationCount * Config.ShiftLengthViolationPenalty + totalShiftLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
-            double restTimeBasePenalty = totalRestTimeViolationCount * Config.RestTimeViolationPenalty + totalRestTimeViolation * Config.RestTimeViolationPenaltyPerMin;
-            double contractTimeBasePenalty = totalContractTimeViolationCount * Config.ContractTimeViolationPenalty + totalContractTimeViolation * Config.ContractTimeViolationPenaltyPerMin;
-            double hotelBasePenalty = totalInvalidHotelCount * Config.InvalidHotelPenalty;
-            double basePenalty = precendenceBasePenalty + shiftLengthBasePenalty + restTimeBasePenalty + contractTimeBasePenalty + hotelBasePenalty;
+            double precendencePenalty = totalPrecedenceViolationCount * Config.PrecendenceViolationPenalty;
+            double shiftLengthPenalty = totalShiftLengthViolationCount * Config.ShiftLengthViolationPenalty + totalShiftLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
+            double restTimePenalty = totalRestTimeViolationCount * Config.RestTimeViolationPenalty + totalRestTimeViolation * Config.RestTimeViolationPenaltyPerMin;
+            double contractTimePenalty = totalContractTimeViolationCount * Config.ContractTimeViolationPenalty + totalContractTimeViolation * Config.ContractTimeViolationPenaltyPerMin;
+            double hotelPenalty = totalInvalidHotelCount * Config.InvalidHotelPenalty;
+            double penalty = precendencePenalty + shiftLengthPenalty + restTimePenalty + contractTimePenalty + hotelPenalty;
 
             // Determine cost
-            double cost = totalCostWithoutPenalty + basePenalty * info.PenaltyFactor;
+            double cost = totalCostWithoutPenalty + penalty;
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations && shouldDebug) {
@@ -205,16 +216,16 @@ namespace Thesis {
 
                 SaDebugger.GetCurrentCheckedTotal().Total.Cost = cost;
                 SaDebugger.GetCurrentCheckedTotal().Total.CostWithoutPenalty = totalCostWithoutPenalty;
-                SaDebugger.GetCurrentCheckedTotal().Total.BasePenalty = basePenalty;
+                SaDebugger.GetCurrentCheckedTotal().Total.Penalty = penalty;
                 SaDebugger.GetCurrentCheckedTotal().Total.WorkedTime = totalWorkedTime;
             }
             #endif
 
-            return (cost, totalCostWithoutPenalty, basePenalty, totalWorkedTime);
+            return (cost, totalCostWithoutPenalty, penalty, totalWorkedTime, totalPrecedenceViolationCount, totalShiftLengthViolationCount, totalRestTimeViolationCount, totalContractTimeViolationCount, totalInvalidHotelCount);
         }
 
         /** Helper: get list of trips that each driver is assigned to */
-        static List<Trip>[] GetPathPerDriver(SaInfo info) {
+        public static List<Trip>[] GetPathPerDriver(SaInfo info) {
             List<Trip>[] driverPaths = new List<Trip>[info.Instance.AllDrivers.Length];
             for (int driverIndex = 0; driverIndex < driverPaths.Length; driverIndex++) {
                 driverPaths[driverIndex] = new List<Trip>();

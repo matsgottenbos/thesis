@@ -8,34 +8,27 @@ using System.Threading.Tasks;
 namespace Thesis {
     class App {
         public App() {
-            // Test
-            if (Config.DebugRunOdataTest) {
-                OdataTest.Run();
-                Console.ReadLine();
-                return;
+            Random generatorRand = new Random(1);
+            Random saRand = Config.DebugUseSeededSa ? generatorRand : new Random();
+            XorShiftRandom saFastSand = Config.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
+
+            Instance instance;
+            switch (Config.SelectedDataSource) {
+                case DataSource.Generator:
+                    instance = DataGenerator.GenerateInstance(generatorRand);
+                    Console.WriteLine("Instance generation complete");
+                    break;
+
+                case DataSource.Excel:
+                    instance = ExcelDataImporter.Import(generatorRand);
+                    Console.WriteLine("Instance import from excel data complete");
+                    break;
+
+                case DataSource.Odata:
+                    OdataImporter.Import();
+                    throw new NotImplementedException();
+                    break;
             }
-
-
-            // Import data
-            //DataImporter.Import();
-
-
-
-
-            //Random rand = new Random();
-            Random rand = new Random(1);
-
-            // Generate instance
-            Generator generator = new Generator(rand);
-            Instance instance = generator.GenerateInstance();
-            Console.WriteLine("Instance generation complete");
-
-            // Determine lower bounds
-            //LowerBoundCalculator lowerBoundCalculator = new LowerBoundCalculator(instance);
-            //float lowerBound1 = lowerBoundCalculator.CalculateLowerBound1();
-            //float lowerBound2 = lowerBoundCalculator.CalculateLowerBound2();
-            //Console.WriteLine("Lower bound 1: {0}", lowerBound1);
-            //Console.WriteLine("Lower bound 2: {0}", lowerBound2);
 
             // Debug inspector
             if (Config.DebugRunInspector) {
@@ -59,20 +52,14 @@ namespace Thesis {
 
             // Simulated annealing
             if (Config.RunSimulatedAnnealing) {
-                Random rand2;
-                XorShiftRandom fastRand2;
-                if (Config.DebugUseSeededSa) {
-                    rand2 = new Random(1);
-                    fastRand2 = new XorShiftRandom(1);
-                } else {
-                    rand2 = new Random();
-                    fastRand2 = new XorShiftRandom();
-                }
-
-                SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, rand2, fastRand2);
+                SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, saRand, saFastSand);
                 SaInfo saSolution = simulatedAnnealing.Run();
-                string saAssignmentStr = ParseHelper.AssignmentToString(saSolution.Assignment, saSolution);
-                Console.WriteLine("SA cost: {0}  |  {1}", ParseHelper.ToString(saSolution.Cost), saAssignmentStr);
+                if (saSolution.Assignment == null) {
+                    Console.WriteLine("SA found no valid solution");
+                } else {
+                    string saAssignmentStr = ParseHelper.AssignmentToString(saSolution.Assignment, saSolution);
+                    Console.WriteLine("SA cost: {0}  |  {1}", ParseHelper.ToString(saSolution.Cost), saAssignmentStr);
+                }
             }
 
             Console.ReadLine();

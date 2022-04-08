@@ -6,10 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
+    enum DataSource {
+        Generator,
+        Excel,
+        Odata,
+    }
+
     static class Config {
         // App
         public const bool RunOptimalAlgorithm = false;
         public const bool RunSimulatedAnnealing = true;
+        public const DataSource SelectedDataSource = DataSource.Excel;
+        //public const DataSource SelectedDataSource = DataSource.Generator;
 
         // Shifts
         public const int MaxShiftLengthWithTravel = 12 * 60; // Maximum length of a shift, including travel
@@ -64,16 +72,14 @@ namespace Thesis {
         public const int GenExternaDriverTypeCount = 2;
         public const int GenExternalDriverMinCountPerType = 2;
         public const int GenExternalDriverMaxCountPerType = 5;
-        public const int GenMaxStationCountPerTrip = 4;
 
         // Distances
         public const int GenMinStationTravelTime = 30;
-        public const int GenMaxStationTravelTime = 2 * 60;
+        public const int GenMaxStationTravelTime = 4 * 60;
         public const int GenMaxHomeTravelTime = 2 * 60;
 
         // Contract times
-        public const int GenMinContractTime = GenTimeframeLength / 8;
-        public const int GenMaxContractTime = GenTimeframeLength / 4;
+        public const int GenInternalDriverContractTime = GenTimeframeLength / 4;
 
         // Generator probabilities
         public const float GenTrackProficiencyProb = 0.9f;
@@ -81,14 +87,21 @@ namespace Thesis {
 
         /* Simulated annealing */
         // SA parameters
-        public const int SaIterationCount = 50000000;
+        public const int SaIterationCount = 500000000;
         public const int SaCheckCostFrequency = 100000;
         public const int SaLogFrequency = 1000000;
-        public const int SaParameterUpdateFrequency = SaIterationCount / 1000;
+        public const int SaParameterUpdateFrequency = 100000;
         public const float SaInitialTemperature = 1000f;
-        public const float SaTemperatureReductionFactor = 0.997f;
-        public const float SaInitialPenaltyFactor = 0.001f;
-        public const float SaPenaltyIncrement = 0.001f;
+        public const float SaCycleInitialTemperatureMin = 200f;
+        public const float SaCycleInitialTemperatureMax = 1000f;
+        public const float SaTemperatureReductionFactor = 0.99f;
+        public const float SaEndCycleTemperature = 100f;
+
+        // Operation probabilities
+        public const float AssignInternalProbCumulative = 0.59f;
+        public const float AssignExternalProbCumulative = 0.6f;
+        public const float SwapProbCumulative = 0.9999f;
+        public const float ToggleHotelProbCumulative = 1f;
 
         // Penalties
         public const float PrecendenceViolationPenalty = 5000;
@@ -113,9 +126,10 @@ namespace Thesis {
 
         // Debug
         public const bool DebugCheckAndLogOperations = false;
+        public const bool DebugSaLogCurrentSolution = false;
         public const bool DebugRunInspector = false;
         public const bool DebugRunOdataTest = false;
-        public const bool DebugUseSeededSa = true;
+        public const bool DebugUseSeededSa = false;
     }
 
     class SalaryRateInfo {

@@ -148,7 +148,7 @@ namespace Thesis {
     }
 
     class TotalInfo {
-        public double? Cost, CostWithoutPenalty, BasePenalty;
+        public double? Cost, CostWithoutPenalty, Penalty;
         public int? WorkedTime, PrecedenceViolationCount, SlViolationCount, SlViolationAmount, RtViolationCount, RtViolationAmount, CtValue, CtViolationCount, CtViolationAmount, InvalidHotelCount;
         readonly bool isDiff;
 
@@ -169,7 +169,7 @@ namespace Thesis {
             if (shouldLogZeros || InvalidHotelCount.Value != 0) Console.WriteLine("Invalid hotel count{0}: {1}", diffStr, InvalidHotelCount);
             if (shouldLogZeros || Math.Abs(Cost.Value) > Config.FloatingPointMargin) Console.WriteLine("Cost{0}: {1}", diffStr, ParseHelper.ToString(Cost.Value));
             if (shouldLogZeros || Math.Abs(CostWithoutPenalty.Value) > Config.FloatingPointMargin) Console.WriteLine("Cost without penalty{0}: {1}", diffStr, ParseHelper.ToString(CostWithoutPenalty.Value));
-            if (shouldLogZeros || Math.Abs(BasePenalty.Value) > Config.FloatingPointMargin) Console.WriteLine("Penalty base{0}: {1}", diffStr, ParseHelper.ToString(BasePenalty.Value));
+            if (shouldLogZeros || Math.Abs(Penalty.Value) > Config.FloatingPointMargin) Console.WriteLine("Penalty{0}: {1}", diffStr, ParseHelper.ToString(Penalty.Value));
             if (shouldLogZeros || WorkedTime.Value != 0) Console.WriteLine("Worked time{0}: {1}", diffStr, WorkedTime.Value);
         }
 
@@ -177,7 +177,7 @@ namespace Thesis {
             return (
                 IsFloatEqual(a.Cost, b.Cost) &&
                 IsFloatEqual(a.CostWithoutPenalty, b.CostWithoutPenalty) &&
-                IsFloatEqual(a.BasePenalty, b.BasePenalty) &&
+                IsFloatEqual(a.Penalty, b.Penalty) &&
                 a.WorkedTime == b.WorkedTime &&
                 a.PrecedenceViolationCount == b.PrecedenceViolationCount &&
                 a.SlViolationCount == b.SlViolationCount &&
@@ -198,7 +198,7 @@ namespace Thesis {
             return new TotalInfo(true) {
                 Cost = -a.Cost,
                 CostWithoutPenalty = -a.CostWithoutPenalty,
-                BasePenalty = -a.BasePenalty,
+                Penalty = -a.Penalty,
                 WorkedTime = -a.WorkedTime,
                 PrecedenceViolationCount = -a.PrecedenceViolationCount,
                 SlViolationCount = -a.SlViolationCount,
@@ -215,7 +215,7 @@ namespace Thesis {
             return new TotalInfo(true) {
                 Cost = a.Cost + b.Cost,
                 CostWithoutPenalty = a.CostWithoutPenalty + b.CostWithoutPenalty,
-                BasePenalty = a.BasePenalty + b.BasePenalty,
+                Penalty = a.Penalty + b.Penalty,
                 WorkedTime = a.WorkedTime + b.WorkedTime,
                 PrecedenceViolationCount = a.PrecedenceViolationCount + b.PrecedenceViolationCount,
                 SlViolationCount = a.SlViolationCount + b.SlViolationCount,
@@ -232,9 +232,8 @@ namespace Thesis {
     }
 
     class NormalDiff {
-        public Trip PrevTripInternal, NextTripInternal, FirstTripInternal, LastTripInternal, PrevShiftFirstTrip, PrevShiftLastTrip, NextShiftFirstTrip;
-        public string TripPosition, ShiftPosition, MergeSplitInfo;
-        public double CostDiff, CostWithoutPenaltyDiff, BasePenaltyDiff;
+        public Trip FirstRelevantTrip, LastRelevantTrip, OldFirstTrip, NewFirstTrip;
+        public double CostDiff, CostWithoutPenaltyDiff, PenaltyDiff;
         public PrecedenceValueChange Precedence;
         public ViolationPairValueChange ShiftLength;
         public ViolationValueChange RestTime, ContractTime;
@@ -252,7 +251,7 @@ namespace Thesis {
             return new TotalInfo(true) {
                 Cost = CostDiff,
                 CostWithoutPenalty = CostWithoutPenaltyDiff,
-                BasePenalty = BasePenaltyDiff,
+                Penalty = PenaltyDiff,
                 WorkedTime = ContractTime.GetWorkedTimeDiff(),
                 PrecedenceViolationCount = Precedence.NewViolations.Count - Precedence.OldViolations.Count,
                 SlViolationCount = ShiftLength.NewViolationCount - ShiftLength.OldViolationCount,
@@ -266,13 +265,10 @@ namespace Thesis {
         }
 
         public void Log() {
-            Console.WriteLine("Trip position: {0}", TripPosition);
-            Console.WriteLine("Shift position: {0}", ShiftPosition);
-            Console.WriteLine("Split/merge info: {0}", MergeSplitInfo);
-            Console.WriteLine("Prev trip internal: {0}; Next trip internal: {1}; First trip internal: {2}; Last trip internal: {3}; Prev shift first trip: {4}; Prev shift last trip: {5}; Next shift first trip: {6}", GetTripString(PrevTripInternal), GetTripString(NextTripInternal), GetTripString(FirstTripInternal), GetTripString(LastTripInternal), GetTripString(PrevShiftFirstTrip), GetTripString(PrevShiftLastTrip), GetTripString(NextShiftFirstTrip));
+            Console.WriteLine("First relevant trip: {0}; Last relevant trip: {1}; Old first trip: {2}; New first trip: {3}", GetTripString(FirstRelevantTrip), GetTripString(LastRelevantTrip), GetTripString(OldFirstTrip), GetTripString(NewFirstTrip));
             LogValue("Cost diff", CostDiff);
             LogValue("Cost without penalty diff", CostWithoutPenaltyDiff);
-            LogValue("Base penalty diff", BasePenaltyDiff);
+            LogValue("Penalty diff", PenaltyDiff);
 
             Precedence.Log();
             ShiftLength.Log();
@@ -364,7 +360,7 @@ namespace Thesis {
         protected override void AddNewInternal((Trip, Trip) trips) => AddSpecific(trips, NewViolations);
 
         protected void AddSpecific((Trip, Trip) trips, List<(Trip, Trip)> violationsList) {
-            if (!info.Instance.TripSuccession[trips.Item1.Index, trips.Item2.Index]) {
+            if (!info.Instance.IsValidPrecedence(trips.Item1, trips.Item2)) {
                 violationsList.Add(trips);
             }
         }
