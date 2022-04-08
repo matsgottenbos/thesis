@@ -21,16 +21,8 @@ namespace Thesis {
             //DataTable certificatesTable = new DataTable("Certificates", excelBook);
             // TODO: use RouteKnowledge
 
-            // Temp config
-            DateTime planningStartDate = new DateTime(2021, 12, 25);
-            DateTime planningNextDate = planningStartDate.AddDays(7);
-            int internalDriverContractTime = 40 * 60;
-            int externalDriverTypeCount = 5;
-            int externalDriverMinCountPerType = 5;
-            int externalDriverMaxCountPerType = 20;
-
             // Parse trips and station codes
-            (Trip[] rawTrips, string[] stationCodes) = ParseRawTripsAndStationCodes(dutiesTable, planningStartDate, planningNextDate);
+            (Trip[] rawTrips, string[] stationCodes) = ParseRawTripsAndStationCodes(dutiesTable, Config.ExcelPlanningStartDate, Config.ExcelPlanningNextDate);
             int stationCount = stationCodes.Length;
 
             // Estimate or generate train travel times, and generate car travel times
@@ -45,10 +37,10 @@ namespace Thesis {
             // Generate remaining driver data; TODO: use real data
             int[][] internalDriversHomeTravelTimes = DataGenerator.GenerateInternalDriverHomeTravelTimes(internalDriverCount, stationCount, rand);
             bool[][,] internalDriverTrackProficiencies = DataGenerator.GenerateInternalDriverTrackProficiencies(internalDriverCount, stationCount, rand);
-            int[] externalDriverCounts = DataGenerator.GenerateExternalDriverCounts(externalDriverTypeCount, externalDriverMinCountPerType, externalDriverMaxCountPerType, rand);
-            int[][] externalDriversHomeTravelTimes = DataGenerator.GenerateExternalDriverHomeTravelTimes(externalDriverTypeCount, stationCount, rand);
+            int[] externalDriverCounts = DataGenerator.GenerateExternalDriverCounts(Config.ExcelExternalDriverTypeCount, Config.ExcelExternalDriverMinCountPerType, Config.ExcelExternalDriverMaxCountPerType, rand);
+            int[][] externalDriversHomeTravelTimes = DataGenerator.GenerateExternalDriverHomeTravelTimes(Config.ExcelExternalDriverTypeCount, stationCount, rand);
 
-            return new Instance(rawTrips, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, internalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
+            return new Instance(rawTrips, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.ExcelInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
         }
 
         static (Trip[], string[] stationCodes) ParseRawTripsAndStationCodes(DataTable dutiesTable, DateTime planningStartDate, DateTime planningNextDate) {
@@ -161,7 +153,7 @@ namespace Thesis {
 
             // New code
             codes.Add(code);
-            return codes.Count;
+            return codes.Count - 1;
         }
     }
 

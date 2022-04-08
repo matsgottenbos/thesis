@@ -63,6 +63,16 @@ namespace Thesis {
         // Operations
         public const float AssignExternalDriverProbability = 0.2f;
 
+
+        /* Excel importer */
+        public static readonly DateTime ExcelPlanningStartDate = new DateTime(2021, 12, 25);
+        public static readonly DateTime ExcelPlanningNextDate = ExcelPlanningStartDate.AddDays(7);
+        public const int ExcelInternalDriverContractTime = 40 * 60;
+        public const int ExcelExternalDriverTypeCount = 5;
+        public const int ExcelExternalDriverMinCountPerType = 5;
+        public const int ExcelExternalDriverMaxCountPerType = 20;
+
+
         /* Generator */
         // Counts
         public const int GenTimeframeLength = 2 * 24 * 60;
