@@ -8,7 +8,7 @@ namespace Thesis {
     class SwapOperation : AbstractOperation {
         readonly Trip trip1, trip2;
         readonly Driver driver1, driver2;
-        int driver1WorkedTimeDiff, driver2WorkedTimeDiff;
+        int driver1WorkedTimeDiff, driver2WorkedTimeDiff, driver1ShiftCountDiff, driver2ShiftCountDiff;
 
         public SwapOperation(int tripIndex1, int tripIndex2, SaInfo info) : base(info) {
             trip1 = info.Instance.Trips[tripIndex1];
@@ -24,15 +24,17 @@ namespace Thesis {
             }
             #endif
 
-            (double driver1CostDiff, double driver1CostWithoutPenaltyDiff, double driver1PenaltyDiff, int driver1ShiftLengthDiff) = CostDiffCalculator.GetDriverCostDiff(trip1, trip2, null, null, driver1, info);
-            (double driver2CostDiff, double driver2CostWithoutPenaltyDiff, double driver2PenaltyDiff, int driver2ShiftLengthDiff) = CostDiffCalculator.GetDriverCostDiff(trip2, trip1, null, null, driver2, info);
+            (double driver1CostDiff, double driver1CostWithoutPenaltyDiff, double driver1PenaltyDiff, int driver1WorkedTimeDiff, int driver1ShiftCountDiff) = CostDiffCalculator.GetDriverCostDiff(trip1, trip2, null, null, driver1, info);
+            (double driver2CostDiff, double driver2CostWithoutPenaltyDiff, double driver2PenaltyDiff, int driver2WorkedTimeDiff, int driver2ShiftCountDiff) = CostDiffCalculator.GetDriverCostDiff(trip2, trip1, null, null, driver2, info);
 
             double costDiff = driver1CostDiff + driver2CostDiff;
             double costWithoutPenalty = driver1CostWithoutPenaltyDiff + driver2CostWithoutPenaltyDiff;
             double penaltyDiff = driver1PenaltyDiff + driver2PenaltyDiff;
 
-            driver1WorkedTimeDiff = driver1ShiftLengthDiff;
-            driver2WorkedTimeDiff = driver2ShiftLengthDiff;
+            this.driver1WorkedTimeDiff = driver1WorkedTimeDiff;
+            this.driver2WorkedTimeDiff = driver2WorkedTimeDiff;
+            this.driver1ShiftCountDiff = driver1ShiftCountDiff;
+            this.driver2ShiftCountDiff = driver2ShiftCountDiff;
 
             return (costDiff, costWithoutPenalty, penaltyDiff);
         }
@@ -42,6 +44,8 @@ namespace Thesis {
             info.Assignment[trip1.Index] = driver2;
             info.DriversWorkedTime[driver1.AllDriversIndex] += driver1WorkedTimeDiff;
             info.DriversWorkedTime[driver2.AllDriversIndex] += driver2WorkedTimeDiff;
+            info.DriversShiftCounts[driver1.AllDriversIndex] += driver1ShiftCountDiff;
+            info.DriversShiftCounts[driver2.AllDriversIndex] += driver2ShiftCountDiff;
         }
 
         public static SwapOperation CreateRandom(SaInfo info) {

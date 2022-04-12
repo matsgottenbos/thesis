@@ -30,9 +30,16 @@ namespace Thesis {
                     break;
             }
 
-            // Debug inspector
+            // Run debug inspector if configured
             if (Config.DebugRunInspector) {
-                new SaInspector(instance);
+                new DebugInspector(instance);
+                return;
+            }
+
+            // Run debug JSON exporter if configured
+            if (Config.DebugRunJsonExporter) {
+                new DebugJsonExporter(instance);
+                return;
             }
 
             // Solve optimally

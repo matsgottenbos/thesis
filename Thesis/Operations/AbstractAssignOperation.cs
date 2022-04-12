@@ -8,7 +8,7 @@ namespace Thesis {
     abstract class AbstractAssignOperation : AbstractOperation {
         readonly Trip trip;
         readonly Driver oldDriver, newDriver;
-        int oldDriverWorkedTimeDiff, newDriverWorkedTimeDiff;
+        int oldDriverWorkedTimeDiff, newDriverWorkedTimeDiff, oldDriverShiftCountDiff, newDriverShiftCountDiff;
 
         public AbstractAssignOperation(int tripIndex, Driver newDriver, SaInfo info) : base(info) {
             this.newDriver = newDriver;
@@ -23,11 +23,13 @@ namespace Thesis {
             }
             #endif
 
-            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverPenaltyDiff, int oldDriverShiftLengthDiff) = CostDiffCalculator.GetDriverCostDiff(trip, null, null, null, oldDriver, info);
-            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverPenaltyDiff, int newDriverShiftLengthDiff) = CostDiffCalculator.GetDriverCostDiff(null, trip, null, null, newDriver, info);
+            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverPenaltyDiff, int oldDriverWorkedTimeDiff, int oldDriverShiftCountDiff) = CostDiffCalculator.GetDriverCostDiff(trip, null, null, null, oldDriver, info);
+            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverPenaltyDiff, int newDriverWorkedTimeDiff, int newDriverShiftCountDiff) = CostDiffCalculator.GetDriverCostDiff(null, trip, null, null, newDriver, info);
 
-            oldDriverWorkedTimeDiff = oldDriverShiftLengthDiff;
-            newDriverWorkedTimeDiff = newDriverShiftLengthDiff;
+            this.oldDriverWorkedTimeDiff = oldDriverWorkedTimeDiff;
+            this.newDriverWorkedTimeDiff = newDriverWorkedTimeDiff;
+            this.oldDriverShiftCountDiff = oldDriverShiftCountDiff;
+            this.newDriverShiftCountDiff = newDriverShiftCountDiff;
 
             return (oldDriverCostDiff + newDriverCostDiff, oldDriverCostWithoutPenaltyDiff + newDriverCostWithoutPenaltyDiff, oldDriverPenaltyDiff + newDriverPenaltyDiff);
         }
@@ -36,6 +38,8 @@ namespace Thesis {
             info.Assignment[trip.Index] = newDriver;
             info.DriversWorkedTime[oldDriver.AllDriversIndex] += oldDriverWorkedTimeDiff;
             info.DriversWorkedTime[newDriver.AllDriversIndex] += newDriverWorkedTimeDiff;
+            info.DriversShiftCounts[oldDriver.AllDriversIndex] += oldDriverShiftCountDiff;
+            info.DriversShiftCounts[newDriver.AllDriversIndex] += newDriverShiftCountDiff;
         }
     }
 }

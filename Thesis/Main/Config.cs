@@ -26,11 +26,12 @@ namespace Thesis {
         public const int ShiftWaitingTimeThreshold = 6 * 60; // Waiting times shorter than this count as the same trip; waiting time longer start a new shift
         public const int ShiftMaxStartTimeDiff = 24 * 60; // The maximum difference in start times considered when searching for trips in the same shift
         public const int BetweenShiftsMaxStartTimeDiff = 36 * 60; // The maximum difference in start times considered when checking rest time between different shifts
+        public const int DriverMaxShiftCount = 5; // The maximum number of shifts a driver can have per week
 
         // Time periods
         public const int DayLength = 24 * 60;
 
-        // Salaries
+        // Internal driver salaries
         public static readonly SalaryRateInfo[] InternalDriverDailySalaryRates = new SalaryRateInfo[] {
             new SalaryRateInfo(0 * 60,  60 / 60f), // Night 0-6: hourly rate of 60
             new SalaryRateInfo(6 * 60,  55 / 60f), // Morning 6-7, hourly rate of 55
@@ -40,7 +41,10 @@ namespace Thesis {
             // TODO: add weekends and holidays
         };
         public const float InternalDriverTravelSalaryRate = 50 / 60f;
+        public const int InternalDriverMinPaidShiftTime = 6 * 60; // The minimum amount of worked time that is paid per shift, for an internal driver
         public const int InternalDriverUnpaidTravelTimePerShift = 60;
+
+        // External driver salaries
         public static readonly SalaryRateInfo[] ExternalDriverDailySalaryRates = new SalaryRateInfo[] {
             new SalaryRateInfo(0 * 60,  80 / 60f), // Night 0-6: hourly rate of 80
             new SalaryRateInfo(6 * 60,  75 / 60f), // Morning 6-7, hourly rate of 75
@@ -50,6 +54,7 @@ namespace Thesis {
             // TODO: add weekends and holidays
         };
         public const float ExternalDriverTravelSalaryRate = 70 / 60f;
+        public const int ExternalDriverMinPaidShiftTime = 8 * 60; // The minimum amount of worked time that is paid per shift, for an external driver
 
         // Hotels
         public const float HotelCosts = 130f;
@@ -65,7 +70,7 @@ namespace Thesis {
 
 
         /* Excel importer */
-        public static readonly DateTime ExcelPlanningStartDate = new DateTime(2021, 12, 25);
+        public static readonly DateTime ExcelPlanningStartDate = new DateTime(2022, 1, 8);
         public static readonly DateTime ExcelPlanningNextDate = ExcelPlanningStartDate.AddDays(7);
         public const int ExcelInternalDriverContractTime = 40 * 60;
         public const int ExcelExternalDriverTypeCount = 5;
@@ -101,33 +106,35 @@ namespace Thesis {
         public const int SaCheckCostFrequency = 100000;
         public const int SaLogFrequency = 1000000;
         public const int SaParameterUpdateFrequency = 100000;
-        public const float SaInitialTemperature = 1000f;
-        public const float SaCycleInitialTemperatureMin = 200f;
-        public const float SaCycleInitialTemperatureMax = 1000f;
+        public const float SaInitialTemperature = 5000f;
+        public const float SaCycleInitialTemperatureMin = 500f;
+        public const float SaCycleInitialTemperatureMax = 7000f;
         public const float SaTemperatureReductionFactor = 0.99f;
-        public const float SaEndCycleTemperature = 100f;
+        public const float SaEndCycleTemperature = 300f;
 
         // Operation probabilities
-        public const float AssignInternalProbCumulative = 0.59f;
+        public const float AssignInternalProbCumulative = 0.5f;
         public const float AssignExternalProbCumulative = 0.6f;
         public const float SwapProbCumulative = 0.9999f;
         public const float ToggleHotelProbCumulative = 1f;
 
         // Penalties
-        public const float PrecendenceViolationPenalty = 5000;
-        public const float ShiftLengthViolationPenalty = 1000;
-        public const float ShiftLengthViolationPenaltyPerMin = 200 / 60f;
-        public const float RestTimeViolationPenalty = 1000;
-        public const float RestTimeViolationPenaltyPerMin = 200 / 60f;
-        public const float ContractTimeViolationPenalty = 1000;
-        public const float ContractTimeViolationPenaltyPerMin = 200 / 60f;
-        public const float InvalidHotelPenalty = 5000;
+        public const float PrecendenceViolationPenalty = 20000;
+        public const float ShiftLengthViolationPenalty = 5000;
+        public const float ShiftLengthViolationPenaltyPerMin = 5000 / 60f;
+        public const float RestTimeViolationPenalty = 5000;
+        public const float RestTimeViolationPenaltyPerMin = 5000 / 60f;
+        public const float ContractTimeViolationPenalty = 5000;
+        public const float ContractTimeViolationPenaltyPerMin = 5000 / 60f;
+        public const float ShiftCountViolationPenaltyPerShift = 20000;
+        public const float InvalidHotelPenalty = 20000;
 
 
         /* File structure */
         public static readonly string ProjectFolder = (Environment.Is64BitProcess ? Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName : Directory.GetParent(Environment.CurrentDirectory).Parent.FullName) + @"\"; // Path to the project root folder
         public static readonly string SolutionFolder = ProjectFolder + @"\..\"; // Path to the solution root folder
         public static readonly string DataFolder = Path.Combine(SolutionFolder, @"data\");
+        public static readonly string OutputFolder = Path.Combine(SolutionFolder, @"output\");
 
 
         /* Misc */
@@ -138,6 +145,7 @@ namespace Thesis {
         public const bool DebugCheckAndLogOperations = false;
         public const bool DebugSaLogCurrentSolution = false;
         public const bool DebugRunInspector = false;
+        public const bool DebugRunJsonExporter = true;
         public const bool DebugRunOdataTest = false;
         public const bool DebugUseSeededSa = false;
     }

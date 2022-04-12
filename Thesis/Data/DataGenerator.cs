@@ -13,6 +13,7 @@ namespace Thesis {
 
             // Raw trips
             Trip[] rawTrips = GenerateRawTrips(Config.GenTripCount, Config.GenStationCount, trainTravelTimes, rand);
+            string[] stationCodes = new string[Config.GenStationCount];
 
             // Driver data
             string[] internalDriverNames = new string[Config.GenInternalDriverCount]; // Names will be empty in generated data
@@ -21,7 +22,7 @@ namespace Thesis {
             int[] externalDriverCounts = GenerateExternalDriverCounts(Config.GenExternaDriverTypeCount, Config.GenExternalDriverMinCountPerType, Config.GenExternalDriverMaxCountPerType, rand);
             int[][] externalDriversHomeTravelTimes = GenerateExternalDriverHomeTravelTimes(Config.GenExternaDriverTypeCount, Config.GenStationCount, rand);
 
-            return new Instance(rawTrips, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.GenInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
+            return new Instance(rawTrips, stationCodes, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.GenInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
         }
 
         public static int[,] GenerateTrainTravelTimes(int stationCount, Random rand) {
@@ -69,7 +70,7 @@ namespace Thesis {
                 int startTime = (int)(rand.NextDouble() * (Config.GenTimeframeLength - tripDuration));
                 int endTime = startTime + tripDuration;
 
-                Trip trip = new Trip(-1, startStationIndex, endStationIndex, startTime, endTime, tripDuration);
+                Trip trip = new Trip(-1, "", "", startStationIndex, endStationIndex, startTime, endTime, tripDuration);
                 trips[tripIndex] = trip;
             }
             return trips;

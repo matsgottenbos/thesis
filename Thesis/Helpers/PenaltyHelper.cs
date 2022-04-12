@@ -48,6 +48,20 @@ namespace Thesis {
             return amountPenalty + countPenalty;
         }
 
+        public static float GetShiftCountPenalty(int shiftCount, bool debugIsNew) {
+            int shiftCountViolation = Math.Max(0, shiftCount - Config.DriverMaxShiftCount);
+            float penalty = shiftCountViolation * Config.ShiftCountViolationPenaltyPerShift;
+
+            #if DEBUG
+            if (Config.DebugCheckAndLogOperations) {
+                if (debugIsNew) SaDebugger.GetCurrentNormalDiff().ShiftCount.AddNew(shiftCount);
+                else SaDebugger.GetCurrentNormalDiff().ShiftCount.AddOld(shiftCount);
+            }
+            #endif
+
+            return penalty;
+        }
+
         public static float GetHotelPenalty(Trip tripBeforeInvalidHotel, SaInfo info, bool debugIsNew) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {

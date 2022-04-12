@@ -37,7 +37,7 @@ namespace Thesis {
             }
 
             // Check cost
-            (double bestNodeCost, _, double bestNodePenalty, _) = GetNodeCost(bestNode);
+            (double bestNodeCost, _, double bestNodePenalty, _, _) = GetNodeCost(bestNode);
             if (bestNodePenalty > 0) {
                 throw new Exception("Optimal algorithm returned an infeasible solution");
             }
@@ -179,7 +179,7 @@ namespace Thesis {
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
-                (_, _, double debugNodePenalty, _) = GetNodeCost(node);
+                (_, _, double debugNodePenalty, _, _) = GetNodeCost(node);
                 if (debugNodePenalty > 0) {
                     throw new Exception();
                 }
@@ -301,10 +301,10 @@ namespace Thesis {
             //return true;
         }
 
-        (double, double, double, int[]) GetNodeCost(AssignmentNode node) {
+        (double, double, double, int[], int[]) GetNodeCost(AssignmentNode node) {
             dummyInfo.Assignment = NodeToAssignment(node);
-            (double cost, double costWithoutPenalty, double penalty, int[] driversWorkedTime, _, _, _, _, _) =  TotalCostCalculator.GetAssignmentCost(dummyInfo);
-            return (cost, costWithoutPenalty, penalty, driversWorkedTime);
+            (double cost, double costWithoutPenalty, double penalty, int[] driversWorkedTime, int[] driversShiftCounts, _, _, _, _, _, _) =  TotalCostCalculator.GetAssignmentCost(dummyInfo);
+            return (cost, costWithoutPenalty, penalty, driversWorkedTime, driversShiftCounts);
         }
 
         Driver[] NodeToAssignment(AssignmentNode node) {

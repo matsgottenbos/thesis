@@ -24,6 +24,7 @@ namespace Thesis {
         }
 
         public abstract string GetId();
+        public abstract string GetName(bool useRealName);
 
 
         /*** Helper methods ***/
@@ -92,12 +93,12 @@ namespace Thesis {
 
     class InternalDriver : Driver {
         public readonly int InternalIndex, MinContractTime, MaxContractTime;
-        public readonly string DriverName;
+        readonly string InternalDriverName;
         public readonly bool[,] TrackProficiencies;
 
-        public InternalDriver(int allDriversIndex, int internalIndex, string driverName, int[] oneWayTravelTimes, float[,] drivingCosts, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, Config.InternalDriverTravelSalaryRate, drivingCosts) {
+        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, int[] oneWayTravelTimes, float[,] drivingCosts, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, Config.InternalDriverTravelSalaryRate, drivingCosts) {
             InternalIndex = internalIndex;
-            DriverName = driverName;
+            InternalDriverName = internalDriverName;
             MinContractTime = minWorkedTime;
             MaxContractTime = maxWorkedTime;
             TrackProficiencies = trackProficiencies;
@@ -105,6 +106,11 @@ namespace Thesis {
 
         public override string GetId() {
             return InternalIndex.ToString();
+        }
+
+        public override string GetName(bool useRealName) {
+            if (useRealName) return InternalDriverName;
+            return string.Format("Driver {0}", InternalIndex + 1);
         }
 
         protected override int GetPaidTravelTime(int travelTime) {
@@ -130,6 +136,10 @@ namespace Thesis {
 
         public override string GetId() {
             return string.Format("e{0}.{1}", ExternalDriverTypeIndex, IndexInType);
+        }
+
+        public override string GetName(bool useRealName) {
+            return string.Format("External {0}.{1}", ExternalDriverTypeIndex + 1, IndexInType + 1);
         }
 
         protected override int GetPaidTravelTime(int travelTime) {

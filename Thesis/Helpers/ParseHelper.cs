@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Thesis {
@@ -69,6 +70,57 @@ namespace Thesis {
             }
             if (prevTrip != null && info.IsHotelStayAfterTrip[prevTrip.Index]) driverPathStr += "|H";
             return driverPathStr;
+        }
+
+        public static string GetPenaltyString(SaInfo info) {
+            return GetPenaltyString(info.Penalty, info.PrecedenceViolationCount, info.ShiftLengthViolationCount, info.RestTimeViolationCount, info.ContractTimeViolationCount, info.ShiftCountViolationAmount, info.InvalidHotelCount);
+        }
+        public static string GetPenaltyString(double penalty, int precedenceViolationCount, int shiftLengthViolationCount, int restTimeViolationCount, int contractTimeViolationCount, int shiftCountViolationAmount, int invalidHotelCount) {
+            string penaltyString = "-";
+            if (penalty > 0) {
+                List<string> penaltyTypes = new List<string>();
+                if (precedenceViolationCount > 0) penaltyTypes.Add("Pr " + precedenceViolationCount);
+                if (shiftLengthViolationCount > 0) penaltyTypes.Add("SL " + shiftLengthViolationCount);
+                if (restTimeViolationCount > 0) penaltyTypes.Add("RT " + restTimeViolationCount);
+                if (contractTimeViolationCount > 0) penaltyTypes.Add("CT " + contractTimeViolationCount);
+                if (shiftCountViolationAmount > 0) penaltyTypes.Add("SC " + shiftCountViolationAmount);
+                if (invalidHotelCount > 0) penaltyTypes.Add("IH " + invalidHotelCount);
+                string penaltyTypesStr = string.Join(", ", penaltyTypes);
+
+                penaltyString = string.Format("{0} ({1})", ParseHelper.ToString(penalty, "0"), penaltyTypesStr);
+            };
+            return penaltyString;
+        }
+
+
+        /* Parsing assignment string */
+
+        public static (Driver[], bool[]) ParseAssignmentString(string assignmentStr, Instance instance) {
+            string[] driverStrings = assignmentStr.Split();
+            Driver[] assignment = new Driver[instance.Trips.Length];
+            bool[] isHotelStayAfterTrip = new bool[instance.Trips.Length];
+            for (int tripIndex = 0; tripIndex < instance.Trips.Length; tripIndex++) {
+                (Driver driver, bool isHotelStayAfter) = ParseDriverString(driverStrings[tripIndex], instance);
+                assignment[tripIndex] = driver;
+                isHotelStayAfterTrip[tripIndex] = isHotelStayAfter;
+            }
+            return (assignment, isHotelStayAfterTrip);
+        }
+
+        static (Driver, bool) ParseDriverString(string driverStr, Instance instance) {
+            Driver driver;
+            if (driverStr[0] == 'e') {
+                // External driver
+                int typeIndex = int.Parse(Regex.Replace(driverStr, @"^e(\d+)\.(\d+)h?$", "$1"));
+                int indexInType = int.Parse(Regex.Replace(driverStr, @"^e(\d+)\.(\d+)h?$", "$2"));
+                driver = instance.ExternalDriversByType[typeIndex][indexInType];
+            } else {
+                // Internal driver
+                int internalDriverIndex = int.Parse(Regex.Replace(driverStr, @"(\d+)h?", "$1"));
+                driver = instance.InternalDrivers[internalDriverIndex];
+            }
+            bool isHotelStayAfter = Regex.Match(driverStr, @"h$").Success;
+            return (driver, isHotelStayAfter);
         }
     }
 }

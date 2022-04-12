@@ -149,7 +149,7 @@ namespace Thesis {
 
     class TotalInfo {
         public double? Cost, CostWithoutPenalty, Penalty;
-        public int? WorkedTime, PrecedenceViolationCount, SlViolationCount, SlViolationAmount, RtViolationCount, RtViolationAmount, CtValue, CtViolationCount, CtViolationAmount, InvalidHotelCount;
+        public int? WorkedTime, PrecedenceViolationCount, SlViolationCount, SlViolationAmount, RtViolationCount, RtViolationAmount, CtViolationCount, CtViolationAmount, ScValue, ScViolationAmount, InvalidHotelCount;
         readonly bool isDiff;
 
         public TotalInfo(bool isDiff = false) {
@@ -166,6 +166,8 @@ namespace Thesis {
             if (shouldLogZeros || RtViolationAmount.Value != 0) Console.WriteLine("RT violation amount{0}: {1}", diffStr, RtViolationAmount);
             if (shouldLogZeros || CtViolationCount.Value != 0) Console.WriteLine("CT violation count{0}: {1}", diffStr, CtViolationCount);
             if (shouldLogZeros || CtViolationAmount.Value != 0) Console.WriteLine("CT violation amount{0}: {1}", diffStr, CtViolationAmount);
+            if (shouldLogZeros || ScValue.Value != 0) Console.WriteLine("SC value{0}: {1}", diffStr, ScValue);
+            if (shouldLogZeros || ScViolationAmount.Value != 0) Console.WriteLine("SC violation amount{0}: {1}", diffStr, ScViolationAmount);
             if (shouldLogZeros || InvalidHotelCount.Value != 0) Console.WriteLine("Invalid hotel count{0}: {1}", diffStr, InvalidHotelCount);
             if (shouldLogZeros || Math.Abs(Cost.Value) > Config.FloatingPointMargin) Console.WriteLine("Cost{0}: {1}", diffStr, ParseHelper.ToString(Cost.Value));
             if (shouldLogZeros || Math.Abs(CostWithoutPenalty.Value) > Config.FloatingPointMargin) Console.WriteLine("Cost without penalty{0}: {1}", diffStr, ParseHelper.ToString(CostWithoutPenalty.Value));
@@ -184,9 +186,10 @@ namespace Thesis {
                 a.SlViolationAmount == b.SlViolationAmount &&
                 a.RtViolationCount == b.RtViolationCount &&
                 a.RtViolationAmount == b.RtViolationAmount &&
-                a.CtValue == b.CtValue &&
                 a.CtViolationCount == b.CtViolationCount &&
                 a.CtViolationAmount == b.CtViolationAmount &&
+                a.ScValue == b.ScValue &&
+                a.ScViolationAmount == b.ScViolationAmount &&
                 a.InvalidHotelCount == b.InvalidHotelCount
             );
         }
@@ -205,9 +208,10 @@ namespace Thesis {
                 SlViolationAmount = -a.SlViolationAmount,
                 RtViolationCount = -a.RtViolationCount,
                 RtViolationAmount = -a.RtViolationAmount,
-                CtValue = -a.CtValue,
                 CtViolationCount = -a.CtViolationCount,
                 CtViolationAmount = -a.CtViolationAmount,
+                ScValue = -a.ScValue,
+                ScViolationAmount = -a.ScViolationAmount,
                 InvalidHotelCount = -a.InvalidHotelCount,
             };
         }
@@ -222,9 +226,10 @@ namespace Thesis {
                 SlViolationAmount = a.SlViolationAmount + b.SlViolationAmount,
                 RtViolationCount = a.RtViolationCount + b.RtViolationCount,
                 RtViolationAmount = a.RtViolationAmount + b.RtViolationAmount,
-                CtValue = a.CtValue + b.CtValue,
                 CtViolationCount = a.CtViolationCount + b.CtViolationCount,
                 CtViolationAmount = a.CtViolationAmount + b.CtViolationAmount,
+                ScValue = a.ScValue + b.ScValue,
+                ScViolationAmount = a.ScViolationAmount + b.ScViolationAmount,
                 InvalidHotelCount = a.InvalidHotelCount + b.InvalidHotelCount,
             };
         }
@@ -236,7 +241,7 @@ namespace Thesis {
         public double CostDiff, CostWithoutPenaltyDiff, PenaltyDiff;
         public PrecedenceValueChange Precedence;
         public ViolationPairValueChange ShiftLength;
-        public ViolationValueChange RestTime, ContractTime;
+        public ViolationValueChange RestTime, ContractTime, ShiftCount;
         public HotelValueChange Hotels;
 
         public NormalDiff(bool shouldReverse, Driver driver, SaInfo info) {
@@ -244,6 +249,7 @@ namespace Thesis {
             ShiftLength = new ViolationPairValueChange("SL", shouldReverse, driver, info, (shiftLengthPair, _) => Math.Max(0, shiftLengthPair.Item1 - Config.MaxShiftLengthWithoutTravel) + Math.Max(0, shiftLengthPair.Item2 - Config.MaxShiftLengthWithTravel));
             RestTime = new ViolationValueChange("RT", shouldReverse, driver, info, (restTime, _) => Math.Max(0, Config.MinRestTime - restTime));
             ContractTime = new ViolationValueChange("CT", false, driver, info, (workedHours, driver) => driver.GetTotalContractTimeViolation(workedHours));
+            ShiftCount = new ViolationValueChange("SC", false, driver, info, (shiftCount, _) => Math.Max(0, shiftCount - Config.DriverMaxShiftCount));
             Hotels = new HotelValueChange("Hotel", shouldReverse, driver, info);
     }
 
@@ -252,7 +258,7 @@ namespace Thesis {
                 Cost = CostDiff,
                 CostWithoutPenalty = CostWithoutPenaltyDiff,
                 Penalty = PenaltyDiff,
-                WorkedTime = ContractTime.GetWorkedTimeDiff(),
+                WorkedTime = ContractTime.GetValueSumDiff(),
                 PrecedenceViolationCount = Precedence.NewViolations.Count - Precedence.OldViolations.Count,
                 SlViolationCount = ShiftLength.NewViolationCount - ShiftLength.OldViolationCount,
                 SlViolationAmount = ShiftLength.NewViolationAmount - ShiftLength.OldViolationAmount,
@@ -260,6 +266,8 @@ namespace Thesis {
                 RtViolationAmount = RestTime.NewViolationAmount - RestTime.OldViolationAmount,
                 CtViolationCount = ContractTime.NewViolationCount - ContractTime.OldViolationCount,
                 CtViolationAmount = ContractTime.NewViolationAmount - ContractTime.OldViolationAmount,
+                ScValue = ShiftCount.GetValueSumDiff(),
+                ScViolationAmount = ShiftCount.NewViolationAmount - ShiftCount.OldViolationAmount,
                 InvalidHotelCount = Hotels.NewViolations.Count - Hotels.OldViolations.Count,
             };
         }
@@ -274,6 +282,7 @@ namespace Thesis {
             ShiftLength.Log();
             RestTime.Log();
             ContractTime.Log();
+            ShiftCount.Log();
             Hotels.Log();
         }
 
@@ -426,7 +435,7 @@ namespace Thesis {
             LogIntDiff("violation amount", OldViolationAmount, NewViolationAmount);
         }
 
-        public int GetWorkedTimeDiff() {
+        public int GetValueSumDiff() {
             return newValues.Sum() - oldValues.Sum();
         }
     }

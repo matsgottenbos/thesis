@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class CostDiffCalculator {
-        public static (double, double, double, int) GetDriverCostDiff(Trip unassignedTrip, Trip assignedTrip, Trip addedHotelTrip, Trip removedHotelTrip, Driver driver, SaInfo info) {
+        public static (double, double, double, int, int) GetDriverCostDiff(Trip unassignedTrip, Trip assignedTrip, Trip addedHotelTrip, Trip removedHotelTrip, Driver driver, SaInfo info) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 string description = string.Format("Driver {0}: ", driver.GetId());
@@ -98,6 +98,7 @@ namespace Thesis {
             double oldPartialCostWithoutPenalty = 0;
             double oldPartialPenalty = 0;
             int oldPartialWorkedTime = 0;
+            int oldPartialShiftCount = 0;
             if (driverOldFirstTrip != null) {
                 Trip oldShiftFirstTrip = driverOldFirstTrip;
                 Trip oldParkingTrip = driverOldFirstTrip;
@@ -109,7 +110,7 @@ namespace Thesis {
                     if (searchTripDriver != driver) continue;
 
                     Trip searchTrip = trips[tripIndex];
-                    ProcessDriverTrip(searchTrip, ref oldShiftFirstTrip, ref oldParkingTrip, ref oldPrevTrip, ref oldBeforeHotelTrip, ref oldPartialCostWithoutPenalty, ref oldPartialPenalty, ref oldPartialWorkedTime, null, null, driver, info, instance, false);
+                    ProcessDriverTrip(searchTrip, ref oldShiftFirstTrip, ref oldParkingTrip, ref oldPrevTrip, ref oldBeforeHotelTrip, ref oldPartialCostWithoutPenalty, ref oldPartialPenalty, ref oldPartialWorkedTime, ref oldPartialShiftCount, null, null, driver, info, instance, false);
 
                     if (searchTrip.Index > driverLastRelevantTrip.Index) {
                         // Further trips are no longer relevant
@@ -118,17 +119,20 @@ namespace Thesis {
                 }
                 if (tripIndex == trips.Length) {
                     // Last relevant trip was the last trip in the driver path, so finish the last shift
-                    ProcessLastDriverShift(oldShiftFirstTrip, oldParkingTrip, oldPrevTrip, ref oldPartialCostWithoutPenalty, ref oldPartialPenalty, ref oldPartialWorkedTime, null, null, driver, info, false);
+                    ProcessLastDriverShift(oldShiftFirstTrip, oldParkingTrip, oldPrevTrip, ref oldPartialCostWithoutPenalty, ref oldPartialPenalty, ref oldPartialWorkedTime, ref oldPartialShiftCount, null, null, driver, info, false);
                 }
             }
             int driverOldWorkedTime = info.DriversWorkedTime[driver.AllDriversIndex];
             oldPartialPenalty += driver.GetContractTimePenalty(driverOldWorkedTime, false);
+            int driverOldShiftCount = info.DriversShiftCounts[driver.AllDriversIndex];
+            oldPartialPenalty += PenaltyHelper.GetShiftCountPenalty(driverOldShiftCount, false);
             double oldCost = oldPartialCostWithoutPenalty + oldPartialPenalty;
 
             // Get new driver cost
             double newPartialCostWithoutPenalty = 0;
             double newPartialPenalty = 0;
             int newPartialWorkedTime = 0;
+            int newPartialShiftCount = 0;
             if (driverNewFirstTrip != null) {
                 Trip newShiftFirstTrip = driverNewFirstTrip;
                 Trip newParkingTrip = driverNewFirstTrip;
@@ -140,7 +144,7 @@ namespace Thesis {
                     Trip searchTrip = trips[tripIndex];
                     if (searchTripDriver != driver && searchTrip != assignedTrip || searchTrip == unassignedTrip) continue;
 
-                    ProcessDriverTrip(searchTrip, ref newShiftFirstTrip, ref newParkingTrip, ref newPrevTrip, ref newBeforeHotelTrip, ref newPartialCostWithoutPenalty, ref newPartialPenalty, ref newPartialWorkedTime, addedHotelTrip, removedHotelTrip, driver, info, instance, true);
+                    ProcessDriverTrip(searchTrip, ref newShiftFirstTrip, ref newParkingTrip, ref newPrevTrip, ref newBeforeHotelTrip, ref newPartialCostWithoutPenalty, ref newPartialPenalty, ref newPartialWorkedTime, ref newPartialShiftCount, addedHotelTrip, removedHotelTrip, driver, info, instance, true);
 
                     if (searchTrip.Index > driverLastRelevantTrip.Index) {
                         // Further trips are no longer relevant
@@ -149,11 +153,13 @@ namespace Thesis {
                 }
                 if (tripIndex == trips.Length) {
                     // Last relevant trip was the last trip in the driver path, so finish the last shift
-                    ProcessLastDriverShift(newShiftFirstTrip, newParkingTrip, newPrevTrip, ref newPartialCostWithoutPenalty, ref newPartialPenalty, ref newPartialWorkedTime, addedHotelTrip, removedHotelTrip, driver, info, true);
+                    ProcessLastDriverShift(newShiftFirstTrip, newParkingTrip, newPrevTrip, ref newPartialCostWithoutPenalty, ref newPartialPenalty, ref newPartialWorkedTime, ref newPartialShiftCount, addedHotelTrip, removedHotelTrip, driver, info, true);
                 }
             }
             int driverNewWorkedTime = driverOldWorkedTime + newPartialWorkedTime - oldPartialWorkedTime;
             newPartialPenalty += driver.GetContractTimePenalty(driverNewWorkedTime, true);
+            int driverNewShiftCount = info.DriversShiftCounts[driver.AllDriversIndex] + newPartialShiftCount - oldPartialShiftCount;
+            newPartialPenalty += PenaltyHelper.GetShiftCountPenalty(driverNewShiftCount, true);
             double newCost = newPartialCostWithoutPenalty + newPartialPenalty;
 
             // Get diffs
@@ -161,6 +167,7 @@ namespace Thesis {
             double costWithoutPenaltyDiff = newPartialCostWithoutPenalty - oldPartialCostWithoutPenalty;
             double penaltyDiff = newPartialPenalty - oldPartialPenalty;
             int workedTimeDiff = newPartialWorkedTime - oldPartialWorkedTime;
+            int shiftCountDiff = newPartialShiftCount - oldPartialShiftCount;
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
@@ -177,10 +184,10 @@ namespace Thesis {
             }
             #endif
 
-            return (costDiff, costWithoutPenaltyDiff, penaltyDiff, workedTimeDiff);
+            return (costDiff, costWithoutPenaltyDiff, penaltyDiff, workedTimeDiff, shiftCountDiff);
         }
 
-        static void ProcessDriverTrip(Trip searchTrip, ref Trip shiftFirstTrip, ref Trip parkingTrip, ref Trip prevTrip, ref Trip beforeHotelTrip, ref double costWithoutPenalty, ref double penalty, ref int workedTime, Trip addedHotel, Trip removedHotel, Driver driver, SaInfo info, Instance instance, bool debugIsNew) {
+        static void ProcessDriverTrip(Trip searchTrip, ref Trip shiftFirstTrip, ref Trip parkingTrip, ref Trip prevTrip, ref Trip beforeHotelTrip, ref double costWithoutPenalty, ref double penalty, ref int workedTime, ref int shiftCount, Trip addedHotel, Trip removedHotel, Driver driver, SaInfo info, Instance instance, bool debugIsNew) {
             if (instance.AreSameShift(prevTrip, searchTrip)) {
                 /* Same shift */
                 // Check precedence
@@ -192,6 +199,8 @@ namespace Thesis {
                 }
             } else {
                 /* Start of new shift */
+                shiftCount++;
+
                 // Get travel time before
                 int travelTimeBefore;
                 if (beforeHotelTrip == null) {
@@ -253,8 +262,9 @@ namespace Thesis {
             prevTrip = searchTrip;
         }
 
-        static void ProcessLastDriverShift(Trip shiftFirstTrip, Trip parkingTrip, Trip prevTrip, ref double costWithoutPenalty, ref double penalty, ref int workedTime, Trip addedHotel, Trip removedHotel, Driver driver, SaInfo info, bool debugIsNew) {
+        static void ProcessLastDriverShift(Trip shiftFirstTrip, Trip parkingTrip, Trip prevTrip, ref double costWithoutPenalty, ref double penalty, ref int workedTime, ref int shiftCount, Trip addedHotel, Trip removedHotel, Driver driver, SaInfo info, bool debugIsNew) {
             // End final shift
+            shiftCount++;
             (int shiftLengthWithoutTravel, int shiftLengthWithTravel) = driver.ShiftLengthWithCustomPickup(shiftFirstTrip, prevTrip, parkingTrip);
             workedTime += shiftLengthWithoutTravel;
             costWithoutPenalty += driver.ShiftCostWithCustomPickup(shiftFirstTrip, prevTrip, parkingTrip);

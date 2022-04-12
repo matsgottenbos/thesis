@@ -40,22 +40,22 @@ namespace Thesis {
             int[] externalDriverCounts = DataGenerator.GenerateExternalDriverCounts(Config.ExcelExternalDriverTypeCount, Config.ExcelExternalDriverMinCountPerType, Config.ExcelExternalDriverMaxCountPerType, rand);
             int[][] externalDriversHomeTravelTimes = DataGenerator.GenerateExternalDriverHomeTravelTimes(Config.ExcelExternalDriverTypeCount, stationCount, rand);
 
-            return new Instance(rawTrips, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.ExcelInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
+            return new Instance(rawTrips, stationCodes, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.ExcelInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
         }
 
         static (Trip[], string[] stationCodes) ParseRawTripsAndStationCodes(DataTable dutiesTable, DateTime planningStartDate, DateTime planningNextDate) {
             List<Trip> rawTripList = new List<Trip>();
             List<string> stationCodesList = new List<string>();
             dutiesTable.ForEachRow(dutyRow => {
-                //string activityType = dutyRow.GetCell(dutiesTable.GetColumnIndex("ActivityDescriptionEN")).StringCellValue;
-                //if (activityType != "Drive train") return; // Skip non-driving activities
+                // Get duty and activity name
+                string dutyName = dutyRow.GetCell(dutiesTable.GetColumnIndex("DutyNo")).StringCellValue;
+                string activityName = dutyRow.GetCell(dutiesTable.GetColumnIndex("ActivityDescriptionEN")).StringCellValue;
 
                 // Get start and end stations
                 string startStationCode = dutyRow.GetCell(dutiesTable.GetColumnIndex("OriginLocationCode")).StringCellValue;
                 int startStationIndex = GetOrAddCodeIndex(startStationCode, stationCodesList);
                 string endStationCode = dutyRow.GetCell(dutiesTable.GetColumnIndex("DestinationLocationCode")).StringCellValue;
                 int endStationIndex = GetOrAddCodeIndex(endStationCode, stationCodesList);
-                //if (startStationIndex == endStationIndex) return; // Skip non-driving activities
 
                 // Get start and end time
                 DateTime startTimeRaw = dutyRow.GetCell(dutiesTable.GetColumnIndex("PlannedStart")).DateCellValue;
@@ -68,10 +68,15 @@ namespace Thesis {
                 // Temp: skip trips longer than max shift length
                 if (duration > Config.MaxShiftLengthWithoutTravel) return;
 
-                rawTripList.Add(new Trip(-1, startStationIndex, endStationIndex, startTime, endTime, duration));
+                rawTripList.Add(new Trip(-1, dutyName, activityName, startStationIndex, endStationIndex, startTime, endTime, duration));
             });
             Trip[] rawTrips = rawTripList.ToArray();
             string[] stationCodes = stationCodesList.ToArray();
+
+            if (rawTrips.Length == 0) {
+                throw new Exception("No trips found in timeframe");
+            }
+
             return (rawTrips, stationCodes);
         }
 
