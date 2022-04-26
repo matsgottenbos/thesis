@@ -88,9 +88,11 @@ namespace Thesis {
         public const int GenExternalDriverMinCountPerType = 2;
         public const int GenExternalDriverMaxCountPerType = 5;
 
-        // Distances
+        // Travel times
         public const int GenMinStationTravelTime = 30;
         public const int GenMaxStationTravelTime = 4 * 60;
+        public const float GenMinCarTravelTimeFactor = 0.5f;
+        public const float GenMaxCarTravelTimeFactor = 0.8f;
         public const int GenMaxHomeTravelTime = 2 * 60;
 
         // Contract times
@@ -145,7 +147,7 @@ namespace Thesis {
         public const bool DebugCheckAndLogOperations = false;
         public const bool DebugSaLogCurrentSolution = false;
         public const bool DebugRunInspector = false;
-        public const bool DebugRunJsonExporter = true;
+        public const bool DebugRunJsonExporter = false;
         public const bool DebugRunOdataTest = false;
         public const bool DebugUseSeededSa = false;
     }

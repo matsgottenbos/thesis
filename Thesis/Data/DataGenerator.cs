@@ -46,8 +46,9 @@ namespace Thesis {
                 for (int j = i; j < stationCount; j++) {
                     if (i == j) continue;
 
-                    // Car travel times are randomly generated within [0.5, 1.5] times the train travel times
-                    int carTravelTime = (int)(trainTravelTimes[i, j] * (rand.NextDouble() + 0.5f));
+                    // Car travel times are randomly generated within specified factors of the train travel times
+                    float carTravelTimeFactor = (float)rand.NextDouble() * (Config.GenMaxCarTravelTimeFactor - Config.GenMinCarTravelTimeFactor) + Config.GenMinCarTravelTimeFactor;
+                    int carTravelTime = (int)(trainTravelTimes[i, j] * carTravelTimeFactor);
                     carTravelTimes[i, j] = carTravelTime;
                     carTravelTimes[j, i] = carTravelTime;
                 }
