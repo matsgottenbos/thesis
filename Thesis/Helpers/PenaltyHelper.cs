@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class PenaltyHelper {
-        public static float GetPrecedencePenalty(Trip trip1, Trip trip2, SaInfo info, bool debugIsNew) {
+        public static double GetPrecedencePenalty(Trip trip1, Trip trip2, SaInfo info, bool debugIsNew) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 if (debugIsNew) SaDebugger.GetCurrentNormalDiff().Precedence.AddNew((trip1, trip2));
@@ -18,10 +18,10 @@ namespace Thesis {
             else return Config.PrecendenceViolationPenalty;
         }
 
-        public static float GetShiftLengthPenalty(int shiftLengthWithoutTravel, int shiftLengthWithTravel, bool debugIsNew) {
+        public static double GetShiftLengthPenalty(int shiftLengthWithoutTravel, int shiftLengthWithTravel, bool debugIsNew) {
             int shiftLengthViolation = Math.Max(0, shiftLengthWithoutTravel - Config.MaxShiftLengthWithoutTravel) + Math.Max(0, shiftLengthWithTravel - Config.MaxShiftLengthWithTravel);
-            float countPenalty = shiftLengthViolation > 0 ? Config.ShiftLengthViolationPenalty : 0;
-            float amountPenalty = shiftLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
+            double countPenalty = shiftLengthViolation > 0 ? Config.ShiftLengthViolationPenalty : 0;
+            double amountPenalty = shiftLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
@@ -33,10 +33,10 @@ namespace Thesis {
             return amountPenalty + countPenalty;
         }
 
-        public static float GetRestTimePenalty(int restTime, bool debugIsNew) {
+        public static double GetRestTimePenalty(int restTime, bool debugIsNew) {
             float shiftLengthViolation = Math.Max(0, Config.MinRestTime - restTime);
-            float countPenalty = shiftLengthViolation > 0 ? Config.RestTimeViolationPenalty : 0;
-            float amountPenalty = shiftLengthViolation * Config.RestTimeViolationPenaltyPerMin;
+            double countPenalty = shiftLengthViolation > 0 ? Config.RestTimeViolationPenalty : 0;
+            double amountPenalty = shiftLengthViolation * Config.RestTimeViolationPenaltyPerMin;
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
@@ -48,9 +48,9 @@ namespace Thesis {
             return amountPenalty + countPenalty;
         }
 
-        public static float GetShiftCountPenalty(int shiftCount, bool debugIsNew) {
+        public static double GetShiftCountPenalty(int shiftCount, bool debugIsNew) {
             int shiftCountViolation = Math.Max(0, shiftCount - Config.DriverMaxShiftCount);
-            float penalty = shiftCountViolation * Config.ShiftCountViolationPenaltyPerShift;
+            double penalty = shiftCountViolation * Config.ShiftCountViolationPenaltyPerShift;
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
@@ -62,7 +62,7 @@ namespace Thesis {
             return penalty;
         }
 
-        public static float GetHotelPenalty(Trip tripBeforeInvalidHotel, SaInfo info, bool debugIsNew) {
+        public static double GetHotelPenalty(Trip tripBeforeInvalidHotel, SaInfo info, bool debugIsNew) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 if (debugIsNew) SaDebugger.GetCurrentNormalDiff().Hotels.AddNew(tripBeforeInvalidHotel);

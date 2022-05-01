@@ -24,7 +24,6 @@ namespace Thesis {
         public const int MaxShiftLengthWithoutTravel = 10 * 60; // Maximum length of a shift, excluding travel
         public const int MinRestTime = 11 * 60; // Minimum required resting time between two shifts
         public const int ShiftWaitingTimeThreshold = 6 * 60; // Waiting times shorter than this count as the same trip; waiting time longer start a new shift
-        public const int ShiftMaxStartTimeDiff = 24 * 60; // The maximum difference in start times considered when searching for trips in the same shift
         public const int BetweenShiftsMaxStartTimeDiff = 36 * 60; // The maximum difference in start times considered when checking rest time between different shifts
         public const int DriverMaxShiftCount = 5; // The maximum number of shifts a driver can have per week
 
@@ -82,8 +81,8 @@ namespace Thesis {
         // Counts
         public const int GenTimeframeLength = 2 * 24 * 60;
         public const int GenStationCount = 10;
-        public const int GenTripCount = 15;
-        public const int GenInternalDriverCount = 4;
+        public const int GenTripCount = 30;
+        public const int GenInternalDriverCount = 10;
         public const int GenExternaDriverTypeCount = 2;
         public const int GenExternalDriverMinCountPerType = 2;
         public const int GenExternalDriverMaxCountPerType = 5;
@@ -103,15 +102,28 @@ namespace Thesis {
 
 
         /* Simulated annealing */
-        // SA parameters
-        public const int SaIterationCount = 500000000;
+        // SA parameters (generated)
+        //public const int SaIterationCount = 10000000;
+        //public const int SaCheckCostFrequency = 100000;
+        //public const int SaLogFrequency = 1000000;
+        //public const int SaParameterUpdateFrequency = 100000;
+        //public const float SaInitialTemperature = 500f;
+        //public const float SaCycleInitialTemperatureMin = 50f;
+        //public const float SaCycleInitialTemperatureMax = 700f;
+        //public const float SaTemperatureReductionFactor = 0.9f;
+        //public const float SaEndCycleTemperature = 30f;
+
+        // SA parameters (Excel)
+        public const int SaIterationCount = 20000000;
+        //public const int SaIterationCount = 500000000;
         public const int SaCheckCostFrequency = 100000;
         public const int SaLogFrequency = 1000000;
         public const int SaParameterUpdateFrequency = 100000;
         public const float SaInitialTemperature = 5000f;
         public const float SaCycleInitialTemperatureMin = 500f;
         public const float SaCycleInitialTemperatureMax = 7000f;
-        public const float SaTemperatureReductionFactor = 0.99f;
+        //public const float SaTemperatureReductionFactor = 0.99f;
+        public const float SaTemperatureReductionFactor = 0.97f;
         public const float SaEndCycleTemperature = 300f;
 
         // Operation probabilities
@@ -121,15 +133,15 @@ namespace Thesis {
         public const float ToggleHotelProbCumulative = 1f;
 
         // Penalties
-        public const float PrecendenceViolationPenalty = 20000;
-        public const float ShiftLengthViolationPenalty = 5000;
-        public const float ShiftLengthViolationPenaltyPerMin = 5000 / 60f;
-        public const float RestTimeViolationPenalty = 5000;
-        public const float RestTimeViolationPenaltyPerMin = 5000 / 60f;
-        public const float ContractTimeViolationPenalty = 5000;
-        public const float ContractTimeViolationPenaltyPerMin = 5000 / 60f;
-        public const float ShiftCountViolationPenaltyPerShift = 20000;
-        public const float InvalidHotelPenalty = 20000;
+        public const double PrecendenceViolationPenalty = 20000;
+        public const double ShiftLengthViolationPenalty = 5000;
+        public const double ShiftLengthViolationPenaltyPerMin = 5000 / 60f;
+        public const double RestTimeViolationPenalty = 5000;
+        public const double RestTimeViolationPenaltyPerMin = 5000 / 60f;
+        public const double ContractTimeViolationPenalty = 5000;
+        public const double ContractTimeViolationPenaltyPerMin = 5000 / 60f;
+        public const double ShiftCountViolationPenaltyPerShift = 20000;
+        public const double InvalidHotelPenalty = 20000;
 
 
         /* File structure */
@@ -149,7 +161,7 @@ namespace Thesis {
         public const bool DebugRunInspector = false;
         public const bool DebugRunJsonExporter = false;
         public const bool DebugRunOdataTest = false;
-        public const bool DebugUseSeededSa = false;
+        public const bool DebugUseSeededSa = true;
     }
 
     class SalaryRateInfo {

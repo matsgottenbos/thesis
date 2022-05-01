@@ -39,6 +39,11 @@ namespace Thesis {
             }
         }
 
+        public static string TripToIndexOrUnderscore(Trip trip) {
+            if (trip == null) return "_";
+            return trip.Index.ToString();
+        }
+
         public static string AssignmentToString(Driver[] assignment, SaInfo info) {
             string[] assignmentStrParts = new string[assignment.Length];
             for (int tripIndex = 0; tripIndex < info.Instance.Trips.Length; tripIndex++) {
@@ -87,7 +92,7 @@ namespace Thesis {
                 if (invalidHotelCount > 0) penaltyTypes.Add("IH " + invalidHotelCount);
                 string penaltyTypesStr = string.Join(", ", penaltyTypes);
 
-                penaltyString = string.Format("{0} ({1})", ParseHelper.ToString(penalty, "0"), penaltyTypesStr);
+                penaltyString = string.Format("{0} ({1})", ToString(penalty, "0"), penaltyTypesStr);
             };
             return penaltyString;
         }

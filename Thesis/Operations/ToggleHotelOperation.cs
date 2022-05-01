@@ -28,9 +28,9 @@ namespace Thesis {
             double costDiff, costWithoutPenalty, penaltyDiff;
             int driverWorkedTimeDiff;
             if (isAddition) {
-                (costDiff, costWithoutPenalty, penaltyDiff, driverWorkedTimeDiff, _) = CostDiffCalculator.GetDriverCostDiff(null, null, trip, null, driver, info);
+                (costDiff, costWithoutPenalty, penaltyDiff, driverWorkedTimeDiff, _) = CostDiffCalculator.GetAddHotelDriverCostDiff(trip, driver, info);
             } else {
-                (costDiff, costWithoutPenalty, penaltyDiff, driverWorkedTimeDiff, _) = CostDiffCalculator.GetDriverCostDiff(null, null, null, trip, driver, info);
+                (costDiff, costWithoutPenalty, penaltyDiff, driverWorkedTimeDiff, _) = CostDiffCalculator.GetRemoveHotelDriverCostDiff(trip, driver, info);
             }
 
             this.driverWorkedTimeDiff = driverWorkedTimeDiff;

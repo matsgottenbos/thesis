@@ -161,8 +161,7 @@ namespace Thesis {
                         if (Config.DebugCheckAndLogOperations && shouldDebug) {
                             SaDebugger.GetCurrentCheckedTotal().DriverPathString += prevTrip.Index + "|";
                             if (isHotelStayAfterTrip[prevTrip.Index]) SaDebugger.GetCurrentCheckedTotal().DriverPathString += "H|";
-                            SaDebugger.GetCurrentCheckedTotal().ShiftLengthsWithoutTravel.Add(shiftLengthWithoutTravel);
-                            SaDebugger.GetCurrentCheckedTotal().ShiftLengthsWithTravel.Add(shiftLengthWithTravel);
+                            SaDebugger.GetCurrentCheckedTotal().ShiftLengths.Add((shiftLengthWithoutTravel, shiftLengthWithTravel));
                             SaDebugger.GetCurrentCheckedTotal().RestTimes.Add(restTime);
                         }
                         #endif
@@ -171,11 +170,37 @@ namespace Thesis {
                     prevTrip = searchTrip;
                 }
 
-                // End final shift
+                /* End final shift */
                 totalShiftCount++;
-                (int lastShiftLengthWithoutTravel, int lastShiftLengthWithTravel) = driver.ShiftLengthWithCustomPickup(shiftFirstTrip, prevTrip, parkingTrip);
+
+                // Get travel time before
+                int lastShiftTravelTimeBefore;
+                if (beforeHotelTrip == null) {
+                    // No hotel stay before
+                    lastShiftTravelTimeBefore = driver.HomeTravelTimeToStart(shiftFirstTrip);
+                } else {
+                    // Hotel stay before
+                    lastShiftTravelTimeBefore = info.Instance.HalfTravelTimeViaHotel(beforeHotelTrip, shiftFirstTrip);
+                }
+
+                // Get driving time
+                int lastShiftLengthWithoutTravel = info.Instance.DrivingTime(shiftFirstTrip, prevTrip);
+                float lastShiftDrivingCost = driver.DrivingCost(shiftFirstTrip, prevTrip);
                 totalWorkedTime += lastShiftLengthWithoutTravel;
-                totalCostWithoutPenalty += driver.ShiftCostWithCustomPickup(shiftFirstTrip, prevTrip, parkingTrip);
+
+                // Get travel time after and rest time
+                int lastShiftTravelTimeAfter = info.Instance.CarTravelTime(prevTrip, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
+
+                // Get shift length
+                int lastShiftTravelTime = lastShiftTravelTimeBefore + lastShiftTravelTimeAfter;
+                int lastShiftLengthWithTravel = lastShiftLengthWithoutTravel + lastShiftTravelTime;
+
+                // Get shift cost
+                float lastShiftTravelCost = driver.GetPaidTravelCost(lastShiftTravelTime);
+                float lastShiftShiftCost = lastShiftDrivingCost + lastShiftTravelCost;
+                totalCostWithoutPenalty += lastShiftShiftCost;
+
+                // Check shift length
                 int lastShiftLengthViolation = Math.Max(0, lastShiftLengthWithoutTravel - Config.MaxShiftLengthWithoutTravel) + Math.Max(0, lastShiftLengthWithTravel - Config.MaxShiftLengthWithTravel);
                 if (lastShiftLengthViolation > 0) {
                     totalShiftLengthViolationCount++;
@@ -191,11 +216,11 @@ namespace Thesis {
                 if (Config.DebugCheckAndLogOperations && shouldDebug) {
                     SaDebugger.GetCurrentCheckedTotal().DriverPathString += prevTrip.Index;
                     if (isHotelStayAfterTrip[prevTrip.Index]) SaDebugger.GetCurrentCheckedTotal().DriverPathString += "-H";
-                    SaDebugger.GetCurrentCheckedTotal().ShiftLengthsWithoutTravel.Add(lastShiftLengthWithoutTravel);
-                    SaDebugger.GetCurrentCheckedTotal().ShiftLengthsWithTravel.Add(lastShiftLengthWithTravel);
+                    SaDebugger.GetCurrentCheckedTotal().ShiftLengths.Add((lastShiftLengthWithoutTravel, lastShiftLengthWithTravel));
                 }
                 #endif
 
+                /* Full-path checks */
                 // Check driver worked time
                 totalContractTimeViolation = driver.GetTotalContractTimeViolation(totalWorkedTime);
                 totalContractTimeViolationCount = totalContractTimeViolation > 0 ? 1 : 0;

@@ -23,8 +23,8 @@ namespace Thesis {
             }
             #endif
 
-            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverPenaltyDiff, int oldDriverWorkedTimeDiff, int oldDriverShiftCountDiff) = CostDiffCalculator.GetDriverCostDiff(trip, null, null, null, oldDriver, info);
-            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverPenaltyDiff, int newDriverWorkedTimeDiff, int newDriverShiftCountDiff) = CostDiffCalculator.GetDriverCostDiff(null, trip, null, null, newDriver, info);
+            (double oldDriverCostDiff, double oldDriverCostWithoutPenaltyDiff, double oldDriverPenaltyDiff, int oldDriverWorkedTimeDiff, int oldDriverShiftCountDiff) = CostDiffCalculator.GetUnassignDriverCostDiff(trip, oldDriver, info);
+            (double newDriverCostDiff, double newDriverCostWithoutPenaltyDiff, double newDriverPenaltyDiff, int newDriverWorkedTimeDiff, int newDriverShiftCountDiff) = CostDiffCalculator.GetAssignDriverCostDiff(trip, newDriver, info);
 
             this.oldDriverWorkedTimeDiff = oldDriverWorkedTimeDiff;
             this.newDriverWorkedTimeDiff = newDriverWorkedTimeDiff;

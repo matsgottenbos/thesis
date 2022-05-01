@@ -128,21 +128,23 @@ namespace Thesis {
                 Console.WriteLine("Max contract time: -");
             }
         }
+
+        public static string ParseValuePairs(List<(int, int)> valuePairs) {
+            return string.Join(" ", valuePairs.Select(valuePair => string.Format("({0}|{1})", valuePair.Item1, valuePair.Item2)));
+        }
     }
 
     class CheckedTotal {
         public readonly TotalInfo Total = new TotalInfo();
         public string DriverPathString = "";
-        public List<int> ShiftLengthsWithoutTravel = new List<int>();
-        public List<int> ShiftLengthsWithTravel = new List<int>();
+        public List<(int, int)> ShiftLengths = new List<(int, int)>();
         public List<int> RestTimes = new List<int>();
 
         public void Log() {
             Console.WriteLine("Driver path: {0}", DriverPathString);
-            Console.WriteLine("Shift lengths without travel: {0}", ParseHelper.ToString(ShiftLengthsWithoutTravel));
-            Console.WriteLine("Shift lengths with travel: {0}", ParseHelper.ToString(ShiftLengthsWithTravel));
+            Console.WriteLine("Shift lengths: {0}", OperationPart.ParseValuePairs(ShiftLengths));
             Console.WriteLine("Rest times: {0}", ParseHelper.ToString(RestTimes));
-            Console.WriteLine("Worked time: {0}", ShiftLengthsWithTravel.Sum());
+            Console.WriteLine("Worked time: {0}", ShiftLengths.Select(shiftLengthPair => shiftLengthPair.Item1).Sum());
             Total.Log();
         }
     }
@@ -237,12 +239,12 @@ namespace Thesis {
     }
 
     class NormalDiff {
-        public Trip FirstRelevantTrip, LastRelevantTrip, OldFirstTrip, NewFirstTrip;
         public double CostDiff, CostWithoutPenaltyDiff, PenaltyDiff;
         public PrecedenceValueChange Precedence;
         public ViolationPairValueChange ShiftLength;
         public ViolationValueChange RestTime, ContractTime, ShiftCount;
         public HotelValueChange Hotels;
+        public string RelevantRangeInfo;
 
         public NormalDiff(bool shouldReverse, Driver driver, SaInfo info) {
             Precedence = new PrecedenceValueChange("Precedence", shouldReverse, driver, info);
@@ -273,7 +275,7 @@ namespace Thesis {
         }
 
         public void Log() {
-            Console.WriteLine("First relevant trip: {0}; Last relevant trip: {1}; Old first trip: {2}; New first trip: {3}", GetTripString(FirstRelevantTrip), GetTripString(LastRelevantTrip), GetTripString(OldFirstTrip), GetTripString(NewFirstTrip));
+            Console.WriteLine(RelevantRangeInfo);
             LogValue("Cost diff", CostDiff);
             LogValue("Cost without penalty diff", CostWithoutPenaltyDiff);
             LogValue("Penalty diff", PenaltyDiff);
@@ -463,13 +465,9 @@ namespace Thesis {
         }
 
         public override void Log() {
-            LogStringDiff("value", ParseValuePairs(oldValuePairs), ParseValuePairs(newValuePairs));
+            LogStringDiff("value", OperationPart.ParseValuePairs(oldValuePairs), OperationPart.ParseValuePairs(newValuePairs));
             LogIntDiff("violation count", OldViolationCount, NewViolationCount);
             LogIntDiff("violation amount", OldViolationAmount, NewViolationAmount);
-        }
-
-        string ParseValuePairs(List<(int, int)> valuePairs) {
-            return string.Join(" ", valuePairs.Select(valuePair => string.Format("({0}, {1})", valuePair.Item1, valuePair.Item2)));
         }
     }
 }
