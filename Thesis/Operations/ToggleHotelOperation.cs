@@ -24,7 +24,7 @@ namespace Thesis {
                 SaDebugger.GetCurrentOperation().Description = string.Format(templateStr, trip.Index, driver.GetId());
             }
             #endif
-            
+
             double costDiff, costWithoutPenalty, penaltyDiff;
             int driverWorkedTimeDiff;
             if (isAddition) {

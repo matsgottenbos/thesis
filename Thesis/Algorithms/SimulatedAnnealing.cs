@@ -27,6 +27,20 @@ namespace Thesis {
             // Create a random assignment
             (info.Assignment, info.ExternalDriverCountsByType) = GetInitialAssignment();
 
+            // Determine driver paths
+            info.DriverPaths = new List<Trip>[info.Instance.AllDrivers.Length];
+            info.DriverPathIndices = new int[info.Instance.Trips.Length];
+            for (int driverIndex = 0; driverIndex < info.Instance.AllDrivers.Length; driverIndex++) {
+                info.DriverPaths[driverIndex] = new List<Trip>();
+            }
+            for (int tripIndex = 0; tripIndex < info.Instance.Trips.Length; tripIndex++) {
+                Trip trip = info.Instance.Trips[tripIndex];
+                Driver driver = info.Assignment[tripIndex];
+                List<Trip> driverPath = info.DriverPaths[driver.AllDriversIndex];
+                info.DriverPathIndices[trip.Index] = driverPath.Count;
+                driverPath.Add(trip);
+            }
+
             #if DEBUG
             // Initialise debugger
             if (Config.DebugCheckAndLogOperations) {
@@ -146,9 +160,10 @@ namespace Thesis {
             string bestCostString = bestInfo.Assignment == null ? "" : ParseHelper.ToString(bestInfo.Cost, "0.0");
             Console.WriteLine("# {0,4}    Cycle: {1,3}    Best cost: {2,10}    Cost: {3,10}    Temp: {4,5}    Penalty: {5,6}", ParseHelper.LargeNumToString(info.IterationNum), info.CycleNum, bestCostString, ParseHelper.ToString(info.CostWithoutPenalty, "0.0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.GetPenaltyString(info));
 
-            // Temp
-            Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriversWorkedTime));
-            Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(info.DriversShiftCounts));
+            if (Config.DebugSaLogAdditionalInfo) {
+                Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriversWorkedTime));
+                Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(info.DriversShiftCounts));
+            }
 
             if (Config.DebugSaLogCurrentSolution) {
                 Console.WriteLine("Current solution: {0}", ParseHelper.AssignmentToString(info.Assignment, info));
@@ -243,5 +258,5 @@ namespace Thesis {
         }
     }
 
-    
+
 }

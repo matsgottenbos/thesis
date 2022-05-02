@@ -114,16 +114,16 @@ namespace Thesis {
         //public const float SaEndCycleTemperature = 30f;
 
         // SA parameters (Excel)
-        public const int SaIterationCount = 20000000;
-        //public const int SaIterationCount = 500000000;
+        //public const int SaIterationCount = 20000000;
+        public const int SaIterationCount = 200000000;
         public const int SaCheckCostFrequency = 100000;
         public const int SaLogFrequency = 1000000;
         public const int SaParameterUpdateFrequency = 100000;
         public const float SaInitialTemperature = 5000f;
         public const float SaCycleInitialTemperatureMin = 500f;
         public const float SaCycleInitialTemperatureMax = 7000f;
-        //public const float SaTemperatureReductionFactor = 0.99f;
-        public const float SaTemperatureReductionFactor = 0.97f;
+        public const float SaTemperatureReductionFactor = 0.99f;
+        //public const float SaTemperatureReductionFactor = 0.97f;
         public const float SaEndCycleTemperature = 300f;
 
         // Operation probabilities
@@ -158,10 +158,11 @@ namespace Thesis {
         // Debug
         public const bool DebugCheckAndLogOperations = false;
         public const bool DebugSaLogCurrentSolution = false;
+        public const bool DebugSaLogAdditionalInfo = false;
         public const bool DebugRunInspector = false;
         public const bool DebugRunJsonExporter = false;
         public const bool DebugRunOdataTest = false;
-        public const bool DebugUseSeededSa = true;
+        public const bool DebugUseSeededSa = false;
     }
 
     class SalaryRateInfo {

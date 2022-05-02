@@ -26,7 +26,7 @@ namespace Thesis {
                 Driver driver = info.Instance.AllDrivers[driverIndex];
 
                 (double driverCost, double driverCostWithoutPenalty, double driverPenalty, int driverWorkedTime, int driverShiftCount, int precedenceViolationCount, int shiftLengthViolationCount, int restTimeViolationCount, int contractTimeViolationCount, int shiftCountViolationAmount, int invalidHotelCount) = GetDriverPathCost(driverPath, info.IsHotelStayAfterTrip, driver, info, false);
-                 
+
                 cost += driverCost;
                 costWithoutPenalty += driverCostWithoutPenalty;
                 penalty += driverPenalty;

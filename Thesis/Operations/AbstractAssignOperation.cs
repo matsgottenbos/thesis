@@ -35,7 +35,7 @@ namespace Thesis {
         }
 
         public override void Execute() {
-            info.Assignment[trip.Index] = newDriver;
+            info.ReassignTrip(trip, oldDriver, newDriver);
             info.DriversWorkedTime[oldDriver.AllDriversIndex] += oldDriverWorkedTimeDiff;
             info.DriversWorkedTime[newDriver.AllDriversIndex] += newDriverWorkedTimeDiff;
             info.DriversShiftCounts[oldDriver.AllDriversIndex] += oldDriverShiftCountDiff;

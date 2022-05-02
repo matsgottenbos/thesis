@@ -244,7 +244,7 @@ namespace Thesis {
         public ViolationPairValueChange ShiftLength;
         public ViolationValueChange RestTime, ContractTime, ShiftCount;
         public HotelValueChange Hotels;
-        public string RelevantRangeInfo;
+        public string DriverPathString, RelevantRangeInfo;
 
         public NormalDiff(bool shouldReverse, Driver driver, SaInfo info) {
             Precedence = new PrecedenceValueChange("Precedence", shouldReverse, driver, info);
@@ -253,7 +253,7 @@ namespace Thesis {
             ContractTime = new ViolationValueChange("CT", false, driver, info, (workedHours, driver) => driver.GetTotalContractTimeViolation(workedHours));
             ShiftCount = new ViolationValueChange("SC", false, driver, info, (shiftCount, _) => Math.Max(0, shiftCount - Config.DriverMaxShiftCount));
             Hotels = new HotelValueChange("Hotel", shouldReverse, driver, info);
-    }
+        }
 
         public TotalInfo ToTotal() {
             return new TotalInfo(true) {
@@ -275,6 +275,7 @@ namespace Thesis {
         }
 
         public void Log() {
+            Console.WriteLine("Driver path: {0}", DriverPathString);
             Console.WriteLine(RelevantRangeInfo);
             LogValue("Cost diff", CostDiff);
             LogValue("Cost without penalty diff", CostWithoutPenaltyDiff);

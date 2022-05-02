@@ -40,8 +40,8 @@ namespace Thesis {
         }
 
         public override void Execute() {
-            info.Assignment[trip2.Index] = driver1;
-            info.Assignment[trip1.Index] = driver2;
+            info.ReassignTrip(trip1, driver1, driver2);
+            info.ReassignTrip(trip2, driver2, driver1);
             info.DriversWorkedTime[driver1.AllDriversIndex] += driver1WorkedTimeDiff;
             info.DriversWorkedTime[driver2.AllDriversIndex] += driver2WorkedTimeDiff;
             info.DriversShiftCounts[driver1.AllDriversIndex] += driver1ShiftCountDiff;

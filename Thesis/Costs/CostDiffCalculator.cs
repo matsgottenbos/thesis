@@ -7,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class CostDiffCalculator {
-        static string GetRangeString(Trip firstRelevantTrip, Trip lastRelevantTrip, Trip tripAfterRange) {
-            return string.Format("{0}--{1}|{2}", ParseHelper.TripToIndexOrUnderscore(firstRelevantTrip), ParseHelper.TripToIndexOrUnderscore(lastRelevantTrip), ParseHelper.TripToIndexOrUnderscore(tripAfterRange));
+        static string GetRangeString(Trip firstRelevantTrip, Trip lastRelevantTrip) {
+            return string.Format("{0}--{1}", ParseHelper.TripToIndexOrUnderscore(firstRelevantTrip), ParseHelper.TripToIndexOrUnderscore(lastRelevantTrip));
         }
 
-        static string GetNormalRangeInfo(Trip firstRelevantTrip, Trip lastRelevantTrip, Trip tripAfterRange) {
-            return "Relevant range: " + GetRangeString(firstRelevantTrip, lastRelevantTrip, tripAfterRange);
+        static string GetNormalRangeInfo(Trip firstRelevantTrip, Trip lastRelevantTrip) {
+            return "Relevant range: " + GetRangeString(firstRelevantTrip, lastRelevantTrip);
         }
+
+
+        /* Operation cost diffs */
 
         public static (double, double, double, int, int) GetUnassignDriverCostDiff(Trip unassignedTrip, Driver driver, SaInfo info) {
             #if DEBUG
@@ -22,13 +25,14 @@ namespace Thesis {
             }
             #endif
 
-            (Trip firstRelevantTrip, Trip lastRelevantTrip, Trip tripAfterRange) = GetTripRelevantRange(unassignedTrip, driver, info);
+            List<Trip> driverPath = info.DriverPaths[driver.AllDriversIndex];
+            (Trip firstRelevantTrip, Trip lastRelevantTrip) = GetTripRelevantRange(unassignedTrip, driverPath, info);
             Func<Trip, bool> newIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index];
-            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = GetRangeCostDiffWithUnassign(firstRelevantTrip, lastRelevantTrip, tripAfterRange, info.DriversWorkedTime[driver.AllDriversIndex], info.DriversShiftCounts[driver.AllDriversIndex], unassignedTrip, newIsHotelAfterTrip, driver, info);
+            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = GetRangeCostDiffWithUnassign(firstRelevantTrip, lastRelevantTrip, info.DriversWorkedTime[driver.AllDriversIndex], info.DriversShiftCounts[driver.AllDriversIndex], unassignedTrip, newIsHotelAfterTrip, driver, driverPath, info);
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
-                string relevantRangeInfo = GetNormalRangeInfo(firstRelevantTrip, lastRelevantTrip, tripAfterRange);
+                string relevantRangeInfo = GetNormalRangeInfo(firstRelevantTrip, lastRelevantTrip);
                 CheckErrors(costDiff, costWithoutPenaltyDiff, penaltyDiff, relevantRangeInfo, unassignedTrip, null, null, null, driver, info);
             }
             #endif
@@ -43,13 +47,14 @@ namespace Thesis {
             }
             #endif
 
-            (Trip firstRelevantTrip, Trip lastRelevantTrip, Trip tripAfterRange) = GetTripRelevantRange(assignedTrip, driver, info);
+            List<Trip> driverPath = info.DriverPaths[driver.AllDriversIndex];
+            (Trip firstRelevantTrip, Trip lastRelevantTrip) = GetTripRelevantRangeWithAssign(assignedTrip, driverPath, info);
             Func<Trip, bool> newIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index];
-            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = GetRangeCostDiffWithAssign(firstRelevantTrip, lastRelevantTrip, tripAfterRange, info.DriversWorkedTime[driver.AllDriversIndex], info.DriversShiftCounts[driver.AllDriversIndex], assignedTrip, newIsHotelAfterTrip, driver, info);
+            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = GetRangeCostDiffWithAssign(firstRelevantTrip, lastRelevantTrip, info.DriversWorkedTime[driver.AllDriversIndex], info.DriversShiftCounts[driver.AllDriversIndex], assignedTrip, newIsHotelAfterTrip, driver, driverPath, info);
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
-                string relevantRangeInfo = GetNormalRangeInfo(firstRelevantTrip, lastRelevantTrip, tripAfterRange);
+                string relevantRangeInfo = GetNormalRangeInfo(firstRelevantTrip, lastRelevantTrip);
                 CheckErrors(costDiff, costWithoutPenaltyDiff, penaltyDiff, relevantRangeInfo, null, assignedTrip, null, null, driver, info);
             }
             #endif
@@ -64,40 +69,29 @@ namespace Thesis {
             }
             #endif
 
-            (Trip unassignFirstRelevantTrip, Trip unassignLastRelevantTrip, Trip unassignTripAfterRange) = GetTripRelevantRange(unassignedTrip, driver, info);
-            (Trip assignFirstRelevantTrip, Trip assignLastRelevantTrip, Trip assignTripAfterRange) = GetTripRelevantRange(assignedTrip, driver, info);
+            List<Trip> driverPath = info.DriverPaths[driver.AllDriversIndex];
+            (Trip unassignFirstRelevantTrip, Trip unassignLastRelevantTrip) = GetTripRelevantRange(unassignedTrip, driverPath, info);
+            (Trip assignFirstRelevantTrip, Trip assignLastRelevantTrip) = GetTripRelevantRangeWithAssign(assignedTrip, driverPath, info);
 
             #if DEBUG
             string unassignRangeString, assignRangeString;
             if (Config.DebugCheckAndLogOperations) {
-                unassignRangeString = GetRangeString(unassignFirstRelevantTrip, unassignLastRelevantTrip, unassignTripAfterRange);
-                assignRangeString = GetRangeString(assignFirstRelevantTrip, assignLastRelevantTrip, assignTripAfterRange);
+                unassignRangeString = GetRangeString(unassignFirstRelevantTrip, unassignLastRelevantTrip);
+                assignRangeString = GetRangeString(assignFirstRelevantTrip, assignLastRelevantTrip);
             }
             #endif
 
             if (unassignLastRelevantTrip.Index >= assignFirstRelevantTrip.Index) {
                 // Overlap, so calculate diff together
-                Trip combinedFirstRelevantTrip;
-                if (unassignFirstRelevantTrip.Index < assignFirstRelevantTrip.Index) {
-                    combinedFirstRelevantTrip = unassignFirstRelevantTrip;
-                } else {
-                    combinedFirstRelevantTrip = assignFirstRelevantTrip;
-                }
-                Trip combinedLastRelevantTrip, combinedTripAfterRange;
-                if (unassignLastRelevantTrip.Index > assignLastRelevantTrip.Index) {
-                    combinedLastRelevantTrip = unassignLastRelevantTrip;
-                    combinedTripAfterRange = unassignTripAfterRange;
-                } else {
-                    combinedLastRelevantTrip = assignLastRelevantTrip;
-                    combinedTripAfterRange = assignTripAfterRange;
-                }
+                Trip combinedFirstRelevantTrip = unassignFirstRelevantTrip.Index < assignFirstRelevantTrip.Index ? unassignFirstRelevantTrip : assignFirstRelevantTrip;
+                Trip combinedLastRelevantTrip = unassignLastRelevantTrip.Index > assignLastRelevantTrip.Index ? unassignLastRelevantTrip : assignLastRelevantTrip;
                 Func<Trip, bool> combinedNewIsDriverTrip = (Trip trip) => info.Assignment[trip.Index] == driver && trip != unassignedTrip || trip == assignedTrip;
                 Func<Trip, bool> combinedNewIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index];
-                (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = GetRangeCostDiffWithSwap(combinedFirstRelevantTrip, combinedLastRelevantTrip, combinedTripAfterRange, info.DriversWorkedTime[driver.AllDriversIndex], info.DriversShiftCounts[driver.AllDriversIndex], unassignedTrip, assignedTrip, combinedNewIsHotelAfterTrip, driver, info);
+                (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = GetRangeCostDiffWithSwap(combinedFirstRelevantTrip, combinedLastRelevantTrip, info.DriversWorkedTime[driver.AllDriversIndex], info.DriversShiftCounts[driver.AllDriversIndex], unassignedTrip, assignedTrip, combinedNewIsHotelAfterTrip, driver, driverPath, info);
 
                 #if DEBUG
                 if (Config.DebugCheckAndLogOperations) {
-                    string combinedRangeString = GetRangeString(combinedFirstRelevantTrip, combinedLastRelevantTrip, combinedTripAfterRange);
+                    string combinedRangeString = GetRangeString(combinedFirstRelevantTrip, combinedLastRelevantTrip);
                     string relevantRangeInfo = string.Format("Unassign relevant range: {0}; Assign relevant range: {1}; Combined relevant range: {2}", unassignRangeString, assignRangeString, combinedRangeString);
                     CheckErrors(costDiff, costWithoutPenaltyDiff, penaltyDiff, relevantRangeInfo, unassignedTrip, assignedTrip, null, null, driver, info);
                 }
@@ -110,13 +104,13 @@ namespace Thesis {
                 Func<Trip, bool> unassignNewIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index];
                 int oldFullWorkedTime = info.DriversWorkedTime[driver.AllDriversIndex];
                 int oldFullShiftCount = info.DriversShiftCounts[driver.AllDriversIndex];
-                (double unassignCostDiff, double unassignCostWithoutPenaltyDiff, double unassignPenaltyDiff, int unassignWorkedTimeDiff, int unassignShiftCountDiff) = GetRangeCostDiffWithUnassign(unassignFirstRelevantTrip, unassignLastRelevantTrip, unassignTripAfterRange, oldFullWorkedTime, oldFullShiftCount, unassignedTrip, unassignNewIsHotelAfterTrip, driver, info);
+                (double unassignCostDiff, double unassignCostWithoutPenaltyDiff, double unassignPenaltyDiff, int unassignWorkedTimeDiff, int unassignShiftCountDiff) = GetRangeCostDiffWithUnassign(unassignFirstRelevantTrip, unassignLastRelevantTrip, oldFullWorkedTime, oldFullShiftCount, unassignedTrip, unassignNewIsHotelAfterTrip, driver, driverPath, info);
 
                 // Assign diff
                 Func<Trip, bool> assignNewIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index];
                 int fullWorkedTimeAfterUnassign = oldFullWorkedTime + unassignWorkedTimeDiff;
                 int fullShiftCountAfterUnassign = oldFullShiftCount + unassignShiftCountDiff;
-                (double assignCostDiff, double assignCostWithoutPenaltyDiff, double assignPenaltyDiff, int assignWorkedTimeDiff, int assignShiftCountDiff) = GetRangeCostDiffWithAssign(assignFirstRelevantTrip, assignLastRelevantTrip, assignTripAfterRange, fullWorkedTimeAfterUnassign, fullShiftCountAfterUnassign, assignedTrip, assignNewIsHotelAfterTrip, driver, info);
+                (double assignCostDiff, double assignCostWithoutPenaltyDiff, double assignPenaltyDiff, int assignWorkedTimeDiff, int assignShiftCountDiff) = GetRangeCostDiffWithAssign(assignFirstRelevantTrip, assignLastRelevantTrip, fullWorkedTimeAfterUnassign, fullShiftCountAfterUnassign, assignedTrip, assignNewIsHotelAfterTrip, driver, driverPath, info);
 
                 // Total diff
                 double costDiff = unassignCostDiff + assignCostDiff;
@@ -143,13 +137,14 @@ namespace Thesis {
             }
             #endif
 
-            (Trip firstRelevantTrip, Trip lastRelevantTrip, Trip tripAfterRange) = GetTripRelevantRange(addedHotelTrip, driver, info);
+            List<Trip> driverPath = info.DriverPaths[driver.AllDriversIndex];
+            (Trip firstRelevantTrip, Trip lastRelevantTrip) = GetTripRelevantRange(addedHotelTrip, driverPath, info);
             Func<Trip, bool> newIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index] || trip == addedHotelTrip;
-            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = GetRangeCostDiff(firstRelevantTrip, lastRelevantTrip, tripAfterRange, info.DriversWorkedTime[driver.AllDriversIndex], info.DriversShiftCounts[driver.AllDriversIndex], newIsHotelAfterTrip, driver, info);
+            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = GetRangeCostDiff(firstRelevantTrip, lastRelevantTrip, info.DriversWorkedTime[driver.AllDriversIndex], info.DriversShiftCounts[driver.AllDriversIndex], newIsHotelAfterTrip, driver, driverPath, info);
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
-                string relevantRangeInfo = GetNormalRangeInfo(firstRelevantTrip, lastRelevantTrip, tripAfterRange);
+                string relevantRangeInfo = GetNormalRangeInfo(firstRelevantTrip, lastRelevantTrip);
                 CheckErrors(costDiff, costWithoutPenaltyDiff, penaltyDiff, relevantRangeInfo, null, null, addedHotelTrip, null, driver, info);
             }
             #endif
@@ -164,13 +159,14 @@ namespace Thesis {
             }
             #endif
 
-            (Trip firstRelevantTrip, Trip lastRelevantTrip, Trip tripAfterRange) = GetTripRelevantRange(removedHotelTrip, driver, info);
+            List<Trip> driverPath = info.DriverPaths[driver.AllDriversIndex];
+            (Trip firstRelevantTrip, Trip lastRelevantTrip) = GetTripRelevantRange(removedHotelTrip, driverPath, info);
             Func<Trip, bool> newIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index] && trip != removedHotelTrip;
-            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = GetRangeCostDiff(firstRelevantTrip, lastRelevantTrip, tripAfterRange, info.DriversWorkedTime[driver.AllDriversIndex], info.DriversShiftCounts[driver.AllDriversIndex], newIsHotelAfterTrip, driver, info);
+            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = GetRangeCostDiff(firstRelevantTrip, lastRelevantTrip, info.DriversWorkedTime[driver.AllDriversIndex], info.DriversShiftCounts[driver.AllDriversIndex], newIsHotelAfterTrip, driver, driverPath, info);
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
-                string relevantRangeInfo = GetNormalRangeInfo(firstRelevantTrip, lastRelevantTrip, tripAfterRange);
+                string relevantRangeInfo = GetNormalRangeInfo(firstRelevantTrip, lastRelevantTrip);
                 CheckErrors(costDiff, costWithoutPenaltyDiff, penaltyDiff, relevantRangeInfo, null, null, null, removedHotelTrip, driver, info);
             }
             #endif
@@ -178,41 +174,90 @@ namespace Thesis {
             return (costDiff, costWithoutPenaltyDiff, penaltyDiff, workedTimeDiff, shiftCountDiff);
         }
 
-        static (Trip, Trip, Trip) GetTripRelevantRange(Trip trip, Driver driver, SaInfo info) {
+
+        /* Relevant range */
+
+        static (Trip, Trip) GetTripRelevantRange(Trip trip, List<Trip> driverPath, SaInfo info) {
+            if (driverPath.Count == 0) return (trip, trip);
+            (Trip firstTripInternal, Trip prevShiftLastTrip) = AssignmentHelper.GetFirstTripInternalAndPrevShiftTrip(trip, driverPath, info);
+            (Trip lastTripInternal, Trip nextShiftFirstTrip) = AssignmentHelper.GetLastTripInternalAndNextShiftTrip(trip, driverPath, info);
+            return GetTripRelevantRange(trip, firstTripInternal, prevShiftLastTrip, lastTripInternal, nextShiftFirstTrip, driverPath, info);
+        }
+
+        static (Trip, Trip) GetTripRelevantRangeWithAssign(Trip assignedTrip, List<Trip> driverPath, SaInfo info) {
+            if (driverPath.Count == 0) return (null, null);
+
+            int pathTripIndex = AssignmentHelper.GetAssignedPathTripIndexBefore(assignedTrip, driverPath);
+            (Trip firstTripInternal, Trip prevShiftLastTrip) = AssignmentHelper.GetFirstTripInternalAndPrevShiftTrip(assignedTrip, pathTripIndex, driverPath, info);
+            (Trip lastTripInternal, Trip nextShiftFirstTrip) = AssignmentHelper.GetLastTripInternalAndNextShiftTrip(assignedTrip, pathTripIndex + 1, driverPath, info);
+
+            (Trip firstRelevantTrip, Trip lastRelevantTrip) = GetTripRelevantRange(assignedTrip, firstTripInternal, prevShiftLastTrip, lastTripInternal, nextShiftFirstTrip, driverPath, info);
+
+            // Ensure first and last trips are not the assigned trip; this can only happen if before the first or after the last trip in the path, respectively
+            if (firstRelevantTrip == assignedTrip) firstRelevantTrip = driverPath[0];
+            else if (lastRelevantTrip == assignedTrip) lastRelevantTrip = driverPath[driverPath.Count - 1];
+
+            return (firstRelevantTrip, lastRelevantTrip);
+        }
+
+        static (Trip, Trip) GetTripRelevantRange(Trip trip, Trip firstTripInternal, Trip prevShiftLastTrip, Trip lastTripInternal, Trip nextShiftFirstTrip, List<Trip> driverPath, SaInfo info) {
             // If this trip is the first in shift, first relevant trip is the first trip connected to the *previous* shift by hotel stays
             // Else, first relevant trip is the first trip connected to the *current* shift by hotel stays
-            (Trip firstTripInternal, Trip prevShiftLastTrip) = AssignmentHelper.GetFirstTripInternalAndPrevShiftTrip(trip, driver, info);
             bool isFirstTripInShift = firstTripInternal == trip;
             if (prevShiftLastTrip != null) {
                 if (isFirstTripInShift) {
-                    (firstTripInternal, prevShiftLastTrip) = AssignmentHelper.GetFirstTripInternalAndPrevShiftTrip(prevShiftLastTrip, driver, info);
+                    (firstTripInternal, prevShiftLastTrip) = AssignmentHelper.GetFirstTripInternalAndPrevShiftTrip(prevShiftLastTrip, driverPath, info);
                 }
                 while (prevShiftLastTrip != null && info.IsHotelStayAfterTrip[prevShiftLastTrip.Index]) {
-                    (firstTripInternal, prevShiftLastTrip) = AssignmentHelper.GetFirstTripInternalAndPrevShiftTrip(prevShiftLastTrip, driver, info);
+                    (firstTripInternal, prevShiftLastTrip) = AssignmentHelper.GetFirstTripInternalAndPrevShiftTrip(prevShiftLastTrip, driverPath, info);
                 }
             }
 
             // If this trip is the first or last in shift, last relevant trip is the last trip connected to the next shift by hotel stays
             // Else, last relevant trip is last trip of shift
-            (Trip lastTripInternal, Trip nextShiftFirstTrip) = AssignmentHelper.GetLastTripInternalAndNextShiftTrip(trip, driver, info);
             if ((isFirstTripInShift || lastTripInternal == trip) && nextShiftFirstTrip != null) {
-                (lastTripInternal, nextShiftFirstTrip) = AssignmentHelper.GetLastTripInternalAndNextShiftTrip(nextShiftFirstTrip, driver, info);
+                (lastTripInternal, nextShiftFirstTrip) = AssignmentHelper.GetLastTripInternalAndNextShiftTrip(nextShiftFirstTrip, driverPath, info);
                 while (nextShiftFirstTrip != null && info.IsHotelStayAfterTrip[lastTripInternal.Index]) {
-                    (lastTripInternal, nextShiftFirstTrip) = AssignmentHelper.GetLastTripInternalAndNextShiftTrip(nextShiftFirstTrip, driver, info);
+                    (lastTripInternal, nextShiftFirstTrip) = AssignmentHelper.GetLastTripInternalAndNextShiftTrip(nextShiftFirstTrip, driverPath, info);
                 }
             }
 
             // Return first and last trip in range, as well as trip before and after range
-            return (firstTripInternal, lastTripInternal, nextShiftFirstTrip);
+            return (firstTripInternal, lastTripInternal);
         }
 
 
         /* Range cost diff */
+        static (double, double, double, int, int) GetRangeCostDiff(Trip rangeFirstTrip, Trip rangeLastTrip, int oldFullWorkedTime, int oldFullShiftCount, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+            (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = GetRangeCost(rangeFirstTrip, rangeLastTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
+            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldFullWorkedTime, oldFullShiftCount, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
+        }
 
-        static (double, double, double, int, int) GetRangeCostDiffFromNewCosts(Trip rangeFirstTrip, Trip rangeLastTrip, Trip tripAfterRange, int oldFullWorkedTime, int oldFullShiftCount, double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount, Driver driver, SaInfo info) {
+        static (double, double, double, int, int) GetRangeCostDiffWithUnassign(Trip rangeFirstTrip, Trip rangeLastTrip, int oldFullWorkedTime, int oldFullShiftCount, Trip unassignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+            (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = GetRangeCostWithUnassign(rangeFirstTrip, rangeLastTrip, unassignedTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
+            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldFullWorkedTime, oldFullShiftCount, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
+        }
+
+        static (double, double, double, int, int) GetRangeCostDiffWithAssign(Trip rangeFirstTrip, Trip rangeLastTrip, int oldFullWorkedTime, int oldFullShiftCount, Trip assignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+            (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = GetRangeCostWithAssign(rangeFirstTrip, rangeLastTrip, assignedTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
+            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldFullWorkedTime, oldFullShiftCount, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
+        }
+
+        static (double, double, double, int, int) GetRangeCostDiffWithSwap(Trip rangeFirstTrip, Trip rangeLastTrip, int oldFullWorkedTime, int oldFullShiftCount, Trip unassignedTrip, Trip assignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+            (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = GetRangeCostWithSwap(rangeFirstTrip, rangeLastTrip, unassignedTrip, assignedTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
+            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldFullWorkedTime, oldFullShiftCount, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
+        }
+
+        static (double, double, double, int, int) GetRangeCostDiffFromNewCosts(Trip rangeFirstTrip, Trip rangeLastTrip, int oldFullWorkedTime, int oldFullShiftCount, double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount, Driver driver, List<Trip> driverPath, SaInfo info) {
+            #if DEBUG
+            if (Config.DebugCheckAndLogOperations) {
+                SaDebugger.GetCurrentNormalDiff().DriverPathString = ParseHelper.DriverPathToString(driverPath, info);
+            }
+            #endif
+
             // Old range cost
             Func<Trip, bool> oldIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index];
-            (double oldCostWithoutPenalty, double oldPenalty, int oldWorkedTime, int oldShiftCount) = GetRangeCost(rangeFirstTrip, rangeLastTrip, tripAfterRange, oldIsHotelAfterTrip, driver, info, false);
+            (double oldCostWithoutPenalty, double oldPenalty, int oldWorkedTime, int oldShiftCount) = GetRangeCost(rangeFirstTrip, rangeLastTrip, oldIsHotelAfterTrip, driver, driverPath, info, false);
             oldPenalty += driver.GetContractTimePenalty(oldFullWorkedTime, false);
             oldPenalty += PenaltyHelper.GetShiftCountPenalty(oldFullShiftCount, false);
             double oldCost = oldCostWithoutPenalty + oldPenalty;
@@ -234,57 +279,36 @@ namespace Thesis {
             return (costDiff, costWithoutPenaltyDiff, penaltyDiff, workedTimeDiff, shiftCountDiff);
         }
 
-        static (double, double, double, int, int) GetRangeCostDiff(Trip rangeFirstTrip, Trip rangeLastTrip, Trip tripAfterRange, int oldFullWorkedTime, int oldFullShiftCount, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, SaInfo info) {
-            (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = GetRangeCost(rangeFirstTrip, rangeLastTrip, tripAfterRange, newIsHotelAfterTrip, driver, info, true);
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, tripAfterRange, oldFullWorkedTime, oldFullShiftCount, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, info);
-        }
-
-        static (double, double, double, int, int) GetRangeCostDiffWithUnassign(Trip rangeFirstTrip, Trip rangeLastTrip, Trip tripAfterRange, int oldFullWorkedTime, int oldFullShiftCount, Trip unassignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, SaInfo info) {
-            (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = GetRangeCostWithUnassign(rangeFirstTrip, rangeLastTrip, tripAfterRange, unassignedTrip, newIsHotelAfterTrip, driver, info, true);
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, tripAfterRange, oldFullWorkedTime, oldFullShiftCount, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, info);
-        }
-
-        static (double, double, double, int, int) GetRangeCostDiffWithAssign(Trip rangeFirstTrip, Trip rangeLastTrip, Trip tripAfterRange, int oldFullWorkedTime, int oldFullShiftCount, Trip assignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, SaInfo info) {
-            (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = GetRangeCostWithAssign(rangeFirstTrip, rangeLastTrip, tripAfterRange, assignedTrip, newIsHotelAfterTrip, driver, info, true);
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, tripAfterRange, oldFullWorkedTime, oldFullShiftCount, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, info);
-        }
-
-        static (double, double, double, int, int) GetRangeCostDiffWithSwap(Trip rangeFirstTrip, Trip rangeLastTrip, Trip tripAfterRange, int oldFullWorkedTime, int oldFullShiftCount, Trip unassignedTrip, Trip assignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, SaInfo info) {
-            (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = GetRangeCostWithSwap(rangeFirstTrip, rangeLastTrip, tripAfterRange, unassignedTrip, assignedTrip, newIsHotelAfterTrip, driver, info, true);
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, tripAfterRange, oldFullWorkedTime, oldFullShiftCount, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, info);
-        }
-
 
         /* Range costs */
 
         /** Get costs of part of a driver's path; penalty are computed with without worked time and shift count penalties */
-        static (double, double, int, int) GetRangeCost(Trip rangeFirstTrip, Trip rangeLastTrip, Trip tripAfterRange, Func<Trip, bool> isHotelAfterTrip, Driver driver, SaInfo info, bool debugIsNew) {
+        static (double, double, int, int) GetRangeCost(Trip rangeFirstTrip, Trip rangeLastTrip, Func<Trip, bool> isHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info, bool debugIsNew) {
+            if (driverPath.Count == 0) return (0, 0, 0, 0);
+            int rangeFirstPathIndex = info.DriverPathIndices[rangeFirstTrip.Index];
+            int rangeLastPathIndex = info.DriverPathIndices[rangeLastTrip.Index];
             double costWithoutPenalty = 0, partialPenalty = 0;
             int workedTime = 0, shiftCount = 0;
-            Trip shiftFirstTrip = null, parkingTrip = null, prevTrip = null, beforeHotelTrip = null;
-            for (int tripIndex = rangeFirstTrip.Index; tripIndex <= rangeLastTrip.Index; tripIndex++) {
-                Trip searchTrip = info.Instance.Trips[tripIndex];
-                if (info.Assignment[searchTrip.Index] != driver) continue;
-
-                if (shiftFirstTrip == null) {
-                    shiftFirstTrip = parkingTrip = prevTrip = searchTrip;
-                    continue;
-                }
-
+            Trip shiftFirstTrip = rangeFirstTrip, parkingTrip = rangeFirstTrip, prevTrip = rangeFirstTrip, beforeHotelTrip = null;
+            for (int pathTripIndex = rangeFirstPathIndex + 1; pathTripIndex <= rangeLastPathIndex; pathTripIndex++) {
+                Trip searchTrip = driverPath[pathTripIndex];
                 ProcessDriverTrip(searchTrip, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref partialPenalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
             }
+            Trip tripAfterRange = rangeLastPathIndex + 1 < driverPath.Count ? driverPath[rangeLastPathIndex + 1] : null;
             ProcessDriverEndRange(tripAfterRange, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref partialPenalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
             return (costWithoutPenalty, partialPenalty, workedTime, shiftCount);
         }
 
         /** Get costs of part of a driver's path where a trip is unassigned; penalty are computed with without worked time and shift count penalties */
-        static (double, double, int, int) GetRangeCostWithUnassign(Trip rangeFirstTrip, Trip rangeLastTrip, Trip tripAfterRange, Trip unassignedTrip, Func<Trip, bool> isHotelAfterTrip, Driver driver, SaInfo info, bool debugIsNew) {
+        static (double, double, int, int) GetRangeCostWithUnassign(Trip rangeFirstTrip, Trip rangeLastTrip, Trip unassignedTrip, Func<Trip, bool> isHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info, bool debugIsNew) {
+            int rangeFirstPathIndex = info.DriverPathIndices[rangeFirstTrip.Index];
+            int rangeLastPathIndex = info.DriverPathIndices[rangeLastTrip.Index];
             double costWithoutPenalty = 0, partialPenalty = 0;
             int workedTime = 0, shiftCount = 0;
             Trip shiftFirstTrip = null, parkingTrip = null, prevTrip = null, beforeHotelTrip = null;
-            for (int tripIndex = rangeFirstTrip.Index; tripIndex <= rangeLastTrip.Index; tripIndex++) {
-                Trip searchTrip = info.Instance.Trips[tripIndex];
-                if (info.Assignment[searchTrip.Index] != driver || searchTrip == unassignedTrip) continue;
+            for (int pathTripIndex = rangeFirstPathIndex; pathTripIndex <= rangeLastPathIndex; pathTripIndex++) {
+                Trip searchTrip = driverPath[pathTripIndex];
+                if (searchTrip == unassignedTrip) continue;
 
                 if (shiftFirstTrip == null) {
                     shiftFirstTrip = parkingTrip = prevTrip = searchTrip;
@@ -293,18 +317,32 @@ namespace Thesis {
 
                 ProcessDriverTrip(searchTrip, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref partialPenalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
             }
+            Trip tripAfterRange = rangeLastPathIndex + 1 < driverPath.Count ? driverPath[rangeLastPathIndex + 1] : null;
             ProcessDriverEndRange(tripAfterRange, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref partialPenalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
             return (costWithoutPenalty, partialPenalty, workedTime, shiftCount);
         }
 
         /** Get costs of part of a driver's path where a trip is assigned; penalty are computed with without worked time and shift count penalties */
-        static (double, double, int, int) GetRangeCostWithAssign(Trip rangeFirstTrip, Trip rangeLastTrip, Trip tripAfterRange, Trip assignedTrip, Func<Trip, bool> isHotelAfterTrip, Driver driver, SaInfo info, bool debugIsNew) {
+        static (double, double, int, int) GetRangeCostWithAssign(Trip rangeFirstTrip, Trip rangeLastTrip, Trip assignedTrip, Func<Trip, bool> isHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info, bool debugIsNew) {
             double costWithoutPenalty = 0, partialPenalty = 0;
             int workedTime = 0, shiftCount = 0;
             Trip shiftFirstTrip = null, parkingTrip = null, prevTrip = null, beforeHotelTrip = null;
-            for (int tripIndex = rangeFirstTrip.Index; tripIndex <= rangeLastTrip.Index; tripIndex++) {
-                Trip searchTrip = info.Instance.Trips[tripIndex];
-                if (info.Assignment[searchTrip.Index] != driver && searchTrip != assignedTrip) continue;
+
+            if (driverPath.Count == 0) {
+                // New path only contains assigned trip
+                shiftFirstTrip = parkingTrip = prevTrip = assignedTrip;
+                ProcessDriverEndRange(null, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref partialPenalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
+                return (costWithoutPenalty, partialPenalty, workedTime, shiftCount);
+            }
+
+            int rangeFirstPathIndex = info.DriverPathIndices[rangeFirstTrip.Index];
+            int rangeLastPathIndex = info.DriverPathIndices[rangeLastTrip.Index];
+
+            // Process part before assigned trip
+            int pathTripIndex;
+            for (pathTripIndex = rangeFirstPathIndex; pathTripIndex <= rangeLastPathIndex; pathTripIndex++) {
+                Trip searchTrip = driverPath[pathTripIndex];
+                if (searchTrip.Index > assignedTrip.Index) break;
 
                 if (shiftFirstTrip == null) {
                     shiftFirstTrip = parkingTrip = prevTrip = searchTrip;
@@ -313,18 +351,47 @@ namespace Thesis {
 
                 ProcessDriverTrip(searchTrip, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref partialPenalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
             }
+
+            // Process assigned trip
+            if (shiftFirstTrip == null) {
+                shiftFirstTrip = parkingTrip = prevTrip = assignedTrip;
+            } else {
+                ProcessDriverTrip(assignedTrip, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref partialPenalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
+            }
+
+            // Process part after assigned trip
+            for (; pathTripIndex <= rangeLastPathIndex; pathTripIndex++) {
+                Trip searchTrip = driverPath[pathTripIndex];
+                ProcessDriverTrip(searchTrip, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref partialPenalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
+            }
+
+            Trip tripAfterRange = rangeLastPathIndex + 1 < driverPath.Count ? driverPath[rangeLastPathIndex + 1] : null;
             ProcessDriverEndRange(tripAfterRange, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref partialPenalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
             return (costWithoutPenalty, partialPenalty, workedTime, shiftCount);
         }
 
         /** Get costs of part of a driver's path where a trip is unassigned and another assigned; penalty are computed with without worked time and shift count penalties */
-        static (double, double, int, int) GetRangeCostWithSwap(Trip rangeFirstTrip, Trip rangeLastTrip, Trip tripAfterRange, Trip unassignedTrip, Trip assignedTrip, Func<Trip, bool> isHotelAfterTrip, Driver driver, SaInfo info, bool debugIsNew) {
+        static (double, double, int, int) GetRangeCostWithSwap(Trip rangeFirstTrip, Trip rangeLastTrip, Trip unassignedTrip, Trip assignedTrip, Func<Trip, bool> isHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info, bool debugIsNew) {
             double costWithoutPenalty = 0, partialPenalty = 0;
             int workedTime = 0, shiftCount = 0;
             Trip shiftFirstTrip = null, parkingTrip = null, prevTrip = null, beforeHotelTrip = null;
-            for (int tripIndex = rangeFirstTrip.Index; tripIndex <= rangeLastTrip.Index; tripIndex++) {
-                Trip searchTrip = info.Instance.Trips[tripIndex];
-                if (info.Assignment[searchTrip.Index] != driver && searchTrip != assignedTrip || searchTrip == unassignedTrip) continue;
+
+            if (driverPath.Count == 0) {
+                // New path only contains assigned trip
+                ProcessDriverTrip(assignedTrip, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref partialPenalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
+                ProcessDriverEndRange(null, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref partialPenalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
+                return (costWithoutPenalty, partialPenalty, workedTime, shiftCount);
+            }
+
+            int rangeFirstPathIndex = info.DriverPathIndices[rangeFirstTrip.Index];
+            int rangeLastPathIndex = info.DriverPathIndices[rangeLastTrip.Index];
+
+            // Process part before assigned trip
+            int pathTripIndex;
+            for (pathTripIndex = rangeFirstPathIndex ; pathTripIndex <= rangeLastPathIndex; pathTripIndex++) {
+                Trip searchTrip = driverPath[pathTripIndex];
+                if (searchTrip.Index > assignedTrip.Index) break;
+                if (searchTrip == unassignedTrip) continue;
 
                 if (shiftFirstTrip == null) {
                     shiftFirstTrip = parkingTrip = prevTrip = searchTrip;
@@ -333,6 +400,22 @@ namespace Thesis {
 
                 ProcessDriverTrip(searchTrip, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref partialPenalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
             }
+
+            // Process assigned trip
+            if (shiftFirstTrip == null) {
+                shiftFirstTrip = parkingTrip = prevTrip = assignedTrip;
+            } else {
+                ProcessDriverTrip(assignedTrip, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref partialPenalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
+            }
+
+            // Process part after assigned trip
+            for (; pathTripIndex <= rangeLastPathIndex; pathTripIndex++) {
+                Trip searchTrip = driverPath[pathTripIndex];
+                if (searchTrip == unassignedTrip) continue;
+                ProcessDriverTrip(searchTrip, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref partialPenalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
+            }
+
+            Trip tripAfterRange = rangeLastPathIndex + 1 < driverPath.Count ? driverPath[rangeLastPathIndex + 1] : null;
             ProcessDriverEndRange(tripAfterRange, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref partialPenalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
             return (costWithoutPenalty, partialPenalty, workedTime, shiftCount);
         }
@@ -365,7 +448,7 @@ namespace Thesis {
                     // This is the end of the driver path
                     ProcessDriverEndFinalShift(ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref penalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
                 } else {
-                    // This is the end of the range, but not the driver path 
+                    // This is the end of the range, but not the driver path
                     ProcessDriverEndNonFinalShift(tripAfterRange, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref penalty, ref workedTime, ref shiftCount, driver, info, info.Instance, debugIsNew);
                 }
             }
