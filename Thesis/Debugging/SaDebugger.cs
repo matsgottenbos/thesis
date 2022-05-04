@@ -151,7 +151,8 @@ namespace Thesis {
 
     class TotalInfo {
         public double? Cost, CostWithoutPenalty, Penalty;
-        public int? WorkedTime, PrecedenceViolationCount, SlViolationCount, SlViolationAmount, RtViolationCount, RtViolationAmount, CtViolationCount, CtViolationAmount, ScValue, ScViolationAmount, InvalidHotelCount;
+        public DriverInfo DriverInfo;
+        public PenaltyInfo PenaltyInfo;
         readonly bool isDiff;
 
         public TotalInfo(bool isDiff = false) {
@@ -161,20 +162,20 @@ namespace Thesis {
         public void Log(bool shouldLogZeros = true) {
             string diffStr = isDiff ? " diff" : "";
 
-            if (shouldLogZeros || PrecedenceViolationCount.Value != 0) Console.WriteLine("Precedence violation count{0}: {1}", diffStr, PrecedenceViolationCount);
-            if (shouldLogZeros || SlViolationCount.Value != 0) Console.WriteLine("SL violation count{0}: {1}", diffStr, SlViolationCount);
-            if (shouldLogZeros || SlViolationAmount.Value != 0) Console.WriteLine("SL violation amount{0}: {1}", diffStr, SlViolationAmount);
-            if (shouldLogZeros || RtViolationCount.Value != 0) Console.WriteLine("RT violation count{0}: {1}", diffStr, RtViolationCount);
-            if (shouldLogZeros || RtViolationAmount.Value != 0) Console.WriteLine("RT violation amount{0}: {1}", diffStr, RtViolationAmount);
-            if (shouldLogZeros || CtViolationCount.Value != 0) Console.WriteLine("CT violation count{0}: {1}", diffStr, CtViolationCount);
-            if (shouldLogZeros || CtViolationAmount.Value != 0) Console.WriteLine("CT violation amount{0}: {1}", diffStr, CtViolationAmount);
-            if (shouldLogZeros || ScValue.Value != 0) Console.WriteLine("SC value{0}: {1}", diffStr, ScValue);
-            if (shouldLogZeros || ScViolationAmount.Value != 0) Console.WriteLine("SC violation amount{0}: {1}", diffStr, ScViolationAmount);
-            if (shouldLogZeros || InvalidHotelCount.Value != 0) Console.WriteLine("Invalid hotel count{0}: {1}", diffStr, InvalidHotelCount);
+            if (shouldLogZeros || PenaltyInfo.PrecedenceViolationCount != 0) Console.WriteLine("Precedence violation count{0}: {1}", diffStr, PenaltyInfo.PrecedenceViolationCount);
+            if (shouldLogZeros || PenaltyInfo.ShiftLengthViolationCount != 0) Console.WriteLine("SL violation count{0}: {1}", diffStr, PenaltyInfo.ShiftLengthViolationCount);
+            if (shouldLogZeros || PenaltyInfo.ShiftLengthViolation != 0) Console.WriteLine("SL violation amount{0}: {1}", diffStr, PenaltyInfo.RestTimeViolationCount);
+            if (shouldLogZeros || PenaltyInfo.RestTimeViolationCount != 0) Console.WriteLine("RT violation count{0}: {1}", diffStr, PenaltyInfo.RestTimeViolationCount);
+            if (shouldLogZeros || PenaltyInfo.RestTimeViolation != 0) Console.WriteLine("RT violation amount{0}: {1}", diffStr, PenaltyInfo.RestTimeViolation);
+            if (shouldLogZeros || PenaltyInfo.ContractTimeViolationCount != 0) Console.WriteLine("CT violation count{0}: {1}", diffStr, PenaltyInfo.ContractTimeViolationCount);
+            if (shouldLogZeros || PenaltyInfo.ContractTimeViolation != 0) Console.WriteLine("CT violation amount{0}: {1}", diffStr, PenaltyInfo.ContractTimeViolation);
+            if (shouldLogZeros || DriverInfo.ShiftCount != 0) Console.WriteLine("SC value{0}: {1}", diffStr, DriverInfo.ShiftCount);
+            if (shouldLogZeros || PenaltyInfo.ShiftCountViolationAmount != 0) Console.WriteLine("SC violation amount{0}: {1}", diffStr, PenaltyInfo.ShiftCountViolationAmount);
+            if (shouldLogZeros || PenaltyInfo.InvalidHotelCount != 0) Console.WriteLine("Invalid hotel count{0}: {1}", diffStr, PenaltyInfo.InvalidHotelCount);
             if (shouldLogZeros || Math.Abs(Cost.Value) > Config.FloatingPointMargin) Console.WriteLine("Cost{0}: {1}", diffStr, ParseHelper.ToString(Cost.Value));
             if (shouldLogZeros || Math.Abs(CostWithoutPenalty.Value) > Config.FloatingPointMargin) Console.WriteLine("Cost without penalty{0}: {1}", diffStr, ParseHelper.ToString(CostWithoutPenalty.Value));
             if (shouldLogZeros || Math.Abs(Penalty.Value) > Config.FloatingPointMargin) Console.WriteLine("Penalty{0}: {1}", diffStr, ParseHelper.ToString(Penalty.Value));
-            if (shouldLogZeros || WorkedTime.Value != 0) Console.WriteLine("Worked time{0}: {1}", diffStr, WorkedTime.Value);
+            if (shouldLogZeros || DriverInfo.WorkedTime != 0) Console.WriteLine("Worked time{0}: {1}", diffStr, DriverInfo.WorkedTime);
         }
 
         public static bool AreEqual(TotalInfo a, TotalInfo b) {
@@ -182,17 +183,17 @@ namespace Thesis {
                 IsFloatEqual(a.Cost, b.Cost) &&
                 IsFloatEqual(a.CostWithoutPenalty, b.CostWithoutPenalty) &&
                 IsFloatEqual(a.Penalty, b.Penalty) &&
-                a.WorkedTime == b.WorkedTime &&
-                a.PrecedenceViolationCount == b.PrecedenceViolationCount &&
-                a.SlViolationCount == b.SlViolationCount &&
-                a.SlViolationAmount == b.SlViolationAmount &&
-                a.RtViolationCount == b.RtViolationCount &&
-                a.RtViolationAmount == b.RtViolationAmount &&
-                a.CtViolationCount == b.CtViolationCount &&
-                a.CtViolationAmount == b.CtViolationAmount &&
-                a.ScValue == b.ScValue &&
-                a.ScViolationAmount == b.ScViolationAmount &&
-                a.InvalidHotelCount == b.InvalidHotelCount
+                a.DriverInfo.WorkedTime == b.DriverInfo.WorkedTime &&
+                a.DriverInfo.ShiftCount == b.DriverInfo.ShiftCount &&
+                a.PenaltyInfo.PrecedenceViolationCount == b.PenaltyInfo.PrecedenceViolationCount &&
+                a.PenaltyInfo.ShiftLengthViolationCount == b.PenaltyInfo.ShiftLengthViolationCount &&
+                a.PenaltyInfo.ShiftLengthViolation == b.PenaltyInfo.ShiftLengthViolation &&
+                a.PenaltyInfo.RestTimeViolationCount == b.PenaltyInfo.RestTimeViolationCount &&
+                a.PenaltyInfo.RestTimeViolation == b.PenaltyInfo.RestTimeViolation &&
+                a.PenaltyInfo.ContractTimeViolationCount == b.PenaltyInfo.ContractTimeViolationCount &&
+                a.PenaltyInfo.ContractTimeViolation == b.PenaltyInfo.ContractTimeViolation &&
+                a.PenaltyInfo.ShiftCountViolationAmount == b.PenaltyInfo.ShiftCountViolationAmount &&
+                a.PenaltyInfo.InvalidHotelCount == b.PenaltyInfo.InvalidHotelCount
             );
         }
         static bool IsFloatEqual(double? a, double? b) {
@@ -204,17 +205,21 @@ namespace Thesis {
                 Cost = -a.Cost,
                 CostWithoutPenalty = -a.CostWithoutPenalty,
                 Penalty = -a.Penalty,
-                WorkedTime = -a.WorkedTime,
-                PrecedenceViolationCount = -a.PrecedenceViolationCount,
-                SlViolationCount = -a.SlViolationCount,
-                SlViolationAmount = -a.SlViolationAmount,
-                RtViolationCount = -a.RtViolationCount,
-                RtViolationAmount = -a.RtViolationAmount,
-                CtViolationCount = -a.CtViolationCount,
-                CtViolationAmount = -a.CtViolationAmount,
-                ScValue = -a.ScValue,
-                ScViolationAmount = -a.ScViolationAmount,
-                InvalidHotelCount = -a.InvalidHotelCount,
+                DriverInfo = new DriverInfo() {
+                    WorkedTime = -a.DriverInfo.WorkedTime,
+                    ShiftCount = -a.DriverInfo.ShiftCount,
+                },
+                PenaltyInfo = new PenaltyInfo() {
+                    PrecedenceViolationCount = -a.PenaltyInfo.PrecedenceViolationCount,
+                    ShiftLengthViolationCount = -a.PenaltyInfo.ShiftLengthViolationCount,
+                    ShiftLengthViolation = -a.PenaltyInfo.ShiftLengthViolation,
+                    RestTimeViolationCount = -a.PenaltyInfo.RestTimeViolationCount,
+                    RestTimeViolation = -a.PenaltyInfo.RestTimeViolation,
+                    ContractTimeViolationCount = -a.PenaltyInfo.ContractTimeViolationCount,
+                    ContractTimeViolation = -a.PenaltyInfo.ContractTimeViolation,
+                    ShiftCountViolationAmount = -a.PenaltyInfo.ShiftCountViolationAmount,
+                    InvalidHotelCount = -a.PenaltyInfo.InvalidHotelCount,
+                },
             };
         }
         public static TotalInfo operator +(TotalInfo a, TotalInfo b) {
@@ -222,17 +227,21 @@ namespace Thesis {
                 Cost = a.Cost + b.Cost,
                 CostWithoutPenalty = a.CostWithoutPenalty + b.CostWithoutPenalty,
                 Penalty = a.Penalty + b.Penalty,
-                WorkedTime = a.WorkedTime + b.WorkedTime,
-                PrecedenceViolationCount = a.PrecedenceViolationCount + b.PrecedenceViolationCount,
-                SlViolationCount = a.SlViolationCount + b.SlViolationCount,
-                SlViolationAmount = a.SlViolationAmount + b.SlViolationAmount,
-                RtViolationCount = a.RtViolationCount + b.RtViolationCount,
-                RtViolationAmount = a.RtViolationAmount + b.RtViolationAmount,
-                CtViolationCount = a.CtViolationCount + b.CtViolationCount,
-                CtViolationAmount = a.CtViolationAmount + b.CtViolationAmount,
-                ScValue = a.ScValue + b.ScValue,
-                ScViolationAmount = a.ScViolationAmount + b.ScViolationAmount,
-                InvalidHotelCount = a.InvalidHotelCount + b.InvalidHotelCount,
+                DriverInfo = new DriverInfo() {
+                    WorkedTime = a.DriverInfo.WorkedTime + b.DriverInfo.WorkedTime,
+                    ShiftCount = a.DriverInfo.ShiftCount + b.DriverInfo.ShiftCount,
+                },
+                PenaltyInfo = new PenaltyInfo() {
+                    PrecedenceViolationCount = a.PenaltyInfo.PrecedenceViolationCount + b.PenaltyInfo.PrecedenceViolationCount,
+                    ShiftLengthViolationCount = a.PenaltyInfo.ShiftLengthViolationCount + b.PenaltyInfo.ShiftLengthViolationCount,
+                    ShiftLengthViolation = a.PenaltyInfo.ShiftLengthViolation + b.PenaltyInfo.ShiftLengthViolation,
+                    RestTimeViolationCount = a.PenaltyInfo.RestTimeViolationCount + b.PenaltyInfo.RestTimeViolationCount,
+                    RestTimeViolation = a.PenaltyInfo.RestTimeViolation + b.PenaltyInfo.RestTimeViolation,
+                    ContractTimeViolationCount = a.PenaltyInfo.ContractTimeViolationCount + b.PenaltyInfo.ContractTimeViolationCount,
+                    ContractTimeViolation = a.PenaltyInfo.ContractTimeViolation + b.PenaltyInfo.ContractTimeViolation,
+                    ShiftCountViolationAmount = a.PenaltyInfo.ShiftCountViolationAmount + b.PenaltyInfo.ShiftCountViolationAmount,
+                    InvalidHotelCount = a.PenaltyInfo.InvalidHotelCount + b.PenaltyInfo.InvalidHotelCount,
+                },
             };
         }
         public static TotalInfo operator -(TotalInfo a, TotalInfo b) => a + -b;
@@ -260,17 +269,21 @@ namespace Thesis {
                 Cost = CostDiff,
                 CostWithoutPenalty = CostWithoutPenaltyDiff,
                 Penalty = PenaltyDiff,
-                WorkedTime = ContractTime.GetValueSumDiff(),
-                PrecedenceViolationCount = Precedence.NewViolations.Count - Precedence.OldViolations.Count,
-                SlViolationCount = ShiftLength.NewViolationCount - ShiftLength.OldViolationCount,
-                SlViolationAmount = ShiftLength.NewViolationAmount - ShiftLength.OldViolationAmount,
-                RtViolationCount = RestTime.NewViolationCount - RestTime.OldViolationCount,
-                RtViolationAmount = RestTime.NewViolationAmount - RestTime.OldViolationAmount,
-                CtViolationCount = ContractTime.NewViolationCount - ContractTime.OldViolationCount,
-                CtViolationAmount = ContractTime.NewViolationAmount - ContractTime.OldViolationAmount,
-                ScValue = ShiftCount.GetValueSumDiff(),
-                ScViolationAmount = ShiftCount.NewViolationAmount - ShiftCount.OldViolationAmount,
-                InvalidHotelCount = Hotels.NewViolations.Count - Hotels.OldViolations.Count,
+                DriverInfo = new DriverInfo() {
+                    WorkedTime = ContractTime.GetValueSumDiff(),
+                    ShiftCount = ShiftCount.GetValueSumDiff(),
+                },
+                PenaltyInfo = new PenaltyInfo() {
+                    PrecedenceViolationCount = Precedence.NewViolations.Count - Precedence.OldViolations.Count,
+                    ShiftLengthViolationCount = ShiftLength.NewViolationCount - ShiftLength.OldViolationCount,
+                    ShiftLengthViolation = ShiftLength.NewViolationAmount - ShiftLength.OldViolationAmount,
+                    RestTimeViolationCount = RestTime.NewViolationCount - RestTime.OldViolationCount,
+                    RestTimeViolation = RestTime.NewViolationAmount - RestTime.OldViolationAmount,
+                    ContractTimeViolationCount = ContractTime.NewViolationCount - ContractTime.OldViolationCount,
+                    ContractTimeViolation = ContractTime.NewViolationAmount - ContractTime.OldViolationAmount,
+                    ShiftCountViolationAmount = ShiftCount.NewViolationAmount - ShiftCount.OldViolationAmount,
+                    InvalidHotelCount = Hotels.NewViolations.Count - Hotels.OldViolations.Count,
+                },
             };
         }
 

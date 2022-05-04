@@ -78,18 +78,18 @@ namespace Thesis {
         }
 
         public static string GetPenaltyString(SaInfo info) {
-            return GetPenaltyString(info.Penalty, info.PrecedenceViolationCount, info.ShiftLengthViolationCount, info.RestTimeViolationCount, info.ContractTimeViolationCount, info.ShiftCountViolationAmount, info.InvalidHotelCount);
+            return GetPenaltyString(info.Penalty, info.PenaltyInfo);
         }
-        public static string GetPenaltyString(double penalty, int precedenceViolationCount, int shiftLengthViolationCount, int restTimeViolationCount, int contractTimeViolationCount, int shiftCountViolationAmount, int invalidHotelCount) {
+        public static string GetPenaltyString(double penalty, PenaltyInfo penaltyInfo) {
             string penaltyString = "-";
             if (penalty > 0) {
                 List<string> penaltyTypes = new List<string>();
-                if (precedenceViolationCount > 0) penaltyTypes.Add("Pr " + precedenceViolationCount);
-                if (shiftLengthViolationCount > 0) penaltyTypes.Add("SL " + shiftLengthViolationCount);
-                if (restTimeViolationCount > 0) penaltyTypes.Add("RT " + restTimeViolationCount);
-                if (contractTimeViolationCount > 0) penaltyTypes.Add("CT " + contractTimeViolationCount);
-                if (shiftCountViolationAmount > 0) penaltyTypes.Add("SC " + shiftCountViolationAmount);
-                if (invalidHotelCount > 0) penaltyTypes.Add("IH " + invalidHotelCount);
+                if (penaltyInfo.PrecedenceViolationCount > 0) penaltyTypes.Add("Pr " + penaltyInfo.PrecedenceViolationCount);
+                if (penaltyInfo.ShiftLengthViolationCount > 0) penaltyTypes.Add("SL " + penaltyInfo.ShiftLengthViolationCount);
+                if (penaltyInfo.RestTimeViolationCount > 0) penaltyTypes.Add("RT " + penaltyInfo.RestTimeViolationCount);
+                if (penaltyInfo.ContractTimeViolationCount > 0) penaltyTypes.Add("CT " + penaltyInfo.ContractTimeViolationCount);
+                if (penaltyInfo.ShiftCountViolationAmount > 0) penaltyTypes.Add("SC " + penaltyInfo.ShiftCountViolationAmount);
+                if (penaltyInfo.InvalidHotelCount > 0) penaltyTypes.Add("IH " + penaltyInfo.InvalidHotelCount);
                 string penaltyTypesStr = string.Join(", ", penaltyTypes);
 
                 penaltyString = string.Format("{0} ({1})", ToString(penalty, "0"), penaltyTypesStr);

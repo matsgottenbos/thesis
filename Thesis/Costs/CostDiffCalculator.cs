@@ -18,7 +18,7 @@ namespace Thesis {
 
         /* Operation cost diffs */
 
-        public static (double, double, double, int, int) GetUnassignDriverCostDiff(Trip unassignedTrip, Driver driver, SaInfo info) {
+        public static (double, double, double, int, int) GetUnassignDriverCostDiff(Trip unassignedTrip, Driver driver, DriverInfo oldDriverInfo, SaInfo info) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentOperation().StartPart(string.Format("Unassign trip {0} from driver {1}", unassignedTrip.Index, driver.GetId()), false, driver);
@@ -28,7 +28,7 @@ namespace Thesis {
             List<Trip> driverPath = info.DriverPaths[driver.AllDriversIndex];
             (Trip firstRelevantTrip, Trip lastRelevantTrip) = GetTripRelevantRange(unassignedTrip, driverPath, info);
             Func<Trip, bool> newIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index];
-            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = RangeCostDiffCalculator.GetRangeCostDiffWithUnassign(firstRelevantTrip, lastRelevantTrip, info.DriversWorkedTime[driver.AllDriversIndex], info.DriversShiftCounts[driver.AllDriversIndex], unassignedTrip, newIsHotelAfterTrip, driver, driverPath, info);
+            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = RangeCostDiffCalculator.GetRangeCostDiffWithUnassign(firstRelevantTrip, lastRelevantTrip, oldDriverInfo, unassignedTrip, newIsHotelAfterTrip, driver, driverPath, info);
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
@@ -40,7 +40,7 @@ namespace Thesis {
             return (costDiff, costWithoutPenaltyDiff, penaltyDiff, workedTimeDiff, shiftCountDiff);
         }
 
-        public static (double, double, double, int, int) GetAssignDriverCostDiff(Trip assignedTrip, Driver driver, SaInfo info) {
+        public static (double, double, double, int, int) GetAssignDriverCostDiff(Trip assignedTrip, Driver driver, DriverInfo oldDriverInfo, SaInfo info) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentOperation().StartPart(string.Format("Assign trip {0} to driver {1}", assignedTrip.Index, driver.GetId()), false, driver);
@@ -50,7 +50,7 @@ namespace Thesis {
             List<Trip> driverPath = info.DriverPaths[driver.AllDriversIndex];
             (Trip firstRelevantTrip, Trip lastRelevantTrip) = GetTripRelevantRangeWithAssign(assignedTrip, driverPath, info);
             Func<Trip, bool> newIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index];
-            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = RangeCostDiffCalculator.GetRangeCostDiffWithAssign(firstRelevantTrip, lastRelevantTrip, info.DriversWorkedTime[driver.AllDriversIndex], info.DriversShiftCounts[driver.AllDriversIndex], assignedTrip, newIsHotelAfterTrip, driver, driverPath, info);
+            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = RangeCostDiffCalculator.GetRangeCostDiffWithAssign(firstRelevantTrip, lastRelevantTrip, oldDriverInfo, assignedTrip, newIsHotelAfterTrip, driver, driverPath, info);
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
@@ -62,7 +62,7 @@ namespace Thesis {
             return (costDiff, costWithoutPenaltyDiff, penaltyDiff, workedTimeDiff, shiftCountDiff);
         }
 
-        public static (double, double, double, int, int) GetSwapDriverCostDiff(Trip unassignedTrip, Trip assignedTrip, Driver driver, SaInfo info) {
+        public static (double, double, double, int, int) GetSwapDriverCostDiff(Trip unassignedTrip, Trip assignedTrip, Driver driver, DriverInfo oldDriverInfo, SaInfo info) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentOperation().StartPart(string.Format("Unassign trip {0} from and assign trip {1} to driver {2}", unassignedTrip.Index, assignedTrip.Index, driver.GetId()), false, driver);
@@ -87,7 +87,7 @@ namespace Thesis {
                 Trip combinedLastRelevantTrip = unassignLastRelevantTrip.Index > assignLastRelevantTrip.Index ? unassignLastRelevantTrip : assignLastRelevantTrip;
                 Func<Trip, bool> combinedNewIsDriverTrip = (Trip trip) => info.Assignment[trip.Index] == driver && trip != unassignedTrip || trip == assignedTrip;
                 Func<Trip, bool> combinedNewIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index];
-                (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = RangeCostDiffCalculator.GetRangeCostDiffWithSwap(combinedFirstRelevantTrip, combinedLastRelevantTrip, info.DriversWorkedTime[driver.AllDriversIndex], info.DriversShiftCounts[driver.AllDriversIndex], unassignedTrip, assignedTrip, combinedNewIsHotelAfterTrip, driver, driverPath, info);
+                (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = RangeCostDiffCalculator.GetRangeCostDiffWithSwap(combinedFirstRelevantTrip, combinedLastRelevantTrip, oldDriverInfo, unassignedTrip, assignedTrip, combinedNewIsHotelAfterTrip, driver, driverPath, info);
 
                 #if DEBUG
                 if (Config.DebugCheckAndLogOperations) {
@@ -102,14 +102,12 @@ namespace Thesis {
                 // No overlap, so calculate diffs separately
                 // Unassign diff
                 Func<Trip, bool> unassignNewIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index];
-                int oldFullWorkedTime = info.DriversWorkedTime[driver.AllDriversIndex];
-                int oldFullShiftCount = info.DriversShiftCounts[driver.AllDriversIndex];
-                (double unassignCostDiff, double unassignCostWithoutPenaltyDiff, double unassignPenaltyDiff, int unassignWorkedTimeDiff, int unassignShiftCountDiff) = RangeCostDiffCalculator.GetRangeCostDiffWithUnassign(unassignFirstRelevantTrip, unassignLastRelevantTrip, oldFullWorkedTime, oldFullShiftCount, unassignedTrip, unassignNewIsHotelAfterTrip, driver, driverPath, info);
+                (double unassignCostDiff, double unassignCostWithoutPenaltyDiff, double unassignPenaltyDiff, int unassignWorkedTimeDiff, int unassignShiftCountDiff) = RangeCostDiffCalculator.GetRangeCostDiffWithUnassign(unassignFirstRelevantTrip, unassignLastRelevantTrip, info.DriverInfos[driver.AllDriversIndex], unassignedTrip, unassignNewIsHotelAfterTrip, driver, driverPath, info);
 
                 // Assign diff
                 Func<Trip, bool> assignNewIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index];
-                int fullWorkedTimeAfterUnassign = oldFullWorkedTime + unassignWorkedTimeDiff;
-                int fullShiftCountAfterUnassign = oldFullShiftCount + unassignShiftCountDiff;
+                int fullWorkedTimeAfterUnassign = info.DriverInfos[driver.AllDriversIndex].WorkedTime + unassignWorkedTimeDiff;
+                int fullShiftCountAfterUnassign = info.DriverInfos[driver.AllDriversIndex].ShiftCount + unassignShiftCountDiff;
                 (double assignCostDiff, double assignCostWithoutPenaltyDiff, double assignPenaltyDiff, int assignWorkedTimeDiff, int assignShiftCountDiff) = RangeCostDiffCalculator.GetRangeCostDiffWithAssign(assignFirstRelevantTrip, assignLastRelevantTrip, fullWorkedTimeAfterUnassign, fullShiftCountAfterUnassign, assignedTrip, assignNewIsHotelAfterTrip, driver, driverPath, info);
 
                 // Total diff
@@ -130,7 +128,7 @@ namespace Thesis {
             }
         }
 
-        public static (double, double, double, int, int) GetAddHotelDriverCostDiff(Trip addedHotelTrip, Driver driver, SaInfo info) {
+        public static (double, double, double, int, int) GetAddHotelDriverCostDiff(Trip addedHotelTrip, Driver driver, DriverInfo oldDriverInfo, SaInfo info) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentOperation().StartPart(string.Format("Add hotel after {0} for driver {1}", addedHotelTrip.Index, driver.GetId()), false, driver);
@@ -140,7 +138,7 @@ namespace Thesis {
             List<Trip> driverPath = info.DriverPaths[driver.AllDriversIndex];
             (Trip firstRelevantTrip, Trip lastRelevantTrip) = GetTripRelevantRange(addedHotelTrip, driverPath, info);
             Func<Trip, bool> newIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index] || trip == addedHotelTrip;
-            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = RangeCostDiffCalculator.GetRangeCostDiff(firstRelevantTrip, lastRelevantTrip, info.DriversWorkedTime[driver.AllDriversIndex], info.DriversShiftCounts[driver.AllDriversIndex], newIsHotelAfterTrip, driver, driverPath, info);
+            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = RangeCostDiffCalculator.GetRangeCostDiff(firstRelevantTrip, lastRelevantTrip, oldDriverInfo, newIsHotelAfterTrip, driver, driverPath, info);
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
@@ -152,7 +150,7 @@ namespace Thesis {
             return (costDiff, costWithoutPenaltyDiff, penaltyDiff, workedTimeDiff, shiftCountDiff);
         }
 
-        public static (double, double, double, int, int) GetRemoveHotelDriverCostDiff(Trip removedHotelTrip, Driver driver, SaInfo info) {
+        public static (double, double, double, int, int) GetRemoveHotelDriverCostDiff(Trip removedHotelTrip, Driver driver, DriverInfo oldDriverInfo, SaInfo info) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentOperation().StartPart(string.Format("Remove hotel after {0} for driver {1}", removedHotelTrip.Index, driver.GetId()), false, driver);
@@ -162,7 +160,7 @@ namespace Thesis {
             List<Trip> driverPath = info.DriverPaths[driver.AllDriversIndex];
             (Trip firstRelevantTrip, Trip lastRelevantTrip) = GetTripRelevantRange(removedHotelTrip, driverPath, info);
             Func<Trip, bool> newIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index] && trip != removedHotelTrip;
-            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = RangeCostDiffCalculator.GetRangeCostDiff(firstRelevantTrip, lastRelevantTrip, info.DriversWorkedTime[driver.AllDriversIndex], info.DriversShiftCounts[driver.AllDriversIndex], newIsHotelAfterTrip, driver, driverPath, info);
+            (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff, int workedTimeDiff, int shiftCountDiff) = RangeCostDiffCalculator.GetRangeCostDiff(firstRelevantTrip, lastRelevantTrip, oldDriverInfo, newIsHotelAfterTrip, driver, driverPath, info);
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
@@ -238,7 +236,7 @@ namespace Thesis {
             List<Trip> driverPathBefore = TotalCostCalculator.GetSingleDriverPath(driver, null, info);
 
             // Get total before
-            TotalCostCalculator.GetDriverPathCost(driverPathBefore, info.IsHotelStayAfterTrip, driver, info);
+            TotalCostCalculator.GetDriverPathCost(driverPathBefore, info.IsHotelStayAfterTrip, driver, new PenaltyInfo(), info);
             SaDebugger.GetCurrentOperationPart().FinishCheckBefore();
 
             // Get driver path after
@@ -258,7 +256,7 @@ namespace Thesis {
             if (removedHotel != null) isHotelStayAfterTripAfter[removedHotel.Index] = false;
 
             // Get total after
-            TotalCostCalculator.GetDriverPathCost(driverPathAfter, isHotelStayAfterTripAfter, driver, info);
+            TotalCostCalculator.GetDriverPathCost(driverPathAfter, isHotelStayAfterTripAfter, driver, new PenaltyInfo(), info);
             SaDebugger.GetCurrentOperationPart().FinishCheckAfter();
 
             // Check for errors

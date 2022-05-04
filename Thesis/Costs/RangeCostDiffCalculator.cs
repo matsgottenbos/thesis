@@ -6,24 +6,27 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class RangeCostDiffCalculator {
-        public static (double, double, double, int, int) GetRangeCostDiff(Trip rangeFirstTrip, Trip rangeLastTrip, int oldFullWorkedTime, int oldFullShiftCount, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+        public static (double, double, double, int, int) GetRangeCostDiff(Trip rangeFirstTrip, Trip rangeLastTrip, DriverInfo oldDriverInfo, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
             (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = RangeCostCalculator.GetRangeCost(rangeFirstTrip, rangeLastTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldFullWorkedTime, oldFullShiftCount, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
+            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
         }
 
-        public static (double, double, double, int, int) GetRangeCostDiffWithUnassign(Trip rangeFirstTrip, Trip rangeLastTrip, int oldFullWorkedTime, int oldFullShiftCount, Trip unassignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+        public static (double, double, double, int, int) GetRangeCostDiffWithUnassign(Trip rangeFirstTrip, Trip rangeLastTrip, DriverInfo oldDriverInfo, Trip unassignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
             (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = RangeCostCalculator.GetRangeCostWithUnassign(rangeFirstTrip, rangeLastTrip, unassignedTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldFullWorkedTime, oldFullShiftCount, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
+            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
         }
 
         public static (double, double, double, int, int) GetRangeCostDiffWithAssign(Trip rangeFirstTrip, Trip rangeLastTrip, int oldFullWorkedTime, int oldFullShiftCount, Trip assignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
             (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = RangeCostCalculator.GetRangeCostWithAssign(rangeFirstTrip, rangeLastTrip, assignedTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
             return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldFullWorkedTime, oldFullShiftCount, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
         }
+        public static (double, double, double, int, int) GetRangeCostDiffWithAssign(Trip rangeFirstTrip, Trip rangeLastTrip, DriverInfo oldDriverInfo, Trip assignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+            return GetRangeCostDiffWithAssign(rangeFirstTrip, rangeLastTrip, oldDriverInfo.WorkedTime, oldDriverInfo.ShiftCount, assignedTrip, newIsHotelAfterTrip, driver, driverPath, info); ;
+        }
 
-        public static (double, double, double, int, int) GetRangeCostDiffWithSwap(Trip rangeFirstTrip, Trip rangeLastTrip, int oldFullWorkedTime, int oldFullShiftCount, Trip unassignedTrip, Trip assignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+        public static (double, double, double, int, int) GetRangeCostDiffWithSwap(Trip rangeFirstTrip, Trip rangeLastTrip, DriverInfo oldDriverInfo, Trip unassignedTrip, Trip assignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
             (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = RangeCostCalculator.GetRangeCostWithSwap(rangeFirstTrip, rangeLastTrip, unassignedTrip, assignedTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldFullWorkedTime, oldFullShiftCount, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
+            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
         }
 
         public static (double, double, double, int, int) GetRangeCostDiffFromNewCosts(Trip rangeFirstTrip, Trip rangeLastTrip, int oldFullWorkedTime, int oldFullShiftCount, double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount, Driver driver, List<Trip> driverPath, SaInfo info) {
@@ -55,6 +58,9 @@ namespace Thesis {
             int shiftCountDiff = newShiftCount - oldShiftCount;
 
             return (costDiff, costWithoutPenaltyDiff, penaltyDiff, workedTimeDiff, shiftCountDiff);
+        }
+        public static (double, double, double, int, int) GetRangeCostDiffFromNewCosts(Trip rangeFirstTrip, Trip rangeLastTrip, DriverInfo oldDriverInfo, double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount, Driver driver, List<Trip> driverPath, SaInfo info) {
+            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo.WorkedTime, oldDriverInfo.ShiftCount, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
         }
     }
 }

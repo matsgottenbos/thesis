@@ -301,10 +301,10 @@ namespace Thesis {
             //return true;
         }
 
-        (double, double, double, int[], int[]) GetNodeCost(AssignmentNode node) {
+        (double, double, double, DriverInfo[], PenaltyInfo) GetNodeCost(AssignmentNode node) {
             dummyInfo.Assignment = NodeToAssignment(node);
-            (double cost, double costWithoutPenalty, double penalty, int[] driversWorkedTime, int[] driversShiftCounts, _, _, _, _, _, _) =  TotalCostCalculator.GetAssignmentCost(dummyInfo);
-            return (cost, costWithoutPenalty, penalty, driversWorkedTime, driversShiftCounts);
+            (double cost, double costWithoutPenalty, double penalty, DriverInfo[] driverInfos, PenaltyInfo penaltyInfo) =  TotalCostCalculator.GetAssignmentCost(dummyInfo);
+            return (cost, costWithoutPenalty, penalty, driverInfos, penaltyInfo);
         }
 
         Driver[] NodeToAssignment(AssignmentNode node) {

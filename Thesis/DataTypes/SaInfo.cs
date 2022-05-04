@@ -13,8 +13,10 @@ namespace Thesis {
         public List<Trip>[] DriverPaths;
         public bool[] IsHotelStayAfterTrip;
         public double Cost, CostWithoutPenalty, Penalty;
-        public int[] DriverPathIndices, DriversWorkedTime, DriversShiftCounts, ExternalDriverCountsByType;
-        public int IterationNum, CycleNum, PrecedenceViolationCount, ShiftLengthViolationCount, RestTimeViolationCount, ContractTimeViolationCount, ShiftCountViolationAmount, InvalidHotelCount;
+        public int[] DriverPathIndices, ExternalDriverCountsByType;
+        public DriverInfo[] DriverInfos;
+        public PenaltyInfo PenaltyInfo;
+        public int IterationNum, CycleNum;
         public float Temperature;
 
         public SaInfo(Instance instance, Random rand, XorShiftRandom fastRand) {
@@ -85,5 +87,13 @@ namespace Thesis {
                 }
             }
         }
+    }
+
+    class DriverInfo {
+        public int WorkedTime, ShiftCount, HotelCount, NightShiftCount, WeekendShiftCount;
+    }
+
+    class PenaltyInfo {
+        public int PrecedenceViolationCount, ShiftLengthViolationCount, ShiftLengthViolation, RestTimeViolationCount, RestTimeViolation, ContractTimeViolationCount, ContractTimeViolation, ShiftCountViolationAmount, InvalidHotelCount;
     }
 }

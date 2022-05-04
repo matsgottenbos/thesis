@@ -56,6 +56,14 @@ namespace Thesis {
 
             stopwatch.Restart();
             for (int i = 0; i < 1000000000; i++) {
+                int a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, g = 0, h = 0, i2 = 0, j = 0;
+                DebugMethod4(ref a, ref b, ref c, ref d, ref e, ref f, ref g, ref h, ref i2, ref j);
+            }
+            stopwatch.Stop();
+            Console.WriteLine("Method 4: {0} ms", stopwatch.ElapsedMilliseconds);
+
+            stopwatch.Restart();
+            for (int i = 0; i < 1000000000; i++) {
                 DebugClass debugClass = DebugMethod2();
             }
             stopwatch.Stop();
@@ -63,17 +71,25 @@ namespace Thesis {
 
             stopwatch.Restart();
             for (int i = 0; i < 1000000000; i++) {
-                DebugStruct debugStruct = DebugMethod3();
-            }
-            stopwatch.Stop();
-            Console.WriteLine("Method 3: {0} ms", stopwatch.ElapsedMilliseconds);
-
-            stopwatch.Restart();
-            for (int i = 0; i < 1000000000; i++) {
                 (int a, int b, int c, int d, int e, int f, int g, int h, int i2, int j) = DebugMethod1();
             }
             stopwatch.Stop();
             Console.WriteLine("Method 1: {0} ms", stopwatch.ElapsedMilliseconds);
+
+            stopwatch.Restart();
+            for (int i = 0; i < 1000000000; i++) {
+                int a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, g = 0, h = 0, i2 = 0, j = 0;
+                DebugMethod4(ref a, ref b, ref c, ref d, ref e, ref f, ref g, ref h, ref i2, ref j);
+            }
+            stopwatch.Stop();
+            Console.WriteLine("Method 4: {0} ms", stopwatch.ElapsedMilliseconds);
+
+            stopwatch.Restart();
+            for (int i = 0; i < 1000000000; i++) {
+                DebugStruct debugStruct = DebugMethod3();
+            }
+            stopwatch.Stop();
+            Console.WriteLine("Method 3: {0} ms", stopwatch.ElapsedMilliseconds);
 
             Console.ReadLine();
         }
@@ -122,30 +138,44 @@ namespace Thesis {
             return debugStruct;
         }
 
+        static void DebugMethod4(ref int a, ref int b, ref int c, ref int d, ref int e, ref int f, ref int g, ref int h, ref int i, ref int j) {
+            a = 5;
+            b = 10;
+            c = 15;
+            d = 20;
+            e = 25;
+            f = 30;
+            g = 35;
+            h = 40;
+            i = 45;
+            j = 50;
+        }
+
         void InspectAssignment(string assignmentStr) {
             (info.Assignment, info.IsHotelStayAfterTrip) = ParseHelper.ParseAssignmentString(assignmentStr, instance);
             List<Trip>[] driverPaths = TotalCostCalculator.GetPathPerDriver(info);
 
-            (info.Cost, info.CostWithoutPenalty, info.Penalty, info.DriversWorkedTime, info.DriversShiftCounts, info.PrecedenceViolationCount, info.ShiftLengthViolationCount, info.RestTimeViolationCount, info.ContractTimeViolationCount, info.ShiftCountViolationAmount, info.InvalidHotelCount) = TotalCostCalculator.GetAssignmentCost(info);
+            (info.Cost, info.CostWithoutPenalty, info.Penalty, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
 
             // Log assignment info
             Console.WriteLine("Assignment: {0}", assignmentStr);
             Console.WriteLine("Cost: {0}", ParseHelper.ToString(info.Cost));
             Console.WriteLine("Cost without penalty: {0}", ParseHelper.ToString(info.CostWithoutPenalty));
             Console.WriteLine("Penalty: {0}", ParseHelper.GetPenaltyString(info));
-            Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriversWorkedTime));
-            Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(info.DriversShiftCounts));
-            Console.WriteLine("Sum of worked times: {0}", info.DriversWorkedTime.Sum());
+            Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriverInfos.Select(driver => driver.WorkedTime).ToArray()));
+            Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(info.DriverInfos.Select(driver => driver.ShiftCount).ToArray()));
+            Console.WriteLine("Sum of worked times: {0}", info.DriverInfos.Select(driver => driver.ShiftCount).Sum());
             Console.WriteLine();
 
             // Log driver penalties
             for (int driverIndex = 0; driverIndex < instance.AllDrivers.Length; driverIndex++) {
                 Driver driver = instance.AllDrivers[driverIndex];
                 List<Trip> driverPath = driverPaths[driverIndex];
-                (_, _, double driverPenalty, int driverWorkedTime, int driverShiftCount, int precedenceViolationCount, int shiftLengthViolationCount, int restTimeViolationCount, int contractTimeViolationCount, int shiftCountViolationAmount, int invalidHotelCount) = TotalCostCalculator.GetDriverPathCost(driverPath, info.IsHotelStayAfterTrip, driver, info, false);
+                PenaltyInfo driverPenaltyInfo = new PenaltyInfo();
+                (_, _, double driverPenalty, DriverInfo driverInfo) = TotalCostCalculator.GetDriverPathCost(driverPath, info.IsHotelStayAfterTrip, driver, driverPenaltyInfo, info, false);
 
                 if (driverPenalty > 0) {
-                    Console.WriteLine("Driver {0} penalty: {1}", driver.GetId(), ParseHelper.GetPenaltyString(driverPenalty, precedenceViolationCount, shiftLengthViolationCount, restTimeViolationCount, contractTimeViolationCount, shiftCountViolationAmount, invalidHotelCount));
+                    Console.WriteLine("Driver {0} penalty: {1}", driver.GetId(), ParseHelper.GetPenaltyString(driverPenalty, driverPenaltyInfo));
                 }
             }
             Console.WriteLine();

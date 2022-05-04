@@ -49,7 +49,7 @@ namespace Thesis {
             #endif
 
             // Get cost of initial assignment
-            (info.Cost, info.CostWithoutPenalty, info.Penalty, info.DriversWorkedTime, info.DriversShiftCounts, info.PrecedenceViolationCount, info.ShiftLengthViolationCount, info.RestTimeViolationCount, info.ContractTimeViolationCount, info.ShiftCountViolationAmount, info.InvalidHotelCount) = TotalCostCalculator.GetAssignmentCost(info);
+            (info.Cost, info.CostWithoutPenalty, info.Penalty, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
 
             #if DEBUG
             // Reset iteration in debugger after initial assignment cost
@@ -89,7 +89,7 @@ namespace Thesis {
 
                     if (info.Cost < bestInfo.Cost && info.Penalty < 0.01) {
                         // Check cost to remove floating point imprecisions
-                        (info.Cost, info.CostWithoutPenalty, info.Penalty, info.DriversWorkedTime, info.DriversShiftCounts, _, _, _, _, _, _) = TotalCostCalculator.GetAssignmentCost(info);
+                        (info.Cost, info.CostWithoutPenalty, info.Penalty, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
                         if (info.Penalty > 0.01) throw new Exception("New best solution is invalid");
 
                         if (info.Cost < bestInfo.Cost) {
@@ -113,7 +113,7 @@ namespace Thesis {
                 // Log
                 if (info.IterationNum % Config.SaLogFrequency == 0) {
                     // Check cost to remove floating point imprecisions
-                    (info.Cost, info.CostWithoutPenalty, info.Penalty, info.DriversWorkedTime, info.DriversShiftCounts, info.PrecedenceViolationCount, info.ShiftLengthViolationCount, info.RestTimeViolationCount, info.ContractTimeViolationCount, info.ShiftCountViolationAmount, info.InvalidHotelCount) = TotalCostCalculator.GetAssignmentCost(info);
+                    (info.Cost, info.CostWithoutPenalty, info.Penalty, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
 
                     LogIteration();
                 }
@@ -128,7 +128,7 @@ namespace Thesis {
                         info.Temperature = (float)info.FastRand.NextDouble() * (Config.SaCycleInitialTemperatureMax - Config.SaCycleInitialTemperatureMin) + Config.SaCycleInitialTemperatureMin;
                     }
 
-                    (info.Cost, info.CostWithoutPenalty, info.Penalty, info.DriversWorkedTime, info.DriversShiftCounts, _, _, _, _, _, _) = TotalCostCalculator.GetAssignmentCost(info);
+                    (info.Cost, info.CostWithoutPenalty, info.Penalty, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
                 }
 
                 #if DEBUG
@@ -141,9 +141,9 @@ namespace Thesis {
 
             // Check cost to remove floating point imprecisions
             if (bestInfo.Assignment != null) {
-                (bestInfo.Cost, bestInfo.CostWithoutPenalty, bestInfo.Penalty, bestInfo.DriversWorkedTime, info.DriversShiftCounts, _, _, _, _, _, _) = TotalCostCalculator.GetAssignmentCost(bestInfo);
+                (bestInfo.Cost, bestInfo.CostWithoutPenalty, bestInfo.Penalty, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(bestInfo);
                 if (bestInfo.Penalty > 0.01) throw new Exception("Best solution is invalid");
-                bestInfo.DriversWorkedTime = info.DriversWorkedTime;
+                bestInfo.DriverInfos = info.DriverInfos;
                 bestInfo.ExternalDriverCountsByType = info.ExternalDriverCountsByType;
                 bestInfo.IterationNum = info.IterationNum;
             }
@@ -161,8 +161,8 @@ namespace Thesis {
             Console.WriteLine("# {0,4}    Cycle: {1,3}    Best cost: {2,10}    Cost: {3,10}    Temp: {4,5}    Penalty: {5,6}", ParseHelper.LargeNumToString(info.IterationNum), info.CycleNum, bestCostString, ParseHelper.ToString(info.CostWithoutPenalty, "0.0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.GetPenaltyString(info));
 
             if (Config.DebugSaLogAdditionalInfo) {
-                Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriversWorkedTime));
-                Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(info.DriversShiftCounts));
+                Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriverInfos.Select(driver => driver.WorkedTime).ToArray()));
+                Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(info.DriverInfos.Select(driver => driver.ShiftCount).ToArray()));
             }
 
             if (Config.DebugSaLogCurrentSolution) {
