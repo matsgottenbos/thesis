@@ -7,6 +7,14 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Thesis {
+    class DebugClass {
+        public int a, b, c, d, e, f, g, h, i, j;
+    }
+
+    struct DebugStruct {
+        public int a, b, c, d, e, f, g, h, i, j;
+    }
+
     class DebugInspector {
         readonly Instance instance;
         readonly SaInfo info;
@@ -16,12 +24,102 @@ namespace Thesis {
 
             info = new SaInfo(instance, null, null);
 
-            //List<Trip> driverPath = new List<Trip>() { instance.Trips[1], instance.Trips[5], instance.Trips[19] };
-            //bool[] isHotelStayAfterTrip = new bool[instance.Trips.Length];
-            //isHotelStayAfterTrip[5] = true;
-            //TotalCostCalculator.GetDriverPathCost(driverPath, isHotelStayAfterTrip, instance.AllDrivers[8], info, true);
+            Stopwatch stopwatch = new Stopwatch();
+
+            // Method 1: 16721 ms
+            // Method 2: 8644 ms
+            // Method 3: 10207 ms
+            // Method 2: 8557 ms
+            // Method 3: 10131 ms
+            // Method 1: 15524 ms
+
+            stopwatch.Restart();
+            for (int i = 0; i < 1000000000; i++) {
+                (int a, int b, int c, int d, int e, int f, int g, int h, int i2, int j) = DebugMethod1();
+            }
+            stopwatch.Stop();
+            Console.WriteLine("Method 1: {0} ms", stopwatch.ElapsedMilliseconds);
+
+            stopwatch.Restart();
+            for (int i = 0; i < 1000000000; i++) {
+                DebugClass debugClass = DebugMethod2();
+            }
+            stopwatch.Stop();
+            Console.WriteLine("Method 2: {0} ms", stopwatch.ElapsedMilliseconds);
+
+            stopwatch.Restart();
+            for (int i = 0; i < 1000000000; i++) {
+                DebugStruct debugStruct = DebugMethod3();
+            }
+            stopwatch.Stop();
+            Console.WriteLine("Method 3: {0} ms", stopwatch.ElapsedMilliseconds);
+
+            stopwatch.Restart();
+            for (int i = 0; i < 1000000000; i++) {
+                DebugClass debugClass = DebugMethod2();
+            }
+            stopwatch.Stop();
+            Console.WriteLine("Method 2: {0} ms", stopwatch.ElapsedMilliseconds);
+
+            stopwatch.Restart();
+            for (int i = 0; i < 1000000000; i++) {
+                DebugStruct debugStruct = DebugMethod3();
+            }
+            stopwatch.Stop();
+            Console.WriteLine("Method 3: {0} ms", stopwatch.ElapsedMilliseconds);
+
+            stopwatch.Restart();
+            for (int i = 0; i < 1000000000; i++) {
+                (int a, int b, int c, int d, int e, int f, int g, int h, int i2, int j) = DebugMethod1();
+            }
+            stopwatch.Stop();
+            Console.WriteLine("Method 1: {0} ms", stopwatch.ElapsedMilliseconds);
 
             Console.ReadLine();
+        }
+
+        static (int, int, int, int, int, int, int, int, int, int) DebugMethod1() {
+            int a = 5;
+            int b = 10;
+            int c = 15;
+            int d = 20;
+            int e = 25;
+            int f = 30;
+            int g = 35;
+            int h = 40;
+            int i = 45;
+            int j = 50;
+            return (a, b, c, d, e, f, g, h, i, j);
+        }
+
+        static DebugClass DebugMethod2() {
+            DebugClass debugClass = new DebugClass();
+            debugClass.a = 5;
+            debugClass.b = 10;
+            debugClass.c = 15;
+            debugClass.d = 20;
+            debugClass.e = 25;
+            debugClass.f = 30;
+            debugClass.g = 35;
+            debugClass.h = 40;
+            debugClass.i = 45;
+            debugClass.j = 50;
+            return debugClass;
+        }
+
+        static DebugStruct DebugMethod3() {
+            DebugStruct debugStruct = new DebugStruct();
+            debugStruct.a = 5;
+            debugStruct.b = 10;
+            debugStruct.c = 15;
+            debugStruct.d = 20;
+            debugStruct.e = 25;
+            debugStruct.f = 30;
+            debugStruct.g = 35;
+            debugStruct.h = 40;
+            debugStruct.i = 45;
+            debugStruct.j = 50;
+            return debugStruct;
         }
 
         void InspectAssignment(string assignmentStr) {
