@@ -11,17 +11,19 @@ namespace Thesis {
         public static string ToString(double num, string format = "0.0000") {
             return num.ToString(format, CultureInfo.InvariantCulture);
         }
+
         public static string ToString(double[] numArray, string format = "0.0000") {
             return string.Join(" ", numArray.Select(num => ToString(num, format)));
         }
-        public static string ToString(int num) {
-            throw new Exception("Redundant parsing of int to string");
+        public static string ToString(List<double> numList, string format = "0.0000") {
+            return ToString(numList, format);
         }
+
         public static string ToString(int[] numArray) {
             return string.Join(" ", numArray);
         }
-        public static string ToString(List<int> numArray) {
-            return string.Join(" ", numArray);
+        public static string ToString(List<int> numList) {
+            return string.Join(" ", numList);
         }
 
         public static string LargeNumToString(double num, string format = "0.##") {
@@ -126,6 +128,20 @@ namespace Thesis {
             }
             bool isHotelStayAfter = Regex.Match(driverStr, @"h$").Success;
             return (driver, isHotelStayAfter);
+        }
+
+
+        /* Debug logging */
+
+        public static void LogDebugValue(int value, string name, bool isDiff, bool shouldLogZeros) {
+            string diffStr = isDiff ? " diff" : "";
+            bool isZero = value == 0;
+            if (shouldLogZeros || !isZero) Console.WriteLine("{0}{1}: {2}", name, diffStr, value);
+        }
+        public static void LogDebugValue(double value, string name, bool isDiff, bool shouldLogZeros) {
+            string diffStr = isDiff ? " diff" : "";
+            bool isZero = Math.Abs(value) < Config.FloatingPointMargin;
+            if (shouldLogZeros || !isZero) Console.WriteLine("{0}{1}: {2}", name, diffStr, ParseHelper.ToString(value));
         }
     }
 }

@@ -14,8 +14,6 @@ namespace Thesis {
 
     static class Config {
         // App
-        public const bool RunOptimalAlgorithm = false;
-        public const bool RunSimulatedAnnealing = true;
         public const DataSource SelectedDataSource = DataSource.Excel;
         //public const DataSource SelectedDataSource = DataSource.Generator;
 
@@ -29,29 +27,35 @@ namespace Thesis {
 
         // Time periods
         public const int DayLength = 24 * 60;
+        public const int NightStartTimeInDay = 23 * 60;
+        public const int NightEndTimeInDay = 6 * 60;
+        public const int NightShiftNightTimeThreshold = 60; // Minimum amount of time during night for a shift to be considered a night shift
+        public const int WeekendStartTime = 5 * DayLength;
+        public const int WeekendEndTime = 7 * DayLength;
+        // TODO: configure holidays
 
         // Internal driver salaries
-        public static readonly SalaryRateInfo[] InternalDriverDailySalaryRates = new SalaryRateInfo[] {
+        public static readonly SalaryRateInfo[] InternalDriverWeekdaySalaryRates = new SalaryRateInfo[] {
             new SalaryRateInfo(0 * 60,  60 / 60f), // Night 0-6: hourly rate of 60
             new SalaryRateInfo(6 * 60,  55 / 60f), // Morning 6-7, hourly rate of 55
             new SalaryRateInfo(7 * 60,  50 / 60f), // Day 7-18, hourly rate of 50
             new SalaryRateInfo(18 * 60, 55 / 60f), // Evening 18-23, hourly rate of 55
             new SalaryRateInfo(23 * 60, 60 / 60f), // Night 23-6, hourly rate of 60
-            // TODO: add weekends and holidays
         };
+        public const float InternalDriverWeekendSalaryRate = 60 / 60f;
         public const float InternalDriverTravelSalaryRate = 50 / 60f;
         public const int InternalDriverMinPaidShiftTime = 6 * 60; // The minimum amount of worked time that is paid per shift, for an internal driver
         public const int InternalDriverUnpaidTravelTimePerShift = 60;
 
         // External driver salaries
-        public static readonly SalaryRateInfo[] ExternalDriverDailySalaryRates = new SalaryRateInfo[] {
+        public static readonly SalaryRateInfo[] ExternalDriverWeekdaySalaryRates = new SalaryRateInfo[] {
             new SalaryRateInfo(0 * 60,  80 / 60f), // Night 0-6: hourly rate of 80
             new SalaryRateInfo(6 * 60,  75 / 60f), // Morning 6-7, hourly rate of 75
             new SalaryRateInfo(7 * 60,  70 / 60f), // Day 7-18, hourly rate of 70
             new SalaryRateInfo(18 * 60, 75 / 60f), // Evening 18-23, hourly rate of 75
             new SalaryRateInfo(23 * 60, 80 / 60f), // Night 23-6, hourly rate of 80
-            // TODO: add weekends and holidays
         };
+        public const float ExternalDriverWeekendSalaryRate = 80 / 60f;
         public const float ExternalDriverTravelSalaryRate = 70 / 60f;
         public const int ExternalDriverMinPaidShiftTime = 8 * 60; // The minimum amount of worked time that is paid per shift, for an external driver
 
@@ -64,8 +68,10 @@ namespace Thesis {
         public const float MinContractTimeFraction = 0.8f;
         public const float MaxContractTimeFraction = 1.2f;
 
-        // Operations
-        public const float AssignExternalDriverProbability = 0.2f;
+        // Satisfaction
+        public static readonly IntSatisfactionCriterium SatCriteriumHotels = new IntSatisfactionCriterium(4, 0, 0.5f);
+        public static readonly FloatSatisfactionCriterium SatCriteriumNightShifts = new FloatSatisfactionCriterium(5f, 0f, 0.25f);
+        public static readonly FloatSatisfactionCriterium SatCriteriumWeekendShifts = new FloatSatisfactionCriterium(2f, 0f, 0.25f);
 
 
         /* Excel importer */
@@ -162,7 +168,7 @@ namespace Thesis {
         public const bool DebugRunInspector = false;
         public const bool DebugRunJsonExporter = false;
         public const bool DebugRunOdataTest = false;
-        public const bool DebugUseSeededSa = false;
+        public const bool DebugUseSeededSa = true;
     }
 
     class SalaryRateInfo {

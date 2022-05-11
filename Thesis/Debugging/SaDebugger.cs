@@ -102,13 +102,13 @@ namespace Thesis {
             Console.WriteLine("Current part:  {0}", Description);
 
             Console.WriteLine("\n* Error amounts *");
-            errorAmounts.Log(false);
+            errorAmounts.Log(false, false);
 
             Console.WriteLine("\n* Normal diff *");
-            Normal.ToTotal().Log();
+            Normal.ToTotal().Log(true);
 
             Console.WriteLine("\n* Checked diff *");
-            checkedDiff.Log();
+            checkedDiff.Log(true);
 
             Console.WriteLine("\n* Normal info *");
             Normal.Log();
@@ -145,144 +145,110 @@ namespace Thesis {
             Console.WriteLine("Shift lengths: {0}", OperationPart.ParseValuePairs(ShiftLengths));
             Console.WriteLine("Rest times: {0}", ParseHelper.ToString(RestTimes));
             Console.WriteLine("Worked time: {0}", ShiftLengths.Select(shiftLengthPair => shiftLengthPair.Item1).Sum());
-            Total.Log();
+            Total.Log(false);
         }
     }
 
     class TotalInfo {
-        public double? Cost, CostWithoutPenalty, Penalty;
+        public double? Cost, CostWithoutPenalty, Penalty, DriverSatisfaction, Satisfaction;
         public DriverInfo DriverInfo;
         public PenaltyInfo PenaltyInfo;
-        readonly bool isDiff;
 
-        public TotalInfo(bool isDiff = false) {
-            this.isDiff = isDiff;
-        }
-
-        public void Log(bool shouldLogZeros = true) {
-            string diffStr = isDiff ? " diff" : "";
-
-            if (shouldLogZeros || PenaltyInfo.PrecedenceViolationCount != 0) Console.WriteLine("Precedence violation count{0}: {1}", diffStr, PenaltyInfo.PrecedenceViolationCount);
-            if (shouldLogZeros || PenaltyInfo.ShiftLengthViolationCount != 0) Console.WriteLine("SL violation count{0}: {1}", diffStr, PenaltyInfo.ShiftLengthViolationCount);
-            if (shouldLogZeros || PenaltyInfo.ShiftLengthViolation != 0) Console.WriteLine("SL violation amount{0}: {1}", diffStr, PenaltyInfo.RestTimeViolationCount);
-            if (shouldLogZeros || PenaltyInfo.RestTimeViolationCount != 0) Console.WriteLine("RT violation count{0}: {1}", diffStr, PenaltyInfo.RestTimeViolationCount);
-            if (shouldLogZeros || PenaltyInfo.RestTimeViolation != 0) Console.WriteLine("RT violation amount{0}: {1}", diffStr, PenaltyInfo.RestTimeViolation);
-            if (shouldLogZeros || PenaltyInfo.ContractTimeViolationCount != 0) Console.WriteLine("CT violation count{0}: {1}", diffStr, PenaltyInfo.ContractTimeViolationCount);
-            if (shouldLogZeros || PenaltyInfo.ContractTimeViolation != 0) Console.WriteLine("CT violation amount{0}: {1}", diffStr, PenaltyInfo.ContractTimeViolation);
-            if (shouldLogZeros || DriverInfo.ShiftCount != 0) Console.WriteLine("SC value{0}: {1}", diffStr, DriverInfo.ShiftCount);
-            if (shouldLogZeros || PenaltyInfo.ShiftCountViolationAmount != 0) Console.WriteLine("SC violation amount{0}: {1}", diffStr, PenaltyInfo.ShiftCountViolationAmount);
-            if (shouldLogZeros || PenaltyInfo.InvalidHotelCount != 0) Console.WriteLine("Invalid hotel count{0}: {1}", diffStr, PenaltyInfo.InvalidHotelCount);
-            if (shouldLogZeros || Math.Abs(Cost.Value) > Config.FloatingPointMargin) Console.WriteLine("Cost{0}: {1}", diffStr, ParseHelper.ToString(Cost.Value));
-            if (shouldLogZeros || Math.Abs(CostWithoutPenalty.Value) > Config.FloatingPointMargin) Console.WriteLine("Cost without penalty{0}: {1}", diffStr, ParseHelper.ToString(CostWithoutPenalty.Value));
-            if (shouldLogZeros || Math.Abs(Penalty.Value) > Config.FloatingPointMargin) Console.WriteLine("Penalty{0}: {1}", diffStr, ParseHelper.ToString(Penalty.Value));
-            if (shouldLogZeros || DriverInfo.WorkedTime != 0) Console.WriteLine("Worked time{0}: {1}", diffStr, DriverInfo.WorkedTime);
+        public void Log(bool isDiff, bool shouldLogZeros = true) {
+            DriverInfo.DebugLog(isDiff, shouldLogZeros);
+            PenaltyInfo.DebugLog(isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(Cost.Value, "Cost", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(CostWithoutPenalty.Value, "Cost without penalty", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(Penalty.Value, "Penalty", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(DriverSatisfaction.Value, "Driver satisfaction", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(Satisfaction.Value, "Satisfaction", isDiff, shouldLogZeros);
         }
 
         public static bool AreEqual(TotalInfo a, TotalInfo b) {
             return (
-                IsFloatEqual(a.Cost, b.Cost) &&
-                IsFloatEqual(a.CostWithoutPenalty, b.CostWithoutPenalty) &&
-                IsFloatEqual(a.Penalty, b.Penalty) &&
-                a.DriverInfo.WorkedTime == b.DriverInfo.WorkedTime &&
-                a.DriverInfo.ShiftCount == b.DriverInfo.ShiftCount &&
-                a.PenaltyInfo.PrecedenceViolationCount == b.PenaltyInfo.PrecedenceViolationCount &&
-                a.PenaltyInfo.ShiftLengthViolationCount == b.PenaltyInfo.ShiftLengthViolationCount &&
-                a.PenaltyInfo.ShiftLengthViolation == b.PenaltyInfo.ShiftLengthViolation &&
-                a.PenaltyInfo.RestTimeViolationCount == b.PenaltyInfo.RestTimeViolationCount &&
-                a.PenaltyInfo.RestTimeViolation == b.PenaltyInfo.RestTimeViolation &&
-                a.PenaltyInfo.ContractTimeViolationCount == b.PenaltyInfo.ContractTimeViolationCount &&
-                a.PenaltyInfo.ContractTimeViolation == b.PenaltyInfo.ContractTimeViolation &&
-                a.PenaltyInfo.ShiftCountViolationAmount == b.PenaltyInfo.ShiftCountViolationAmount &&
-                a.PenaltyInfo.InvalidHotelCount == b.PenaltyInfo.InvalidHotelCount
+                IsDoubleEqual(a.Cost, b.Cost) &&
+                IsDoubleEqual(a.CostWithoutPenalty, b.CostWithoutPenalty) &&
+                IsDoubleEqual(a.Penalty, b.Penalty) &&
+                IsDoubleEqual(a.DriverSatisfaction, b.DriverSatisfaction) &&
+                IsDoubleEqual(a.Satisfaction, b.Satisfaction) &&
+                DriverInfo.AreEqual(a.DriverInfo, b.DriverInfo) &&
+                PenaltyInfo.AreEqual(a.PenaltyInfo, b.PenaltyInfo)
             );
         }
-        static bool IsFloatEqual(double? a, double? b) {
+        static bool IsDoubleEqual(double? a, double? b) {
             return Math.Abs(a.Value - b.Value) < 0.01;
         }
 
         public static TotalInfo operator -(TotalInfo a) {
-            return new TotalInfo(true) {
+            return new TotalInfo() {
                 Cost = -a.Cost,
                 CostWithoutPenalty = -a.CostWithoutPenalty,
                 Penalty = -a.Penalty,
-                DriverInfo = new DriverInfo() {
-                    WorkedTime = -a.DriverInfo.WorkedTime,
-                    ShiftCount = -a.DriverInfo.ShiftCount,
-                },
-                PenaltyInfo = new PenaltyInfo() {
-                    PrecedenceViolationCount = -a.PenaltyInfo.PrecedenceViolationCount,
-                    ShiftLengthViolationCount = -a.PenaltyInfo.ShiftLengthViolationCount,
-                    ShiftLengthViolation = -a.PenaltyInfo.ShiftLengthViolation,
-                    RestTimeViolationCount = -a.PenaltyInfo.RestTimeViolationCount,
-                    RestTimeViolation = -a.PenaltyInfo.RestTimeViolation,
-                    ContractTimeViolationCount = -a.PenaltyInfo.ContractTimeViolationCount,
-                    ContractTimeViolation = -a.PenaltyInfo.ContractTimeViolation,
-                    ShiftCountViolationAmount = -a.PenaltyInfo.ShiftCountViolationAmount,
-                    InvalidHotelCount = -a.PenaltyInfo.InvalidHotelCount,
-                },
+                DriverSatisfaction = -a.DriverSatisfaction,
+                Satisfaction = -a.Satisfaction,
+                DriverInfo = -a.DriverInfo,
+                PenaltyInfo = -a.PenaltyInfo,
             };
         }
         public static TotalInfo operator +(TotalInfo a, TotalInfo b) {
-            return new TotalInfo(true) {
+            return new TotalInfo() {
                 Cost = a.Cost + b.Cost,
                 CostWithoutPenalty = a.CostWithoutPenalty + b.CostWithoutPenalty,
                 Penalty = a.Penalty + b.Penalty,
-                DriverInfo = new DriverInfo() {
-                    WorkedTime = a.DriverInfo.WorkedTime + b.DriverInfo.WorkedTime,
-                    ShiftCount = a.DriverInfo.ShiftCount + b.DriverInfo.ShiftCount,
-                },
-                PenaltyInfo = new PenaltyInfo() {
-                    PrecedenceViolationCount = a.PenaltyInfo.PrecedenceViolationCount + b.PenaltyInfo.PrecedenceViolationCount,
-                    ShiftLengthViolationCount = a.PenaltyInfo.ShiftLengthViolationCount + b.PenaltyInfo.ShiftLengthViolationCount,
-                    ShiftLengthViolation = a.PenaltyInfo.ShiftLengthViolation + b.PenaltyInfo.ShiftLengthViolation,
-                    RestTimeViolationCount = a.PenaltyInfo.RestTimeViolationCount + b.PenaltyInfo.RestTimeViolationCount,
-                    RestTimeViolation = a.PenaltyInfo.RestTimeViolation + b.PenaltyInfo.RestTimeViolation,
-                    ContractTimeViolationCount = a.PenaltyInfo.ContractTimeViolationCount + b.PenaltyInfo.ContractTimeViolationCount,
-                    ContractTimeViolation = a.PenaltyInfo.ContractTimeViolation + b.PenaltyInfo.ContractTimeViolation,
-                    ShiftCountViolationAmount = a.PenaltyInfo.ShiftCountViolationAmount + b.PenaltyInfo.ShiftCountViolationAmount,
-                    InvalidHotelCount = a.PenaltyInfo.InvalidHotelCount + b.PenaltyInfo.InvalidHotelCount,
-                },
+                Satisfaction = a.Satisfaction + b.Satisfaction,
+                DriverSatisfaction = a.DriverSatisfaction + b.DriverSatisfaction,
+                DriverInfo = a.DriverInfo + b.DriverInfo,
+                PenaltyInfo = a.PenaltyInfo + b.PenaltyInfo,
             };
         }
         public static TotalInfo operator -(TotalInfo a, TotalInfo b) => a + -b;
     }
 
     class NormalDiff {
-        public double CostDiff, CostWithoutPenaltyDiff, PenaltyDiff;
-        public PrecedenceValueChange Precedence;
-        public ViolationPairValueChange ShiftLength;
-        public ViolationValueChange RestTime, ContractTime, ShiftCount;
-        public HotelValueChange Hotels;
+        public double CostDiff, CostWithoutPenaltyDiff, PenaltyDiff, DriverSatisfactionDiff, SatisfactionDiff;
+        public ViolationCountValueChange<(Trip, Trip)> Precedence;
+        public ViolationAmountValueChange<(int, int)> ShiftLength;
+        public ViolationAmountValueChange<int> RestTime, ContractTime, ShiftCount;
+        public ValueChange<Trip> Hotels, InvalidHotels;
+        public ValueChange<(Trip, Trip)> NightShifts, WeekendShifts;
         public string DriverPathString, RelevantRangeInfo;
 
         public NormalDiff(bool shouldReverse, Driver driver, SaInfo info) {
-            Precedence = new PrecedenceValueChange("Precedence", shouldReverse, driver, info);
-            ShiftLength = new ViolationPairValueChange("SL", shouldReverse, driver, info, (shiftLengthPair, _) => Math.Max(0, shiftLengthPair.Item1 - Config.MaxShiftLengthWithoutTravel) + Math.Max(0, shiftLengthPair.Item2 - Config.MaxShiftLengthWithTravel));
-            RestTime = new ViolationValueChange("RT", shouldReverse, driver, info, (restTime, _) => Math.Max(0, Config.MinRestTime - restTime));
-            ContractTime = new ViolationValueChange("CT", false, driver, info, (workedHours, driver) => driver.GetTotalContractTimeViolation(workedHours));
-            ShiftCount = new ViolationValueChange("SC", false, driver, info, (shiftCount, _) => Math.Max(0, shiftCount - Config.DriverMaxShiftCount));
-            Hotels = new HotelValueChange("Hotel", shouldReverse, driver, info);
+            Precedence = new ViolationCountValueChange<(Trip, Trip)>("Precedence", shouldReverse, driver, info, (tripPair, _) => !info.Instance.IsValidPrecedence(tripPair.Item1, tripPair.Item2));
+            ShiftLength = new ViolationAmountValueChange<(int, int)>("SL", shouldReverse, driver, info, (shiftLengthPair, _) => Math.Max(0, shiftLengthPair.Item1 - Config.MaxShiftLengthWithoutTravel) + Math.Max(0, shiftLengthPair.Item2 - Config.MaxShiftLengthWithTravel));
+            RestTime = new ViolationAmountValueChange<int>("RT", shouldReverse, driver, info, (restTime, _) => Math.Max(0, Config.MinRestTime - restTime));
+            ContractTime = new ViolationAmountValueChange<int>("CT", false, driver, info, (workedHours, driver) => driver.GetTotalContractTimeViolation(workedHours));
+            ShiftCount = new ViolationAmountValueChange<int>("SC", false, driver, info, (shiftCount, _) => Math.Max(0, shiftCount - Config.DriverMaxShiftCount));
+            Hotels = new ValueChange<Trip>("Hotel", shouldReverse, driver, info);
+            InvalidHotels = new ValueChange<Trip>("Invalid hotel", shouldReverse, driver, info);
+            NightShifts = new ValueChange<(Trip, Trip)>("Night shift", shouldReverse, driver, info);
+            WeekendShifts = new ValueChange<(Trip, Trip)>("Weekend shift", shouldReverse, driver, info);
         }
 
         public TotalInfo ToTotal() {
-            return new TotalInfo(true) {
+            return new TotalInfo() {
                 Cost = CostDiff,
                 CostWithoutPenalty = CostWithoutPenaltyDiff,
                 Penalty = PenaltyDiff,
+                DriverSatisfaction = DriverSatisfactionDiff,
+                Satisfaction = SatisfactionDiff,
                 DriverInfo = new DriverInfo() {
                     WorkedTime = ContractTime.GetValueSumDiff(),
                     ShiftCount = ShiftCount.GetValueSumDiff(),
+                    HotelCount = Hotels.GetCountDiff(),
+                    NightShiftCount = NightShifts.GetCountDiff(),
+                    WeekendShiftCount = WeekendShifts.GetCountDiff()
                 },
                 PenaltyInfo = new PenaltyInfo() {
-                    PrecedenceViolationCount = Precedence.NewViolations.Count - Precedence.OldViolations.Count,
-                    ShiftLengthViolationCount = ShiftLength.NewViolationCount - ShiftLength.OldViolationCount,
-                    ShiftLengthViolation = ShiftLength.NewViolationAmount - ShiftLength.OldViolationAmount,
-                    RestTimeViolationCount = RestTime.NewViolationCount - RestTime.OldViolationCount,
-                    RestTimeViolation = RestTime.NewViolationAmount - RestTime.OldViolationAmount,
-                    ContractTimeViolationCount = ContractTime.NewViolationCount - ContractTime.OldViolationCount,
-                    ContractTimeViolation = ContractTime.NewViolationAmount - ContractTime.OldViolationAmount,
-                    ShiftCountViolationAmount = ShiftCount.NewViolationAmount - ShiftCount.OldViolationAmount,
-                    InvalidHotelCount = Hotels.NewViolations.Count - Hotels.OldViolations.Count,
+                    PrecedenceViolationCount = Precedence.GetViolationCountDiff(),
+                    ShiftLengthViolationCount = ShiftLength.GetViolationCountDiff(),
+                    ShiftLengthViolation = ShiftLength.GetViolationAmountDiff(),
+                    RestTimeViolationCount = RestTime.GetViolationCountDiff(),
+                    RestTimeViolation = RestTime.GetViolationAmountDiff(),
+                    ContractTimeViolationCount = ContractTime.GetViolationCountDiff(),
+                    ContractTimeViolation = ContractTime.GetViolationAmountDiff(),
+                    ShiftCountViolationAmount = ShiftCount.GetViolationAmountDiff(),
+                    InvalidHotelCount = InvalidHotels.GetCountDiff(),
                 },
             };
         }
@@ -293,20 +259,18 @@ namespace Thesis {
             LogValue("Cost diff", CostDiff);
             LogValue("Cost without penalty diff", CostWithoutPenaltyDiff);
             LogValue("Penalty diff", PenaltyDiff);
+            LogValue("Driver satisfaction diff", DriverSatisfactionDiff);
+            LogValue("Satisfaction diff", SatisfactionDiff);
 
             Precedence.Log();
             ShiftLength.Log();
             RestTime.Log();
             ContractTime.Log();
             ShiftCount.Log();
-            Hotels.Log();
+            InvalidHotels.Log();
         }
 
-        string GetTripString(Trip trip) {
-            return trip == null ? "-" : trip.Index.ToString();
-        }
-
-        void LogValue<T>(string name, T value) {
+        static void LogValue<T>(string name, T value) {
             if (value is double valueDouble) Console.WriteLine("{0}: {1}", name, ParseHelper.ToString(valueDouble));
             else Console.WriteLine("{0}: {1}", name, value);
         }
@@ -314,17 +278,21 @@ namespace Thesis {
 
 
 
-    abstract class ValueChange<T> {
+    class ValueChange<T> {
         protected readonly string name;
         protected readonly bool shouldReverse;
         protected readonly Driver driver;
         protected readonly SaInfo info;
+        protected readonly List<T> oldValues;
+        protected readonly List<T> newValues;
 
         public ValueChange(string name, bool shouldReverse, Driver driver, SaInfo info) {
             this.name = name;
             this.shouldReverse = shouldReverse;
             this.driver = driver;
             this.info = info;
+            oldValues = new List<T>();
+            newValues = new List<T>();
         }
 
         public void Add(T oldValue, T newValue) {
@@ -341,10 +309,34 @@ namespace Thesis {
             else AddNewInternal(newValue);
         }
 
-        protected abstract void AddOldInternal(T oldValue);
-        protected abstract void AddNewInternal(T oldValue);
+        protected virtual void AddOldInternal(T value) => AddSpecific(value, oldValues);
+        protected virtual void AddNewInternal(T value) => AddSpecific(value, newValues);
 
-        public abstract void Log();
+        protected virtual void AddSpecific(T value, List<T> valueList) {
+            valueList.Add(value);
+        }
+
+        public int GetCountDiff() {
+            return newValues.Count - oldValues.Count;
+        }
+
+        public int GetValueSumDiff() {
+            if (oldValues is List<int> oldValuesInt && newValues is List<int> newValuesInt) return newValuesInt.Sum() - oldValuesInt.Sum();
+            else throw new Exception("Trying to sum over unknown value type");
+        }
+
+        public virtual void Log() {
+            // Log values
+            if (oldValues is List<int> oldValuesInt && newValues is List<int> newValuesInt) LogStringDiff("values", ParseHelper.ToString(oldValuesInt), ParseHelper.ToString(newValuesInt));
+            else if(oldValues is List<double> oldValuesDouble && newValues is List<double> newValuesDouble) LogStringDiff("values", ParseHelper.ToString(oldValuesDouble), ParseHelper.ToString(newValuesDouble));
+            else if(oldValues is List<(int, int)> oldValuesIntPair && newValues is List<(int, int)> newValuesIntPair) LogStringDiff("values", OperationPart.ParseValuePairs(oldValuesIntPair), OperationPart.ParseValuePairs(newValuesIntPair));
+            else if(oldValues is List<Trip> oldValuesTrip && newValues is List<Trip> newValuesTrip) LogStringDiff("values", ParseViolationsList(oldValuesTrip), ParseViolationsList(newValuesTrip));
+            else if (oldValues is List<(Trip, Trip)> oldValuesTripPair && newValues is List<(Trip, Trip)> newValuesTripPair) LogStringDiff("values", ParseViolationsList(oldValuesTripPair), ParseViolationsList(newValuesTripPair));
+            else throw new Exception("Trying to log unknown value type");
+
+            // Log count
+            LogIntDiff("count", oldValues.Count, newValues.Count);
+        }
 
         protected void LogIntDiff(string varName, int? oldValue, int? newValue) {
             Console.WriteLine("{0} {1}: {2} ({3} -> {4})", name, varName, newValue - oldValue, oldValue, newValue);
@@ -355,133 +347,71 @@ namespace Thesis {
             if (newValue == "") newValue = "-";
             Console.WriteLine("{0} {1}: {2} -> {3}", name, varName, oldValue, newValue);
         }
+
+        static string ParseViolationsList(List<Trip> tripList) {
+            return string.Join(' ', tripList.Select(trip => trip.Index));
+        }
+        static string ParseViolationsList(List<(Trip, Trip)> tripPairList) {
+            return string.Join(' ', tripPairList.Select(tripPair => tripPair.Item1.Index + "-" + tripPair.Item2.Index));
+        }
     }
 
-    class IntValueChange : ValueChange<int> {
-        List<int> oldValues = new List<int>();
-        List<int> newValues = new List<int>();
+    class ViolationCountValueChange<T> : ValueChange<T> {
+        protected readonly List<T> oldViolations, newViolations;
+        readonly Func<T, Driver, bool> isViolation;
 
-        public IntValueChange(string name, bool shouldReverse, Driver driver, SaInfo info) : base(name, shouldReverse, driver, info) { }
+        public ViolationCountValueChange(string name, bool shouldReverse, Driver driver, SaInfo info, Func<T, Driver, bool> isViolation) : base(name, shouldReverse, driver, info) {
+            this.isViolation = isViolation;
+            oldViolations = new List<T>();
+            newViolations = new List<T>();
+        }
 
-        protected override void AddOldInternal(int value) => AddSpecific(value, oldValues);
-        protected override void AddNewInternal(int value) => AddSpecific(value, newValues);
+        protected override void AddOldInternal(T oldValue) => AddSpecific(oldValue, oldValues, oldViolations);
+        protected override void AddNewInternal(T newValue) => AddSpecific(newValue, newValues, newViolations);
 
-        protected void AddSpecific(int value, List<int> valueList) {
+        protected void AddSpecific(T value, List<T> valueList, List<T> violationList) {
             valueList.Add(value);
-        }
 
-        public override void Log() {
-            LogStringDiff("value", ParseHelper.ToString(oldValues), ParseHelper.ToString(newValues));
-        }
-    }
-
-    class PrecedenceValueChange: ValueChange<(Trip, Trip)> {
-        public List<(Trip, Trip)> OldViolations = new List<(Trip, Trip)>();
-        public List<(Trip, Trip)> NewViolations = new List<(Trip, Trip)>();
-
-        public PrecedenceValueChange(string name, bool shouldReverse, Driver driver, SaInfo info) : base(name, shouldReverse, driver, info) { }
-
-        protected override void AddOldInternal((Trip, Trip) trips) => AddSpecific(trips, OldViolations);
-        protected override void AddNewInternal((Trip, Trip) trips) => AddSpecific(trips, NewViolations);
-
-        protected void AddSpecific((Trip, Trip) trips, List<(Trip, Trip)> violationsList) {
-            if (!info.Instance.IsValidPrecedence(trips.Item1, trips.Item2)) {
-                violationsList.Add(trips);
+            if (isViolation(value, driver)) {
+                violationList.Add(value);
             }
         }
 
         public override void Log() {
-            LogStringDiff("violations", ParseViolationsList(OldViolations), ParseViolationsList(NewViolations));
-            LogIntDiff("violation count", OldViolations.Count, NewViolations.Count);
+            base.Log();
+            LogIntDiff("violation count", oldViolations.Count, newViolations.Count);
         }
 
-        string ParseViolationsList(List<(Trip, Trip)> violationsList) {
-            return string.Join(' ', violationsList.Select(violation => violation.Item1.Index + "-" + violation.Item2.Index));
-        }
-    }
-
-    class HotelValueChange : ValueChange<Trip> {
-        public List<Trip> OldViolations = new List<Trip>();
-        public List<Trip> NewViolations = new List<Trip>();
-
-        public HotelValueChange(string name, bool shouldReverse, Driver driver, SaInfo info) : base(name, shouldReverse, driver, info) { }
-
-        protected override void AddOldInternal(Trip trip) => AddSpecific(trip, OldViolations);
-        protected override void AddNewInternal(Trip trip) => AddSpecific(trip, NewViolations);
-
-        protected void AddSpecific(Trip trip, List<Trip> violationsList) {
-            violationsList.Add(trip);
-        }
-
-        public override void Log() {
-            LogStringDiff("violations", ParseViolationsList(OldViolations), ParseViolationsList(NewViolations));
-            LogIntDiff("violation count", OldViolations.Count, NewViolations.Count);
-        }
-
-        string ParseViolationsList(List<Trip> violationsList) {
-            return string.Join(' ', violationsList.Select(violation => violation.Index));
+        public int GetViolationCountDiff() {
+            return newViolations.Count - oldViolations.Count;
         }
     }
 
-    class ViolationValueChange : ValueChange<int> {
-        public int OldViolationCount, NewViolationCount, OldViolationAmount, NewViolationAmount;
-        List<int> oldValues = new List<int>();
-        List<int> newValues = new List<int>();
-        Func<int, Driver, int> getViolationAmount;
+    class ViolationAmountValueChange<T> : ViolationCountValueChange<T> {
+        int oldViolationAmount, newViolationAmount;
+        readonly Func<T, Driver, int> getViolationAmount;
 
-        public ViolationValueChange(string name, bool shouldReverse, Driver driver, SaInfo info, Func<int, Driver, int> getViolationAmount) : base(name, shouldReverse, driver, info) {
+        public ViolationAmountValueChange(string name, bool shouldReverse, Driver driver, SaInfo info, Func<T, Driver, int> getViolationAmount) : base(name, shouldReverse, driver, info, (T value, Driver driver) => getViolationAmount(value, driver) > 0) {
             this.getViolationAmount = getViolationAmount;
         }
 
-        protected override void AddOldInternal(int oldValue) => AddSpecific(oldValue, oldValues, ref OldViolationCount, ref OldViolationAmount);
-        protected override void AddNewInternal(int newValue) => AddSpecific(newValue, newValues, ref NewViolationCount, ref NewViolationAmount);
+        protected override void AddOldInternal(T oldValue) => AddSpecificWithAmount(oldValue, oldValues, oldViolations, ref oldViolationAmount);
+        protected override void AddNewInternal(T newValue) => AddSpecificWithAmount(newValue, newValues, newViolations, ref newViolationAmount);
 
-        protected void AddSpecific(int value, List<int> valueList, ref int violationCountVar, ref int violationAmountVar) {
+        void AddSpecificWithAmount(T value, List<T> valueList, List<T> violationList, ref int violationAmountVar) {
+            AddSpecific(value, valueList, violationList);
+
             int violationAmount = getViolationAmount(value, driver);
-            int violationCount = violationAmount > 0 ? 1 : 0;
-
-            valueList.Add(value);
             violationAmountVar += violationAmount;
-            violationCountVar += violationCount;
         }
 
         public override void Log() {
-            LogStringDiff("value", ParseHelper.ToString(oldValues), ParseHelper.ToString(newValues));
-            LogIntDiff("violation count", OldViolationCount, NewViolationCount);
-            LogIntDiff("violation amount", OldViolationAmount, NewViolationAmount);
+            base.Log();
+            LogIntDiff("violation amount", oldViolationAmount, newViolationAmount);
         }
 
-        public int GetValueSumDiff() {
-            return newValues.Sum() - oldValues.Sum();
-        }
-    }
-
-    class ViolationPairValueChange : ValueChange<(int, int)> {
-        public int OldViolationCount, NewViolationCount, OldViolationAmount, NewViolationAmount;
-        List<(int, int)> oldValuePairs = new List<(int, int)>();
-        List<(int, int)> newValuePairs = new List<(int, int)>();
-        Func<(int, int), Driver, int> getViolationAmount;
-
-        public ViolationPairValueChange(string name, bool shouldReverse, Driver driver, SaInfo info, Func<(int, int), Driver, int> getViolationAmount) : base(name, shouldReverse, driver, info) {
-            this.getViolationAmount = getViolationAmount;
-        }
-
-        protected override void AddOldInternal((int, int) oldValuePair) => AddSpecific(oldValuePair, oldValuePairs, ref OldViolationCount, ref OldViolationAmount);
-        protected override void AddNewInternal((int, int) newValuePair) => AddSpecific(newValuePair, newValuePairs, ref NewViolationCount, ref NewViolationAmount);
-
-        protected void AddSpecific((int, int) valuePair, List<(int, int)> valuePairList, ref int violationCountVar, ref int violationAmountVar) {
-            int violationAmount = getViolationAmount(valuePair, driver);
-            int violationCount = violationAmount > 0 ? 1 : 0;
-
-            valuePairList.Add(valuePair);
-            violationAmountVar += violationAmount;
-            violationCountVar += violationCount;
-        }
-
-        public override void Log() {
-            LogStringDiff("value", OperationPart.ParseValuePairs(oldValuePairs), OperationPart.ParseValuePairs(newValuePairs));
-            LogIntDiff("violation count", OldViolationCount, NewViolationCount);
-            LogIntDiff("violation amount", OldViolationAmount, NewViolationAmount);
+        public int GetViolationAmountDiff() {
+            return newViolationAmount - oldViolationAmount;
         }
     }
 }

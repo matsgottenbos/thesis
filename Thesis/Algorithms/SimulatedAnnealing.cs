@@ -49,7 +49,7 @@ namespace Thesis {
             #endif
 
             // Get cost of initial assignment
-            (info.Cost, info.CostWithoutPenalty, info.Penalty, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
+            (info.Cost, info.CostWithoutPenalty, info.Penalty, info.Satisfaction, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
 
             #if DEBUG
             // Reset iteration in debugger after initial assignment cost
@@ -78,22 +78,24 @@ namespace Thesis {
                 else if (operationDouble < Config.SwapProbCumulative) operation = SwapOperation.CreateRandom(info);
                 else operation = ToggleHotelOperation.CreateRandom(info);
 
-                (double costDiff, double costWithoutPenaltyDiff, double penaltyDiff) = operation.GetCostDiff();
+                // TODO: WIP
+                (double costDiff, double satisfactionDiff) = operation.GetCostDiff();
+                double oldAdjustedCost = info.Cost * (1.2 - info.Satisfaction / 5f);
+                double newAdjustedCost = (info.Cost + costDiff) * (1.2 - (info.Satisfaction + satisfactionDiff) / 5f);
+                double adjustedCostDiff = newAdjustedCost - oldAdjustedCost;
 
-                bool isAccepted = costDiff < 0 || info.FastRand.NextDouble() < Math.Exp(-costDiff / info.Temperature);
+                bool isAccepted = adjustedCostDiff < 0 || info.FastRand.NextDouble() < Math.Exp(-adjustedCostDiff / info.Temperature);
                 if (isAccepted) {
                     operation.Execute();
-                    info.Cost += costDiff;
-                    info.CostWithoutPenalty += costWithoutPenaltyDiff;
-                    info.Penalty += penaltyDiff;
 
                     if (info.Cost < bestInfo.Cost && info.Penalty < 0.01) {
                         // Check cost to remove floating point imprecisions
-                        (info.Cost, info.CostWithoutPenalty, info.Penalty, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
+                        (info.Cost, info.CostWithoutPenalty, info.Penalty, info.Satisfaction, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
                         if (info.Penalty > 0.01) throw new Exception("New best solution is invalid");
 
                         if (info.Cost < bestInfo.Cost) {
                             bestInfo.Cost = info.Cost;
+                            bestInfo.Satisfaction = info.Satisfaction;
                             bestInfo.Assignment = (Driver[])info.Assignment.Clone();
                             bestInfo.IsHotelStayAfterTrip = (bool[])info.IsHotelStayAfterTrip.Clone();
                         }
@@ -113,7 +115,7 @@ namespace Thesis {
                 // Log
                 if (info.IterationNum % Config.SaLogFrequency == 0) {
                     // Check cost to remove floating point imprecisions
-                    (info.Cost, info.CostWithoutPenalty, info.Penalty, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
+                    (info.Cost, info.CostWithoutPenalty, info.Penalty, info.Satisfaction, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
 
                     LogIteration();
                 }
@@ -128,7 +130,7 @@ namespace Thesis {
                         info.Temperature = (float)info.FastRand.NextDouble() * (Config.SaCycleInitialTemperatureMax - Config.SaCycleInitialTemperatureMin) + Config.SaCycleInitialTemperatureMin;
                     }
 
-                    (info.Cost, info.CostWithoutPenalty, info.Penalty, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
+                    (info.Cost, info.CostWithoutPenalty, info.Penalty, info.Satisfaction, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
                 }
 
                 #if DEBUG
@@ -141,7 +143,7 @@ namespace Thesis {
 
             // Check cost to remove floating point imprecisions
             if (bestInfo.Assignment != null) {
-                (bestInfo.Cost, bestInfo.CostWithoutPenalty, bestInfo.Penalty, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(bestInfo);
+                (bestInfo.Cost, bestInfo.CostWithoutPenalty, bestInfo.Penalty, info.Satisfaction, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(bestInfo);
                 if (bestInfo.Penalty > 0.01) throw new Exception("Best solution is invalid");
                 bestInfo.DriverInfos = info.DriverInfos;
                 bestInfo.ExternalDriverCountsByType = info.ExternalDriverCountsByType;
@@ -157,8 +159,8 @@ namespace Thesis {
         }
 
         void LogIteration() {
-            string bestCostString = bestInfo.Assignment == null ? "" : ParseHelper.ToString(bestInfo.Cost, "0.0");
-            Console.WriteLine("# {0,4}    Cycle: {1,3}    Best cost: {2,10}    Cost: {3,10}    Temp: {4,5}    Penalty: {5,6}", ParseHelper.LargeNumToString(info.IterationNum), info.CycleNum, bestCostString, ParseHelper.ToString(info.CostWithoutPenalty, "0.0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.GetPenaltyString(info));
+            string bestCostString = bestInfo.Assignment == null ? "" : string.Format("{0,10} ({1,3}%)", ParseHelper.ToString(bestInfo.Cost, "0.0"), ParseHelper.ToString(bestInfo.Satisfaction * 100, "0"));
+            Console.WriteLine("# {0,4}    Cycle: {1,3}    Best cost: {2,17}    Cost: {3,10} ({4,3}%)    Temp: {5,5}    Penalty: {6,6}", ParseHelper.LargeNumToString(info.IterationNum), info.CycleNum, bestCostString, ParseHelper.ToString(info.CostWithoutPenalty, "0.0"), ParseHelper.ToString(info.Satisfaction * 100, "0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.GetPenaltyString(info));
 
             if (Config.DebugSaLogAdditionalInfo) {
                 Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriverInfos.Select(driver => driver.WorkedTime).ToArray()));

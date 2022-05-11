@@ -65,8 +65,8 @@ namespace Thesis {
         public static double GetHotelPenalty(Trip tripBeforeInvalidHotel, SaInfo info, bool debugIsNew) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
-                if (debugIsNew) SaDebugger.GetCurrentNormalDiff().Hotels.AddNew(tripBeforeInvalidHotel);
-                else SaDebugger.GetCurrentNormalDiff().Hotels.AddOld(tripBeforeInvalidHotel);
+                if (debugIsNew) SaDebugger.GetCurrentNormalDiff().InvalidHotels.AddNew(tripBeforeInvalidHotel);
+                else SaDebugger.GetCurrentNormalDiff().InvalidHotels.AddOld(tripBeforeInvalidHotel);
             }
             #endif
 

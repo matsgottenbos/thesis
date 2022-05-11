@@ -10,7 +10,7 @@ namespace Thesis {
         readonly bool isAddition;
         readonly Driver driver;
         readonly DriverInfo driverInfo;
-        int driverWorkedTimeDiff;
+        DriverInfo driverInfoDiff;
 
         public ToggleHotelOperation(int tripIndex, bool isAddition, SaInfo info) : base(info) {
             trip = info.Instance.Trips[tripIndex];
@@ -19,7 +19,7 @@ namespace Thesis {
             driverInfo = info.DriverInfos[driver.AllDriversIndex];
         }
 
-        public override (double, double, double) GetCostDiff() {
+        public override (double, double) GetCostDiff() {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 string templateStr = isAddition ? "Add hotel stay to trip {0} with driver {1}" : "Remove hotel stay from trip {0} with driver {1}";
@@ -27,21 +27,18 @@ namespace Thesis {
             }
             #endif
 
-            double costDiff, costWithoutPenalty, penaltyDiff;
-            int driverWorkedTimeDiff;
             if (isAddition) {
-                (costDiff, costWithoutPenalty, penaltyDiff, driverWorkedTimeDiff, _) = CostDiffCalculator.GetAddHotelDriverCostDiff(trip, driver, driverInfo, info);
+                (costDiff, costWithoutPenaltyDiff, penaltyDiff, satisfactionDiff, driverInfoDiff) = CostDiffCalculator.GetAddHotelDriverCostDiff(trip, driver, driverInfo, info);
             } else {
-                (costDiff, costWithoutPenalty, penaltyDiff, driverWorkedTimeDiff, _) = CostDiffCalculator.GetRemoveHotelDriverCostDiff(trip, driver, driverInfo, info);
+                (costDiff, costWithoutPenaltyDiff, penaltyDiff, satisfactionDiff, driverInfoDiff) = CostDiffCalculator.GetRemoveHotelDriverCostDiff(trip, driver, driverInfo, info);
             }
 
-            this.driverWorkedTimeDiff = driverWorkedTimeDiff;
-            return (costDiff, costWithoutPenalty, penaltyDiff);
+            return (costDiff, satisfactionDiff);
         }
 
         public override void Execute() {
             info.IsHotelStayAfterTrip[trip.Index] = isAddition;
-            driverInfo.WorkedTime += driverWorkedTimeDiff;
+            info.DriverInfos[driver.AllDriversIndex] += driverInfoDiff;
         }
 
         public static ToggleHotelOperation CreateRandom(SaInfo info) {

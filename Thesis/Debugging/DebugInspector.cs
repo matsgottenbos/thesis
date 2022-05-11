@@ -155,7 +155,7 @@ namespace Thesis {
             (info.Assignment, info.IsHotelStayAfterTrip) = ParseHelper.ParseAssignmentString(assignmentStr, instance);
             List<Trip>[] driverPaths = TotalCostCalculator.GetPathPerDriver(info);
 
-            (info.Cost, info.CostWithoutPenalty, info.Penalty, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
+            (info.Cost, info.CostWithoutPenalty, info.Penalty, info.Satisfaction, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
 
             // Log assignment info
             Console.WriteLine("Assignment: {0}", assignmentStr);
@@ -172,7 +172,7 @@ namespace Thesis {
                 Driver driver = instance.AllDrivers[driverIndex];
                 List<Trip> driverPath = driverPaths[driverIndex];
                 PenaltyInfo driverPenaltyInfo = new PenaltyInfo();
-                (_, _, double driverPenalty, DriverInfo driverInfo) = TotalCostCalculator.GetDriverPathCost(driverPath, info.IsHotelStayAfterTrip, driver, driverPenaltyInfo, info, false);
+                (_, _, double driverSatisfaction, double driverPenalty, DriverInfo driverInfo) = TotalCostCalculator.GetDriverPathCost(driverPath, info.IsHotelStayAfterTrip, driver, driverPenaltyInfo, info, false);
 
                 if (driverPenalty > 0) {
                     Console.WriteLine("Driver {0} penalty: {1}", driver.GetId(), ParseHelper.GetPenaltyString(driverPenalty, driverPenaltyInfo));

@@ -9,7 +9,7 @@ namespace Thesis {
         readonly Trip trip;
         readonly Driver unassignedDriver, assignedDriver;
         readonly DriverInfo unassignedDriverInfo, assignedDriverInfo;
-        int unassignedDriverWorkedTimeDiff, assignedDriverWorkedTimeDiff, unassignedDriverShiftCountDiff, assignedDriverShiftCountDiff;
+        DriverInfo unassignedDriverInfoDiff, assignedDriverInfoDiff;
 
         public AbstractAssignOperation(int tripIndex, Driver assignedDriver, SaInfo info) : base(info) {
             this.assignedDriver = assignedDriver;
@@ -19,30 +19,32 @@ namespace Thesis {
             assignedDriverInfo = info.DriverInfos[assignedDriver.AllDriversIndex];
         }
 
-        public override (double, double, double) GetCostDiff() {
+        public override (double, double) GetCostDiff() {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentOperation().Description = string.Format("Re-assign trip {0} from driver {1} to driver {2}", trip.Index, unassignedDriver.GetId(), assignedDriver.GetId());
             }
             #endif
 
-            (double unassignedDriverCostDiff, double unassignedDriverCostWithoutPenaltyDiff, double unassignedDriverPenaltyDiff, int unassignedDriverWorkedTimeDiff, int unassignedDriverShiftCountDiff) = CostDiffCalculator.GetUnassignDriverCostDiff(trip, unassignedDriver, unassignedDriverInfo, info);
-            (double assignedDriverCostDiff, double assignedDriverCostWithoutPenaltyDiff, double assignedDriverPenaltyDiff, int assignedDriverWorkedTimeDiff, int assignedDriverShiftCountDiff) = CostDiffCalculator.GetAssignDriverCostDiff(trip, assignedDriver, assignedDriverInfo, info);
+            (double unassignedDriverCostDiff, double unassignedDriverCostWithoutPenaltyDiff, double unassignedDriverPenaltyDiff, double unassignedDriverSatisfactionDiff, DriverInfo unassignedDriverInfoDiff) = CostDiffCalculator.GetUnassignDriverCostDiff(trip, unassignedDriver, unassignedDriverInfo, info);
+            (double assignedDriverCostDiff, double assignedDriverCostWithoutPenaltyDiff, double assignedDriverPenaltyDiff, double assignedDriverSatisfactionDiff, DriverInfo assignedDriverInfoDiff) = CostDiffCalculator.GetAssignDriverCostDiff(trip, assignedDriver, assignedDriverInfo, info);
 
-            this.unassignedDriverWorkedTimeDiff = unassignedDriverWorkedTimeDiff;
-            this.assignedDriverWorkedTimeDiff = assignedDriverWorkedTimeDiff;
-            this.unassignedDriverShiftCountDiff = unassignedDriverShiftCountDiff;
-            this.assignedDriverShiftCountDiff = assignedDriverShiftCountDiff;
+            costDiff = unassignedDriverCostDiff + assignedDriverCostDiff;
+            costWithoutPenaltyDiff = unassignedDriverCostWithoutPenaltyDiff + assignedDriverCostWithoutPenaltyDiff;
+            penaltyDiff = unassignedDriverPenaltyDiff + assignedDriverPenaltyDiff;
+            satisfactionDiff = unassignedDriverSatisfactionDiff + assignedDriverSatisfactionDiff;
 
-            return (unassignedDriverCostDiff + assignedDriverCostDiff, unassignedDriverCostWithoutPenaltyDiff + assignedDriverCostWithoutPenaltyDiff, unassignedDriverPenaltyDiff + assignedDriverPenaltyDiff);
+            this.unassignedDriverInfoDiff = unassignedDriverInfoDiff;
+            this.assignedDriverInfoDiff = assignedDriverInfoDiff;
+
+            return (costDiff, satisfactionDiff);
         }
 
         public override void Execute() {
+            base.Execute();
             info.ReassignTrip(trip, unassignedDriver, assignedDriver);
-            unassignedDriverInfo.WorkedTime += unassignedDriverWorkedTimeDiff;
-            assignedDriverInfo.WorkedTime += assignedDriverWorkedTimeDiff;
-            unassignedDriverInfo.ShiftCount += unassignedDriverShiftCountDiff;
-            assignedDriverInfo.ShiftCount += assignedDriverShiftCountDiff;
+            info.DriverInfos[unassignedDriver.AllDriversIndex] += unassignedDriverInfoDiff;
+            info.DriverInfos[assignedDriver.AllDriversIndex] += assignedDriverInfoDiff;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Thesis {
         public Driver[] Assignment;
         public List<Trip>[] DriverPaths;
         public bool[] IsHotelStayAfterTrip;
-        public double Cost, CostWithoutPenalty, Penalty;
+        public double Cost, CostWithoutPenalty, Penalty, Satisfaction;
         public int[] DriverPathIndices, ExternalDriverCountsByType;
         public DriverInfo[] DriverInfos;
         public PenaltyInfo PenaltyInfo;
@@ -87,13 +87,5 @@ namespace Thesis {
                 }
             }
         }
-    }
-
-    class DriverInfo {
-        public int WorkedTime, ShiftCount, HotelCount, NightShiftCount, WeekendShiftCount;
-    }
-
-    class PenaltyInfo {
-        public int PrecedenceViolationCount, ShiftLengthViolationCount, ShiftLengthViolation, RestTimeViolationCount, RestTimeViolation, ContractTimeViolationCount, ContractTimeViolation, ShiftCountViolationAmount, InvalidHotelCount;
     }
 }

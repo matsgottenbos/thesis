@@ -9,14 +9,12 @@ namespace Thesis {
         public readonly int AllDriversIndex;
         readonly int[] homeTravelTimes;
         readonly float travelSalaryRate;
-        readonly float[,] drivingCosts;
-        Instance instance;
+        protected Instance instance;
 
-        public Driver(int allDriversIndex, int[] homeTravelTimes, float travelSalaryRate, float[,] drivingCosts) {
+        public Driver(int allDriversIndex, int[] homeTravelTimes, float travelSalaryRate) {
             AllDriversIndex = allDriversIndex;
             this.homeTravelTimes = homeTravelTimes;
             this.travelSalaryRate = travelSalaryRate;
-            this.drivingCosts = drivingCosts;
         }
 
         public void SetInstance(Instance instance) {
@@ -31,12 +29,10 @@ namespace Thesis {
 
         /* Shift lengths and costs */
 
-        public float DrivingCost(Trip firstTripInternal, Trip lastTripInternal) {
-            return drivingCosts[firstTripInternal.Index, lastTripInternal.Index];
-        }
+        public abstract float DrivingCost(Trip firstTripInternal, Trip lastTripInternal);
 
         public (int, int) ShiftLengthWithCustomPickup(Trip firstTripInternal, Trip lastTripInternal, Trip parkingTrip) {
-            int shiftLengthWithoutTravel = instance.DrivingTime(firstTripInternal, lastTripInternal);
+            int shiftLengthWithoutTravel = instance.ShiftInfo(firstTripInternal, lastTripInternal).DrivingTime;
             int shiftLengthWithTravel = shiftLengthWithoutTravel + HomeTravelTimeToStart(firstTripInternal) + instance.CarTravelTime(lastTripInternal, parkingTrip) + HomeTravelTimeToStart(parkingTrip);
             return (shiftLengthWithoutTravel, shiftLengthWithTravel);
         }
@@ -89,6 +85,11 @@ namespace Thesis {
             }
             return 0;
         }
+
+
+        /* Satisfaction */
+
+        public abstract double GetSatisfaction(DriverInfo driverInfo, bool debugIsNew);
     }
 
     class InternalDriver : Driver {
@@ -96,7 +97,7 @@ namespace Thesis {
         readonly string InternalDriverName;
         public readonly bool[,] TrackProficiencies;
 
-        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, int[] oneWayTravelTimes, float[,] drivingCosts, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, Config.InternalDriverTravelSalaryRate, drivingCosts) {
+        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, int[] oneWayTravelTimes, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, Config.InternalDriverTravelSalaryRate) {
             InternalIndex = internalIndex;
             InternalDriverName = internalDriverName;
             MinContractTime = minWorkedTime;
@@ -113,6 +114,10 @@ namespace Thesis {
             return string.Format("Driver {0}", InternalIndex + 1);
         }
 
+        public override float DrivingCost(Trip firstTripInternal, Trip lastTripInternal) {
+            return instance.ShiftInfo(firstTripInternal, lastTripInternal).InternalDrivingCost;
+        }
+
         protected override int GetPaidTravelTime(int travelTime) {
             return Math.Max(0, travelTime - Config.InternalDriverUnpaidTravelTimePerShift);
         }
@@ -124,12 +129,16 @@ namespace Thesis {
         public override int GetMaxContractTimeViolation(int workedTime) {
             return Math.Max(0, workedTime - MaxContractTime);
         }
+
+        public override double GetSatisfaction(DriverInfo driverInfo, bool debugIsNew) {
+            return SatisfactionCalculator.GetDriverSatisfaction(driverInfo, debugIsNew);
+        }
     }
 
     class ExternalDriver : Driver {
         public readonly int ExternalDriverTypeIndex, IndexInType;
 
-        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, int[] oneWayTravelTimes, float[,] drivingCosts) : base(allDriversIndex, oneWayTravelTimes, Config.ExternalDriverTravelSalaryRate, drivingCosts) {
+        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, int[] oneWayTravelTimes) : base(allDriversIndex, oneWayTravelTimes, Config.ExternalDriverTravelSalaryRate) {
             ExternalDriverTypeIndex = externalDriverTypeIndex;
             IndexInType = indexInType;
         }
@@ -142,6 +151,10 @@ namespace Thesis {
             return string.Format("External {0}.{1}", ExternalDriverTypeIndex + 1, IndexInType + 1);
         }
 
+        public override float DrivingCost(Trip firstTripInternal, Trip lastTripInternal) {
+            return instance.ShiftInfo(firstTripInternal, lastTripInternal).ExternalDrivingCost;
+        }
+
         protected override int GetPaidTravelTime(int travelTime) {
             return travelTime;
         }
@@ -151,6 +164,10 @@ namespace Thesis {
         }
 
         public override int GetMaxContractTimeViolation(int workedTime) {
+            return 0;
+        }
+
+        public override double GetSatisfaction(DriverInfo driverInfo, bool debugIsNew) {
             return 0;
         }
     }

@@ -22,7 +22,7 @@ namespace Thesis {
             // TODO: use RouteKnowledge
 
             // Parse trips and station codes
-            (Trip[] rawTrips, string[] stationCodes) = ParseRawTripsAndStationCodes(dutiesTable, Config.ExcelPlanningStartDate, Config.ExcelPlanningNextDate);
+            (Trip[] rawTrips, string[] stationCodes, int timeframeLength) = ParseRawTripsAndStationCodes(dutiesTable, Config.ExcelPlanningStartDate, Config.ExcelPlanningNextDate);
             int stationCount = stationCodes.Length;
 
             // Estimate or generate train travel times, and generate car travel times
@@ -43,9 +43,10 @@ namespace Thesis {
             return new Instance(rawTrips, stationCodes, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.ExcelInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
         }
 
-        static (Trip[], string[] stationCodes) ParseRawTripsAndStationCodes(DataTable dutiesTable, DateTime planningStartDate, DateTime planningNextDate) {
+        static (Trip[], string[], int) ParseRawTripsAndStationCodes(DataTable dutiesTable, DateTime planningStartDate, DateTime planningNextDate) {
             List<Trip> rawTripList = new List<Trip>();
             List<string> stationCodesList = new List<string>();
+            int timeframeLength = 0;
             dutiesTable.ForEachRow(dutyRow => {
                 // Get duty and activity name
                 string dutyName = dutyRow.GetCell(dutiesTable.GetColumnIndex("DutyNo")).StringCellValue;
@@ -65,6 +66,9 @@ namespace Thesis {
                 int endTime = (int)Math.Round((endTimeRaw - planningStartDate).TotalMinutes);
                 int duration = endTime - startTime;
 
+                // Set the timeframe length to the last end time of all trips
+                timeframeLength = Math.Max(timeframeLength, endTime);
+
                 // Temp: skip trips longer than max shift length
                 if (duration > Config.MaxShiftLengthWithoutTravel) return;
 
@@ -77,7 +81,7 @@ namespace Thesis {
                 throw new Exception("No trips found in timeframe");
             }
 
-            return (rawTrips, stationCodes);
+            return (rawTrips, stationCodes, timeframeLength);
         }
 
         static int[,] EstimateOrGenerateTrainTravelTimes(Trip[] rawTrips, string[] stationCodes, Random rand) {

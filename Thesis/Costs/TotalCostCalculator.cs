@@ -7,32 +7,34 @@ using System.Threading.Tasks;
 namespace Thesis {
     static class TotalCostCalculator {
         /** Get assignment cost */
-        public static (double, double, double, DriverInfo[], PenaltyInfo) GetAssignmentCost(SaInfo info) {
+        public static (double, double, double, double, DriverInfo[], PenaltyInfo) GetAssignmentCost(SaInfo info) {
             List<Trip>[] driverPaths = GetPathPerDriver(info);
 
             double cost = 0;
             double costWithoutPenalty = 0;
             double penalty = 0;
+            double satisfaction = 0;
             DriverInfo[] driverInfos = new DriverInfo[info.Instance.AllDrivers.Length];
             PenaltyInfo penaltyInfo = new PenaltyInfo();
             for (int driverIndex = 0; driverIndex < info.Instance.AllDrivers.Length; driverIndex++) {
                 List<Trip> driverPath = driverPaths[driverIndex];
                 Driver driver = info.Instance.AllDrivers[driverIndex];
 
-                (double driverCost, double driverCostWithoutPenalty, double driverPenalty, DriverInfo driverInfo) = GetDriverPathCost(driverPath, info.IsHotelStayAfterTrip, driver, penaltyInfo, info, false);
+                (double driverCost, double driverCostWithoutPenalty, double driverPenalty, double driverSatisfaction, DriverInfo driverInfo) = GetDriverPathCost(driverPath, info.IsHotelStayAfterTrip, driver, penaltyInfo, info, false);
 
                 cost += driverCost;
                 costWithoutPenalty += driverCostWithoutPenalty;
                 penalty += driverPenalty;
+                satisfaction += driverSatisfaction;
                 driverInfos[driverIndex] = driverInfo;
             }
 
-            return (cost, costWithoutPenalty, penalty, driverInfos, penaltyInfo);
+            return (cost, costWithoutPenalty, penalty, satisfaction, driverInfos, penaltyInfo);
         }
 
-        public static (double, double, double, DriverInfo) GetDriverPathCost(List<Trip> driverPath, bool[] isHotelStayAfterTrip, Driver driver, PenaltyInfo penaltyInfo, SaInfo info, bool shouldDebug = true) {
+        public static (double, double, double, double, DriverInfo) GetDriverPathCost(List<Trip> driverPath, bool[] isHotelStayAfterTrip, Driver driver, PenaltyInfo penaltyInfo, SaInfo info, bool shouldDebug = true) {
             DriverInfo driverInfo = new DriverInfo();
-            double totalCostWithoutPenalty = 0;
+            double costWithoutPenalty = 0;
 
             if (driverPath.Count == 0) {
                 // Empty path
@@ -66,6 +68,7 @@ namespace Thesis {
                         #endif
                     } else {
                         /* Start of new shift */
+                        ShiftInfo shiftInfo = info.Instance.ShiftInfo(shiftFirstTrip, prevTrip);
                         driverInfo.ShiftCount++;
 
                         // Get travel time before
@@ -79,7 +82,7 @@ namespace Thesis {
                         }
 
                         // Get driving time
-                        int shiftLengthWithoutTravel = info.Instance.DrivingTime(shiftFirstTrip, prevTrip);
+                        int shiftLengthWithoutTravel = shiftInfo.DrivingTime;
                         float drivingCost = driver.DrivingCost(shiftFirstTrip, prevTrip);
                         driverInfo.WorkedTime += shiftLengthWithoutTravel;
 
@@ -87,9 +90,10 @@ namespace Thesis {
                         int travelTimeAfter, restTime;
                         if (isHotelStayAfterTrip[prevTrip.Index]) {
                             // Hotel stay after
+                            driverInfo.HotelCount++;
                             travelTimeAfter = info.Instance.HalfTravelTimeViaHotel(prevTrip, searchTrip);
                             restTime = info.Instance.RestTimeViaHotel(prevTrip, searchTrip);
-                            totalCostWithoutPenalty += Config.HotelCosts;
+                            costWithoutPenalty += Config.HotelCosts;
 
                             // Check if the hotel stay isn't too long
                             if (restTime > Config.HotelMaxRestTime) {
@@ -114,7 +118,7 @@ namespace Thesis {
                         // Get shift cost
                         float travelCost = driver.GetPaidTravelCost(travelTime);
                         float shiftCost = drivingCost + travelCost;
-                        totalCostWithoutPenalty += shiftCost;
+                        costWithoutPenalty += shiftCost;
 
                         // Check shift length
                         int shiftLengthViolation = Math.Max(0, shiftLengthWithoutTravel - Config.MaxShiftLengthWithoutTravel) + Math.Max(0, shiftLengthWithTravel - Config.MaxShiftLengthWithTravel);
@@ -129,6 +133,10 @@ namespace Thesis {
                             penaltyInfo.RestTimeViolationCount++;
                             penaltyInfo.RestTimeViolation += restTimeViolation;
                         }
+
+                        // Update night and weekend counts
+                        if (shiftInfo.IsNightShift) driverInfo.NightShiftCount++;
+                        if (shiftInfo.IsWeekendShift) driverInfo.WeekendShiftCount++;
 
                         // Start new shift
                         shiftFirstTrip = searchTrip;
@@ -147,6 +155,7 @@ namespace Thesis {
                 }
 
                 /* End final shift */
+                ShiftInfo lastShiftInfo = info.Instance.ShiftInfo(shiftFirstTrip, prevTrip);
                 driverInfo.ShiftCount++;
 
                 // Get travel time before
@@ -160,7 +169,7 @@ namespace Thesis {
                 }
 
                 // Get driving time
-                int lastShiftLengthWithoutTravel = info.Instance.DrivingTime(shiftFirstTrip, prevTrip);
+                int lastShiftLengthWithoutTravel = lastShiftInfo.DrivingTime;
                 float lastShiftDrivingCost = driver.DrivingCost(shiftFirstTrip, prevTrip);
                 driverInfo.WorkedTime += lastShiftLengthWithoutTravel;
 
@@ -174,7 +183,7 @@ namespace Thesis {
                 // Get shift cost
                 float lastShiftTravelCost = driver.GetPaidTravelCost(lastShiftTravelTime);
                 float lastShiftShiftCost = lastShiftDrivingCost + lastShiftTravelCost;
-                totalCostWithoutPenalty += lastShiftShiftCost;
+                costWithoutPenalty += lastShiftShiftCost;
 
                 // Check shift length
                 int lastShiftLengthViolation = Math.Max(0, lastShiftLengthWithoutTravel - Config.MaxShiftLengthWithoutTravel) + Math.Max(0, lastShiftLengthWithTravel - Config.MaxShiftLengthWithTravel);
@@ -187,6 +196,10 @@ namespace Thesis {
                 if (isHotelStayAfterTrip[prevTrip.Index]) {
                     penaltyInfo.InvalidHotelCount++;
                 }
+
+                // Update night and weekend counts
+                if (lastShiftInfo.IsNightShift) driverInfo.NightShiftCount++;
+                if (lastShiftInfo.IsWeekendShift) driverInfo.WeekendShiftCount++;
 
                 #if DEBUG
                 if (Config.DebugCheckAndLogOperations && shouldDebug) {
@@ -215,19 +228,25 @@ namespace Thesis {
             double penalty = precendencePenalty + shiftLengthPenalty + restTimePenalty + contractTimePenalty + shiftCountPenalty + hotelPenalty;
 
             // Determine cost
-            double cost = totalCostWithoutPenalty + penalty;
+            double cost = costWithoutPenalty + penalty;
+
+            // Determine satisfaction
+            double driverSatisfaction = driver.GetSatisfaction(driverInfo, true);
+            double satisfaction = driverSatisfaction / info.Instance.InternalDrivers.Length;
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations && shouldDebug) {
                 SaDebugger.GetCurrentCheckedTotal().Total.Cost = cost;
-                SaDebugger.GetCurrentCheckedTotal().Total.CostWithoutPenalty = totalCostWithoutPenalty;
+                SaDebugger.GetCurrentCheckedTotal().Total.CostWithoutPenalty = costWithoutPenalty;
                 SaDebugger.GetCurrentCheckedTotal().Total.Penalty = penalty;
+                SaDebugger.GetCurrentCheckedTotal().Total.DriverSatisfaction = driverSatisfaction;
+                SaDebugger.GetCurrentCheckedTotal().Total.Satisfaction = satisfaction;
                 SaDebugger.GetCurrentCheckedTotal().Total.DriverInfo = driverInfo;
                 SaDebugger.GetCurrentCheckedTotal().Total.PenaltyInfo = penaltyInfo;
             }
             #endif
 
-            return (cost, totalCostWithoutPenalty, penalty, driverInfo);
+            return (cost, costWithoutPenalty, penalty, satisfaction, driverInfo);
         }
 
         /** Helper: get list of trips that each driver is assigned to */

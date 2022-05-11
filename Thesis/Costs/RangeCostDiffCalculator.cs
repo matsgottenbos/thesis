@@ -6,30 +6,27 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class RangeCostDiffCalculator {
-        public static (double, double, double, int, int) GetRangeCostDiff(Trip rangeFirstTrip, Trip rangeLastTrip, DriverInfo oldDriverInfo, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
-            (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = RangeCostCalculator.GetRangeCost(rangeFirstTrip, rangeLastTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
+        public static (double, double, double, double, DriverInfo) GetRangeCostDiff(Trip rangeFirstTrip, Trip rangeLastTrip, DriverInfo oldDriverInfo, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+            (double newCostWithoutPenalty, double newPenalty, DriverInfo newRangeDriverInfo) = RangeCostCalculator.GetRangeCost(rangeFirstTrip, rangeLastTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
+            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo, newCostWithoutPenalty, newPenalty, newRangeDriverInfo, driver, driverPath, info);
         }
 
-        public static (double, double, double, int, int) GetRangeCostDiffWithUnassign(Trip rangeFirstTrip, Trip rangeLastTrip, DriverInfo oldDriverInfo, Trip unassignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
-            (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = RangeCostCalculator.GetRangeCostWithUnassign(rangeFirstTrip, rangeLastTrip, unassignedTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
+        public static (double, double, double, double, DriverInfo) GetRangeCostDiffWithUnassign(Trip rangeFirstTrip, Trip rangeLastTrip, DriverInfo oldDriverInfo, Trip unassignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+            (double newCostWithoutPenalty, double newPenalty, DriverInfo newDriverInfo) = RangeCostCalculator.GetRangeCostWithUnassign(rangeFirstTrip, rangeLastTrip, unassignedTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
+            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo, newCostWithoutPenalty, newPenalty, newDriverInfo, driver, driverPath, info);
         }
 
-        public static (double, double, double, int, int) GetRangeCostDiffWithAssign(Trip rangeFirstTrip, Trip rangeLastTrip, int oldFullWorkedTime, int oldFullShiftCount, Trip assignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
-            (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = RangeCostCalculator.GetRangeCostWithAssign(rangeFirstTrip, rangeLastTrip, assignedTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldFullWorkedTime, oldFullShiftCount, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
-        }
-        public static (double, double, double, int, int) GetRangeCostDiffWithAssign(Trip rangeFirstTrip, Trip rangeLastTrip, DriverInfo oldDriverInfo, Trip assignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
-            return GetRangeCostDiffWithAssign(rangeFirstTrip, rangeLastTrip, oldDriverInfo.WorkedTime, oldDriverInfo.ShiftCount, assignedTrip, newIsHotelAfterTrip, driver, driverPath, info); ;
+        public static (double, double, double, double, DriverInfo) GetRangeCostDiffWithAssign(Trip rangeFirstTrip, Trip rangeLastTrip, DriverInfo oldDriverInfo, Trip assignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+            (double newCostWithoutPenalty, double newPenalty, DriverInfo newDriverInfo) = RangeCostCalculator.GetRangeCostWithAssign(rangeFirstTrip, rangeLastTrip, assignedTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
+            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo, newCostWithoutPenalty, newPenalty, newDriverInfo, driver, driverPath, info);
         }
 
-        public static (double, double, double, int, int) GetRangeCostDiffWithSwap(Trip rangeFirstTrip, Trip rangeLastTrip, DriverInfo oldDriverInfo, Trip unassignedTrip, Trip assignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
-            (double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount) = RangeCostCalculator.GetRangeCostWithSwap(rangeFirstTrip, rangeLastTrip, unassignedTrip, assignedTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
+        public static (double, double, double, double, DriverInfo) GetRangeCostDiffWithSwap(Trip rangeFirstTrip, Trip rangeLastTrip, DriverInfo oldDriverInfo, Trip unassignedTrip, Trip assignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+            (double newCostWithoutPenalty, double newPenalty, DriverInfo newDriverInfo) = RangeCostCalculator.GetRangeCostWithSwap(rangeFirstTrip, rangeLastTrip, unassignedTrip, assignedTrip, newIsHotelAfterTrip, driver, driverPath, info, true);
+            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo, newCostWithoutPenalty, newPenalty, newDriverInfo, driver, driverPath, info);
         }
 
-        public static (double, double, double, int, int) GetRangeCostDiffFromNewCosts(Trip rangeFirstTrip, Trip rangeLastTrip, int oldFullWorkedTime, int oldFullShiftCount, double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount, Driver driver, List<Trip> driverPath, SaInfo info) {
+        public static (double, double, double, double, DriverInfo) GetRangeCostDiffFromNewCosts(Trip rangeFirstTrip, Trip rangeLastTrip, DriverInfo oldFullDriverInfo, double newCostWithoutPenalty, double newPartialPenalty, DriverInfo newRangeDriverInfo, Driver driver, List<Trip> driverPath, SaInfo info) {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentNormalDiff().DriverPathString = ParseHelper.DriverPathToString(driverPath, info);
@@ -38,29 +35,38 @@ namespace Thesis {
 
             // Old range cost
             Func<Trip, bool> oldIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index];
-            (double oldCostWithoutPenalty, double oldPenalty, int oldWorkedTime, int oldShiftCount) = RangeCostCalculator.GetRangeCost(rangeFirstTrip, rangeLastTrip, oldIsHotelAfterTrip, driver, driverPath, info, false);
-            oldPenalty += driver.GetContractTimePenalty(oldFullWorkedTime, false);
-            oldPenalty += PenaltyHelper.GetShiftCountPenalty(oldFullShiftCount, false);
+            (double oldCostWithoutPenalty, double oldPartialPenalty, DriverInfo oldRangeDriverInfo) = RangeCostCalculator.GetRangeCost(rangeFirstTrip, rangeLastTrip, oldIsHotelAfterTrip, driver, driverPath, info, false);
+            (double oldPenalty, double oldSatisfaction) = ProcessFullPathValues(oldFullDriverInfo, oldPartialPenalty, driver, false);
             double oldCost = oldCostWithoutPenalty + oldPenalty;
 
+            // Determine full new driver info from partial info
+            DriverInfo driverInfoDiff = newRangeDriverInfo - oldRangeDriverInfo;
+            DriverInfo newFullDriverInfo = oldFullDriverInfo + driverInfoDiff;
+
             // New range cost
-            int driverNewWorkedTime = oldFullWorkedTime + newWorkedTime - oldWorkedTime;
-            newPenalty += driver.GetContractTimePenalty(driverNewWorkedTime, true);
-            int driverNewShiftCount = oldFullShiftCount + newShiftCount - oldShiftCount;
-            newPenalty += PenaltyHelper.GetShiftCountPenalty(driverNewShiftCount, true);
+            (double newPenalty, double newSatisfaction) = ProcessFullPathValues(newFullDriverInfo, newPartialPenalty, driver, true);
             double newCost = newCostWithoutPenalty + newPenalty;
 
             // Diffs
             double costDiff = newCost - oldCost;
             double costWithoutPenaltyDiff = newCostWithoutPenalty - oldCostWithoutPenalty;
             double penaltyDiff = newPenalty - oldPenalty;
-            int workedTimeDiff = newWorkedTime - oldWorkedTime;
-            int shiftCountDiff = newShiftCount - oldShiftCount;
+            double driverSatisfactionDiff = newSatisfaction - oldSatisfaction;
+            double totalSatisfactionDiff = driverSatisfactionDiff / info.Instance.InternalDrivers.Length;
 
-            return (costDiff, costWithoutPenaltyDiff, penaltyDiff, workedTimeDiff, shiftCountDiff);
+            return (costDiff, costWithoutPenaltyDiff, penaltyDiff, totalSatisfactionDiff, driverInfoDiff);
         }
-        public static (double, double, double, int, int) GetRangeCostDiffFromNewCosts(Trip rangeFirstTrip, Trip rangeLastTrip, DriverInfo oldDriverInfo, double newCostWithoutPenalty, double newPenalty, int newWorkedTime, int newShiftCount, Driver driver, List<Trip> driverPath, SaInfo info) {
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo.WorkedTime, oldDriverInfo.ShiftCount, newCostWithoutPenalty, newPenalty, newWorkedTime, newShiftCount, driver, driverPath, info);
+
+        public static (double, double) ProcessFullPathValues(DriverInfo fullDriverInfo, double partialPenalty, Driver driver, bool debugIsNew) {
+            // Contract time and shift count penalties
+            double penalty = partialPenalty;
+            penalty += driver.GetContractTimePenalty(fullDriverInfo.WorkedTime, debugIsNew);
+            penalty += PenaltyHelper.GetShiftCountPenalty(fullDriverInfo.ShiftCount, debugIsNew);
+
+            // Satisfaction
+            double satisfaction = driver.GetSatisfaction(fullDriverInfo, debugIsNew);
+
+            return (penalty, satisfaction);
         }
     }
 }
