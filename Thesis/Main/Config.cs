@@ -120,17 +120,17 @@ namespace Thesis {
         //public const float SaEndCycleTemperature = 30f;
 
         // SA parameters (Excel)
-        //public const int SaIterationCount = 20000000;
-        public const int SaIterationCount = 200000000;
+        public const int SaIterationCount = 500000000;
         public const int SaCheckCostFrequency = 100000;
         public const int SaLogFrequency = 1000000;
         public const int SaParameterUpdateFrequency = 100000;
         public const float SaInitialTemperature = 5000f;
-        public const float SaCycleInitialTemperatureMin = 500f;
-        public const float SaCycleInitialTemperatureMax = 7000f;
+        public const float SaCycleMinInitialTemperature = 500f;
+        public const float SaCycleMaxInitialTemperature = 7000f;
         public const float SaTemperatureReductionFactor = 0.99f;
-        //public const float SaTemperatureReductionFactor = 0.97f;
         public const float SaEndCycleTemperature = 300f;
+        public const float SaCycleMinSatisfactionFactor = 0f;
+        public const float SaCycleMaxSatisfactionFactor = 1f;
 
         // Operation probabilities
         public const float AssignInternalProbCumulative = 0.5f;
@@ -160,6 +160,7 @@ namespace Thesis {
         /* Misc */
         // Floating point imprecision
         public const float FloatingPointMargin = 0.0001f;
+        public const int PercentageFactor = 100;
 
         // Debug
         public const bool DebugCheckAndLogOperations = false;

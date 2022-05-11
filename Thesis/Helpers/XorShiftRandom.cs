@@ -319,5 +319,12 @@ namespace Thesis {
         public int NextInt(int next) {
             return (int)(NextUInt16() * next / (ushort.MaxValue + 1.0));
         }
+
+        public double NextDouble(double max) {
+            return max * NextDouble();
+        }
+        public double NextDouble(double min, double max) {
+            return min + (max - min) * NextDouble();
+        }
     }
 }

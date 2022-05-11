@@ -46,10 +46,10 @@ namespace Thesis {
             return trip.Index.ToString();
         }
 
-        public static string AssignmentToString(Driver[] assignment, SaInfo info) {
-            string[] assignmentStrParts = new string[assignment.Length];
+        public static string AssignmentToString(SaInfo info) {
+            string[] assignmentStrParts = new string[info.Assignment.Length];
             for (int tripIndex = 0; tripIndex < info.Instance.Trips.Length; tripIndex++) {
-                Driver driver = assignment[tripIndex];
+                Driver driver = info.Assignment[tripIndex];
                 assignmentStrParts[tripIndex] = driver.GetId();
                 if (info.IsHotelStayAfterTrip[tripIndex]) assignmentStrParts[tripIndex] += "h";
             }
@@ -83,7 +83,7 @@ namespace Thesis {
             return GetPenaltyString(info.Penalty, info.PenaltyInfo);
         }
         public static string GetPenaltyString(double penalty, PenaltyInfo penaltyInfo) {
-            string penaltyString = "-";
+            string penaltyString = string.Format("{0,6}", "-");
             if (penalty > 0) {
                 List<string> penaltyTypes = new List<string>();
                 if (penaltyInfo.PrecedenceViolationCount > 0) penaltyTypes.Add("Pr " + penaltyInfo.PrecedenceViolationCount);
@@ -94,7 +94,7 @@ namespace Thesis {
                 if (penaltyInfo.InvalidHotelCount > 0) penaltyTypes.Add("IH " + penaltyInfo.InvalidHotelCount);
                 string penaltyTypesStr = string.Join(", ", penaltyTypes);
 
-                penaltyString = string.Format("{0} ({1})", ToString(penalty, "0"), penaltyTypesStr);
+                penaltyString = string.Format("{0,6} ({1})", LargeNumToString(penalty, "0.0"), penaltyTypesStr);
             };
             return penaltyString;
         }

@@ -17,7 +17,7 @@ namespace Thesis {
         public DriverInfo[] DriverInfos;
         public PenaltyInfo PenaltyInfo;
         public int IterationNum, CycleNum;
-        public float Temperature;
+        public float Temperature, SatisfactionFactor;
 
         public SaInfo(Instance instance, Random rand, XorShiftRandom fastRand) {
             Instance = instance;
@@ -86,6 +86,15 @@ namespace Thesis {
                     }
                 }
             }
+        }
+
+        public SaInfo CopyForBestInfo() {
+            return new SaInfo(Instance, Rand, FastRand) {
+                Cost = Cost,
+                Satisfaction = Satisfaction,
+                Assignment = (Driver[])Assignment.Clone(),
+                IsHotelStayAfterTrip = (bool[])IsHotelStayAfterTrip.Clone(),
+            };
         }
     }
 }
