@@ -32,7 +32,7 @@ namespace Thesis {
         }
 
         public override double GetSatisfaction(float value) {
-            return Weight * (value - WorstThreshold) / (BestThreshold - WorstThreshold);
+            return Weight * Math.Max(0, Math.Min((value - WorstThreshold) / (BestThreshold - WorstThreshold), 1));
         }
     }
 }

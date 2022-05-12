@@ -6,18 +6,12 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class SatisfactionCalculator {
-        public static double GetDriverSatisfaction(DriverInfo driverInfo, bool debugIsNew) {
+        public static double GetDriverSatisfaction(DriverInfo driverInfo) {
             double satisfaction = 0;
-
-            // Hotels
             satisfaction += Config.SatCriteriumHotels.GetSatisfaction(driverInfo.HotelCount);
-
-            // Night shifts
             satisfaction += Config.SatCriteriumNightShifts.GetSatisfaction(driverInfo.NightShiftCount);
-
-            // Weekend shifts
             satisfaction += Config.SatCriteriumWeekendShifts.GetSatisfaction(driverInfo.WeekendShiftCount);
-
+            satisfaction += Config.SatCriteriumTravelTime.GetSatisfaction(driverInfo.TravelTime);
             return satisfaction;
         }
     }

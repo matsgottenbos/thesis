@@ -88,9 +88,17 @@ namespace Thesis {
                 beforeHotelTrip = null;
             }
 
-            // Get shift length
+            // Get travel time and shift length
             int travelTime = travelTimeBefore + travelTimeAfter;
+            driverInfo.TravelTime += travelTime;
             int shiftLengthWithTravel = shiftLengthWithoutTravel + travelTime;
+
+            #if DEBUG
+            if (Config.DebugCheckAndLogOperations) {
+                if (debugIsNew) SaDebugger.GetCurrentNormalDiff().TravelTime.AddNew(travelTime);
+                else SaDebugger.GetCurrentNormalDiff().TravelTime.AddOld(travelTime);
+            }
+            #endif
 
             // Get shift cost
             float travelCost = driver.GetPaidTravelCost(travelTime);
@@ -151,9 +159,17 @@ namespace Thesis {
             // Get travel time after
             int travelTimeAfter = instance.CarTravelTime(prevTrip, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
 
-            // Get shift length
+            // Get travel time and shift length
             int travelTime = travelTimeBefore + travelTimeAfter;
+            driverInfo.TravelTime += travelTime;
             int shiftLengthWithTravel = shiftLengthWithoutTravel + travelTime;
+
+            #if DEBUG
+            if (Config.DebugCheckAndLogOperations) {
+                if (debugIsNew) SaDebugger.GetCurrentNormalDiff().TravelTime.AddNew(travelTime);
+                else SaDebugger.GetCurrentNormalDiff().TravelTime.AddOld(travelTime);
+            }
+            #endif
 
             // Get shift cost
             float travelCost = driver.GetPaidTravelCost(travelTime);

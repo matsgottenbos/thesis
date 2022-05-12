@@ -69,9 +69,10 @@ namespace Thesis {
         public const float MaxContractTimeFraction = 1.2f;
 
         // Satisfaction
-        public static readonly IntSatisfactionCriterium SatCriteriumHotels = new IntSatisfactionCriterium(4, 0, 0.5f);
-        public static readonly FloatSatisfactionCriterium SatCriteriumNightShifts = new FloatSatisfactionCriterium(5f, 0f, 0.25f);
-        public static readonly FloatSatisfactionCriterium SatCriteriumWeekendShifts = new FloatSatisfactionCriterium(2f, 0f, 0.25f);
+        public static readonly IntSatisfactionCriterium SatCriteriumHotels = new IntSatisfactionCriterium(4, 0, 0.3f);
+        public static readonly FloatSatisfactionCriterium SatCriteriumNightShifts = new FloatSatisfactionCriterium(5, 0, 0.2f);
+        public static readonly FloatSatisfactionCriterium SatCriteriumWeekendShifts = new FloatSatisfactionCriterium(2, 0, 0.2f);
+        public static readonly FloatSatisfactionCriterium SatCriteriumTravelTime = new FloatSatisfactionCriterium(30 * 60, 0, 0.3f);
 
 
         /* Excel importer */
@@ -169,7 +170,7 @@ namespace Thesis {
         public const bool DebugRunInspector = false;
         public const bool DebugRunJsonExporter = false;
         public const bool DebugRunOdataTest = false;
-        public const bool DebugUseSeededSa = true;
+        public const bool DebugUseSeededSa = false;
     }
 
     class SalaryRateInfo {

@@ -111,8 +111,9 @@ namespace Thesis {
                             beforeHotelTrip = null;
                         }
 
-                        // Get shift length
+                        // Get travel time and shift length
                         int travelTime = travelTimeBefore + travelTimeAfter;
+                        driverInfo.TravelTime += travelTime;
                         int shiftLengthWithTravel = shiftLengthWithoutTravel + travelTime;
 
                         // Get shift cost
@@ -176,8 +177,9 @@ namespace Thesis {
                 // Get travel time after and rest time
                 int lastShiftTravelTimeAfter = info.Instance.CarTravelTime(prevTrip, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
 
-                // Get shift length
+                // Get travel time and shift length
                 int lastShiftTravelTime = lastShiftTravelTimeBefore + lastShiftTravelTimeAfter;
+                driverInfo.TravelTime += lastShiftTravelTime;
                 int lastShiftLengthWithTravel = lastShiftLengthWithoutTravel + lastShiftTravelTime;
 
                 // Get shift cost
@@ -231,7 +233,7 @@ namespace Thesis {
             double cost = costWithoutPenalty + penalty;
 
             // Determine satisfaction
-            double driverSatisfaction = driver.GetSatisfaction(driverInfo, true);
+            double driverSatisfaction = driver.GetSatisfaction(driverInfo);
             double satisfaction = driverSatisfaction / info.Instance.InternalDrivers.Length;
 
             #if DEBUG

@@ -64,7 +64,7 @@ namespace Thesis {
             penalty += PenaltyHelper.GetShiftCountPenalty(fullDriverInfo.ShiftCount, debugIsNew);
 
             // Satisfaction
-            double satisfaction = driver.GetSatisfaction(fullDriverInfo, debugIsNew);
+            double satisfaction = driver.GetSatisfaction(fullDriverInfo);
 
             return (penalty, satisfaction);
         }

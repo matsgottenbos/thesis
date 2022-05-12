@@ -89,7 +89,7 @@ namespace Thesis {
 
         /* Satisfaction */
 
-        public abstract double GetSatisfaction(DriverInfo driverInfo, bool debugIsNew);
+        public abstract double GetSatisfaction(DriverInfo driverInfo);
     }
 
     class InternalDriver : Driver {
@@ -130,8 +130,8 @@ namespace Thesis {
             return Math.Max(0, workedTime - MaxContractTime);
         }
 
-        public override double GetSatisfaction(DriverInfo driverInfo, bool debugIsNew) {
-            return SatisfactionCalculator.GetDriverSatisfaction(driverInfo, debugIsNew);
+        public override double GetSatisfaction(DriverInfo driverInfo) {
+            return SatisfactionCalculator.GetDriverSatisfaction(driverInfo);
         }
     }
 
@@ -167,7 +167,7 @@ namespace Thesis {
             return 0;
         }
 
-        public override double GetSatisfaction(DriverInfo driverInfo, bool debugIsNew) {
+        public override double GetSatisfaction(DriverInfo driverInfo) {
             return 0;
         }
     }

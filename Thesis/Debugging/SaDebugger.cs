@@ -211,6 +211,7 @@ namespace Thesis {
         public ViolationAmountValueChange<int> RestTime, ContractTime, ShiftCount;
         public ValueChange<Trip> Hotels, InvalidHotels;
         public ValueChange<(Trip, Trip)> NightShifts, WeekendShifts;
+        public ValueChange<int> TravelTime;
         public string DriverPathString, RelevantRangeInfo;
 
         public NormalDiff(bool shouldReverse, Driver driver, SaInfo info) {
@@ -223,6 +224,7 @@ namespace Thesis {
             InvalidHotels = new ValueChange<Trip>("Invalid hotel", shouldReverse, driver, info);
             NightShifts = new ValueChange<(Trip, Trip)>("Night shift", shouldReverse, driver, info);
             WeekendShifts = new ValueChange<(Trip, Trip)>("Weekend shift", shouldReverse, driver, info);
+            TravelTime = new ValueChange<int>("Travel time", shouldReverse, driver, info);
         }
 
         public TotalInfo ToTotal() {
@@ -237,7 +239,8 @@ namespace Thesis {
                     ShiftCount = ShiftCount.GetValueSumDiff(),
                     HotelCount = Hotels.GetCountDiff(),
                     NightShiftCount = NightShifts.GetCountDiff(),
-                    WeekendShiftCount = WeekendShifts.GetCountDiff()
+                    WeekendShiftCount = WeekendShifts.GetCountDiff(),
+                    TravelTime = TravelTime.GetValueSumDiff(),
                 },
                 PenaltyInfo = new PenaltyInfo() {
                     PrecedenceViolationCount = Precedence.GetViolationCountDiff(),
@@ -268,6 +271,9 @@ namespace Thesis {
             ContractTime.Log();
             ShiftCount.Log();
             InvalidHotels.Log();
+            NightShifts.Log();
+            WeekendShifts.Log();
+            TravelTime.Log();
         }
 
         static void LogValue<T>(string name, T value) {

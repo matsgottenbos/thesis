@@ -2,7 +2,7 @@
 
 namespace Thesis {
     class DriverInfo {
-        public int WorkedTime, ShiftCount, HotelCount, NightShiftCount, WeekendShiftCount;
+        public int WorkedTime, ShiftCount, HotelCount, NightShiftCount, WeekendShiftCount, TravelTime;
 
         public static DriverInfo operator -(DriverInfo a) {
             return new DriverInfo() {
@@ -11,6 +11,7 @@ namespace Thesis {
                 HotelCount = -a.HotelCount,
                 NightShiftCount = -a.NightShiftCount,
                 WeekendShiftCount = -a.WeekendShiftCount,
+                TravelTime = -a.TravelTime,
             };
         }
         public static DriverInfo operator +(DriverInfo a, DriverInfo b) {
@@ -20,6 +21,7 @@ namespace Thesis {
                 HotelCount = a.HotelCount + b.HotelCount,
                 NightShiftCount = a.NightShiftCount + b.NightShiftCount,
                 WeekendShiftCount = a.WeekendShiftCount + b.WeekendShiftCount,
+                TravelTime = a.TravelTime + b.TravelTime,
             };
         }
         public static DriverInfo operator -(DriverInfo a, DriverInfo b) => a + -b;
@@ -30,7 +32,8 @@ namespace Thesis {
                 a.ShiftCount == b.ShiftCount &&
                 a.HotelCount == b.HotelCount &&
                 a.NightShiftCount == b.NightShiftCount &&
-                a.WeekendShiftCount == b.WeekendShiftCount
+                a.WeekendShiftCount == b.WeekendShiftCount &&
+                a.TravelTime == b.TravelTime
             );
         }
 
@@ -40,6 +43,7 @@ namespace Thesis {
             ParseHelper.LogDebugValue(HotelCount, "Hotel count", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(NightShiftCount, "Night shift count", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(WeekendShiftCount, "Weekend shift count", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(TravelTime, "Travel time", isDiff, shouldLogZeros);
         }
     }
 }
