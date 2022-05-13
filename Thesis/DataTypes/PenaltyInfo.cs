@@ -1,6 +1,66 @@
-﻿namespace Thesis {
+﻿using System;
+
+namespace Thesis {
     class PenaltyInfo {
         public int PrecedenceViolationCount, ShiftLengthViolationCount, ShiftLengthViolation, RestTimeViolationCount, RestTimeViolation, ContractTimeViolationCount, ContractTimeViolation, ShiftCountViolationAmount, InvalidHotelCount;
+
+        /* Adding violations */
+
+        public void AddPrecedenceViolation() {
+            PrecedenceViolationCount++;
+        }
+
+        public void AddPossibleShiftLengthViolation(int shiftLengthWithoutTravel, int shiftLengthWithTravel) {
+            int shiftLengthViolationAmount = Math.Max(0, shiftLengthWithoutTravel - Config.MaxShiftLengthWithoutTravel) + Math.Max(0, shiftLengthWithTravel - Config.MaxShiftLengthWithTravel);
+            if (shiftLengthViolationAmount > 0) {
+                ShiftLengthViolationCount++;
+                ShiftLengthViolation += shiftLengthViolationAmount;
+            }
+        }
+
+        public void AddPossibleRestTimeViolation(int restTime) {
+            int shiftLengthViolation = Math.Max(0, Config.MinRestTime - restTime);
+            if (shiftLengthViolation > 0) {
+                RestTimeViolationCount++;
+                RestTimeViolation += shiftLengthViolation;
+            }
+        }
+
+        public void AddPossibleContractTimeViolation(int workedTime, Driver driver) {
+            int contractTimeViolation = driver.GetContractTimeViolation(workedTime);
+            if (contractTimeViolation > 0) {
+                ContractTimeViolationCount++;
+                ContractTimeViolation += contractTimeViolation;
+            }
+        }
+
+        public void AddPossibleShiftCountViolation(int shiftCount) {
+            int shiftCountViolation = Math.Max(0, shiftCount - Config.DriverMaxShiftCount);
+            if (shiftCountViolation > 0) {
+                ShiftCountViolationAmount += shiftCountViolation;
+            }
+        }
+
+        public void AddInvalidHotel() {
+            InvalidHotelCount++;
+        }
+
+
+        /* Calculating penalty */
+
+        public double GetPenalty() {
+            double penalty = 0;
+            penalty += PrecedenceViolationCount * Config.PrecendenceViolationPenalty;
+            penalty += ShiftLengthViolationCount * Config.ShiftLengthViolationPenalty + ShiftLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
+            penalty += RestTimeViolationCount * Config.RestTimeViolationPenalty + RestTimeViolation * Config.RestTimeViolationPenaltyPerMin;
+            penalty += ContractTimeViolationCount * Config.ContractTimeViolationPenalty + ContractTimeViolation * Config.ContractTimeViolationPenaltyPerMin;
+            penalty += ShiftCountViolationAmount * Config.ShiftCountViolationPenaltyPerShift;
+            penalty += InvalidHotelCount * Config.InvalidHotelPenalty;
+            return penalty;
+        }
+
+
+        /* Operators */
 
         public static PenaltyInfo operator -(PenaltyInfo a) {
             return new PenaltyInfo() {
@@ -43,6 +103,9 @@
                 a.InvalidHotelCount == b.InvalidHotelCount
             );
         }
+
+
+        /* Debugging */
 
         public void DebugLog(bool isDiff, bool shouldLogZeros = true) {
             ParseHelper.LogDebugValue(PrecedenceViolationCount, "Precedence violation count", isDiff, shouldLogZeros);

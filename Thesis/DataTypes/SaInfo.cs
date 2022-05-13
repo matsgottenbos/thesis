@@ -12,10 +12,9 @@ namespace Thesis {
         public Driver[] Assignment;
         public List<Trip>[] DriverPaths;
         public bool[] IsHotelStayAfterTrip;
-        public double Cost, CostWithoutPenalty, Penalty, Satisfaction;
         public int[] DriverPathIndices, ExternalDriverCountsByType;
+        public DriverInfo TotalInfo;
         public DriverInfo[] DriverInfos;
-        public PenaltyInfo PenaltyInfo;
         public int IterationNum, CycleNum;
         public float Temperature, SatisfactionFactor;
 
@@ -90,8 +89,7 @@ namespace Thesis {
 
         public SaInfo CopyForBestInfo() {
             return new SaInfo(Instance, Rand, FastRand) {
-                Cost = Cost,
-                Satisfaction = Satisfaction,
+                TotalInfo = TotalInfo,
                 Assignment = (Driver[])Assignment.Clone(),
                 IsHotelStayAfterTrip = (bool[])IsHotelStayAfterTrip.Clone(),
             };

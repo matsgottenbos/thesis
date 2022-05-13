@@ -19,25 +19,17 @@ namespace Thesis {
             assignedDriverInfo = info.DriverInfos[assignedDriver.AllDriversIndex];
         }
 
-        public override (double, double) GetCostDiff() {
+        public override DriverInfo GetCostDiff() {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentOperation().Description = string.Format("Re-assign trip {0} from driver {1} to driver {2}", trip.Index, unassignedDriver.GetId(), assignedDriver.GetId());
             }
             #endif
 
-            (double unassignedDriverCostDiff, double unassignedDriverCostWithoutPenaltyDiff, double unassignedDriverPenaltyDiff, double unassignedDriverSatisfactionDiff, DriverInfo unassignedDriverInfoDiff) = CostDiffCalculator.GetUnassignDriverCostDiff(trip, unassignedDriver, unassignedDriverInfo, info);
-            (double assignedDriverCostDiff, double assignedDriverCostWithoutPenaltyDiff, double assignedDriverPenaltyDiff, double assignedDriverSatisfactionDiff, DriverInfo assignedDriverInfoDiff) = CostDiffCalculator.GetAssignDriverCostDiff(trip, assignedDriver, assignedDriverInfo, info);
-
-            costDiff = unassignedDriverCostDiff + assignedDriverCostDiff;
-            costWithoutPenaltyDiff = unassignedDriverCostWithoutPenaltyDiff + assignedDriverCostWithoutPenaltyDiff;
-            penaltyDiff = unassignedDriverPenaltyDiff + assignedDriverPenaltyDiff;
-            satisfactionDiff = unassignedDriverSatisfactionDiff + assignedDriverSatisfactionDiff;
-
-            this.unassignedDriverInfoDiff = unassignedDriverInfoDiff;
-            this.assignedDriverInfoDiff = assignedDriverInfoDiff;
-
-            return (costDiff, satisfactionDiff);
+            unassignedDriverInfoDiff = CostDiffCalculator.GetUnassignDriverCostDiff(trip, unassignedDriver, unassignedDriverInfo, info);
+            assignedDriverInfoDiff = CostDiffCalculator.GetAssignDriverCostDiff(trip, assignedDriver, assignedDriverInfo, info);
+            totalInfoDiff = unassignedDriverInfoDiff + assignedDriverInfoDiff;
+            return totalInfoDiff;
         }
 
         public override void Execute() {

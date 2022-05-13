@@ -22,10 +22,8 @@ namespace Thesis {
 
         public void ExportAssignment(string name, string assignmentStr) {
             (info.Assignment, info.IsHotelStayAfterTrip) = ParseHelper.ParseAssignmentString(assignmentStr, instance);
-            List<Trip>[] driverPaths = TotalCostCalculator.GetPathPerDriver(info);
-
             JObject jsonObj = new JObject();
-            jsonObj["drivers"] = CreateDriversJArray(driverPaths);
+            jsonObj["drivers"] = CreateDriversJArray(info.DriverPaths);
 
             string jsonString = jsonObj.ToString();
             string fileName = Path.Combine(Config.OutputFolder, name + "-visualise.json");

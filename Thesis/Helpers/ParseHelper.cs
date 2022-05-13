@@ -79,8 +79,8 @@ namespace Thesis {
             return driverPathStr;
         }
 
-        public static string GetPenaltyString(SaInfo info) {
-            return GetPenaltyString(info.Penalty, info.PenaltyInfo);
+        public static string GetPenaltyString(DriverInfo driverInfo) {
+            return GetPenaltyString(driverInfo.Penalty, driverInfo.PenaltyInfo);
         }
         public static string GetPenaltyString(double penalty, PenaltyInfo penaltyInfo) {
             string penaltyString = string.Format("{0,6}", "-");

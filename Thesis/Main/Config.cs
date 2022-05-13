@@ -164,13 +164,13 @@ namespace Thesis {
         public const int PercentageFactor = 100;
 
         // Debug
-        public const bool DebugCheckAndLogOperations = false;
+        public const bool DebugCheckAndLogOperations = true;
         public const bool DebugSaLogCurrentSolution = false;
         public const bool DebugSaLogAdditionalInfo = false;
         public const bool DebugRunInspector = false;
         public const bool DebugRunJsonExporter = false;
         public const bool DebugRunOdataTest = false;
-        public const bool DebugUseSeededSa = false;
+        public const bool DebugUseSeededSa = true;
     }
 
     class SalaryRateInfo {

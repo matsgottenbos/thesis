@@ -7,19 +7,16 @@ using System.Threading.Tasks;
 namespace Thesis {
     abstract class AbstractOperation {
         protected readonly SaInfo info;
-        protected double costDiff, costWithoutPenaltyDiff, penaltyDiff, satisfactionDiff;
+        protected DriverInfo totalInfoDiff;
 
         public AbstractOperation(SaInfo info) {
             this.info = info;
         }
 
-        public abstract (double, double) GetCostDiff();
+        public abstract DriverInfo GetCostDiff();
 
         public virtual void Execute() {
-            info.Cost += costDiff;
-            info.CostWithoutPenalty += costWithoutPenaltyDiff;
-            info.Penalty += penaltyDiff;
-            info.Satisfaction += satisfactionDiff;
+            info.TotalInfo += totalInfoDiff;
         }
     }
 }

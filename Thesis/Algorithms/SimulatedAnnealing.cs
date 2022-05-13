@@ -23,8 +23,10 @@ namespace Thesis {
             bestInfoBySatisfaction = new SaInfo[Config.PercentageFactor];
             for (int i = 0; i < bestInfoBySatisfaction.Length; i++) {
                 SaInfo initialBestInfo = new SaInfo(instance, rand, fastRand);
-                initialBestInfo.Cost = double.MaxValue;
-                initialBestInfo.Satisfaction = -1;
+                initialBestInfo.TotalInfo = new DriverInfo() {
+                    Cost = double.MaxValue,
+                    Satisfaction = -1,
+                };
                 bestInfoBySatisfaction[i] = initialBestInfo;
             }
 
@@ -49,11 +51,13 @@ namespace Thesis {
             // Initialise debugger
             if (Config.DebugCheckAndLogOperations) {
                 SaDebugger.ResetIteration(info);
+                SaDebugger.GetCurrentOperation().StartPart("Initial assignment", null);
+                SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.OldChecked);
             }
             #endif
 
             // Get cost of initial assignment
-            (info.Cost, info.CostWithoutPenalty, info.Penalty, info.Satisfaction, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
+            (info.TotalInfo, info.DriverInfos) = TotalCostCalculator.GetAssignmentCost(info);
 
             #if DEBUG
             // Reset iteration in debugger after initial assignment cost
@@ -82,25 +86,24 @@ namespace Thesis {
                 else if (operationDouble < Config.SwapProbCumulative) operation = SwapOperation.CreateRandom(info);
                 else operation = ToggleHotelOperation.CreateRandom(info);
 
-                // TODO: WIP
-                (double costDiff, double satisfactionDiff) = operation.GetCostDiff();
-                double oldAdjustedCost = GetAdjustedCost(info.Cost, info.Satisfaction, info.SatisfactionFactor);
-                double newAdjustedCost = GetAdjustedCost(info.Cost + costDiff, info.Satisfaction + satisfactionDiff, info.SatisfactionFactor);
+                DriverInfo totalInfoDiff = operation.GetCostDiff();
+                double oldAdjustedCost = GetAdjustedCost(info.TotalInfo.Cost, info.TotalInfo.Satisfaction, info.SatisfactionFactor);
+                double newAdjustedCost = GetAdjustedCost(info.TotalInfo.Cost + totalInfoDiff.Cost, info.TotalInfo.Satisfaction + totalInfoDiff.Satisfaction, info.SatisfactionFactor);
                 double adjustedCostDiff = newAdjustedCost - oldAdjustedCost;
 
                 bool isAccepted = adjustedCostDiff < 0 || info.FastRand.NextDouble() < Math.Exp(-adjustedCostDiff / info.Temperature);
                 if (isAccepted) {
                     operation.Execute();
 
-                    int satisfactionLevel = (int)Math.Round(info.Satisfaction * Config.PercentageFactor);
-                    if (info.Penalty < 0.01 && info.Cost < bestInfoBySatisfaction[satisfactionLevel].Cost) {
+                    int satisfactionLevel = (int)Math.Round(info.TotalInfo.Satisfaction * Config.PercentageFactor);
+                    if (info.TotalInfo.Penalty < 0.01 && info.TotalInfo.Cost < bestInfoBySatisfaction[satisfactionLevel].TotalInfo.Cost) {
                         // Check cost to remove floating point imprecisions
-                        (info.Cost, info.CostWithoutPenalty, info.Penalty, info.Satisfaction, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
+                        (info.TotalInfo, info.DriverInfos) = TotalCostCalculator.GetAssignmentCost(info);
 
                         #if DEBUG
                         // Set debugger to next iteration
                         if (Config.DebugCheckAndLogOperations) {
-                            if (info.Penalty > 0.01) throw new Exception("New best solution is invalid");
+                            if (info.TotalInfo.Penalty > 0.01) throw new Exception("New best solution is invalid");
                         }
                         #endif
 
@@ -110,7 +113,7 @@ namespace Thesis {
 
                         // Check if this solution also improves on best solutions for lower satisfaction levels
                         for (int searchSatisfactionLevel = satisfactionLevel - 1; searchSatisfactionLevel >= 0; searchSatisfactionLevel--) {
-                            if (info.Cost < bestInfoBySatisfaction[searchSatisfactionLevel].Cost) {
+                            if (info.TotalInfo.Cost < bestInfoBySatisfaction[searchSatisfactionLevel].TotalInfo.Cost) {
                                 bestInfoBySatisfaction[searchSatisfactionLevel] = bestInfo;
                             }
                         }
@@ -130,7 +133,7 @@ namespace Thesis {
                 // Log
                 if (info.IterationNum % Config.SaLogFrequency == 0) {
                     // Check cost to remove floating point imprecisions
-                    (info.Cost, info.CostWithoutPenalty, info.Penalty, info.Satisfaction, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
+                    (info.TotalInfo, info.DriverInfos) = TotalCostCalculator.GetAssignmentCost(info);
 
                     LogIteration();
                 }
@@ -146,7 +149,7 @@ namespace Thesis {
                         info.SatisfactionFactor = (float)info.FastRand.NextDouble(Config.SaCycleMinSatisfactionFactor, Config.SaCycleMaxSatisfactionFactor);
                     }
 
-                    (info.Cost, info.CostWithoutPenalty, info.Penalty, info.Satisfaction, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
+                    (info.TotalInfo, info.DriverInfos) = TotalCostCalculator.GetAssignmentCost(info);
                 }
 
                 #if DEBUG
@@ -194,7 +197,7 @@ namespace Thesis {
             }
 
             // Log basic info
-            Console.WriteLine("# {0,4}    Cycle: {1,3}    Cost: {2,10} ({3,3}%)    Temp: {4,5}    Sat.f: {5,4}    Penalty: {6,-35}    {7}", ParseHelper.LargeNumToString(info.IterationNum), info.CycleNum, ParseHelper.LargeNumToString(info.CostWithoutPenalty, "0.0"), ParseHelper.ToString(info.Satisfaction * 100, "0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(info), paretoFrontStr);
+            Console.WriteLine("# {0,4}    Cycle: {1,3}    Cost: {2,10} ({3,3}%)    Temp: {4,5}    Sat.f: {5,4}    Penalty: {6,-35}    {7}", ParseHelper.LargeNumToString(info.IterationNum), info.CycleNum, ParseHelper.LargeNumToString(info.TotalInfo.CostWithoutPenalty, "0.0"), ParseHelper.ToString(info.TotalInfo.Satisfaction * 100, "0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(info.TotalInfo), paretoFrontStr);
 
             if (Config.DebugSaLogAdditionalInfo) {
                 Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriverInfos.Select(driver => driver.WorkedTime).ToArray()));
@@ -215,7 +218,7 @@ namespace Thesis {
             SaInfo bestOfPrevLevel = null;
             for (int satisfactionLevel = bestInfoBySatisfaction.Length - 1; satisfactionLevel >= 0; satisfactionLevel--) {
                 SaInfo bestInfoOfLevel = bestInfoBySatisfaction[satisfactionLevel];
-                if (bestInfoOfLevel.Cost == double.MaxValue) continue;
+                if (bestInfoOfLevel.TotalInfo.Cost == double.MaxValue) continue;
 
                 if (bestInfoOfLevel != bestOfPrevLevel) {
                     paretoFront.Add(bestInfoOfLevel);
@@ -231,7 +234,7 @@ namespace Thesis {
         }
 
         static string ParetoPointToString(SaInfo paretoPoint) {
-            return string.Format("({0}%: {1})", ParseHelper.ToString(paretoPoint.Satisfaction * Config.PercentageFactor, "0"), ParseHelper.LargeNumToString(paretoPoint.Cost, "0"));
+            return string.Format("({0}%: {1})", ParseHelper.ToString(paretoPoint.TotalInfo.Satisfaction * Config.PercentageFactor, "0"), ParseHelper.LargeNumToString(paretoPoint.TotalInfo.Cost, "0"));
         }
 
         (Driver[], int[]) GetInitialAssignment() {
