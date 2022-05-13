@@ -39,22 +39,6 @@ namespace Thesis {
 
         public static void ProcessDriverEndNonFinalShift(Trip searchTrip, ref Trip shiftFirstTrip, ref Trip parkingTrip, ref Trip prevTrip, ref Trip beforeHotelTrip, Func<Trip, bool> isHotelAfterTrip, ref double costWithoutPenalty, ref double penalty, DriverInfo driverInfo, Driver driver, SaInfo info, Instance instance, bool debugIsNew) {
             ShiftInfo shiftInfo = info.Instance.ShiftInfo(shiftFirstTrip, prevTrip);
-            driverInfo.ShiftCount++;
-
-            // Get travel time before
-            int travelTimeBefore;
-            if (beforeHotelTrip == null) {
-                // No hotel stay before
-                travelTimeBefore = driver.HomeTravelTimeToStart(shiftFirstTrip);
-            } else {
-                // Hotel stay before
-                travelTimeBefore = instance.HalfTravelTimeViaHotel(beforeHotelTrip, shiftFirstTrip);
-            }
-
-            // Get driving time
-            int shiftLengthWithoutTravel = shiftInfo.DrivingTime;
-            float drivingCost = driver.DrivingCost(shiftFirstTrip, prevTrip);
-            driverInfo.WorkedTime += shiftLengthWithoutTravel;
 
             // Get travel time after and rest time
             int travelTimeAfter, restTime;
@@ -88,50 +72,11 @@ namespace Thesis {
                 beforeHotelTrip = null;
             }
 
-            // Get travel time and shift length
-            int travelTime = travelTimeBefore + travelTimeAfter;
-            driverInfo.TravelTime += travelTime;
-            int shiftLengthWithTravel = shiftLengthWithoutTravel + travelTime;
-
-            #if DEBUG
-            if (Config.DebugCheckAndLogOperations) {
-                if (debugIsNew) SaDebugger.GetCurrentNormalDiff().TravelTime.AddNew(travelTime);
-                else SaDebugger.GetCurrentNormalDiff().TravelTime.AddOld(travelTime);
-            }
-            #endif
-
-            // Get shift cost
-            float travelCost = driver.GetPaidTravelCost(travelTime);
-            float shiftCost = drivingCost + travelCost;
-            costWithoutPenalty += shiftCost;
-
-            // Check shift length
-            penalty += PenaltyHelper.GetShiftLengthPenalty(shiftLengthWithoutTravel, shiftLengthWithTravel, debugIsNew);
-
             // Check rest time
             penalty += PenaltyHelper.GetRestTimePenalty(restTime, debugIsNew);
 
-            // Update night and weekend counts
-            if (shiftInfo.IsNightShift) {
-                driverInfo.NightShiftCount++;
-
-                #if DEBUG
-                if (Config.DebugCheckAndLogOperations) {
-                    if (debugIsNew) SaDebugger.GetCurrentNormalDiff().NightShifts.AddNew((shiftFirstTrip, prevTrip));
-                    else SaDebugger.GetCurrentNormalDiff().NightShifts.AddOld((shiftFirstTrip, prevTrip));
-                }
-                #endif
-            }
-            if (shiftInfo.IsWeekendShift) {
-                driverInfo.WeekendShiftCount++;
-
-                #if DEBUG
-                if (Config.DebugCheckAndLogOperations) {
-                    if (debugIsNew) SaDebugger.GetCurrentNormalDiff().WeekendShifts.AddNew((shiftFirstTrip, prevTrip));
-                    else SaDebugger.GetCurrentNormalDiff().WeekendShifts.AddOld((shiftFirstTrip, prevTrip));
-                }
-                #endif
-            }
+            // Process parts shared between final and non-final shifts
+            ProcessDriverEndAnyShift(shiftInfo, travelTimeAfter, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref penalty, driverInfo, driver, info, instance, debugIsNew);
 
             // Start new shift
             shiftFirstTrip = searchTrip;
@@ -139,6 +84,20 @@ namespace Thesis {
 
         public static void ProcessDriverEndFinalShift(ref Trip shiftFirstTrip, ref Trip parkingTrip, ref Trip prevTrip, ref Trip beforeHotelTrip, Func<Trip, bool> isHotelAfterTrip, ref double costWithoutPenalty, ref double penalty, DriverInfo driverInfo, Driver driver, SaInfo info, Instance instance, bool debugIsNew) {
             ShiftInfo shiftInfo = info.Instance.ShiftInfo(shiftFirstTrip, prevTrip);
+
+            // Get travel time after
+            int travelTimeAfter = instance.CarTravelTime(prevTrip, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
+
+            // Check for invalid hotel stay
+            if (isHotelAfterTrip(prevTrip)) {
+                penalty += PenaltyHelper.GetHotelPenalty(prevTrip, info, debugIsNew);
+            }
+
+            // Process parts shared between final and non-final shifts
+            ProcessDriverEndAnyShift(shiftInfo, travelTimeAfter, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, ref costWithoutPenalty, ref penalty, driverInfo, driver, info, instance, debugIsNew);
+        }
+
+        public static void ProcessDriverEndAnyShift(ShiftInfo shiftInfo, int travelTimeAfter, ref Trip shiftFirstTrip, ref Trip parkingTrip, ref Trip prevTrip, ref Trip beforeHotelTrip, Func<Trip, bool> isHotelAfterTrip, ref double costWithoutPenalty, ref double penalty, DriverInfo driverInfo, Driver driver, SaInfo info, Instance instance, bool debugIsNew) {
             driverInfo.ShiftCount++;
 
             // Get travel time before
@@ -156,9 +115,6 @@ namespace Thesis {
             float drivingCost = driver.DrivingCost(shiftFirstTrip, prevTrip);
             driverInfo.WorkedTime += shiftLengthWithoutTravel;
 
-            // Get travel time after
-            int travelTimeAfter = instance.CarTravelTime(prevTrip, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
-
             // Get travel time and shift length
             int travelTime = travelTimeBefore + travelTimeAfter;
             driverInfo.TravelTime += travelTime;
@@ -199,11 +155,6 @@ namespace Thesis {
                     else SaDebugger.GetCurrentNormalDiff().WeekendShifts.AddOld((shiftFirstTrip, prevTrip));
                 }
                 #endif
-            }
-
-            // Check for invalid hotel stay
-            if (isHotelAfterTrip(prevTrip)) {
-                penalty += PenaltyHelper.GetHotelPenalty(prevTrip, info, debugIsNew);
             }
         }
     }

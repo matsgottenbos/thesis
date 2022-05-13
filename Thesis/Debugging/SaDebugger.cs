@@ -334,9 +334,9 @@ namespace Thesis {
         public virtual void Log() {
             // Log values
             if (oldValues is List<int> oldValuesInt && newValues is List<int> newValuesInt) LogStringDiff("values", ParseHelper.ToString(oldValuesInt), ParseHelper.ToString(newValuesInt));
-            else if(oldValues is List<double> oldValuesDouble && newValues is List<double> newValuesDouble) LogStringDiff("values", ParseHelper.ToString(oldValuesDouble), ParseHelper.ToString(newValuesDouble));
-            else if(oldValues is List<(int, int)> oldValuesIntPair && newValues is List<(int, int)> newValuesIntPair) LogStringDiff("values", OperationPart.ParseValuePairs(oldValuesIntPair), OperationPart.ParseValuePairs(newValuesIntPair));
-            else if(oldValues is List<Trip> oldValuesTrip && newValues is List<Trip> newValuesTrip) LogStringDiff("values", ParseViolationsList(oldValuesTrip), ParseViolationsList(newValuesTrip));
+            else if (oldValues is List<double> oldValuesDouble && newValues is List<double> newValuesDouble) LogStringDiff("values", ParseHelper.ToString(oldValuesDouble), ParseHelper.ToString(newValuesDouble));
+            else if (oldValues is List<(int, int)> oldValuesIntPair && newValues is List<(int, int)> newValuesIntPair) LogStringDiff("values", OperationPart.ParseValuePairs(oldValuesIntPair), OperationPart.ParseValuePairs(newValuesIntPair));
+            else if (oldValues is List<Trip> oldValuesTrip && newValues is List<Trip> newValuesTrip) LogStringDiff("values", ParseViolationsList(oldValuesTrip), ParseViolationsList(newValuesTrip));
             else if (oldValues is List<(Trip, Trip)> oldValuesTripPair && newValues is List<(Trip, Trip)> newValuesTripPair) LogStringDiff("values", ParseViolationsList(oldValuesTripPair), ParseViolationsList(newValuesTripPair));
             else throw new Exception("Trying to log unknown value type");
 
