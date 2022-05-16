@@ -41,7 +41,7 @@ namespace Thesis {
         }
 
         public static ToggleHotelOperation CreateRandom(SaInfo info) {
-            int tripIndex = info.Instance.FastRand.NextInt(info.Instance.Trips.Length);
+            int tripIndex = info.Instance.Rand.Next(info.Instance.Trips.Length);
 
             bool isAddition = !info.IsHotelStayAfterTrip[tripIndex];
 

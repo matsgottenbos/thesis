@@ -2,7 +2,7 @@
 
 namespace Thesis {
     class PenaltyInfo {
-        public int PrecedenceViolationCount, ShiftLengthViolationCount, ShiftLengthViolation, RestTimeViolationCount, RestTimeViolation, ContractTimeViolationCount, ContractTimeViolation, ShiftCountViolationAmount, InvalidHotelCount;
+        public int PrecedenceViolationCount, ShiftLengthViolationCount, ShiftLengthViolationAmount, RestTimeViolationCount, RestTimeViolationAmount, ContractTimeViolationCount, ContractTimeViolationAmount, ShiftCountViolationAmount, InvalidHotelCount;
 
         /* Adding violations */
 
@@ -14,7 +14,7 @@ namespace Thesis {
             int shiftLengthViolationAmount = Math.Max(0, shiftLengthWithoutTravel - Config.MaxShiftLengthWithoutTravel) + Math.Max(0, shiftLengthWithTravel - Config.MaxShiftLengthWithTravel);
             if (shiftLengthViolationAmount > 0) {
                 ShiftLengthViolationCount++;
-                ShiftLengthViolation += shiftLengthViolationAmount;
+                ShiftLengthViolationAmount += shiftLengthViolationAmount;
             }
         }
 
@@ -22,7 +22,7 @@ namespace Thesis {
             int shiftLengthViolation = Math.Max(0, Config.MinRestTime - restTime);
             if (shiftLengthViolation > 0) {
                 RestTimeViolationCount++;
-                RestTimeViolation += shiftLengthViolation;
+                RestTimeViolationAmount += shiftLengthViolation;
             }
         }
 
@@ -30,7 +30,7 @@ namespace Thesis {
             int contractTimeViolation = driver.GetContractTimeViolation(workedTime);
             if (contractTimeViolation > 0) {
                 ContractTimeViolationCount++;
-                ContractTimeViolation += contractTimeViolation;
+                ContractTimeViolationAmount += contractTimeViolation;
             }
         }
 
@@ -51,9 +51,9 @@ namespace Thesis {
         public double GetPenalty() {
             double penalty = 0;
             penalty += PrecedenceViolationCount * Config.PrecendenceViolationPenalty;
-            penalty += ShiftLengthViolationCount * Config.ShiftLengthViolationPenalty + ShiftLengthViolation * Config.ShiftLengthViolationPenaltyPerMin;
-            penalty += RestTimeViolationCount * Config.RestTimeViolationPenalty + RestTimeViolation * Config.RestTimeViolationPenaltyPerMin;
-            penalty += ContractTimeViolationCount * Config.ContractTimeViolationPenalty + ContractTimeViolation * Config.ContractTimeViolationPenaltyPerMin;
+            penalty += ShiftLengthViolationCount * Config.ShiftLengthViolationPenalty + ShiftLengthViolationAmount * Config.ShiftLengthViolationPenaltyPerMin;
+            penalty += RestTimeViolationCount * Config.RestTimeViolationPenalty + RestTimeViolationAmount * Config.RestTimeViolationPenaltyPerMin;
+            penalty += ContractTimeViolationCount * Config.ContractTimeViolationPenalty + ContractTimeViolationAmount * Config.ContractTimeViolationPenaltyPerMin;
             penalty += ShiftCountViolationAmount * Config.ShiftCountViolationPenaltyPerShift;
             penalty += InvalidHotelCount * Config.InvalidHotelPenalty;
             return penalty;
@@ -66,11 +66,11 @@ namespace Thesis {
             return new PenaltyInfo() {
                 PrecedenceViolationCount = -a.PrecedenceViolationCount,
                 ShiftLengthViolationCount = -a.ShiftLengthViolationCount,
-                ShiftLengthViolation = -a.ShiftLengthViolation,
+                ShiftLengthViolationAmount = -a.ShiftLengthViolationAmount,
                 RestTimeViolationCount = -a.RestTimeViolationCount,
-                RestTimeViolation = -a.RestTimeViolation,
+                RestTimeViolationAmount = -a.RestTimeViolationAmount,
                 ContractTimeViolationCount = -a.ContractTimeViolationCount,
-                ContractTimeViolation = -a.ContractTimeViolation,
+                ContractTimeViolationAmount = -a.ContractTimeViolationAmount,
                 ShiftCountViolationAmount = -a.ShiftCountViolationAmount,
                 InvalidHotelCount = -a.InvalidHotelCount,
             };
@@ -79,11 +79,11 @@ namespace Thesis {
             return new PenaltyInfo() {
                 PrecedenceViolationCount = a.PrecedenceViolationCount + b.PrecedenceViolationCount,
                 ShiftLengthViolationCount = a.ShiftLengthViolationCount + b.ShiftLengthViolationCount,
-                ShiftLengthViolation = a.ShiftLengthViolation + b.ShiftLengthViolation,
+                ShiftLengthViolationAmount = a.ShiftLengthViolationAmount + b.ShiftLengthViolationAmount,
                 RestTimeViolationCount = a.RestTimeViolationCount + b.RestTimeViolationCount,
-                RestTimeViolation = a.RestTimeViolation + b.RestTimeViolation,
+                RestTimeViolationAmount = a.RestTimeViolationAmount + b.RestTimeViolationAmount,
                 ContractTimeViolationCount = a.ContractTimeViolationCount + b.ContractTimeViolationCount,
-                ContractTimeViolation = a.ContractTimeViolation + b.ContractTimeViolation,
+                ContractTimeViolationAmount = a.ContractTimeViolationAmount + b.ContractTimeViolationAmount,
                 ShiftCountViolationAmount = a.ShiftCountViolationAmount + b.ShiftCountViolationAmount,
                 InvalidHotelCount = a.InvalidHotelCount + b.InvalidHotelCount,
             };
@@ -94,11 +94,11 @@ namespace Thesis {
             return (
                 a.PrecedenceViolationCount == b.PrecedenceViolationCount &&
                 a.ShiftLengthViolationCount == b.ShiftLengthViolationCount &&
-                a.ShiftLengthViolation == b.ShiftLengthViolation &&
+                a.ShiftLengthViolationAmount == b.ShiftLengthViolationAmount &&
                 a.RestTimeViolationCount == b.RestTimeViolationCount &&
-                a.RestTimeViolation == b.RestTimeViolation &&
+                a.RestTimeViolationAmount == b.RestTimeViolationAmount &&
                 a.ContractTimeViolationCount == b.ContractTimeViolationCount &&
-                a.ContractTimeViolation == b.ContractTimeViolation &&
+                a.ContractTimeViolationAmount == b.ContractTimeViolationAmount &&
                 a.ShiftCountViolationAmount == b.ShiftCountViolationAmount &&
                 a.InvalidHotelCount == b.InvalidHotelCount
             );
@@ -110,11 +110,11 @@ namespace Thesis {
         public void DebugLog(bool isDiff, bool shouldLogZeros = true) {
             ParseHelper.LogDebugValue(PrecedenceViolationCount, "Precedence violation count", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(ShiftLengthViolationCount, "Shift length violation count", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(ShiftLengthViolation, "Shift length violation", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(ShiftLengthViolationAmount, "Shift length violation", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(RestTimeViolationCount, "Rest time violation count", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(RestTimeViolation, "Rest time violation", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(RestTimeViolationAmount, "Rest time violation", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(ContractTimeViolationCount, "Contract time violation count", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(ContractTimeViolation, "Contract time violation", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(ContractTimeViolationAmount, "Contract time violation", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(ShiftCountViolationAmount, "Shift count violation amount", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(InvalidHotelCount, "Invalid hotel count", isDiff, shouldLogZeros);
         }

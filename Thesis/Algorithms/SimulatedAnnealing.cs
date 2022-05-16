@@ -15,7 +15,7 @@ namespace Thesis {
             // Initialise info
             info = new SaInfo(instance);
             info.Temperature = Config.SaInitialTemperature;
-            info.SatisfactionFactor = (float)info.Instance.FastRand.NextDouble(Config.SaCycleMinSatisfactionFactor, Config.SaCycleMaxSatisfactionFactor);
+            info.SatisfactionFactor = (float)info.Instance.Rand.NextDouble(Config.SaCycleMinSatisfactionFactor, Config.SaCycleMaxSatisfactionFactor);
             info.IsHotelStayAfterTrip = new bool[instance.Trips.Length];
 
             // Initialise best info
@@ -63,7 +63,7 @@ namespace Thesis {
             // Log initial assignment
             LogIteration();
 
-            XorShiftRandom fastRand = info.Instance.FastRand;
+            XorShiftRandom fastRand = info.Instance.Rand;
 
             while (info.IterationNum < Config.SaIterationCount) {
                 // Pick a random operation based on the configured probabilities
@@ -285,9 +285,9 @@ namespace Thesis {
                 if (isDone) continue;
 
                 // Assigning without precedence violations is impossible, so assign to random external driver
-                int randomExternalDriverTypeIndex = info.Instance.FastRand.NextInt(info.Instance.ExternalDriversByType.Length);
+                int randomExternalDriverTypeIndex = info.Instance.Rand.Next(info.Instance.ExternalDriversByType.Length);
                 ExternalDriver[] externalDriversInRandomType = info.Instance.ExternalDriversByType[randomExternalDriverTypeIndex];
-                int randomExternalDriverIndexInType = info.Instance.FastRand.NextInt(externalDriversInRandomType.Length);
+                int randomExternalDriverIndexInType = info.Instance.Rand.Next(externalDriversInRandomType.Length);
                 ExternalDriver randomExternalDriver = externalDriversInRandomType[randomExternalDriverIndexInType];
                 List<Trip> randomDriverPath = driverPaths[randomExternalDriver.AllDriversIndex];
                 assignment[tripIndex] = randomExternalDriver;
@@ -301,7 +301,7 @@ namespace Thesis {
             // Fisher–Yates shuffle
             int n = array.Length;
             while (n > 1) {
-                int k = info.Instance.FastRand.NextInt(n--);
+                int k = info.Instance.Rand.Next(n--);
                 T temp = array[n];
                 array[n] = array[k];
                 array[k] = temp;

@@ -11,13 +11,13 @@ namespace Thesis {
         }
 
         public static AbstractAssignOperation CreateRandom(SaInfo info) {
-            int tripIndex = info.Instance.FastRand.NextInt(info.Instance.Trips.Length);
+            int tripIndex = info.Instance.Rand.Next(info.Instance.Trips.Length);
             Driver oldDriver = info.Assignment[tripIndex];
 
             // Select random internal driver that is not the current driver
             InternalDriver newInternalDriver;
             do {
-                int newInternalDriverIndex = info.Instance.FastRand.NextInt(info.Instance.InternalDrivers.Length);
+                int newInternalDriverIndex = info.Instance.Rand.Next(info.Instance.InternalDrivers.Length);
                 newInternalDriver = info.Instance.InternalDrivers[newInternalDriverIndex];
             } while (newInternalDriver == oldDriver);
 

@@ -8,19 +8,17 @@ using System.Threading.Tasks;
 namespace Thesis {
     class App {
         public App() {
-            Random generatorRand = new Random(1);
-            Random saRand = Config.DebugUseSeededSa ? generatorRand : new Random();
-            XorShiftRandom saFastRand = Config.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
+            XorShiftRandom rand = Config.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
 
             Instance instance;
             switch (Config.SelectedDataSource) {
                 case DataSource.Generator:
-                    instance = DataGenerator.GenerateInstance(generatorRand, saFastRand);
+                    instance = DataGenerator.GenerateInstance(rand);
                     Console.WriteLine("Instance generation complete");
                     break;
 
                 case DataSource.Excel:
-                    instance = ExcelDataImporter.Import(generatorRand, saFastRand);
+                    instance = ExcelDataImporter.Import(rand);
                     Console.WriteLine("Instance import from excel data complete");
                     break;
 

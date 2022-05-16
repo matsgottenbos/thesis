@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class Instance {
-        public readonly Random Rand;
-        public readonly XorShiftRandom FastRand;
+        public readonly XorShiftRandom Rand;
         public readonly int TimeframeLength;
         readonly int[,] CarTravelTimes;
         public readonly Trip[] Trips;
@@ -18,9 +17,8 @@ namespace Thesis {
         public readonly ExternalDriver[][] ExternalDriversByType;
         public readonly Driver[] AllDrivers;
 
-        public Instance(Random rand, XorShiftRandom fastRand, Trip[] rawTrips, string[] stationCodes, int[,] carTravelTimes, string[] internalDriverNames, int[][] internalDriversHomeTravelTimes, bool[][,] internalDriversTrackProficiencies, int internalDriverContractTime, int[] externalDriverCounts, int[][] externalDriversHomeTravelTimes) {
+        public Instance(XorShiftRandom rand, Trip[] rawTrips, string[] stationCodes, int[,] carTravelTimes, string[] internalDriverNames, int[][] internalDriversHomeTravelTimes, bool[][,] internalDriversTrackProficiencies, int internalDriverContractTime, int[] externalDriverCounts, int[][] externalDriversHomeTravelTimes) {
             Rand = rand;
-            FastRand = fastRand;
             CarTravelTimes = carTravelTimes;
             (Trips, TripSuccession, TripsAreSameShift, TimeframeLength) = PrepareTrips(rawTrips, carTravelTimes);
             StationCodes = stationCodes;

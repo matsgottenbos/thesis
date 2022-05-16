@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class DataGenerator {
-        public static Instance GenerateInstance(Random rand, XorShiftRandom fastRand) {
+        public static Instance GenerateInstance(XorShiftRandom rand) {
             // Travel times
             int[,] trainTravelTimes = GenerateTrainTravelTimes(Config.GenStationCount, rand);
             int[,] carTravelTimes = GenerateCarTravelTimes(Config.GenStationCount, trainTravelTimes, rand);
@@ -22,10 +22,10 @@ namespace Thesis {
             int[] externalDriverCounts = GenerateExternalDriverCounts(Config.GenExternaDriverTypeCount, Config.GenExternalDriverMinCountPerType, Config.GenExternalDriverMaxCountPerType, rand);
             int[][] externalDriversHomeTravelTimes = GenerateExternalDriverHomeTravelTimes(Config.GenExternaDriverTypeCount, Config.GenStationCount, rand);
 
-            return new Instance(rand, fastRand, rawTrips, stationCodes, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.GenInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
+            return new Instance(rand, rawTrips, stationCodes, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.GenInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
         }
 
-        public static int[,] GenerateTrainTravelTimes(int stationCount, Random rand) {
+        public static int[,] GenerateTrainTravelTimes(int stationCount, XorShiftRandom rand) {
             int[,] trainTravelTimes = new int[stationCount, stationCount];
             for (int i = 0; i < stationCount; i++) {
                 for (int j = i; j < stationCount; j++) {
@@ -40,7 +40,7 @@ namespace Thesis {
             return trainTravelTimes;
         }
 
-        public static int[,] GenerateCarTravelTimes(int stationCount, int[,] trainTravelTimes, Random rand) {
+        public static int[,] GenerateCarTravelTimes(int stationCount, int[,] trainTravelTimes, XorShiftRandom rand) {
             int[,] carTravelTimes = new int[stationCount, stationCount];
             for (int i = 0; i < stationCount; i++) {
                 for (int j = i; j < stationCount; j++) {
@@ -57,7 +57,7 @@ namespace Thesis {
             return carTravelTimes;
         }
 
-        public static Trip[] GenerateRawTrips(int tripCount, int stationCount, int[,] trainTravelTimes, Random rand) {
+        public static Trip[] GenerateRawTrips(int tripCount, int stationCount, int[,] trainTravelTimes, XorShiftRandom rand) {
             Trip[] trips = new Trip[tripCount];
             for (int tripIndex = 0; tripIndex < tripCount; tripIndex++) {
                 // Start and end station
@@ -78,7 +78,7 @@ namespace Thesis {
             return trips;
         }
 
-        public static int[][] GenerateInternalDriverHomeTravelTimes(int internalDriverCount, int stationCount, Random rand) {
+        public static int[][] GenerateInternalDriverHomeTravelTimes(int internalDriverCount, int stationCount, XorShiftRandom rand) {
             int[][] internalDriversHomeTravelTimes = new int[internalDriverCount][];
             for (int internalDriverIndex = 0; internalDriverIndex < internalDriverCount; internalDriverIndex++) {
                 int[] homeTravelTimes = new int[stationCount];
@@ -90,7 +90,7 @@ namespace Thesis {
             return internalDriversHomeTravelTimes;
         }
 
-        public static bool[][,] GenerateInternalDriverTrackProficiencies(int internalDriverCount, int stationCount, Random rand) {
+        public static bool[][,] GenerateInternalDriverTrackProficiencies(int internalDriverCount, int stationCount, XorShiftRandom rand) {
             bool[][,] internalDriverTrackProficiencies = new bool[internalDriverCount][,];
             for (int internalDriverIndex = 0; internalDriverIndex < internalDriverCount; internalDriverIndex++) {
                 bool[,] driverTrackProficiencies = new bool[stationCount, stationCount];
@@ -112,7 +112,7 @@ namespace Thesis {
             return internalDriverTrackProficiencies;
         }
 
-        public static int[] GenerateExternalDriverCounts(int externalDriverTypeCount, int minCountPerType, int maxCountPerType, Random rand) {
+        public static int[] GenerateExternalDriverCounts(int externalDriverTypeCount, int minCountPerType, int maxCountPerType, XorShiftRandom rand) {
             int[] externalDriverCounts = new int[externalDriverTypeCount];
             for (int externalDriverIndex = 0; externalDriverIndex < externalDriverTypeCount; externalDriverIndex++) {
                 int count = rand.Next(minCountPerType, maxCountPerType + 1);
@@ -121,7 +121,7 @@ namespace Thesis {
             return externalDriverCounts;
         }
 
-        public static int[][] GenerateExternalDriverHomeTravelTimes(int externalDriverTypeCount, int stationCount, Random rand) {
+        public static int[][] GenerateExternalDriverHomeTravelTimes(int externalDriverTypeCount, int stationCount, XorShiftRandom rand) {
             int[][] externalDriversHomeTravelTimes = new int[externalDriverTypeCount][];
             for (int externalDriverIndex = 0; externalDriverIndex < externalDriverTypeCount; externalDriverIndex++) {
                 int[] homeTravelTimes = new int[stationCount];

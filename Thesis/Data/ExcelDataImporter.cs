@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class ExcelDataImporter {
-        public static Instance Import(Random rand, XorShiftRandom fastRand) {
+        public static Instance Import(XorShiftRandom rand) {
             // Import Excel sheet
             FileStream fileStream = new FileStream(Path.Combine(Config.DataFolder, "data.xlsx"), FileMode.Open, FileAccess.Read);
             XSSFWorkbook excelBook = new XSSFWorkbook(fileStream);
@@ -40,7 +40,7 @@ namespace Thesis {
             int[] externalDriverCounts = DataGenerator.GenerateExternalDriverCounts(Config.ExcelExternalDriverTypeCount, Config.ExcelExternalDriverMinCountPerType, Config.ExcelExternalDriverMaxCountPerType, rand);
             int[][] externalDriversHomeTravelTimes = DataGenerator.GenerateExternalDriverHomeTravelTimes(Config.ExcelExternalDriverTypeCount, stationCount, rand);
 
-            return new Instance(rand, fastRand, rawTrips, stationCodes, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.ExcelInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
+            return new Instance(rand, rawTrips, stationCodes, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.ExcelInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
         }
 
         static (Trip[], string[], int) ParseRawTripsAndStationCodes(DataTable dutiesTable, DateTime planningStartDate, DateTime planningNextDate) {
@@ -84,7 +84,7 @@ namespace Thesis {
             return (rawTrips, stationCodes, timeframeLength);
         }
 
-        static int[,] EstimateOrGenerateTrainTravelTimes(Trip[] rawTrips, string[] stationCodes, Random rand) {
+        static int[,] EstimateOrGenerateTrainTravelTimes(Trip[] rawTrips, string[] stationCodes, XorShiftRandom rand) {
             // Extract train travel times
             List<int>[,] trainTravelTimesAll = new List<int>[stationCodes.Length, stationCodes.Length];
             for (int rawTripIndex = 0; rawTripIndex < rawTrips.Length; rawTripIndex++) {

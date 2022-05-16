@@ -316,8 +316,11 @@ namespace Thesis {
 
         /* Custom additions */
 
-        public int NextInt(int next) {
+        public int Next(int next) {
             return (int)(NextUInt16() * next / (ushort.MaxValue + 1.0));
+        }
+        public int Next(int min, int next) {
+            return min + Next(next - min);
         }
 
         public double NextDouble(double max) {
