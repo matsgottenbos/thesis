@@ -23,10 +23,16 @@ namespace Thesis {
 
                 #if DEBUG
                 if (Config.DebugCheckAndLogOperations) {
-                    SaDebugger.GetCurrentStageInfo().AddTrip(searchTrip, isPrecedenceViolation, isInvalidHotelAfter);
+                    SaDebugger.GetCurrentStageInfo().AddTrip(prevTrip, isPrecedenceViolation, isInvalidHotelAfter);
                 }
                 #endif
             } else {
+                #if DEBUG
+                if (Config.DebugCheckAndLogOperations) {
+                    SaDebugger.GetCurrentStageInfo().AddTrip(prevTrip, false, false);
+                }
+                #endif
+
                 /* Start of new shift */
                 ProcessDriverEndNonFinalShift(searchTrip, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, driverInfo, driver, info, instance);
             }
@@ -35,6 +41,12 @@ namespace Thesis {
         }
 
         public static void ProcessDriverEndRange(Trip tripAfterRange, ref Trip shiftFirstTrip, ref Trip parkingTrip, ref Trip prevTrip, ref Trip beforeHotelTrip, Func<Trip, bool> isHotelAfterTrip, DriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
+            #if DEBUG
+            if (Config.DebugCheckAndLogOperations) {
+                SaDebugger.GetCurrentStageInfo().AddTrip(prevTrip, false, false);
+            }
+            #endif
+
             // If the range is not empty, finish the last shift of the range
             if (shiftFirstTrip != null) {
                 if (tripAfterRange == null) {
@@ -47,7 +59,7 @@ namespace Thesis {
             }
         }
 
-        public static void ProcessDriverEndNonFinalShift(Trip searchTrip, ref Trip shiftFirstTrip, ref Trip parkingTrip, ref Trip prevTrip, ref Trip beforeHotelTrip, Func<Trip, bool> isHotelAfterTrip, DriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
+        static void ProcessDriverEndNonFinalShift(Trip searchTrip, ref Trip shiftFirstTrip, ref Trip parkingTrip, ref Trip prevTrip, ref Trip beforeHotelTrip, Func<Trip, bool> isHotelAfterTrip, DriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
             ShiftInfo shiftInfo = info.Instance.ShiftInfo(shiftFirstTrip, prevTrip);
 
             // Get travel time after and rest time
@@ -94,7 +106,7 @@ namespace Thesis {
             shiftFirstTrip = searchTrip;
         }
 
-        public static void ProcessDriverEndFinalShift(ref Trip shiftFirstTrip, ref Trip parkingTrip, ref Trip prevTrip, ref Trip beforeHotelTrip, Func<Trip, bool> isHotelAfterTrip, DriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
+        static void ProcessDriverEndFinalShift(ref Trip shiftFirstTrip, ref Trip parkingTrip, ref Trip prevTrip, ref Trip beforeHotelTrip, Func<Trip, bool> isHotelAfterTrip, DriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
             ShiftInfo shiftInfo = info.Instance.ShiftInfo(shiftFirstTrip, prevTrip);
 
             // Get travel time after
@@ -116,7 +128,7 @@ namespace Thesis {
             ProcessDriverEndAnyShift(shiftInfo, travelTimeAfter, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, driverInfo, driver, info, instance);
         }
 
-        public static void ProcessDriverEndAnyShift(ShiftInfo shiftInfo, int travelTimeAfter, ref Trip shiftFirstTrip, ref Trip parkingTrip, ref Trip prevTrip, ref Trip beforeHotelTrip, Func<Trip, bool> isHotelAfterTrip, DriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
+        static void ProcessDriverEndAnyShift(ShiftInfo shiftInfo, int travelTimeAfter, ref Trip shiftFirstTrip, ref Trip parkingTrip, ref Trip prevTrip, ref Trip beforeHotelTrip, Func<Trip, bool> isHotelAfterTrip, DriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
             driverInfo.ShiftCount++;
 
             // Get travel time before

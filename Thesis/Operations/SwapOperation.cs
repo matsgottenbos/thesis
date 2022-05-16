@@ -27,8 +27,8 @@ namespace Thesis {
             }
             #endif
 
-            DriverInfo driver1InfoDiff = CostDiffCalculator.GetSwapDriverCostDiff(trip1, trip2, driver1, driver1Info, info);
-            DriverInfo driver2InfoDiff = CostDiffCalculator.GetSwapDriverCostDiff(trip2, trip1, driver2, driver2Info, info);
+            driver1InfoDiff = CostDiffCalculator.GetSwapDriverCostDiff(trip1, trip2, driver1, driver1Info, info);
+            driver2InfoDiff = CostDiffCalculator.GetSwapDriverCostDiff(trip2, trip1, driver2, driver2Info, info);
             totalInfoDiff = driver1InfoDiff + driver2InfoDiff;
             return totalInfoDiff;
         }
@@ -42,12 +42,12 @@ namespace Thesis {
         }
 
         public static SwapOperation CreateRandom(SaInfo info) {
-            int tripIndex1 = info.FastRand.NextInt(info.Instance.Trips.Length);
+            int tripIndex1 = info.Instance.FastRand.NextInt(info.Instance.Trips.Length);
 
             // Select random second trip that is not the first trip, and that isn't assigned to the same driver as the first trip
             int tripIndex2;
             do {
-                tripIndex2 = info.FastRand.NextInt(info.Instance.Trips.Length);
+                tripIndex2 = info.Instance.FastRand.NextInt(info.Instance.Trips.Length);
             } while (tripIndex1 == tripIndex2 || info.Assignment[tripIndex1] == info.Assignment[tripIndex2]);
 
             return new SwapOperation(tripIndex1, tripIndex2, info);

@@ -31,7 +31,7 @@ namespace Thesis {
             Trip parkingTrip = shiftFirstTrip;
             Trip prevTrip = shiftFirstTrip;
             Trip beforeHotelTrip = null;
-            for (int pathTripIndex = 0; pathTripIndex < driverPath.Count; pathTripIndex++) {
+            for (int pathTripIndex = 1; pathTripIndex < driverPath.Count; pathTripIndex++) {
                 Trip searchTrip = driverPath[pathTripIndex];
                 RangeCostTripProcessor.ProcessDriverTrip(searchTrip, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, driverInfo, driver, info, info.Instance);
             }

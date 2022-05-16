@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class DataGenerator {
-        public static Instance GenerateInstance(Random rand) {
+        public static Instance GenerateInstance(Random rand, XorShiftRandom fastRand) {
             // Travel times
             int[,] trainTravelTimes = GenerateTrainTravelTimes(Config.GenStationCount, rand);
             int[,] carTravelTimes = GenerateCarTravelTimes(Config.GenStationCount, trainTravelTimes, rand);
@@ -22,7 +22,7 @@ namespace Thesis {
             int[] externalDriverCounts = GenerateExternalDriverCounts(Config.GenExternaDriverTypeCount, Config.GenExternalDriverMinCountPerType, Config.GenExternalDriverMaxCountPerType, rand);
             int[][] externalDriversHomeTravelTimes = GenerateExternalDriverHomeTravelTimes(Config.GenExternaDriverTypeCount, Config.GenStationCount, rand);
 
-            return new Instance(rawTrips, stationCodes, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.GenInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
+            return new Instance(rand, fastRand, rawTrips, stationCodes, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.GenInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
         }
 
         public static int[,] GenerateTrainTravelTimes(int stationCount, Random rand) {

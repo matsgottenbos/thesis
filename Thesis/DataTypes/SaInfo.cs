@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 namespace Thesis {
     class SaInfo {
         public readonly Instance Instance;
-        public readonly Random Rand;
-        public readonly XorShiftRandom FastRand;
         public Driver[] Assignment;
         public List<Trip>[] DriverPaths;
         public bool[] IsHotelStayAfterTrip;
@@ -16,12 +14,12 @@ namespace Thesis {
         public DriverInfo TotalInfo;
         public DriverInfo[] DriverInfos;
         public int IterationNum, CycleNum;
+        public int? LastImprovementIteration;
         public float Temperature, SatisfactionFactor;
+        public bool HasImprovementSinceLog;
 
-        public SaInfo(Instance instance, Random rand, XorShiftRandom fastRand) {
+        public SaInfo(Instance instance) {
             Instance = instance;
-            Rand = rand;
-            FastRand = fastRand;
         }
 
         public void ReassignTrip(Trip trip, Driver oldDriver, Driver newDriver) {
@@ -88,11 +86,26 @@ namespace Thesis {
         }
 
         public SaInfo CopyForBestInfo() {
-            return new SaInfo(Instance, Rand, FastRand) {
+            return new SaInfo(Instance) {
                 TotalInfo = TotalInfo,
                 Assignment = (Driver[])Assignment.Clone(),
                 IsHotelStayAfterTrip = (bool[])IsHotelStayAfterTrip.Clone(),
             };
+        }
+
+        public void ProcessDriverPaths() {
+            DriverPaths = new List<Trip>[Instance.AllDrivers.Length];
+            DriverPathIndices = new int[Instance.Trips.Length];
+            for (int driverIndex = 0; driverIndex < Instance.AllDrivers.Length; driverIndex++) {
+                DriverPaths[driverIndex] = new List<Trip>();
+            }
+            for (int tripIndex = 0; tripIndex < Instance.Trips.Length; tripIndex++) {
+                Trip trip = Instance.Trips[tripIndex];
+                Driver driver = Assignment[tripIndex];
+                List<Trip> driverPath = DriverPaths[driver.AllDriversIndex];
+                DriverPathIndices[trip.Index] = driverPath.Count;
+                driverPath.Add(trip);
+            }
         }
     }
 }

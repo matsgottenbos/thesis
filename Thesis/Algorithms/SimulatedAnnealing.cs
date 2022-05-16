@@ -11,18 +11,17 @@ namespace Thesis {
         readonly SaInfo info;
         readonly SaInfo[] bestInfoBySatisfaction;
 
-        public SimulatedAnnealing(Instance instance, Random rand, XorShiftRandom fastRand) {
+        public SimulatedAnnealing(Instance instance) {
             // Initialise info
-            info = new SaInfo(instance, rand, fastRand);
-            info.IterationNum = 0;
+            info = new SaInfo(instance);
             info.Temperature = Config.SaInitialTemperature;
-            info.SatisfactionFactor = (float)info.FastRand.NextDouble(Config.SaCycleMinSatisfactionFactor, Config.SaCycleMaxSatisfactionFactor);
+            info.SatisfactionFactor = (float)info.Instance.FastRand.NextDouble(Config.SaCycleMinSatisfactionFactor, Config.SaCycleMaxSatisfactionFactor);
             info.IsHotelStayAfterTrip = new bool[instance.Trips.Length];
 
             // Initialise best info
             bestInfoBySatisfaction = new SaInfo[Config.PercentageFactor];
             for (int i = 0; i < bestInfoBySatisfaction.Length; i++) {
-                SaInfo initialBestInfo = new SaInfo(instance, rand, fastRand);
+                SaInfo initialBestInfo = new SaInfo(instance);
                 initialBestInfo.TotalInfo = new DriverInfo() {
                     Cost = double.MaxValue,
                     Satisfaction = -1,
@@ -32,20 +31,7 @@ namespace Thesis {
 
             // Create a random assignment
             (info.Assignment, info.ExternalDriverCountsByType) = GetInitialAssignment();
-
-            // Determine driver paths
-            info.DriverPaths = new List<Trip>[info.Instance.AllDrivers.Length];
-            info.DriverPathIndices = new int[info.Instance.Trips.Length];
-            for (int driverIndex = 0; driverIndex < info.Instance.AllDrivers.Length; driverIndex++) {
-                info.DriverPaths[driverIndex] = new List<Trip>();
-            }
-            for (int tripIndex = 0; tripIndex < info.Instance.Trips.Length; tripIndex++) {
-                Trip trip = info.Instance.Trips[tripIndex];
-                Driver driver = info.Assignment[tripIndex];
-                List<Trip> driverPath = info.DriverPaths[driver.AllDriversIndex];
-                info.DriverPathIndices[trip.Index] = driverPath.Count;
-                driverPath.Add(trip);
-            }
+            info.ProcessDriverPaths();
 
             #if DEBUG
             // Initialise debugger
@@ -77,9 +63,11 @@ namespace Thesis {
             // Log initial assignment
             LogIteration();
 
+            XorShiftRandom fastRand = info.Instance.FastRand;
+
             while (info.IterationNum < Config.SaIterationCount) {
                 // Pick a random operation based on the configured probabilities
-                double operationDouble = info.FastRand.NextDouble();
+                double operationDouble = fastRand.NextDouble();
                 AbstractOperation operation;
                 if (operationDouble < Config.AssignInternalProbCumulative) operation = AssignInternalOperation.CreateRandom(info);
                 else if (operationDouble < Config.AssignExternalProbCumulative) operation = AssignExternalOperation.CreateRandom(info);
@@ -91,12 +79,15 @@ namespace Thesis {
                 double newAdjustedCost = GetAdjustedCost(info.TotalInfo.Cost + totalInfoDiff.Cost, info.TotalInfo.Satisfaction + totalInfoDiff.Satisfaction, info.SatisfactionFactor);
                 double adjustedCostDiff = newAdjustedCost - oldAdjustedCost;
 
-                bool isAccepted = adjustedCostDiff < 0 || info.FastRand.NextDouble() < Math.Exp(-adjustedCostDiff / info.Temperature);
+                bool isAccepted = adjustedCostDiff < 0 || fastRand.NextDouble() < Math.Exp(-adjustedCostDiff / info.Temperature);
                 if (isAccepted) {
                     operation.Execute();
 
                     int satisfactionLevel = (int)Math.Round(info.TotalInfo.Satisfaction * Config.PercentageFactor);
                     if (info.TotalInfo.Penalty < 0.01 && info.TotalInfo.Cost < bestInfoBySatisfaction[satisfactionLevel].TotalInfo.Cost) {
+                        info.LastImprovementIteration = info.IterationNum;
+                        info.HasImprovementSinceLog = true;
+
                         // Check cost to remove floating point imprecisions
                         (info.TotalInfo, info.DriverInfos) = TotalCostCalculator.GetAssignmentCost(info);
 
@@ -145,8 +136,8 @@ namespace Thesis {
                     // Check if we should end the cycle
                     if (info.Temperature <= Config.SaEndCycleTemperature) {
                         info.CycleNum++;
-                        info.Temperature = (float)info.FastRand.NextDouble(Config.SaCycleMinInitialTemperature, Config.SaCycleMaxInitialTemperature);
-                        info.SatisfactionFactor = (float)info.FastRand.NextDouble(Config.SaCycleMinSatisfactionFactor, Config.SaCycleMaxSatisfactionFactor);
+                        info.Temperature = (float)fastRand.NextDouble(Config.SaCycleMinInitialTemperature, Config.SaCycleMaxInitialTemperature);
+                        info.SatisfactionFactor = (float)fastRand.NextDouble(Config.SaCycleMinSatisfactionFactor, Config.SaCycleMaxSatisfactionFactor);
                     }
 
                     (info.TotalInfo, info.DriverInfos) = TotalCostCalculator.GetAssignmentCost(info);
@@ -196,8 +187,11 @@ namespace Thesis {
                 paretoFrontStr = "Front: " + ParetoFrontToString(paretoFront);
             }
 
+            string lastImprovementIterationStr = info.LastImprovementIteration.HasValue ? ParseHelper.LargeNumToString(info.LastImprovementIteration.Value, "0") : "-";
+            string hasImprovementStr = info.HasImprovementSinceLog ? " !!!" : "";
+
             // Log basic info
-            Console.WriteLine("# {0,4}    Cycle: {1,3}    Cost: {2,10} ({3,3}%)    Temp: {4,5}    Sat.f: {5,4}    Penalty: {6,-35}    {7}", ParseHelper.LargeNumToString(info.IterationNum), info.CycleNum, ParseHelper.LargeNumToString(info.TotalInfo.CostWithoutPenalty, "0.0"), ParseHelper.ToString(info.TotalInfo.Satisfaction * 100, "0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(info.TotalInfo), paretoFrontStr);
+            Console.WriteLine("# {0,4}    Improve: {1,4}    Cycle: {2,3}    Cost: {3,10} ({4,3}%)    Temp: {5,5}    Sat.f: {6,4}    Penalty: {7,-40}    {8}{9}", ParseHelper.LargeNumToString(info.IterationNum), lastImprovementIterationStr, info.CycleNum, ParseHelper.LargeNumToString(info.TotalInfo.CostWithoutPenalty, "0.0"), ParseHelper.ToString(info.TotalInfo.Satisfaction * 100, "0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(info.TotalInfo), paretoFrontStr, hasImprovementStr);
 
             if (Config.DebugSaLogAdditionalInfo) {
                 Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriverInfos.Select(driver => driver.WorkedTime).ToArray()));
@@ -211,6 +205,8 @@ namespace Thesis {
             //if (bestInfo.Assignment != null) {
             //    Console.WriteLine("Best solution: {0}", ParseHelper.AssignmentToString(bestInfo));
             //}
+
+            info.HasImprovementSinceLog = false;
         }
 
         static List<SaInfo> GetParetoFront(SaInfo[] bestInfoBySatisfaction) {
@@ -289,9 +285,9 @@ namespace Thesis {
                 if (isDone) continue;
 
                 // Assigning without precedence violations is impossible, so assign to random external driver
-                int randomExternalDriverTypeIndex = info.FastRand.NextInt(info.Instance.ExternalDriversByType.Length);
+                int randomExternalDriverTypeIndex = info.Instance.FastRand.NextInt(info.Instance.ExternalDriversByType.Length);
                 ExternalDriver[] externalDriversInRandomType = info.Instance.ExternalDriversByType[randomExternalDriverTypeIndex];
-                int randomExternalDriverIndexInType = info.FastRand.NextInt(externalDriversInRandomType.Length);
+                int randomExternalDriverIndexInType = info.Instance.FastRand.NextInt(externalDriversInRandomType.Length);
                 ExternalDriver randomExternalDriver = externalDriversInRandomType[randomExternalDriverIndexInType];
                 List<Trip> randomDriverPath = driverPaths[randomExternalDriver.AllDriversIndex];
                 assignment[tripIndex] = randomExternalDriver;
@@ -305,7 +301,7 @@ namespace Thesis {
             // Fisher–Yates shuffle
             int n = array.Length;
             while (n > 1) {
-                int k = info.FastRand.NextInt(n--);
+                int k = info.Instance.FastRand.NextInt(n--);
                 T temp = array[n];
                 array[n] = array[k];
                 array[k] = temp;

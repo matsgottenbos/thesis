@@ -143,8 +143,8 @@ namespace Thesis {
             currentShift = new DebugShiftInfo();
         }
 
-        public void AddTrip(Trip trip, bool isPrecedenceViolation, bool isInvalidHotelAfter) {
-            currentShift.Trips.Add(new DebugTripInfo(trip, isPrecedenceViolation, isInvalidHotelAfter));
+        public void AddTrip(Trip trip, bool isPrecedenceViolationAfter, bool isInvalidHotelAfter) {
+            currentShift.Trips.Add(new DebugTripInfo(trip, isPrecedenceViolationAfter, isInvalidHotelAfter));
         }
 
         public void EndShiftPart1(int? restTimeAfter, bool isHotelAfter, bool isInvalidHotelAfter) {
@@ -237,11 +237,11 @@ namespace Thesis {
 
     class DebugTripInfo {
         public Trip Trip;
-        public bool IsPrecedenceViolation, IsInvalidHotelAfter;
+        public bool IsPrecedenceViolationAfter, IsInvalidHotelAfter;
 
         public DebugTripInfo(Trip trip, bool isPrecedenceViolation, bool isInvalidHotel) {
             Trip = trip;
-            IsPrecedenceViolation = isPrecedenceViolation;
+            IsPrecedenceViolationAfter = isPrecedenceViolation;
             IsInvalidHotelAfter = isInvalidHotel;
         }
     }

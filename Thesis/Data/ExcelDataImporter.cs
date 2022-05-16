@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class ExcelDataImporter {
-        public static Instance Import(Random rand) {
+        public static Instance Import(Random rand, XorShiftRandom fastRand) {
             // Import Excel sheet
             FileStream fileStream = new FileStream(Path.Combine(Config.DataFolder, "data.xlsx"), FileMode.Open, FileAccess.Read);
             XSSFWorkbook excelBook = new XSSFWorkbook(fileStream);
@@ -40,7 +40,7 @@ namespace Thesis {
             int[] externalDriverCounts = DataGenerator.GenerateExternalDriverCounts(Config.ExcelExternalDriverTypeCount, Config.ExcelExternalDriverMinCountPerType, Config.ExcelExternalDriverMaxCountPerType, rand);
             int[][] externalDriversHomeTravelTimes = DataGenerator.GenerateExternalDriverHomeTravelTimes(Config.ExcelExternalDriverTypeCount, stationCount, rand);
 
-            return new Instance(rawTrips, stationCodes, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.ExcelInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
+            return new Instance(rand, fastRand, rawTrips, stationCodes, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.ExcelInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
         }
 
         static (Trip[], string[], int) ParseRawTripsAndStationCodes(DataTable dutiesTable, DateTime planningStartDate, DateTime planningNextDate) {

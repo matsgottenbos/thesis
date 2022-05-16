@@ -17,12 +17,9 @@ namespace Thesis {
 
     class DebugInspector {
         readonly Instance instance;
-        readonly SaInfo info;
 
         public DebugInspector(Instance instance) {
             this.instance = instance;
-
-            info = new SaInfo(instance, null, null);
 
             Stopwatch stopwatch = new Stopwatch();
 
@@ -152,7 +149,7 @@ namespace Thesis {
         }
 
         void InspectAssignment(string assignmentStr) {
-            (info.Assignment, info.IsHotelStayAfterTrip) = ParseHelper.ParseAssignmentString(assignmentStr, instance);
+            SaInfo info = ParseHelper.ParseAssignmentString(assignmentStr, instance);
             (info.TotalInfo, info.DriverInfos) = TotalCostCalculator.GetAssignmentCost(info);
 
             // Log assignment info
