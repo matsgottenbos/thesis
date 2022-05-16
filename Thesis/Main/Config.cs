@@ -37,9 +37,9 @@ namespace Thesis {
         // Internal driver salaries
         public static readonly SalaryRateInfo[] InternalDriverWeekdaySalaryRates = new SalaryRateInfo[] {
             new SalaryRateInfo(0 * 60,  60 / 60f), // Night 0-6: hourly rate of 60
-            new SalaryRateInfo(6 * 60,  55 / 60f), // Morning 6-7, hourly rate of 55
-            new SalaryRateInfo(7 * 60,  50 / 60f), // Day 7-18, hourly rate of 50
-            new SalaryRateInfo(18 * 60, 55 / 60f), // Evening 18-23, hourly rate of 55
+            new SalaryRateInfo(6 * 60,  55 / 60f), // Morning 6-8, hourly rate of 55
+            new SalaryRateInfo(8 * 60,  50 / 60f), // Day 8-19, hourly rate of 50
+            new SalaryRateInfo(19 * 60, 55 / 60f), // Evening 19-23, hourly rate of 55
             new SalaryRateInfo(23 * 60, 60 / 60f), // Night 23-6, hourly rate of 60
         };
         public const float InternalDriverWeekendSalaryRate = 60 / 60f;

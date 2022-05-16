@@ -10,17 +10,17 @@ namespace Thesis {
         public App() {
             Random generatorRand = new Random(1);
             Random saRand = Config.DebugUseSeededSa ? generatorRand : new Random();
-            XorShiftRandom saFastSand = Config.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
+            XorShiftRandom saFastRand = Config.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
 
             Instance instance;
             switch (Config.SelectedDataSource) {
                 case DataSource.Generator:
-                    instance = DataGenerator.GenerateInstance(generatorRand);
+                    instance = DataGenerator.GenerateInstance(generatorRand, saFastRand);
                     Console.WriteLine("Instance generation complete");
                     break;
 
                 case DataSource.Excel:
-                    instance = ExcelDataImporter.Import(generatorRand);
+                    instance = ExcelDataImporter.Import(generatorRand, saFastRand);
                     Console.WriteLine("Instance import from excel data complete");
                     break;
 
@@ -43,7 +43,7 @@ namespace Thesis {
             }
 
             // Simulated annealing
-            SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, saRand, saFastSand);
+            SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance);
             simulatedAnnealing.Run();
 
             Console.ReadLine();

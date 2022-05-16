@@ -17,12 +17,9 @@ namespace Thesis {
 
     class DebugInspector {
         readonly Instance instance;
-        readonly SaInfo info;
 
         public DebugInspector(Instance instance) {
             this.instance = instance;
-
-            info = new SaInfo(instance, null, null);
 
             Stopwatch stopwatch = new Stopwatch();
 
@@ -152,16 +149,14 @@ namespace Thesis {
         }
 
         void InspectAssignment(string assignmentStr) {
-            (info.Assignment, info.IsHotelStayAfterTrip) = ParseHelper.ParseAssignmentString(assignmentStr, instance);
-            List<Trip>[] driverPaths = TotalCostCalculator.GetPathPerDriver(info);
-
-            (info.Cost, info.CostWithoutPenalty, info.Penalty, info.Satisfaction, info.DriverInfos, info.PenaltyInfo) = TotalCostCalculator.GetAssignmentCost(info);
+            SaInfo info = ParseHelper.ParseAssignmentString(assignmentStr, instance);
+            (info.TotalInfo, info.DriverInfos) = TotalCostCalculator.GetAssignmentCost(info);
 
             // Log assignment info
             Console.WriteLine("Assignment: {0}", assignmentStr);
-            Console.WriteLine("Cost: {0}", ParseHelper.ToString(info.Cost));
-            Console.WriteLine("Cost without penalty: {0}", ParseHelper.ToString(info.CostWithoutPenalty));
-            Console.WriteLine("Penalty: {0}", ParseHelper.GetPenaltyString(info));
+            Console.WriteLine("Cost: {0}", ParseHelper.ToString(info.TotalInfo.Cost));
+            Console.WriteLine("Cost without penalty: {0}", ParseHelper.ToString(info.TotalInfo.CostWithoutPenalty));
+            Console.WriteLine("Penalty: {0}", ParseHelper.GetPenaltyString(info.TotalInfo));
             Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriverInfos.Select(driver => driver.WorkedTime).ToArray()));
             Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(info.DriverInfos.Select(driver => driver.ShiftCount).ToArray()));
             Console.WriteLine("Sum of worked times: {0}", info.DriverInfos.Select(driver => driver.ShiftCount).Sum());
@@ -170,12 +165,11 @@ namespace Thesis {
             // Log driver penalties
             for (int driverIndex = 0; driverIndex < instance.AllDrivers.Length; driverIndex++) {
                 Driver driver = instance.AllDrivers[driverIndex];
-                List<Trip> driverPath = driverPaths[driverIndex];
-                PenaltyInfo driverPenaltyInfo = new PenaltyInfo();
-                (_, _, double driverSatisfaction, double driverPenalty, DriverInfo driverInfo) = TotalCostCalculator.GetDriverPathCost(driverPath, info.IsHotelStayAfterTrip, driver, driverPenaltyInfo, info, false);
+                List<Trip> driverPath = info.DriverPaths[driverIndex];
+                DriverInfo driverInfo = TotalCostCalculator.GetDriverPathCost(driverPath, info.IsHotelStayAfterTrip, driver, info);
 
-                if (driverPenalty > 0) {
-                    Console.WriteLine("Driver {0} penalty: {1}", driver.GetId(), ParseHelper.GetPenaltyString(driverPenalty, driverPenaltyInfo));
+                if (driverInfo.Penalty > 0) {
+                    Console.WriteLine("Driver {0} penalty: {1}", driver.GetId(), ParseHelper.GetPenaltyString(driverInfo));
                 }
             }
             Console.WriteLine();

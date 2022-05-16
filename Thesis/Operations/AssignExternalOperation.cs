@@ -13,20 +13,20 @@ namespace Thesis {
         }
 
         public static AbstractAssignOperation CreateRandom(SaInfo info) {
-            int tripIndex = info.FastRand.NextInt(info.Instance.Trips.Length);
+            int tripIndex = info.Instance.FastRand.NextInt(info.Instance.Trips.Length);
             Driver oldDriver = info.Assignment[tripIndex];
 
             // Select random existing driver that is not the same as the current driver
             ExternalDriver newExternalDriver;
             do {
                 // Select random external driver type
-                int newExternalDriverTypeIndex = info.FastRand.NextInt(info.Instance.ExternalDriversByType.Length);
+                int newExternalDriverTypeIndex = info.Instance.FastRand.NextInt(info.Instance.ExternalDriversByType.Length);
                 ExternalDriver[] externalDriversOfCurrentType = info.Instance.ExternalDriversByType[newExternalDriverTypeIndex];
 
                 // Select random external driver of this type; equal chance to select each existing or a new driver
                 int currentCountOfType = info.ExternalDriverCountsByType[newExternalDriverTypeIndex];
                 int maxNewIndexInTypeExclusive = Math.Min(currentCountOfType + 1, externalDriversOfCurrentType.Length);
-                int newExternalDriverIndexInType = info.FastRand.NextInt(maxNewIndexInTypeExclusive);
+                int newExternalDriverIndexInType = info.Instance.FastRand.NextInt(maxNewIndexInTypeExclusive);
                 newExternalDriver = externalDriversOfCurrentType[newExternalDriverIndexInType];
             } while (newExternalDriver == oldDriver);
 

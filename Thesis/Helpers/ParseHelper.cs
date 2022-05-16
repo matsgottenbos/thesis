@@ -79,8 +79,8 @@ namespace Thesis {
             return driverPathStr;
         }
 
-        public static string GetPenaltyString(SaInfo info) {
-            return GetPenaltyString(info.Penalty, info.PenaltyInfo);
+        public static string GetPenaltyString(DriverInfo driverInfo) {
+            return GetPenaltyString(driverInfo.Penalty, driverInfo.PenaltyInfo);
         }
         public static string GetPenaltyString(double penalty, PenaltyInfo penaltyInfo) {
             string penaltyString = string.Format("{0,6}", "-");
@@ -102,16 +102,21 @@ namespace Thesis {
 
         /* Parsing assignment string */
 
-        public static (Driver[], bool[]) ParseAssignmentString(string assignmentStr, Instance instance) {
+        public static SaInfo ParseAssignmentString(string assignmentStr, Instance instance) {
             string[] driverStrings = assignmentStr.Split();
-            Driver[] assignment = new Driver[instance.Trips.Length];
-            bool[] isHotelStayAfterTrip = new bool[instance.Trips.Length];
+            SaInfo info = new SaInfo(instance);
+            info.Assignment = new Driver[instance.Trips.Length];
+            info.IsHotelStayAfterTrip = new bool[instance.Trips.Length];
             for (int tripIndex = 0; tripIndex < instance.Trips.Length; tripIndex++) {
                 (Driver driver, bool isHotelStayAfter) = ParseDriverString(driverStrings[tripIndex], instance);
-                assignment[tripIndex] = driver;
-                isHotelStayAfterTrip[tripIndex] = isHotelStayAfter;
+                info.Assignment[tripIndex] = driver;
+                info.IsHotelStayAfterTrip[tripIndex] = isHotelStayAfter;
             }
-            return (assignment, isHotelStayAfterTrip);
+            info.ProcessDriverPaths();
+
+            (info.TotalInfo, info.DriverInfos) = TotalCostCalculator.GetAssignmentCost(info);
+
+            return info;
         }
 
         static (Driver, bool) ParseDriverString(string driverStr, Instance instance) {

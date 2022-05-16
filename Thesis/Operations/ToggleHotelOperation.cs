@@ -10,7 +10,6 @@ namespace Thesis {
         readonly bool isAddition;
         readonly Driver driver;
         readonly DriverInfo driverInfo;
-        DriverInfo driverInfoDiff;
 
         public ToggleHotelOperation(int tripIndex, bool isAddition, SaInfo info) : base(info) {
             trip = info.Instance.Trips[tripIndex];
@@ -19,7 +18,7 @@ namespace Thesis {
             driverInfo = info.DriverInfos[driver.AllDriversIndex];
         }
 
-        public override (double, double) GetCostDiff() {
+        public override DriverInfo GetCostDiff() {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 string templateStr = isAddition ? "Add hotel stay to trip {0} with driver {1}" : "Remove hotel stay from trip {0} with driver {1}";
@@ -28,21 +27,21 @@ namespace Thesis {
             #endif
 
             if (isAddition) {
-                (costDiff, costWithoutPenaltyDiff, penaltyDiff, satisfactionDiff, driverInfoDiff) = CostDiffCalculator.GetAddHotelDriverCostDiff(trip, driver, driverInfo, info);
+                totalInfoDiff = CostDiffCalculator.GetAddHotelDriverCostDiff(trip, driver, driverInfo, info);
             } else {
-                (costDiff, costWithoutPenaltyDiff, penaltyDiff, satisfactionDiff, driverInfoDiff) = CostDiffCalculator.GetRemoveHotelDriverCostDiff(trip, driver, driverInfo, info);
+                totalInfoDiff = CostDiffCalculator.GetRemoveHotelDriverCostDiff(trip, driver, driverInfo, info);
             }
 
-            return (costDiff, satisfactionDiff);
+            return totalInfoDiff;
         }
 
         public override void Execute() {
             info.IsHotelStayAfterTrip[trip.Index] = isAddition;
-            info.DriverInfos[driver.AllDriversIndex] += driverInfoDiff;
+            info.DriverInfos[driver.AllDriversIndex] += totalInfoDiff;
         }
 
         public static ToggleHotelOperation CreateRandom(SaInfo info) {
-            int tripIndex = info.FastRand.NextInt(info.Instance.Trips.Length);
+            int tripIndex = info.Instance.FastRand.NextInt(info.Instance.Trips.Length);
 
             bool isAddition = !info.IsHotelStayAfterTrip[tripIndex];
 

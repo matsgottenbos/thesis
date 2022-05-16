@@ -60,30 +60,11 @@ namespace Thesis {
 
         /* Contract time */
 
-        public abstract int GetMinContractTimeViolation(int workedTime);
-        public abstract int GetMaxContractTimeViolation(int workedTime);
+        protected abstract int GetMinContractTimeViolation(int workedTime);
+        protected abstract int GetMaxContractTimeViolation(int workedTime);
 
-        public int GetTotalContractTimeViolation(int workedTime) {
+        public int GetContractTimeViolation(int workedTime) {
             return GetMinContractTimeViolation(workedTime) + GetMaxContractTimeViolation(workedTime);
-        }
-
-
-        /* Penalties */
-
-        public double GetContractTimePenalty(int workedTime, bool debugIsNew) {
-            int contractTimeViolation = GetTotalContractTimeViolation(workedTime);
-
-            #if DEBUG
-            if (Config.DebugCheckAndLogOperations) {
-                if (debugIsNew) SaDebugger.GetCurrentNormalDiff().ContractTime.AddNew(workedTime);
-                else SaDebugger.GetCurrentNormalDiff().ContractTime.AddOld(workedTime);
-            }
-            #endif
-
-            if (contractTimeViolation > 0) {
-                return Config.ContractTimeViolationPenalty + contractTimeViolation * Config.ContractTimeViolationPenaltyPerMin;
-            }
-            return 0;
         }
 
 
@@ -122,11 +103,11 @@ namespace Thesis {
             return Math.Max(0, travelTime - Config.InternalDriverUnpaidTravelTimePerShift);
         }
 
-        public override int GetMinContractTimeViolation(int workedTime) {
+        protected override int GetMinContractTimeViolation(int workedTime) {
             return Math.Max(0, MinContractTime - workedTime);
         }
 
-        public override int GetMaxContractTimeViolation(int workedTime) {
+        protected override int GetMaxContractTimeViolation(int workedTime) {
             return Math.Max(0, workedTime - MaxContractTime);
         }
 
@@ -159,11 +140,11 @@ namespace Thesis {
             return travelTime;
         }
 
-        public override int GetMinContractTimeViolation(int workedTime) {
+        protected override int GetMinContractTimeViolation(int workedTime) {
             return 0;
         }
 
-        public override int GetMaxContractTimeViolation(int workedTime) {
+        protected override int GetMaxContractTimeViolation(int workedTime) {
             return 0;
         }
 
