@@ -21,17 +21,9 @@ namespace Thesis {
                     driverInfo.PenaltyInfo.AddInvalidHotel();
                 }
 
-                #if DEBUG
-                if (Config.DebugCheckAndLogOperations) {
-                    SaDebugger.GetCurrentStageInfo().AddTrip(prevTrip, isPrecedenceViolation, isInvalidHotelAfter);
-                }
-                #endif
+                ProcessDriverTrip(prevTrip, isPrecedenceViolation, isInvalidHotelAfter, driverInfo);
             } else {
-                #if DEBUG
-                if (Config.DebugCheckAndLogOperations) {
-                    SaDebugger.GetCurrentStageInfo().AddTrip(prevTrip, false, false);
-                }
-                #endif
+                ProcessDriverTrip(prevTrip, false, false, driverInfo);
 
                 /* Start of new shift */
                 ProcessDriverEndNonFinalShift(searchTrip, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, driverInfo, driver, info, instance);
@@ -41,11 +33,9 @@ namespace Thesis {
         }
 
         public static void ProcessDriverEndRange(Trip tripAfterRange, ref Trip shiftFirstTrip, ref Trip parkingTrip, ref Trip prevTrip, ref Trip beforeHotelTrip, Func<Trip, bool> isHotelAfterTrip, DriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
-            #if DEBUG
-            if (Config.DebugCheckAndLogOperations) {
-                SaDebugger.GetCurrentStageInfo().AddTrip(prevTrip, false, false);
+            if (prevTrip != null) {
+                ProcessDriverTrip(prevTrip, false, false, driverInfo);
             }
-            #endif
 
             // If the range is not empty, finish the last shift of the range
             if (shiftFirstTrip != null) {
@@ -64,8 +54,8 @@ namespace Thesis {
 
             // Get travel time after and rest time
             bool isHotelAfter = isHotelAfterTrip(prevTrip);
-            bool isInvalidHotelAfter = false;
             int travelTimeAfter, restTimeAfter;
+            bool isInvalidHotelAfter = false;
             if (isHotelAfter) {
                 // Hotel stay after
                 driverInfo.HotelCount++;
@@ -75,8 +65,8 @@ namespace Thesis {
 
                 // Check if the hotel stay isn't too long
                 if (restTimeAfter > Config.HotelMaxRestTime) {
-                    isInvalidHotelAfter = true;
                     driverInfo.PenaltyInfo.AddInvalidHotel();
+                    isInvalidHotelAfter = true;
                 }
 
                 beforeHotelTrip = prevTrip;
@@ -84,6 +74,13 @@ namespace Thesis {
                 // No hotel stay after
                 travelTimeAfter = instance.CarTravelTime(prevTrip, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
                 restTimeAfter = instance.RestTimeWithTravelTime(prevTrip, searchTrip, travelTimeAfter + driver.HomeTravelTimeToStart(searchTrip));
+
+                // Update free days
+                if (restTimeAfter > Config.DoubleFreeDayMinRestTime) {
+                    driverInfo.SingleFreeDays++;
+                } else if (restTimeAfter > Config.SingleFreeDayMinRestTime) {
+                    driverInfo.DoubleFreeDays++;
+                }
 
                 // Set new parking trip
                 parkingTrip = searchTrip;
@@ -166,6 +163,20 @@ namespace Thesis {
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentStageInfo().EndShiftPart2(shiftInfo, shiftLengthWithTravel, travelTimeBefore, travelTimeAfter);
+            }
+            #endif
+        }
+
+        static void ProcessDriverTrip(Trip trip, bool isPrecedenceViolation, bool isInvalidHotelAfter, DriverInfo driverInfo) {
+            // Update shared route counts
+            int? sharedRouteIndex = trip.SharedRouteIndex;
+            if (sharedRouteIndex.HasValue) {
+                driverInfo.SharedRouteCounts[sharedRouteIndex.Value]++;
+            }
+
+            #if DEBUG
+            if (Config.DebugCheckAndLogOperations) {
+                SaDebugger.GetCurrentStageInfo().AddTrip(trip, isPrecedenceViolation, isInvalidHotelAfter);
             }
             #endif
         }

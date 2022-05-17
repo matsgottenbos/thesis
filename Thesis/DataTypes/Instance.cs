@@ -7,24 +7,25 @@ using System.Threading.Tasks;
 namespace Thesis {
     class Instance {
         public readonly XorShiftRandom Rand;
-        public readonly int TimeframeLength;
-        readonly int[,] CarTravelTimes;
+        readonly int timeframeLength;
+        public readonly int UniqueSharedRouteCount;
+        readonly int[,] carTravelTimes;
         public readonly Trip[] Trips;
         public readonly string[] StationCodes;
-        readonly ShiftInfo[,] ShiftInfos;
-        readonly bool[,] TripSuccession, TripsAreSameShift;
+        readonly ShiftInfo[,] shiftInfos;
+        readonly bool[,] tripSuccession, tripsAreSameShift;
         public readonly InternalDriver[] InternalDrivers;
         public readonly ExternalDriver[][] ExternalDriversByType;
         public readonly Driver[] AllDrivers;
 
         public Instance(XorShiftRandom rand, Trip[] rawTrips, string[] stationCodes, int[,] carTravelTimes, string[] internalDriverNames, int[][] internalDriversHomeTravelTimes, bool[][,] internalDriversTrackProficiencies, int internalDriverContractTime, int[] externalDriverCounts, int[][] externalDriversHomeTravelTimes) {
             Rand = rand;
-            CarTravelTimes = carTravelTimes;
-            (Trips, TripSuccession, TripsAreSameShift, TimeframeLength) = PrepareTrips(rawTrips, carTravelTimes);
+            this.carTravelTimes = carTravelTimes;
+            (Trips, tripSuccession, tripsAreSameShift, timeframeLength, UniqueSharedRouteCount) = PrepareTrips(rawTrips, carTravelTimes);
             StationCodes = stationCodes;
-            ShiftInfos = GetShiftInfos(Trips, TimeframeLength);
-            InternalDrivers = CreateInternalDrivers(Trips, internalDriverNames, internalDriversHomeTravelTimes, internalDriversTrackProficiencies, internalDriverContractTime, TimeframeLength);
-            ExternalDriversByType = GenerateExternalDrivers(Trips, externalDriverCounts, externalDriversHomeTravelTimes, InternalDrivers.Length, TimeframeLength);
+            shiftInfos = GetShiftInfos(Trips, timeframeLength);
+            InternalDrivers = CreateInternalDrivers(internalDriverNames, internalDriversHomeTravelTimes, internalDriversTrackProficiencies, internalDriverContractTime);
+            ExternalDriversByType = GenerateExternalDrivers(externalDriverCounts, externalDriversHomeTravelTimes, InternalDrivers.Length);
 
             // Create all drivers array
             List<Driver> allDriversList = new List<Driver>();
@@ -40,7 +41,7 @@ namespace Thesis {
             }
         }
 
-        (Trip[], bool[,], bool[,], int) PrepareTrips(Trip[] rawTrips, int[,] carTravelTimes) {
+        (Trip[], bool[,], bool[,], int, int) PrepareTrips(Trip[] rawTrips, int[,] carTravelTimes) {
             // Sort trips by start time
             Trip[] trips = rawTrips.OrderBy(trip => trip.StartTime).ToArray();
 
@@ -71,7 +72,7 @@ namespace Thesis {
                 }
             }
 
-            // Preprocess whether trips belong to the same shift
+            // Preprocess whether trips could belong to the same shift
             bool[,] tripsAreSameShift = new bool[trips.Length, trips.Length];
             for (int trip1Index = 0; trip1Index < trips.Length; trip1Index++) {
                 Trip trip1 = trips[trip1Index];
@@ -87,10 +88,51 @@ namespace Thesis {
                 timeframeLength = Math.Max(timeframeLength, trips[tripIndex].EndTime);
             }
 
-            return (trips, tripSuccession, tripsAreSameShift, timeframeLength);
+            // Determine list of unique trip routes
+            List<(int, int, int)> routeCounts = new List<(int, int, int)>();
+            for (int tripIndex = 0; tripIndex < trips.Length; tripIndex++) {
+                Trip trip = trips[tripIndex];
+                if (trip.StartStationIndex == trip.EndStationIndex) continue;
+                (int lowStationIndex, int highStationIndex) = GetLowHighStationIndices(trip);
+
+                bool isExistingRoute = routeCounts.Any(route => route.Item1 == lowStationIndex && route.Item2 == highStationIndex);
+                if (isExistingRoute) {
+                    int routeIndex = routeCounts.FindIndex(route => route.Item1 == lowStationIndex && route.Item2 == highStationIndex);
+                    routeCounts[routeIndex] = (routeCounts[routeIndex].Item1, routeCounts[routeIndex].Item2, routeCounts[routeIndex].Item3 + 1);
+                } else {
+                    routeCounts.Add((trip.StartStationIndex, trip.EndStationIndex, 1));
+                }
+            }
+
+            // Store indices of shared routes for trips
+            List<(int, int, int)> sharedRouteCounts = routeCounts.FindAll(route => route.Item3 > 1);
+            for (int tripIndex = 0; tripIndex < trips.Length; tripIndex++) {
+                Trip trip = trips[tripIndex];
+                (int lowStationIndex, int highStationIndex) = GetLowHighStationIndices(trip);
+
+                int sharedRouteIndex = sharedRouteCounts.FindIndex(route => route.Item1 == lowStationIndex && route.Item2 == highStationIndex);
+                if (sharedRouteIndex != -1) {
+                    trip.SetSharedRouteIndex(sharedRouteIndex);
+                }
+            }
+            int uniqueSharedRouteCount = sharedRouteCounts.Count;
+
+            return (trips, tripSuccession, tripsAreSameShift, timeframeLength, uniqueSharedRouteCount);
         }
 
-        static InternalDriver[] CreateInternalDrivers(Trip[] trips, string[] internalDriverNames, int[][] internalDriversHomeTravelTimes, bool[][,] internalDriversTrackProficiencies, int internalDriverContractTime, int timeframeLength) {
+        static (int, int) GetLowHighStationIndices(Trip trip) {
+            int lowStationIndex, highStationIndex;
+            if (trip.StartStationIndex < trip.EndStationIndex) {
+                lowStationIndex = trip.StartStationIndex;
+                highStationIndex = trip.EndStationIndex;
+            } else {
+                lowStationIndex = trip.EndStationIndex;
+                highStationIndex = trip.StartStationIndex;
+            }
+            return (lowStationIndex, highStationIndex);
+        }
+
+        static InternalDriver[] CreateInternalDrivers(string[] internalDriverNames, int[][] internalDriversHomeTravelTimes, bool[][,] internalDriversTrackProficiencies, int internalDriverContractTime) {
             InternalDriver[] internalDrivers = new InternalDriver[internalDriverNames.Length];
             for (int internalDriverIndex = 0; internalDriverIndex < internalDriverNames.Length; internalDriverIndex++) {
                 string driverName = internalDriverNames[internalDriverIndex];
@@ -98,15 +140,15 @@ namespace Thesis {
                 bool[,] trackProficiencies = internalDriversTrackProficiencies[internalDriverIndex];
 
                 // Contract time
-                int minWorkedTime = (int)Math.Ceiling(internalDriverContractTime * Config.MinContractTimeFraction);
-                int maxWorkedTime = (int)Math.Floor(internalDriverContractTime * Config.MaxContractTimeFraction);
+                int minContractTime = (int)Math.Ceiling(internalDriverContractTime * (1 - Config.ContractTimeMaxDeviationFactor));
+                int maxContractTime = (int)Math.Floor(internalDriverContractTime * (1 + Config.ContractTimeMaxDeviationFactor));
 
-                internalDrivers[internalDriverIndex] = new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, homeTravelTimes, minWorkedTime, maxWorkedTime, trackProficiencies);
+                internalDrivers[internalDriverIndex] = new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, homeTravelTimes, internalDriverContractTime, minContractTime, maxContractTime, trackProficiencies);
             }
             return internalDrivers;
         }
 
-        static ExternalDriver[][] GenerateExternalDrivers(Trip[] trips, int[] externalDriverCounts, int[][] externalDriversHomeTravelTimes, int indexOffset, int timeframeLength) {
+        static ExternalDriver[][] GenerateExternalDrivers(int[] externalDriverCounts, int[][] externalDriversHomeTravelTimes, int indexOffset) {
             ExternalDriver[][] externalDriversByType = new ExternalDriver[externalDriverCounts.Length][];
             int allDriverIndex = indexOffset;
             for (int externalDriverTypeIndex = 0; externalDriverTypeIndex < externalDriverCounts.Length; externalDriverTypeIndex++) {
@@ -247,23 +289,23 @@ namespace Thesis {
         /* Helper methods */
 
         public ShiftInfo ShiftInfo(Trip trip1, Trip trip2) {
-            return ShiftInfos[trip1.Index, trip2.Index];
+            return shiftInfos[trip1.Index, trip2.Index];
         }
 
         public bool IsValidPrecedence(Trip trip1, Trip trip2) {
-            return TripSuccession[trip1.Index, trip2.Index];
+            return tripSuccession[trip1.Index, trip2.Index];
         }
 
         public int CarTravelTime(Trip trip1, Trip trip2) {
-            return CarTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex];
+            return carTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex];
         }
 
         public int TravelTimeViaHotel(Trip trip1, Trip trip2) {
-            return CarTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex] + Config.HotelExtraTravelTime;
+            return carTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex] + Config.HotelExtraTravelTime;
         }
 
         public int HalfTravelTimeViaHotel(Trip trip1, Trip trip2) {
-            return (CarTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex] + Config.HotelExtraTravelTime) / 2;
+            return (carTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex] + Config.HotelExtraTravelTime) / 2;
         }
 
         public int RestTimeWithTravelTime(Trip trip1, Trip trip2, int travelTime) {
@@ -280,7 +322,7 @@ namespace Thesis {
 
         /** Check if two trips belong to the same shift or not, based on whether their waiting time is within the threshold */
         public bool AreSameShift(Trip trip1, Trip trip2) {
-            return TripsAreSameShift[trip1.Index, trip2.Index];
+            return tripsAreSameShift[trip1.Index, trip2.Index];
         }
     }
 }

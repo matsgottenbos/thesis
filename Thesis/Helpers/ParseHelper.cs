@@ -86,13 +86,12 @@ namespace Thesis {
             string penaltyString = string.Format("{0,6}", "-");
             if (penalty > 0) {
                 List<string> penaltyTypes = new List<string>();
-                if (penaltyInfo.PrecedenceViolationCount > 0) penaltyTypes.Add("Pr " + penaltyInfo.PrecedenceViolationCount);
-                if (penaltyInfo.ShiftLengthViolationCount > 0) penaltyTypes.Add("SL " + penaltyInfo.ShiftLengthViolationCount);
-                if (penaltyInfo.RestTimeViolationCount > 0) penaltyTypes.Add("RT " + penaltyInfo.RestTimeViolationCount);
-                if (penaltyInfo.ContractTimeViolationCount > 0) penaltyTypes.Add("CT " + penaltyInfo.ContractTimeViolationCount);
-                if (penaltyInfo.ShiftCountViolationAmount > 0) penaltyTypes.Add("SC " + penaltyInfo.ShiftCountViolationAmount);
-                if (penaltyInfo.InvalidHotelCount > 0) penaltyTypes.Add("IH " + penaltyInfo.InvalidHotelCount);
-                string penaltyTypesStr = string.Join(", ", penaltyTypes);
+                if (penaltyInfo.PrecedenceViolationCount > 0) penaltyTypes.Add("Pr" + penaltyInfo.PrecedenceViolationCount);
+                if (penaltyInfo.ShiftLengthViolationCount > 0) penaltyTypes.Add("Sl" + penaltyInfo.ShiftLengthViolationCount);
+                if (penaltyInfo.RestTimeViolationCount > 0) penaltyTypes.Add("Rt" + penaltyInfo.RestTimeViolationCount);
+                if (penaltyInfo.ShiftCountViolationAmount > 0) penaltyTypes.Add("Sc" + penaltyInfo.ShiftCountViolationAmount);
+                if (penaltyInfo.InvalidHotelCount > 0) penaltyTypes.Add("Ih" + penaltyInfo.InvalidHotelCount);
+                string penaltyTypesStr = string.Join(" ", penaltyTypes);
 
                 penaltyString = string.Format("{0,6} ({1})", LargeNumToString(penalty, "0.0"), penaltyTypesStr);
             };

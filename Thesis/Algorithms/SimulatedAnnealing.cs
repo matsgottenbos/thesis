@@ -22,7 +22,7 @@ namespace Thesis {
             bestInfoBySatisfaction = new SaInfo[Config.PercentageFactor];
             for (int i = 0; i < bestInfoBySatisfaction.Length; i++) {
                 SaInfo initialBestInfo = new SaInfo(instance);
-                initialBestInfo.TotalInfo = new DriverInfo() {
+                initialBestInfo.TotalInfo = new DriverInfo(info.Instance) {
                     Cost = double.MaxValue,
                     Satisfaction = -1,
                 };
@@ -61,7 +61,7 @@ namespace Thesis {
             stopwatch.Start();
 
             // Log initial assignment
-            LogIteration();
+            LogIteration(stopwatch);
 
             XorShiftRandom fastRand = info.Instance.Rand;
 
@@ -126,7 +126,7 @@ namespace Thesis {
                     // Check cost to remove floating point imprecisions
                     (info.TotalInfo, info.DriverInfos) = TotalCostCalculator.GetAssignmentCost(info);
 
-                    LogIteration();
+                    LogIteration(stopwatch);
                 }
 
                 // Update temperature and penalty factor
@@ -177,7 +177,7 @@ namespace Thesis {
             return cost * (1 + (1 - satisfaction) * satisfactionFactor);
         }
 
-        void LogIteration() {
+        void LogIteration(Stopwatch stopwatch) {
             // Get Pareto-optimal front
             List<SaInfo> paretoFront = GetParetoFront(bestInfoBySatisfaction);
             string paretoFrontStr;
@@ -187,15 +187,19 @@ namespace Thesis {
                 paretoFrontStr = "Front: " + ParetoFrontToString(paretoFront);
             }
 
+            float saDuration = stopwatch.ElapsedMilliseconds / 1000f;
+            string speedStr = saDuration > 1 ? ParseHelper.LargeNumToString(info.IterationNum / saDuration, "0") + "/s" : "-";
+
             string lastImprovementIterationStr = info.LastImprovementIteration.HasValue ? ParseHelper.LargeNumToString(info.LastImprovementIteration.Value, "0") : "-";
             string hasImprovementStr = info.HasImprovementSinceLog ? " !!!" : "";
 
             // Log basic info
-            Console.WriteLine("# {0,4}    Improve: {1,4}    Cycle: {2,3}    Cost: {3,10} ({4,3}%)    Temp: {5,5}    Sat.f: {6,4}    Penalty: {7,-40}    {8}{9}", ParseHelper.LargeNumToString(info.IterationNum), lastImprovementIterationStr, info.CycleNum, ParseHelper.LargeNumToString(info.TotalInfo.CostWithoutPenalty, "0.0"), ParseHelper.ToString(info.TotalInfo.Satisfaction * 100, "0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(info.TotalInfo), paretoFrontStr, hasImprovementStr);
+            Console.WriteLine("# {0,4}    Last.impr: {1,4}    Speed: {2,6}    Cycle: {3,3}    Cost: {4,10} ({5,2}%)    Temp: {6,5}    Sat.f: {7,4}    Penalty: {8,-35}    {9}{10}", ParseHelper.LargeNumToString(info.IterationNum), lastImprovementIterationStr, speedStr, info.CycleNum, ParseHelper.LargeNumToString(info.TotalInfo.CostWithoutPenalty, "0.0"), ParseHelper.ToString(info.TotalInfo.Satisfaction * 100, "0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(info.TotalInfo), paretoFrontStr, hasImprovementStr);
 
             if (Config.DebugSaLogAdditionalInfo) {
-                Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriverInfos.Select(driver => driver.WorkedTime).ToArray()));
-                Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(info.DriverInfos.Select(driver => driver.ShiftCount).ToArray()));
+                Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriverInfos.Select(driverInfo => driverInfo.WorkedTime).ToArray()));
+                Console.WriteLine("Contract time factors: {0}", ParseHelper.ToString(info.Instance.InternalDrivers.Select(driver => (double)info.DriverInfos[driver.AllDriversIndex].WorkedTime / driver.ContractTime).ToArray()));
+                Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(info.DriverInfos.Select(driverInfo => driverInfo.ShiftCount).ToArray()));
             }
 
             if (Config.DebugSaLogCurrentSolution) {

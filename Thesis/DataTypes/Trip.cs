@@ -8,6 +8,7 @@ namespace Thesis {
     class Trip {
         public int Index;
         public readonly int StartStationIndex, EndStationIndex, StartTime, EndTime, Duration;
+        public int? SharedRouteIndex;
         public readonly string DutyName, ActivityName;
         public readonly List<Trip> Successors;
 
@@ -25,6 +26,10 @@ namespace Thesis {
 
         public void AddSuccessor(Trip trip) {
             Successors.Add(trip);
+        }
+
+        public void SetSharedRouteIndex(int sharedRouteIndex) {
+            SharedRouteIndex = sharedRouteIndex;
         }
     }
 }

@@ -74,15 +74,16 @@ namespace Thesis {
     }
 
     class InternalDriver : Driver {
-        public readonly int InternalIndex, MinContractTime, MaxContractTime;
+        public readonly int InternalIndex, ContractTime, MinContractTime, MaxContractTime;
         readonly string InternalDriverName;
         public readonly bool[,] TrackProficiencies;
 
-        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, int[] oneWayTravelTimes, int minWorkedTime, int maxWorkedTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, Config.InternalDriverTravelSalaryRate) {
+        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, int[] oneWayTravelTimes, int contractTime, int minContractTime, int maxContractTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, Config.InternalDriverTravelSalaryRate) {
             InternalIndex = internalIndex;
             InternalDriverName = internalDriverName;
-            MinContractTime = minWorkedTime;
-            MaxContractTime = maxWorkedTime;
+            ContractTime = contractTime;
+            MinContractTime = minContractTime;
+            MaxContractTime = maxContractTime;
             TrackProficiencies = trackProficiencies;
         }
 
@@ -112,7 +113,7 @@ namespace Thesis {
         }
 
         public override double GetSatisfaction(DriverInfo driverInfo) {
-            return SatisfactionCalculator.GetDriverSatisfaction(driverInfo);
+            return SatisfactionCalculator.GetDriverSatisfaction(driverInfo, this);
         }
     }
 

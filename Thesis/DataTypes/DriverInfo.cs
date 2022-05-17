@@ -1,18 +1,23 @@
 ﻿using System;
+using System.Linq;
 
 namespace Thesis {
     class DriverInfo {
+        public readonly Instance Instance;
         public double Cost, CostWithoutPenalty, Penalty, DriverSatisfaction, Satisfaction;
-        public int WorkedTime, ShiftCount, HotelCount, NightShiftCount, WeekendShiftCount, TravelTime;
+        public int WorkedTime, ShiftCount, HotelCount, NightShiftCount, WeekendShiftCount, TravelTime, SingleFreeDays, DoubleFreeDays;
+        public int[] SharedRouteCounts;
         public PenaltyInfo PenaltyInfo;
 
-        public DriverInfo() {
+        public DriverInfo(Instance instance) {
+            Instance = instance;
             PenaltyInfo = new PenaltyInfo();
+            SharedRouteCounts = new int[instance.UniqueSharedRouteCount];
         }
 
         public static DriverInfo operator -(DriverInfo a) {
-            return new DriverInfo() {
-                Cost =- a.Cost,
+            return new DriverInfo(a.Instance) {
+                Cost = -a.Cost,
                 CostWithoutPenalty = -a.CostWithoutPenalty,
                 Penalty = -a.Penalty,
                 DriverSatisfaction = -a.DriverSatisfaction,
@@ -23,11 +28,14 @@ namespace Thesis {
                 NightShiftCount = -a.NightShiftCount,
                 WeekendShiftCount = -a.WeekendShiftCount,
                 TravelTime = -a.TravelTime,
+                SingleFreeDays = -a.SingleFreeDays,
+                DoubleFreeDays = -a.DoubleFreeDays,
+                SharedRouteCounts = InvertArray(a.SharedRouteCounts),
                 PenaltyInfo = -a.PenaltyInfo,
             };
         }
         public static DriverInfo operator +(DriverInfo a, DriverInfo b) {
-            return new DriverInfo() {
+            return new DriverInfo(a.Instance) {
                 Cost = a.Cost + b.Cost,
                 CostWithoutPenalty = a.CostWithoutPenalty + b.CostWithoutPenalty,
                 Penalty = a.Penalty + b.Penalty,
@@ -39,6 +47,9 @@ namespace Thesis {
                 NightShiftCount = a.NightShiftCount + b.NightShiftCount,
                 WeekendShiftCount = a.WeekendShiftCount + b.WeekendShiftCount,
                 TravelTime = a.TravelTime + b.TravelTime,
+                SingleFreeDays = a.SingleFreeDays + b.SingleFreeDays,
+                DoubleFreeDays = a.DoubleFreeDays + b.DoubleFreeDays,
+                SharedRouteCounts = AddArrays(a.SharedRouteCounts, b.SharedRouteCounts),
                 PenaltyInfo = a.PenaltyInfo + b.PenaltyInfo,
             };
         }
@@ -57,12 +68,38 @@ namespace Thesis {
                 a.NightShiftCount == b.NightShiftCount &&
                 a.WeekendShiftCount == b.WeekendShiftCount &&
                 a.TravelTime == b.TravelTime &&
+                a.SingleFreeDays == b.SingleFreeDays &&
+                a.DoubleFreeDays == b.DoubleFreeDays &&
+                AreArraysEqual(a.SharedRouteCounts, b.SharedRouteCounts) &&
                 PenaltyInfo.AreEqual(a.PenaltyInfo, b.PenaltyInfo)
             );
         }
 
         static bool IsDoubleEqual(double? a, double? b) {
             return Math.Abs(a.Value - b.Value) < 0.01;
+        }
+
+        static int[] InvertArray(int[] array) {
+            int[] invertedArray = new int[array.Length];
+            for (int i = 0; i < array.Length; i++) {
+                invertedArray[i] = -array[i];
+            }
+            return invertedArray;
+        }
+
+        static int[] AddArrays(int[] array1, int[] array2) {
+            int[] addedArray = new int[array1.Length];
+            for (int i = 0; i < array1.Length; i++) {
+                addedArray[i] = array1[i] + array2[i];
+            }
+            return addedArray;
+        }
+
+        static bool AreArraysEqual(int[] array1, int[] array2) {
+            for (int i = 0; i < array1.Length; i++) {
+                if (array1[i] != array2[i]) return false;
+            }
+            return true;
         }
 
         public void DebugLog(bool isDiff, bool shouldLogZeros = true) {

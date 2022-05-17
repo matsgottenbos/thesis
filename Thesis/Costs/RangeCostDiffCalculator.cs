@@ -76,8 +76,7 @@ namespace Thesis {
         }
 
         public static void ProcessFullPathValues(DriverInfo rangeDriverInfo, DriverInfo fullDriverInfo, Driver driver, SaInfo info) {
-            // Contract time and shift count penalties
-            rangeDriverInfo.PenaltyInfo.AddPossibleContractTimeViolation(fullDriverInfo.WorkedTime, driver);
+            // Chift count penalty
             rangeDriverInfo.PenaltyInfo.AddPossibleShiftCountViolation(fullDriverInfo.ShiftCount);
             rangeDriverInfo.Penalty = rangeDriverInfo.PenaltyInfo.GetPenalty();
 

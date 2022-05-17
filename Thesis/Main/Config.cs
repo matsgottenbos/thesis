@@ -21,6 +21,8 @@ namespace Thesis {
         public const int MaxShiftLengthWithTravel = 12 * 60; // Maximum length of a shift, including travel
         public const int MaxShiftLengthWithoutTravel = 10 * 60; // Maximum length of a shift, excluding travel
         public const int MinRestTime = 11 * 60; // Minimum required resting time between two shifts
+        public const int SingleFreeDayMinRestTime = 24 * 60; // Minimum required resting time between two shifts to count as a single free day
+        public const int DoubleFreeDayMinRestTime = 48 * 60; // Minimum required resting time between two shifts to count as two consecutive free days
         public const int ShiftWaitingTimeThreshold = 6 * 60; // Waiting times shorter than this count as the same trip; waiting time longer start a new shift
         public const int BetweenShiftsMaxStartTimeDiff = 36 * 60; // The maximum difference in start times considered when checking rest time between different shifts
         public const int DriverMaxShiftCount = 5; // The maximum number of shifts a driver can have per week
@@ -65,14 +67,16 @@ namespace Thesis {
         public const int HotelMaxRestTime = 24 * 60;
 
         // Contract time deviations
-        public const float MinContractTimeFraction = 0.8f;
-        public const float MaxContractTimeFraction = 1.2f;
+        public const float ContractTimeMaxDeviationFactor = 0.3f;
 
         // Satisfaction
-        public static readonly IntSatisfactionCriterium SatCriteriumHotels = new IntSatisfactionCriterium(4, 0, 0.3f);
-        public static readonly FloatSatisfactionCriterium SatCriteriumNightShifts = new FloatSatisfactionCriterium(5, 0, 0.2f);
-        public static readonly FloatSatisfactionCriterium SatCriteriumWeekendShifts = new FloatSatisfactionCriterium(2, 0, 0.2f);
-        public static readonly FloatSatisfactionCriterium SatCriteriumTravelTime = new FloatSatisfactionCriterium(30 * 60, 0, 0.3f);
+        public static readonly RangeSatisfactionCriterium SatCriteriumHotels = new RangeSatisfactionCriterium(4, 0, 0.2f);
+        public static readonly RangeSatisfactionCriterium SatCriteriumNightShifts = new RangeSatisfactionCriterium(5, 0, 0.1f);
+        public static readonly RangeSatisfactionCriterium SatCriteriumWeekendShifts = new RangeSatisfactionCriterium(2, 0, 0.1f);
+        public static readonly RangeSatisfactionCriterium SatCriteriumTravelTime = new RangeSatisfactionCriterium(30 * 60, 0, 0.1f);
+        public static readonly RangeSatisfactionCriterium SatCriteriumDuplicateRoutes = new RangeSatisfactionCriterium(10, 0, 0.2f);
+        public static readonly ConsecutiveFreeDaysCriterium SatCriteriumConsecutiveFreeDays = new ConsecutiveFreeDaysCriterium(0.1f);
+        public static readonly TargetSatisfactionCriterium SatCriteriumContractTime = new TargetSatisfactionCriterium(driver => driver.ContractTime, driver => ContractTimeMaxDeviationFactor * driver.ContractTime, 0.2f);
 
 
         /* Excel importer */

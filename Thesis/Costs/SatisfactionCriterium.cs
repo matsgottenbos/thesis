@@ -5,34 +5,55 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    abstract class SatisfactionCriterium<T> {
-        public readonly T WorstThreshold, BestThreshold;
-        public readonly float Weight;
+    abstract class AbstractSatisfactionCriterium<T> {
+        protected readonly float weight;
 
-        public SatisfactionCriterium(T worstThreshold, T bestThreshold, float weight) {
-            WorstThreshold = worstThreshold;
-            BestThreshold = bestThreshold;
-            Weight = weight;
+        public AbstractSatisfactionCriterium(float weight) {
+            this.weight = weight;
         }
 
-        public abstract double GetSatisfaction(T value);
+        public double GetSatisfaction(T value, InternalDriver driver) {
+            return weight * GetUnweightedSatisfaction(value, driver);
+        }
+
+        protected abstract double GetUnweightedSatisfaction(T value, InternalDriver driver);
     }
 
-    class IntSatisfactionCriterium : SatisfactionCriterium<int> {
-        public IntSatisfactionCriterium(int worstThreshold, int bestThreshold, float weight) : base(worstThreshold, bestThreshold, weight) {
+    class RangeSatisfactionCriterium : AbstractSatisfactionCriterium<float> {
+        readonly float worstThreshold, bestThreshold;
+
+        public RangeSatisfactionCriterium(float worstThreshold, float bestThreshold, float weight) : base (weight) {
+            this.worstThreshold = worstThreshold;
+            this.bestThreshold = bestThreshold;
         }
 
-        public override double GetSatisfaction(int value) {
-            return Weight * (value - WorstThreshold) / (BestThreshold - WorstThreshold);
+        protected override double GetUnweightedSatisfaction(float value, InternalDriver driver) {
+            return Math.Max(0, Math.Min((value - worstThreshold) / (bestThreshold - worstThreshold), 1));
         }
     }
 
-    class FloatSatisfactionCriterium : SatisfactionCriterium<float> {
-        public FloatSatisfactionCriterium(float worstThreshold, float bestThreshold, float weight) : base(worstThreshold, bestThreshold, weight) {
+    class TargetSatisfactionCriterium : AbstractSatisfactionCriterium<float> {
+        readonly Func<InternalDriver, float> targetFunc, worstDeviationFunc;
+
+        public TargetSatisfactionCriterium(Func<InternalDriver, float> targetFunc, Func<InternalDriver, float> worstDeviationFunc, float weight) : base(weight) {
+            this.targetFunc = targetFunc;
+            this.worstDeviationFunc = worstDeviationFunc;
         }
 
-        public override double GetSatisfaction(float value) {
-            return Weight * Math.Max(0, Math.Min((value - WorstThreshold) / (BestThreshold - WorstThreshold), 1));
+        protected override double GetUnweightedSatisfaction(float value, InternalDriver driver) {
+            float deviation = Math.Abs(value - targetFunc(driver));
+            return Math.Min(deviation / worstDeviationFunc(driver), 1);
+        }
+    }
+
+    class ConsecutiveFreeDaysCriterium : AbstractSatisfactionCriterium<(int, int)> {
+
+        public ConsecutiveFreeDaysCriterium(float weight) : base(weight) { }
+
+        protected override double GetUnweightedSatisfaction((int, int) value, InternalDriver driver) {
+            // Satisfaction is 100% when there are two consecutive free days, or otherwise 25% per single free day
+            if (value.Item2 >= 1) return 1;
+            return value.Item1 * 0.25;
         }
     }
 }
