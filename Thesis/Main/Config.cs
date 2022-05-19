@@ -14,7 +14,7 @@ namespace Thesis {
 
     static class Config {
         // App
-        ////public const DataSource SelectedDataSource = DataSource.Excel;
+        public const DataSource SelectedDataSource = DataSource.Excel;
         //public const DataSource SelectedDataSource = DataSource.Generator;
         //public const DataSource SelectedDataSource = DataSource.Odata;
 
