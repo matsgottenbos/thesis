@@ -13,6 +13,7 @@ namespace Thesis {
         public readonly Trip[] Trips;
         public readonly string[] StationCodes;
         readonly ShiftInfo[,] shiftInfos;
+        readonly float[,] tripSuccessionRobustness;
         readonly bool[,] tripSuccession, tripsAreSameShift;
         public readonly InternalDriver[] InternalDrivers;
         public readonly ExternalDriver[][] ExternalDriversByType;
@@ -21,7 +22,7 @@ namespace Thesis {
         public Instance(XorShiftRandom rand, Trip[] rawTrips, string[] stationCodes, int[,] carTravelTimes, string[] internalDriverNames, int[][] internalDriversHomeTravelTimes, bool[][,] internalDriversTrackProficiencies, int internalDriverContractTime, int[] externalDriverCounts, int[][] externalDriversHomeTravelTimes) {
             Rand = rand;
             this.carTravelTimes = carTravelTimes;
-            (Trips, tripSuccession, tripsAreSameShift, timeframeLength, UniqueSharedRouteCount) = PrepareTrips(rawTrips, carTravelTimes);
+            (Trips, tripSuccession, tripSuccessionRobustness, tripsAreSameShift, timeframeLength, UniqueSharedRouteCount) = PrepareTrips(rawTrips, carTravelTimes);
             StationCodes = stationCodes;
             shiftInfos = GetShiftInfos(Trips, timeframeLength);
             InternalDrivers = CreateInternalDrivers(internalDriverNames, internalDriversHomeTravelTimes, internalDriversTrackProficiencies, internalDriverContractTime);
@@ -41,7 +42,7 @@ namespace Thesis {
             }
         }
 
-        (Trip[], bool[,], bool[,], int, int) PrepareTrips(Trip[] rawTrips, int[,] carTravelTimes) {
+        (Trip[], bool[,], float[,], bool[,], int, int) PrepareTrips(Trip[] rawTrips, int[,] carTravelTimes) {
             // Sort trips by start time
             Trip[] trips = rawTrips.OrderBy(trip => trip.StartTime).ToArray();
 
@@ -62,15 +63,20 @@ namespace Thesis {
                 }
             }
 
-            // Create 2D bool array for precedance relations
+            // Create 2D bool array indicating whether trips can succeed each other
             bool[,] tripSuccession = new bool[trips.Length, trips.Length];
+            float[,] tripSuccessionRobustness = new float[trips.Length, trips.Length];
             for (int tripIndex = 0; tripIndex < trips.Length; tripIndex++) {
                 Trip trip = trips[tripIndex];
                 for (int successorIndex = 0; successorIndex < trip.Successors.Count; successorIndex++) {
                     Trip successor = trip.Successors[successorIndex];
                     tripSuccession[tripIndex, successor.Index] = true;
+
+                    int waitingTime = WaitingTime(trip, successor);
+                    tripSuccessionRobustness[tripIndex, successor.Index] = GetSuccessionRobustness(waitingTime);
                 }
             }
+            // WIP
 
             // Preprocess whether trips could belong to the same shift
             bool[,] tripsAreSameShift = new bool[trips.Length, trips.Length];
@@ -117,7 +123,11 @@ namespace Thesis {
             }
             int uniqueSharedRouteCount = sharedRouteCounts.Count;
 
-            return (trips, tripSuccession, tripsAreSameShift, timeframeLength, uniqueSharedRouteCount);
+            return (trips, tripSuccession, tripSuccessionRobustness, tripsAreSameShift, timeframeLength, uniqueSharedRouteCount);
+        }
+
+        static float GetSuccessionRobustness(int waitingTime) {
+            return (float)Math.Atan(-0.1f * waitingTime - 1) + 0.5f * (float)Math.PI;
         }
 
         static (int, int) GetLowHighStationIndices(Trip trip) {

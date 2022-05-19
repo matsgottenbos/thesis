@@ -9,81 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    class ActivityDelayInfo {
-        public string Name, Description, StartLocationCode, EndLocationCode;
-        public int PlannedDuration, OccurrenceCount;
-        public List<int> StartDelays, EndDelays, DurationDelays;
-        public List<DelayValue> RoundedStartDelays, RoundedEndDelays, RoundedDurationDelays;
-
-        public ActivityDelayInfo(string name, string description, string startLocationCode, string endLocationCode, int plannedDuration) {
-            Name = name;
-            Description = description.Length <= 40 ? description : description.Substring(0, 37) + "...";
-            StartLocationCode = startLocationCode;
-            EndLocationCode = endLocationCode;
-            StartDelays = new List<int>();
-            EndDelays = new List<int>();
-            DurationDelays = new List<int>();
-            RoundedStartDelays = new List<DelayValue>();
-            RoundedEndDelays = new List<DelayValue>();
-            RoundedDurationDelays = new List<DelayValue>();
-            PlannedDuration = plannedDuration;
-        }
-
-        public void AddDelays(int startDelay, int endDelay, int durationDelay) {
-            OccurrenceCount++;
-            AddSpecificDelay(startDelay, StartDelays, RoundedStartDelays);
-            AddSpecificDelay(endDelay, EndDelays, RoundedEndDelays);
-            AddSpecificDelay(durationDelay, DurationDelays, RoundedDurationDelays);
-        }
-
-        static void AddSpecificDelay(int delay, List<int> delayValues, List<DelayValue> roundedDelayValues) {
-            delayValues.Add(delay);
-            delayValues.Sort();
-
-            int roundedDelay = (int)Math.Round((float)delay / 30) * 30;
-
-            int roundedDelayValuesIndex = roundedDelayValues.FindIndex(delayValue => delayValue.Delay == roundedDelay);
-            if (roundedDelayValuesIndex == -1) {
-                roundedDelayValues.Add(new DelayValue(roundedDelay, 1));
-            } else {
-                roundedDelayValues[roundedDelayValuesIndex].Count++;
-            }
-            roundedDelayValues.Sort((a, b) => a.Delay.CompareTo(b.Delay));
-        }
-
-        public static string DelayValuesToString(List<DelayValue> delayValues) {
-            return string.Join(", ", delayValues);
-        }
-
-        public JObject ToJson() {
-            JObject jObject = new JObject();
-            jObject["name"] = Name;
-            jObject["description"] = Description;
-            jObject["startLocationCode"] = StartLocationCode;
-            jObject["endLocationCode"] = EndLocationCode;
-            jObject["plannedDuration"] = PlannedDuration;
-            jObject["occurrenceCount"] = OccurrenceCount;
-            jObject["startDelays"] = new JArray(StartDelays);
-            jObject["endDelays"] = new JArray(EndDelays);
-            jObject["durationDelays"] = new JArray(DurationDelays);
-            return jObject;
-        }
-    }
-
-    class DelayValue {
-        public int Delay, Count;
-
-        public DelayValue(int delay, int count) {
-            Delay = delay;
-            Count = count;
-        }
-
-        public override string ToString() {
-            if (Count == 1) return Delay.ToString();
-            return string.Format("{0}x{1}", Count, Delay);
-        }
-    }
-
     static class OdataImporter {
         public static void Import() {
             string serviceRoot = "https://odata-v26.railcubecloud.com/odata";
@@ -185,6 +110,81 @@ namespace Thesis {
         }
         static string ParseTime(TimeSpan? timeSpan) {
             return timeSpan.HasValue ? ParseTime(timeSpan.Value) : "-";
+        }
+    }
+
+    class ActivityDelayInfo {
+        public string Name, Description, StartLocationCode, EndLocationCode;
+        public int PlannedDuration, OccurrenceCount;
+        public List<int> StartDelays, EndDelays, DurationDelays;
+        public List<DelayValue> RoundedStartDelays, RoundedEndDelays, RoundedDurationDelays;
+
+        public ActivityDelayInfo(string name, string description, string startLocationCode, string endLocationCode, int plannedDuration) {
+            Name = name;
+            Description = description.Length <= 40 ? description : description.Substring(0, 37) + "...";
+            StartLocationCode = startLocationCode;
+            EndLocationCode = endLocationCode;
+            StartDelays = new List<int>();
+            EndDelays = new List<int>();
+            DurationDelays = new List<int>();
+            RoundedStartDelays = new List<DelayValue>();
+            RoundedEndDelays = new List<DelayValue>();
+            RoundedDurationDelays = new List<DelayValue>();
+            PlannedDuration = plannedDuration;
+        }
+
+        public void AddDelays(int startDelay, int endDelay, int durationDelay) {
+            OccurrenceCount++;
+            AddSpecificDelay(startDelay, StartDelays, RoundedStartDelays);
+            AddSpecificDelay(endDelay, EndDelays, RoundedEndDelays);
+            AddSpecificDelay(durationDelay, DurationDelays, RoundedDurationDelays);
+        }
+
+        static void AddSpecificDelay(int delay, List<int> delayValues, List<DelayValue> roundedDelayValues) {
+            delayValues.Add(delay);
+            delayValues.Sort();
+
+            int roundedDelay = (int)Math.Round((float)delay / 30) * 30;
+
+            int roundedDelayValuesIndex = roundedDelayValues.FindIndex(delayValue => delayValue.Delay == roundedDelay);
+            if (roundedDelayValuesIndex == -1) {
+                roundedDelayValues.Add(new DelayValue(roundedDelay, 1));
+            } else {
+                roundedDelayValues[roundedDelayValuesIndex].Count++;
+            }
+            roundedDelayValues.Sort((a, b) => a.Delay.CompareTo(b.Delay));
+        }
+
+        public static string DelayValuesToString(List<DelayValue> delayValues) {
+            return string.Join(", ", delayValues);
+        }
+
+        public JObject ToJson() {
+            JObject jObject = new JObject();
+            jObject["name"] = Name;
+            jObject["description"] = Description;
+            jObject["startLocationCode"] = StartLocationCode;
+            jObject["endLocationCode"] = EndLocationCode;
+            jObject["plannedDuration"] = PlannedDuration;
+            jObject["occurrenceCount"] = OccurrenceCount;
+            jObject["startDelays"] = new JArray(StartDelays);
+            jObject["endDelays"] = new JArray(EndDelays);
+            jObject["durationDelays"] = new JArray(DurationDelays);
+            return jObject;
+        }
+    }
+
+    class DelayValue {
+        public int Delay, Count;
+
+        public DelayValue(int delay, int count) {
+            Delay = delay;
+            Count = count;
+        }
+
+        public override string ToString() {
+            if (Count == 1) return Delay.ToString();
+            return string.Format("{0}x{1}", Count, Delay);
         }
     }
 }
