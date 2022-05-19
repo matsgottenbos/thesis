@@ -14,8 +14,9 @@ namespace Thesis {
 
     static class Config {
         // App
-        public const DataSource SelectedDataSource = DataSource.Excel;
+        ////public const DataSource SelectedDataSource = DataSource.Excel;
         //public const DataSource SelectedDataSource = DataSource.Generator;
+        //public const DataSource SelectedDataSource = DataSource.Odata;
 
         // Shifts
         public const int MaxShiftLengthWithTravel = 12 * 60; // Maximum length of a shift, including travel
@@ -173,7 +174,6 @@ namespace Thesis {
         public const bool DebugSaLogAdditionalInfo = false;
         public const bool DebugRunInspector = false;
         public const bool DebugRunJsonExporter = false;
-        public const bool DebugRunOdataTest = false;
         public const bool DebugUseSeededSa = false;
     }
 
