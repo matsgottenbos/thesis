@@ -138,8 +138,7 @@ namespace Thesis {
         //public const float SaEndCycleTemperature = 30f;
 
         // SA parameters (Excel)
-        //public const int SaIterationCount = 500000000;
-        public const int SaIterationCount = 50000000;
+        public const int SaIterationCount = 500000000;
         public const int SaCheckCostFrequency = 100000;
         public const int SaLogFrequency = 1000000;
         public const int SaParameterUpdateFrequency = 100000;
