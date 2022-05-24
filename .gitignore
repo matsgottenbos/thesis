@@ -1,6 +1,8 @@
 .vs
 bin/
 obj/
+output/
+!output/delays.json
 *.suo
 *.user
 ~$*

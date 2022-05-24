@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MathNet.Numerics.Distributions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,7 +49,7 @@ namespace Thesis {
 
             // Add trip indices
             for (int tripIndex = 0; tripIndex < trips.Length; tripIndex++) {
-                trips[tripIndex].Index = tripIndex;
+                trips[tripIndex].SetIndex(tripIndex);
             }
 
             // Generate precedence constraints
@@ -64,6 +65,7 @@ namespace Thesis {
             }
 
             // Create 2D bool array indicating whether trips can succeed each other
+            // Also preprocess the robustness scores of trips when used in successsion
             bool[,] tripSuccession = new bool[trips.Length, trips.Length];
             float[,] tripSuccessionRobustness = new float[trips.Length, trips.Length];
             for (int tripIndex = 0; tripIndex < trips.Length; tripIndex++) {
@@ -72,11 +74,11 @@ namespace Thesis {
                     Trip successor = trip.Successors[successorIndex];
                     tripSuccession[tripIndex, successor.Index] = true;
 
+                    int travelTimeBetween = CarTravelTime(trip, successor);
                     int waitingTime = WaitingTime(trip, successor);
-                    tripSuccessionRobustness[tripIndex, successor.Index] = GetSuccessionRobustness(waitingTime);
+                    tripSuccessionRobustness[tripIndex, successor.Index] = GetSuccessionRobustness(trip, successor, trip.Duration, travelTimeBetween, waitingTime);
                 }
             }
-            // WIP
 
             // Preprocess whether trips could belong to the same shift
             bool[,] tripsAreSameShift = new bool[trips.Length, trips.Length];
@@ -126,8 +128,50 @@ namespace Thesis {
             return (trips, tripSuccession, tripSuccessionRobustness, tripsAreSameShift, timeframeLength, uniqueSharedRouteCount);
         }
 
-        static float GetSuccessionRobustness(int waitingTime) {
-            return (float)Math.Atan(-0.1f * waitingTime - 1) + 0.5f * (float)Math.PI;
+        static float GetSuccessionRobustness(Trip trip1, Trip trip2, int plannedDuration, int plannedTravelTime, int waitingTime) {
+            double conflictProb = GetConflictProbability(plannedDuration, plannedTravelTime, waitingTime);
+
+            // Trips belong to the same project is their project names are equal and not empty
+            bool areSameProject = trip1.ProjectName == trip2.ProjectName && trip1.ProjectName != "";
+
+            double robustnessCost;
+            if (areSameProject) {
+                robustnessCost = conflictProb * Config.RobustnessCostFactorSameProject;
+            } else {
+                robustnessCost = conflictProb * Config.RobustnessCostFactorDifferentProject;
+            }
+            return (float)robustnessCost;
+        }
+
+        static double GetConflictProbability(int plannedDuration, int plannedTravelTime, int waitingTime) {
+            double conflictProb = 0;
+
+            // Trip delay only
+            double tripMeanDelay = Config.TripMeanDelayFunc(plannedDuration);
+            double tripDelayAlpha = Config.TripDelayGammaDistributionAlphaFunc(tripMeanDelay);
+            double tripDelayBeta = Config.TripDelayGammaDistributionBetaFunc(tripMeanDelay);
+            float onlyTripDelayProb = Config.TripDelayProbability * (1 - Config.TravelDelayProbability);
+            double conflictProbWhenOnlyTripDelayed = 1 - Gamma.CDF(tripDelayAlpha, 1 / tripDelayBeta, waitingTime);
+            conflictProb += onlyTripDelayProb * conflictProbWhenOnlyTripDelayed;
+
+            // Travel delay only
+            double travelMeanDelay = Config.TravelMeanDelayFunc(plannedTravelTime);
+            double travelDelayAlpha = Config.TravelDelayGammaDistributionAlphaFunc(travelMeanDelay);
+            double travelDelayBeta = Config.TravelDelayGammaDistributionBetaFunc(travelMeanDelay);
+            float onlyTravelDelayProb = (1 - Config.TripDelayProbability) * Config.TravelDelayProbability;
+            double conflictProbWhenOnlyTravelDelayed = 1 - Gamma.CDF(travelDelayAlpha, 1 / travelDelayBeta, waitingTime);
+            conflictProb += onlyTravelDelayProb * conflictProbWhenOnlyTravelDelayed;
+
+            // Both trip and travel delays
+            // Use approximation of Gamma distribution sum using the Welch–Satterthwaite equation
+            double sumOfAlphaBetaQuotients = tripDelayAlpha / tripDelayBeta + travelDelayAlpha / travelDelayBeta;
+            double summedAlpha = sumOfAlphaBetaQuotients * sumOfAlphaBetaQuotients / (tripDelayAlpha / tripDelayBeta / tripDelayBeta + travelDelayAlpha / travelDelayBeta / travelDelayBeta);
+            double summedBeta = summedAlpha / sumOfAlphaBetaQuotients;
+            float bothDelayedProb = Config.TripDelayProbability * Config.TravelDelayProbability;
+            double conflictProbWhenBothDelayed = 1 - Gamma.CDF(summedAlpha, 1 / summedBeta, waitingTime);
+            conflictProb += bothDelayedProb * conflictProbWhenBothDelayed;
+
+            return conflictProb;
         }
 
         static (int, int) GetLowHighStationIndices(Trip trip) {
@@ -304,6 +348,10 @@ namespace Thesis {
 
         public bool IsValidPrecedence(Trip trip1, Trip trip2) {
             return tripSuccession[trip1.Index, trip2.Index];
+        }
+
+        public float TripSuccessionRobustness(Trip trip1, Trip trip2) {
+            return tripSuccessionRobustness[trip1.Index, trip2.Index];
         }
 
         public int CarTravelTime(Trip trip1, Trip trip2) {

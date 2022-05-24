@@ -15,6 +15,9 @@ namespace Thesis {
                     driverInfo.PenaltyInfo.AddPrecedenceViolation();
                 }
 
+                // Count robustness
+                driverInfo.Robustness += instance.TripSuccessionRobustness(prevTrip, searchTrip);
+
                 // Check for invalid hotel stay
                 bool isInvalidHotelAfter = isHotelAfterTrip(prevTrip);
                 if (isInvalidHotelAfter) {
@@ -55,13 +58,13 @@ namespace Thesis {
             // Get travel time after and rest time
             bool isHotelAfter = isHotelAfterTrip(prevTrip);
             int travelTimeAfter, restTimeAfter;
-            bool isInvalidHotelAfter = false;
+            bool isInvalidHotelAfter = false; // Used for debugger
             if (isHotelAfter) {
                 // Hotel stay after
                 driverInfo.HotelCount++;
                 travelTimeAfter = instance.HalfTravelTimeViaHotel(prevTrip, searchTrip);
                 restTimeAfter = instance.RestTimeViaHotel(prevTrip, searchTrip);
-                driverInfo.CostWithoutPenalty += Config.HotelCosts;
+                driverInfo.RawCost += Config.HotelCosts;
 
                 // Check if the hotel stay isn't too long
                 if (restTimeAfter > Config.HotelMaxRestTime) {
@@ -151,7 +154,7 @@ namespace Thesis {
             // Get shift cost
             float travelCost = driver.GetPaidTravelCost(travelTime);
             float shiftCost = drivingCost + travelCost;
-            driverInfo.CostWithoutPenalty += shiftCost;
+            driverInfo.RawCost += shiftCost;
 
             // Check shift length
             driverInfo.PenaltyInfo.AddPossibleShiftLengthViolation(shiftLengthWithoutTravel, shiftLengthWithTravel);

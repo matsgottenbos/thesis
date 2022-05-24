@@ -28,22 +28,19 @@ namespace Thesis {
                     break;
             }
 
-            // Run debug inspector if configured
             if (Config.DebugRunInspector) {
+                Console.WriteLine("Running debug inspector");
                 new DebugInspector(instance);
-                return;
-            }
-
-            // Run debug JSON exporter if configured
-            if (Config.DebugRunJsonExporter) {
+            } else if (Config.DebugRunJsonExporter) {
+                Console.WriteLine("Running debug JSON exporter");
                 new DebugJsonExporter(instance);
-                return;
+            } else {
+                // Simulated annealing
+                SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance);
+                simulatedAnnealing.Run();
             }
 
-            // Simulated annealing
-            SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance);
-            simulatedAnnealing.Run();
-
+            Console.WriteLine("Program finished");
             Console.ReadLine();
         }
     }

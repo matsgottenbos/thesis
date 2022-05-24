@@ -79,6 +79,18 @@ namespace Thesis {
         public static readonly ConsecutiveFreeDaysCriterium SatCriteriumConsecutiveFreeDays = new ConsecutiveFreeDaysCriterium(0.1f);
         public static readonly TargetSatisfactionCriterium SatCriteriumContractTime = new TargetSatisfactionCriterium(driver => driver.ContractTime, driver => ContractTimeMaxDeviationFactor * driver.ContractTime, 0.2f);
 
+        // Robustness
+        public const float RobustnessCostFactorSameProject = 500f; // Added cost for each expected conflict due to delays, if the conflict is between trips of the same project
+        public const float RobustnessCostFactorDifferentProject = 2000f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different projects
+        public const float TripDelayProbability = 0.179f; // Chance that a trip has a delay
+        public static readonly Func<int, double> TripMeanDelayFunc = (int plannedDuration) => plannedDuration * plannedDuration / 3600 + 31 * plannedDuration / 150 + 38; // Trip mean delay by planned duration: x^2/3600 + 31x/150 + 19/15
+        public static readonly Func<double, double> TripDelayGammaDistributionAlphaFunc = (double meanDelay) => meanDelay * meanDelay / 7200; // Alpha parameter of trip delay gamma distribution, by mean delay: x^2/7200
+        public static readonly Func<double, double> TripDelayGammaDistributionBetaFunc = (double meanDelay) => 2 * meanDelay; // Beta parameter of trip delay gamma distribution, by mean delay: 2x
+        public const float TravelDelayProbability = 0.179f; // Chance that car travel has a delay
+        public static readonly Func<int, double> TravelMeanDelayFunc = (int plannedDuration) => plannedDuration * plannedDuration / 3600 + 31 * plannedDuration / 150 + 38; // Travel mean delay by planned duration: x^2/3600 + 31x/150 + 19/15
+        public static readonly Func<double, double> TravelDelayGammaDistributionAlphaFunc = (double meanDelay) => meanDelay * meanDelay / 7200; // Alpha parameter of travel delay gamma distribution, by mean delay: x^2/7200
+        public static readonly Func<double, double> TravelDelayGammaDistributionBetaFunc = (double meanDelay) => 2 * meanDelay; // Beta parameter of travel delay gamma distribution, by mean delay: 2x
+
 
         /* Excel importer */
         public static readonly DateTime ExcelPlanningStartDate = new DateTime(2022, 1, 8);
@@ -126,7 +138,8 @@ namespace Thesis {
         //public const float SaEndCycleTemperature = 30f;
 
         // SA parameters (Excel)
-        public const int SaIterationCount = 500000000;
+        //public const int SaIterationCount = 500000000;
+        public const int SaIterationCount = 50000000;
         public const int SaCheckCostFrequency = 100000;
         public const int SaLogFrequency = 1000000;
         public const int SaParameterUpdateFrequency = 100000;
@@ -137,6 +150,7 @@ namespace Thesis {
         public const float SaEndCycleTemperature = 300f;
         public const float SaCycleMinSatisfactionFactor = 0f;
         public const float SaCycleMaxSatisfactionFactor = 1f;
+        public const float ParetoFrontMinCostDiff = 500f; // Minmum cost different to consider two solutions to be separate points on the pareto front
 
         // Operation probabilities
         public const float AssignInternalProbCumulative = 0.5f;
@@ -169,12 +183,12 @@ namespace Thesis {
         public const int PercentageFactor = 100;
 
         // Debug
+        public const bool DebugUseSeededSa = true;
         public const bool DebugCheckAndLogOperations = false;
         public const bool DebugSaLogCurrentSolution = false;
         public const bool DebugSaLogAdditionalInfo = false;
         public const bool DebugRunInspector = false;
         public const bool DebugRunJsonExporter = false;
-        public const bool DebugUseSeededSa = false;
     }
 
     class SalaryRateInfo {

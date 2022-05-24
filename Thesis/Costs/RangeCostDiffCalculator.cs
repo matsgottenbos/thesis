@@ -85,7 +85,7 @@ namespace Thesis {
             rangeDriverInfo.Satisfaction = rangeDriverInfo.DriverSatisfaction / info.Instance.InternalDrivers.Length;
 
             // Cost
-            rangeDriverInfo.Cost = rangeDriverInfo.CostWithoutPenalty + rangeDriverInfo.Penalty;
+            rangeDriverInfo.Cost = rangeDriverInfo.RawCost + rangeDriverInfo.Robustness + rangeDriverInfo.Penalty;
         }
     }
 }

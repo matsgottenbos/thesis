@@ -72,7 +72,7 @@ namespace Thesis {
                 int startTime = (int)(rand.NextDouble() * (Config.GenTimeframeLength - tripDuration));
                 int endTime = startTime + tripDuration;
 
-                Trip trip = new Trip(-1, "", "", startStationIndex, endStationIndex, startTime, endTime, tripDuration);
+                Trip trip = new Trip("", "", "", startStationIndex, endStationIndex, startTime, endTime, tripDuration);
                 trips[tripIndex] = trip;
             }
             return trips;

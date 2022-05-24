@@ -4,7 +4,7 @@ using System.Linq;
 namespace Thesis {
     class DriverInfo {
         public readonly Instance Instance;
-        public double Cost, CostWithoutPenalty, Penalty, DriverSatisfaction, Satisfaction;
+        public double Cost, RawCost, Robustness, Penalty, DriverSatisfaction, Satisfaction;
         public int WorkedTime, ShiftCount, HotelCount, NightShiftCount, WeekendShiftCount, TravelTime, SingleFreeDays, DoubleFreeDays;
         public int[] SharedRouteCounts;
         public PenaltyInfo PenaltyInfo;
@@ -18,7 +18,8 @@ namespace Thesis {
         public static DriverInfo operator -(DriverInfo a) {
             return new DriverInfo(a.Instance) {
                 Cost = -a.Cost,
-                CostWithoutPenalty = -a.CostWithoutPenalty,
+                RawCost = -a.RawCost,
+                Robustness = -a.Robustness,
                 Penalty = -a.Penalty,
                 DriverSatisfaction = -a.DriverSatisfaction,
                 Satisfaction = -a.Satisfaction,
@@ -37,7 +38,8 @@ namespace Thesis {
         public static DriverInfo operator +(DriverInfo a, DriverInfo b) {
             return new DriverInfo(a.Instance) {
                 Cost = a.Cost + b.Cost,
-                CostWithoutPenalty = a.CostWithoutPenalty + b.CostWithoutPenalty,
+                RawCost = a.RawCost + b.RawCost,
+                Robustness = a.Robustness + b.Robustness,
                 Penalty = a.Penalty + b.Penalty,
                 DriverSatisfaction = a.DriverSatisfaction + b.DriverSatisfaction,
                 Satisfaction = a.Satisfaction + b.Satisfaction,
@@ -58,7 +60,8 @@ namespace Thesis {
         public static bool AreEqual(DriverInfo a, DriverInfo b) {
             return (
                 IsDoubleEqual(a.Cost, b.Cost) &&
-                IsDoubleEqual(a.CostWithoutPenalty, b.CostWithoutPenalty) &&
+                IsDoubleEqual(a.RawCost, b.RawCost) &&
+                IsDoubleEqual(a.Robustness, b.Robustness) &&
                 IsDoubleEqual(a.Penalty, b.Penalty) &&
                 IsDoubleEqual(a.DriverSatisfaction, b.DriverSatisfaction) &&
                 IsDoubleEqual(a.Satisfaction, b.Satisfaction) &&
@@ -104,7 +107,8 @@ namespace Thesis {
 
         public void DebugLog(bool isDiff, bool shouldLogZeros = true) {
             ParseHelper.LogDebugValue(Cost, "Cost", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(CostWithoutPenalty, "Cost without penalty", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(RawCost, "Raw cost", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(Robustness, "Robustness", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(Penalty, "Penalty", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(DriverSatisfaction, "Driver satisfaction", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(Satisfaction, "Satisfaction", isDiff, shouldLogZeros);

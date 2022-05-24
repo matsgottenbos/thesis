@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -151,26 +152,56 @@ namespace Thesis {
                 #endif
             }
 
-            // Get Pareto-optimal front
-            List<SaInfo> paretoFront = GetParetoFront(bestInfoBySatisfaction);
-
             stopwatch.Stop();
             float saDuration = stopwatch.ElapsedMilliseconds / 1000f;
             float saSpeed = Config.SaIterationCount / saDuration;
             Console.WriteLine("SA finished {0} iterations in {1} s  |  Speed: {2} iterations/s", ParseHelper.LargeNumToString(info.IterationNum), ParseHelper.ToString(saDuration), ParseHelper.LargeNumToString(saSpeed));
 
+            // Get Pareto-optimal front
+            List<SaInfo> paretoFront = GetParetoFront(bestInfoBySatisfaction);
+
+            // Perform all output
+            PerformOutput(paretoFront);
+
+            return paretoFront;
+        }
+
+        static void PerformOutput(List<SaInfo> paretoFront) {
+            // Log summary to console
+            using (StreamWriter consoleStreamWriter = new StreamWriter(Console.OpenStandardOutput())) {
+                LogSummaryToStream(paretoFront, consoleStreamWriter);
+            }
+
+            // Create output subfolder
+            string dateStr = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
+            string outputSubfolderPath = Path.Combine(Config.OutputFolder, dateStr);
+            Directory.CreateDirectory(outputSubfolderPath);
+
+            // Log summary to file
+            using (StreamWriter summaryFileStreamWriter = new StreamWriter(Path.Combine(outputSubfolderPath, "summary.txt"))) {
+                LogSummaryToStream(paretoFront, summaryFileStreamWriter);
+            }
+
+            // Log pareto front solutions to separate JSON files
+            for (int i = 0; i < paretoFront.Count; i++) {
+                SaInfo paretoPoint = paretoFront[i];
+                paretoPoint.ProcessDriverPaths();
+                (paretoPoint.TotalInfo, paretoPoint.DriverInfos) = TotalCostCalculator.GetAssignmentCost(paretoPoint);
+                JsonHelper.ExportSolutionJson(outputSubfolderPath, paretoPoint);
+            }
+        }
+
+        static void LogSummaryToStream(List<SaInfo> paretoFront, StreamWriter streamWriter) {
             if (paretoFront.Count == 0) {
-                Console.WriteLine("SA found no valid solution");
+                streamWriter.WriteLine("SA found no valid solution");
             } else {
-                Console.WriteLine("Pareto-optimal front: {0}", ParetoFrontToString(paretoFront));
+                streamWriter.WriteLine("Pareto-optimal front: {0}", ParetoFrontToString(paretoFront));
 
                 for (int i = 0; i < paretoFront.Count; i++) {
                     SaInfo paretoPoint = paretoFront[i];
-                    Console.WriteLine("\nPoint {0}\n{1}", ParetoPointToString(paretoPoint), ParseHelper.AssignmentToString(paretoPoint));
+                    streamWriter.WriteLine("\nPoint {0}\n{1}", ParetoPointToString(paretoPoint), ParseHelper.AssignmentToString(paretoPoint));
                 }
             }
-
-            return paretoFront;
         }
 
         static double GetAdjustedCost(double cost, double satisfaction, float satisfactionFactor) {
@@ -193,8 +224,10 @@ namespace Thesis {
             string lastImprovementIterationStr = info.LastImprovementIteration.HasValue ? ParseHelper.LargeNumToString(info.LastImprovementIteration.Value, "0") : "-";
             string hasImprovementStr = info.HasImprovementSinceLog ? " !!!" : "";
 
+            double logCost = info.TotalInfo.RawCost + info.TotalInfo.Robustness;
+
             // Log basic info
-            Console.WriteLine("# {0,4}    Last.impr: {1,4}    Speed: {2,6}    Cycle: {3,3}    Cost: {4,10} ({5,2}%)    Temp: {6,5}    Sat.f: {7,4}    Penalty: {8,-35}    {9}{10}", ParseHelper.LargeNumToString(info.IterationNum), lastImprovementIterationStr, speedStr, info.CycleNum, ParseHelper.LargeNumToString(info.TotalInfo.CostWithoutPenalty, "0.0"), ParseHelper.ToString(info.TotalInfo.Satisfaction * 100, "0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(info.TotalInfo), paretoFrontStr, hasImprovementStr);
+            Console.WriteLine("# {0,4}    Last.impr: {1,4}    Speed: {2,6}    Cycle: {3,3}    Cost: {4,6} ({5,2}%)    Raw: {6,6}    Temp: {7,4}    Sat.f: {8,4}   Penalty: {9,-33}    {10}{11}", ParseHelper.LargeNumToString(info.IterationNum), lastImprovementIterationStr, speedStr, info.CycleNum, ParseHelper.LargeNumToString(logCost, "0.0"), ParseHelper.ToString(info.TotalInfo.Satisfaction * 100, "0"), ParseHelper.LargeNumToString(info.TotalInfo.RawCost, "0.0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(info.TotalInfo), paretoFrontStr, hasImprovementStr);
 
             if (Config.DebugSaLogAdditionalInfo) {
                 Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriverInfos.Select(driverInfo => driverInfo.WorkedTime).ToArray()));
@@ -220,21 +253,21 @@ namespace Thesis {
                 SaInfo bestInfoOfLevel = bestInfoBySatisfaction[satisfactionLevel];
                 if (bestInfoOfLevel.TotalInfo.Cost == double.MaxValue) continue;
 
-                if (bestInfoOfLevel != bestOfPrevLevel) {
+                if (bestOfPrevLevel == null || bestInfoOfLevel.TotalInfo.Cost < bestOfPrevLevel.TotalInfo.Cost - Config.ParetoFrontMinCostDiff) {
                     paretoFront.Add(bestInfoOfLevel);
+                    bestOfPrevLevel = bestInfoOfLevel;
                 }
-                bestOfPrevLevel = bestInfoOfLevel;
             }
             paretoFront.Reverse();
             return paretoFront;
         }
 
         static string ParetoFrontToString(List<SaInfo> paretoFront) {
-            return string.Join(' ', paretoFront.Select(paretoPoint => ParetoPointToString(paretoPoint)));
+            return string.Join(" | ", paretoFront.Select(paretoPoint => ParetoPointToString(paretoPoint)));
         }
 
         static string ParetoPointToString(SaInfo paretoPoint) {
-            return string.Format("({0}%: {1})", ParseHelper.ToString(paretoPoint.TotalInfo.Satisfaction * Config.PercentageFactor, "0"), ParseHelper.LargeNumToString(paretoPoint.TotalInfo.Cost, "0"));
+            return string.Format("{0}% {1}", ParseHelper.ToString(paretoPoint.TotalInfo.Satisfaction * Config.PercentageFactor, "0"), ParseHelper.LargeNumToString(paretoPoint.TotalInfo.Cost, "0"));
         }
 
         (Driver[], int[]) GetInitialAssignment() {
