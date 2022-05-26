@@ -4,7 +4,8 @@ using System.Linq;
 namespace Thesis {
     class DriverInfo {
         public readonly Instance Instance;
-        public double Cost, RawCost, Robustness, Penalty, DriverSatisfaction, Satisfaction;
+        public double Cost, RawCost, Robustness, Penalty, DriverSatisfaction;
+        public double? SatisfactionScore;
         public int WorkedTime, ShiftCount, HotelCount, NightShiftCount, WeekendShiftCount, TravelTime, SingleFreeDays, DoubleFreeDays;
         public int[] SharedRouteCounts;
         public PenaltyInfo PenaltyInfo;
@@ -22,7 +23,7 @@ namespace Thesis {
                 Robustness = -a.Robustness,
                 Penalty = -a.Penalty,
                 DriverSatisfaction = -a.DriverSatisfaction,
-                Satisfaction = -a.Satisfaction,
+                SatisfactionScore = a.SatisfactionScore.HasValue ? -a.SatisfactionScore.Value : null,
                 WorkedTime = -a.WorkedTime,
                 ShiftCount = -a.ShiftCount,
                 HotelCount = -a.HotelCount,
@@ -42,7 +43,7 @@ namespace Thesis {
                 Robustness = a.Robustness + b.Robustness,
                 Penalty = a.Penalty + b.Penalty,
                 DriverSatisfaction = a.DriverSatisfaction + b.DriverSatisfaction,
-                Satisfaction = a.Satisfaction + b.Satisfaction,
+                SatisfactionScore = a.SatisfactionScore.HasValue && b.SatisfactionScore.HasValue ? a.SatisfactionScore.Value + b.SatisfactionScore.Value : null,
                 WorkedTime = a.WorkedTime + b.WorkedTime,
                 ShiftCount = a.ShiftCount + b.ShiftCount,
                 HotelCount = a.HotelCount + b.HotelCount,
@@ -64,7 +65,7 @@ namespace Thesis {
                 IsDoubleEqual(a.Robustness, b.Robustness) &&
                 IsDoubleEqual(a.Penalty, b.Penalty) &&
                 IsDoubleEqual(a.DriverSatisfaction, b.DriverSatisfaction) &&
-                IsDoubleEqual(a.Satisfaction, b.Satisfaction) &&
+                IsDoubleEqual(a.SatisfactionScore, b.SatisfactionScore) &&
                 a.WorkedTime == b.WorkedTime &&
                 a.ShiftCount == b.ShiftCount &&
                 a.HotelCount == b.HotelCount &&
@@ -78,8 +79,14 @@ namespace Thesis {
             );
         }
 
+        static bool IsDoubleEqual(double a, double b) {
+            return Math.Abs(a - b) < 0.01;
+        }
         static bool IsDoubleEqual(double? a, double? b) {
-            return Math.Abs(a.Value - b.Value) < 0.01;
+            if (a.HasValue && b.HasValue) {
+                return Math.Abs(a.Value - b.Value) < 0.01;
+            }
+            return !a.HasValue && !b.HasValue;
         }
 
         static int[] InvertArray(int[] array) {
@@ -111,7 +118,7 @@ namespace Thesis {
             ParseHelper.LogDebugValue(Robustness, "Robustness", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(Penalty, "Penalty", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(DriverSatisfaction, "Driver satisfaction", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(Satisfaction, "Satisfaction", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(SatisfactionScore, "Satisfaction score", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(WorkedTime, "Worked time", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(ShiftCount, "Shift count", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(HotelCount, "Hotel count", isDiff, shouldLogZeros);

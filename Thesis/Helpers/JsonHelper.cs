@@ -11,11 +11,11 @@ namespace Thesis {
         public static void ExportSolutionJson(string folderPath, SaInfo info) {
             JObject jsonObj = new JObject();
             jsonObj["cost"] = info.TotalInfo.RawCost;
-            jsonObj["satisfaction"] = info.TotalInfo.Satisfaction;
+            jsonObj["satisfaction"] = info.TotalInfo.SatisfactionScore.Value;
             jsonObj["drivers"] = CreateDriversJArray(info.DriverPaths, info);
 
             string jsonString = jsonObj.ToString();
-            string fileName = string.Format("{0}k-{1}p.json", Math.Round(info.TotalInfo.Cost / 1000), Math.Round(info.TotalInfo.Satisfaction * 100));
+            string fileName = string.Format("{0}k-{1}p.json", Math.Round(info.TotalInfo.Cost / 1000), Math.Round(info.TotalInfo.SatisfactionScore.Value * 100));
             string filePath = Path.Combine(folderPath, fileName);
             File.WriteAllText(filePath, jsonString);
         }

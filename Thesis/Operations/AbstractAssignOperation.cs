@@ -29,6 +29,7 @@ namespace Thesis {
             unassignedDriverInfoDiff = CostDiffCalculator.GetUnassignDriverCostDiff(trip, unassignedDriver, unassignedDriverInfo, info);
             assignedDriverInfoDiff = CostDiffCalculator.GetAssignDriverCostDiff(trip, assignedDriver, assignedDriverInfo, info);
             totalInfoDiff = unassignedDriverInfoDiff + assignedDriverInfoDiff;
+            totalInfoDiff.SatisfactionScore = SatisfactionCalculator.GetSatisfactionScoreDiff(totalInfoDiff, unassignedDriver, unassignedDriverInfoDiff, assignedDriver, assignedDriverInfoDiff, info);
             return totalInfoDiff;
         }
 

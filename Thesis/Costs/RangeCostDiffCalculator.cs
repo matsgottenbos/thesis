@@ -80,9 +80,8 @@ namespace Thesis {
             rangeDriverInfo.PenaltyInfo.AddPossibleShiftCountViolation(fullDriverInfo.ShiftCount);
             rangeDriverInfo.Penalty = rangeDriverInfo.PenaltyInfo.GetPenalty();
 
-            // Satisfaction
+            // Driver satisfaction
             rangeDriverInfo.DriverSatisfaction = driver.GetSatisfaction(fullDriverInfo);
-            rangeDriverInfo.Satisfaction = rangeDriverInfo.DriverSatisfaction / info.Instance.InternalDrivers.Length;
 
             // Cost
             rangeDriverInfo.Cost = rangeDriverInfo.RawCost + rangeDriverInfo.Robustness + rangeDriverInfo.Penalty;

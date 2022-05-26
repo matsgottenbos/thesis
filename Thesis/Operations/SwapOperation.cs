@@ -30,6 +30,7 @@ namespace Thesis {
             driver1InfoDiff = CostDiffCalculator.GetSwapDriverCostDiff(trip1, trip2, driver1, driver1Info, info);
             driver2InfoDiff = CostDiffCalculator.GetSwapDriverCostDiff(trip2, trip1, driver2, driver2Info, info);
             totalInfoDiff = driver1InfoDiff + driver2InfoDiff;
+            totalInfoDiff.SatisfactionScore = SatisfactionCalculator.GetSatisfactionScoreDiff(totalInfoDiff, driver1, driver1InfoDiff, driver2, driver2InfoDiff, info);
             return totalInfoDiff;
         }
 

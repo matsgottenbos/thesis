@@ -148,7 +148,7 @@ namespace Thesis {
         public const float SaTemperatureReductionFactor = 0.99f;
         public const float SaEndCycleTemperature = 300f;
         public const float SaCycleMinSatisfactionFactor = 0f;
-        public const float SaCycleMaxSatisfactionFactor = 1f;
+        public const float SaCycleMaxSatisfactionFactor = 0.5f;
         public const float ParetoFrontMinCostDiff = 500f; // Minmum cost different to consider two solutions to be separate points on the pareto front
 
         // Operation probabilities

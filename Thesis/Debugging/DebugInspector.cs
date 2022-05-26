@@ -26,7 +26,7 @@ namespace Thesis {
 
         void InspectAssignment(string assignmentStr) {
             SaInfo info = ParseHelper.ParseAssignmentString(assignmentStr, instance);
-            (info.TotalInfo, info.DriverInfos) = TotalCostCalculator.GetAssignmentCost(info);
+            TotalCostCalculator.ProcessAssignmentCost(info);
 
             // Log assignment info
             info.TotalInfo.DebugLog(false);

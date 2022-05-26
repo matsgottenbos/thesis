@@ -7,19 +7,18 @@ using System.Threading.Tasks;
 namespace Thesis {
     static class TotalCostCalculator {
         /** Get assignment cost */
-        public static (DriverInfo, DriverInfo[]) GetAssignmentCost(SaInfo info) {
-            DriverInfo assignmentInfo = new DriverInfo(info.Instance);
-            DriverInfo[] driverInfos = new DriverInfo[info.Instance.AllDrivers.Length];
+        public static void ProcessAssignmentCost(SaInfo info) {
+            info.TotalInfo = new DriverInfo(info.Instance);
+            info.DriverInfos = new DriverInfo[info.Instance.AllDrivers.Length];
             for (int driverIndex = 0; driverIndex < info.Instance.AllDrivers.Length; driverIndex++) {
                 List<Trip> driverPath = info.DriverPaths[driverIndex];
                 Driver driver = info.Instance.AllDrivers[driverIndex];
                 DriverInfo driverInfo = GetDriverPathCost(driverPath, info.IsHotelStayAfterTrip, driver, info);
 
-                assignmentInfo += driverInfo;
-                driverInfos[driverIndex] = driverInfo;
+                info.TotalInfo += driverInfo;
+                info.DriverInfos[driverIndex] = driverInfo;
             }
-
-            return (assignmentInfo, driverInfos);
+            info.TotalInfo.SatisfactionScore = SatisfactionCalculator.GetSatisfactionScore(info);
         }
 
         public static DriverInfo GetDriverPathCost(List<Trip> driverPath, bool[] isHotelStayAfterTrip, Driver driver, SaInfo info) {

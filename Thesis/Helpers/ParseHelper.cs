@@ -113,7 +113,7 @@ namespace Thesis {
             }
             info.ProcessDriverPaths();
 
-            (info.TotalInfo, info.DriverInfos) = TotalCostCalculator.GetAssignmentCost(info);
+            TotalCostCalculator.ProcessAssignmentCost(info);
 
             return info;
         }
@@ -145,7 +145,19 @@ namespace Thesis {
         public static void LogDebugValue(double value, string name, bool isDiff, bool shouldLogZeros) {
             string diffStr = isDiff ? " diff" : "";
             bool isZero = Math.Abs(value) < Config.FloatingPointMargin;
-            if (shouldLogZeros || !isZero) Console.WriteLine("{0}{1}: {2}", name, diffStr, ParseHelper.ToString(value));
+            if (shouldLogZeros || !isZero) Console.WriteLine("{0}{1}: {2}", name, diffStr, ToString(value));
+        }
+        public static void LogDebugValue(int? value, string name, bool isDiff, bool shouldLogZeros) {
+            string valueStr = value.HasValue ? value.ToString() : "-";
+            string diffStr = isDiff ? " diff" : "";
+            bool isZero = value == 0;
+            if (shouldLogZeros || !isZero) Console.WriteLine("{0}{1}: {2}", name, diffStr, valueStr);
+        }
+        public static void LogDebugValue(double? value, string name, bool isDiff, bool shouldLogZeros) {
+            string valueStr = value.HasValue ? ToString(value.Value) : "-";
+            string diffStr = isDiff ? " diff" : "";
+            bool isZero = !value.HasValue || Math.Abs(value.Value) < Config.FloatingPointMargin;
+            if (shouldLogZeros || !isZero) Console.WriteLine("{0}{1}: {2}", name, diffStr, valueStr);
         }
     }
 }

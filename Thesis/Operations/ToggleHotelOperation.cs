@@ -32,6 +32,8 @@ namespace Thesis {
                 totalInfoDiff = CostDiffCalculator.GetRemoveHotelDriverCostDiff(trip, driver, driverInfo, info);
             }
 
+            totalInfoDiff.SatisfactionScore = SatisfactionCalculator.GetSatisfactionScoreDiff(totalInfoDiff, driver, totalInfoDiff, null, null, info);
+
             return totalInfoDiff;
         }
 

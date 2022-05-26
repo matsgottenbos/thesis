@@ -26,5 +26,47 @@ namespace Thesis {
             driverSatisfaction += Config.SatCriteriumConsecutiveFreeDays.GetSatisfaction((driverInfo.SingleFreeDays, driverInfo.DoubleFreeDays), driver);
             return driverSatisfaction;
         }
+
+        public static double GetSatisfactionScore(SaInfo info) {
+            // Average satisfaction
+            double averageDriverSatisfaction = info.TotalInfo.DriverSatisfaction / info.Instance.InternalDrivers.Length;
+
+            // Minimum driver satisfaction
+            double minDriverSatisfaction = double.MaxValue;
+            for (int driverIndex = 0; driverIndex < info.Instance.InternalDrivers.Length; driverIndex++) {
+                DriverInfo driverInfo = info.DriverInfos[driverIndex];
+                if (driverInfo.DriverSatisfaction < minDriverSatisfaction) minDriverSatisfaction = driverInfo.DriverSatisfaction;
+            }
+
+            // Total satisfaction
+            double totalSatisfactionDiff = (averageDriverSatisfaction + minDriverSatisfaction) / 2;
+            return totalSatisfactionDiff;
+        }
+
+        public static double GetSatisfactionScoreDiff(DriverInfo totalInfoDiff, Driver driver1, DriverInfo driver1InfoDiff, Driver driver2, DriverInfo driver2InfoDiff, SaInfo info) {
+            // Average satisfaction
+            double averageDriverSatisfactionDiff = totalInfoDiff.DriverSatisfaction / info.Instance.InternalDrivers.Length;
+
+            // Minimum driver satisfaction
+            double oldMinDriverSatisfaction = double.MaxValue;
+            double newMinDriverSatisfaction = double.MaxValue;
+            for (int driverIndex = 0; driverIndex < info.Instance.InternalDrivers.Length; driverIndex++) {
+                DriverInfo oldDriverInfo = info.DriverInfos[driverIndex];
+
+                // Get new minimum
+                double newDriverSatisfaction = oldDriverInfo.DriverSatisfaction;
+                if (driverIndex == driver1.AllDriversIndex) newDriverSatisfaction += driver1InfoDiff.DriverSatisfaction;
+                else if (driver2 != null && driverIndex == driver2.AllDriversIndex) newDriverSatisfaction += driver2InfoDiff.DriverSatisfaction;
+
+                // Update minimums
+                if (oldDriverInfo.DriverSatisfaction < oldMinDriverSatisfaction) oldMinDriverSatisfaction = oldDriverInfo.DriverSatisfaction;
+                if (newDriverSatisfaction < newMinDriverSatisfaction) newMinDriverSatisfaction = newDriverSatisfaction;
+            }
+            double minDriverSatisfactionDiff = newMinDriverSatisfaction - oldMinDriverSatisfaction;
+
+            // Total satisfaction
+            double totalSatisfactionDiff = (averageDriverSatisfactionDiff + minDriverSatisfactionDiff) / 2;
+            return totalSatisfactionDiff;
+        }
     }
 }
