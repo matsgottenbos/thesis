@@ -3,40 +3,20 @@ from math import floor
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as stats
+from matplotlib.ticker import PercentFormatter
 
-def plotHistogram(values, binMin=-600, binMax=600, binSize=30, ylim=[0, 1], color=(0, 0, 1, 1), alpha=1, histtype='bar'):
+### Helpers
+
+def plotHistogram(values, binMin=-600, binMax=600, binSize=30, ylim=None, color=(0, 0.5, 1, 1), alpha=1, histtype='bar'):
     count = len(values)
     bins=np.arange(binMin, binMax + binSize, binSize)
     weights = np.ones(count) / count
     plt.hist(values, bins=bins, color=color, weights=weights, histtype=histtype, alpha=alpha)
     plt.xlim([binMin, binMax])
+    plt.gca().yaxis.set_major_formatter(PercentFormatter(1)) # Show percentagess
     if ylim != None: plt.ylim(ylim)
 
-def plotLineHistogram(values, binMin=-600, binMax=600, binSize=30, ylim=[0, 1], color=(0, 0, 1, 1)):
-    binCount = int((binMax - binMin) / binSize)
-
-    roundedValues = [round(value / 30) * 30 for value in values]
-    count = len(roundedValues)
-    originalUniqueValues, originalCounts = np.unique(roundedValues, return_counts=True)
-    originalCountFractions = originalCounts / count
-
-    uniqueValues = np.linspace(binMin, binMax, binCount + 1)
-    countFractions = []
-    for value in uniqueValues:
-        if value in originalUniqueValues:
-            # In data, get actual count fraction
-            labelIndex = list(originalUniqueValues).index(value)
-            labelCountFraction = originalCountFractions[labelIndex]
-            countFractions.append(labelCountFraction)
-        else:
-            # Not in data, set to 0
-            countFractions.append(0)
-
-    plt.plot(uniqueValues, countFractions, color=color)
-    plt.xlim([binMin, binMax])
-    if ylim != None: plt.ylim(ylim)
-
-def plotDistribution(cdfFunc, binMin=-600, binMax=600, binSize=30, ylim=[0, 1], color=(0, 0, 1, 1), precision=10):
+def plotDistribution(cdfFunc, binMin=-600, binMax=600, binSize=30, ylim=None, color=(0, 0.5, 1, 1), lineWidth=1, precision=10):
     binCount = int((binMax - binMin) / binSize) * precision
 
     cdfPoints = np.linspace(binMin, binMax, binCount + 2)
@@ -46,195 +26,182 @@ def plotDistribution(cdfFunc, binMin=-600, binMax=600, binSize=30, ylim=[0, 1], 
     groupedCdf = [cdf[i + 1] - cdf[i] for i in range(len(cdf) - 1)]
     
     x2 = np.linspace(binMin, binMax, binCount + 1)
-    plt.plot(x2, groupedCdf, color=color)
+    plt.plot(x2, groupedCdf, color=color, linewidth=lineWidth)
     if ylim != None: plt.ylim(ylim)
 
+def beforePlot(xLabel=None, yLabel=None):
+    fig = plt.figure(figsize=(5,5))
+    ax = plt.subplot()
+    if (xLabel != None): plt.xlabel(xLabel)
+    if (yLabel != None): plt.ylabel(yLabel)
+    return fig, ax
 
-with open('./output/delays.json', 'r') as readFile:
-    data = json.load(readFile)
-
-activities = data['activities']
-
-fig = plt.figure(figsize=(9,9))
-ax = plt.subplot()
-
-i = 0
-allDelays = []
-allRelativeDelays = []
-allPositiveDelays = []
-allPositiveDelaysByDuration = [] # durations rounded down to nearest 30
-muPlusStd = []
-delayScores = []
-delayInfos = []
-delayedCount = 0
-countByDuration = []
-delayedCountByDuration = []
-for activity in activities:
-    plannedDuration = activity['plannedDuration']
-    delays = activity['durationDelays']
-    allDelays.extend(delays)
-    actualDurations = [plannedDuration + delay for delay in delays]
-    relativeDelays = [delay / max(15, plannedDuration) for delay in delays]
-    allRelativeDelays.extend(relativeDelays)
-    clippedDelays = [max(delay, 0) for delay in delays]
-    positiveDelays = [delay for delay in delays if delay > 0]
-    allPositiveDelays.extend(positiveDelays)
-    delayedCount += len(positiveDelays)
-
-    durationIndex = floor(plannedDuration / 30)
-    while len(allPositiveDelaysByDuration) < durationIndex + 1:
-        allPositiveDelaysByDuration.append([])
-        countByDuration.append(0)
-        delayedCountByDuration.append(0)
-    allPositiveDelaysByDuration[durationIndex].extend(positiveDelays)
-    countByDuration[durationIndex] += len(delays)
-    delayedCountByDuration[durationIndex] += len(positiveDelays)
-
-    if activity['occurrenceCount'] < 10:
-        continue
-
-    hasNonZeroValue = False
-    for delay in delays:
-        if delay != 0: hasNonZeroValue = True
-
-    if not hasNonZeroValue:
-        continue
-
-    mu, std = stats.norm.fit(delays)
-    muPlusStd.append(mu + std)
-
-    count = len(delays)
-    noDelayCount = 0
-    subHourDelayCount = 0
-    superHourDelayCount = 0
-    for delay in delays:
-        relativeDelay = delay / max(15, plannedDuration)
-        if delay <= 15: noDelayCount += 1
-        elif delay < 60: subHourDelayCount += 1
-        else: superHourDelayCount += 1
-
-    noDelayPercent = round(100 * noDelayCount / count)
-    subHourDelayPercent = round(100 * subHourDelayCount / count)
-    superHourDelayPercent = round(100 * superHourDelayCount / count)
-
-    delayScore = subHourDelayPercent + 2 * superHourDelayPercent
-    delayScores.append(delayScore)
-    delayInfos.append((delayScore, noDelayPercent, subHourDelayPercent, superHourDelayPercent))
-    
-    # print(delayScore, noDelayPercent, subHourDelayPercent, superHourDelayPercent)
-
-
-    # plotHistogram(values)
-    # plotLineHistogram(values)
-    # plotFittedNormalDistribution(mu, std)
-    
-    # print(relativeDelays)
-    # plotHistogram(relativeDelays, binMin=-2, binMax=2, binSize=0.05)
-
-    # print(plannedDuration)
-    # plotHistogram(actualDurations, binMin=0, binMax=600, binSize=15)
-
-    # plt.plot([plannedDuration, plannedDuration], [0, count], color='k')
-
-    # plotHistogram(clippedDelays, binMin=0, binMax=200, binSize=5)
-
-    # loc, scale = expon.fit(clippedDelays)
-    # print(loc, scale)
-    # distX = np.linspace(0, 200, 1000)
-    # distY = expon.pdf(distX, loc, scale)
-    # plt.plot(distX, distY, color='red')
-
-    # plt.xlim([-5, 200])
-    # plt.ylim([0, count])
-
+def afterPlot(plotName):
     # plt.show()
-
-    # i += 1
-
-# print(i)
-
-delayedFraction = delayedCount / len(allDelays)
-print(delayedCount, len(allDelays), delayedFraction)
-
-allDelayedPercentages = [100 - delayInfo[1] for delayInfo in delayInfos]
-plotHistogram(allDelayedPercentages, binMin=0, binMax=100, binSize=1)
-
-# allPositiveDelays = [delay for delay in allPositiveDelays if delay < 600]
-
-# plotHistogram(allDelays, binMin=-120, binMax=120, binSize=16)
-# plotHistogram(allDelays, binMin=0, binMax=1200, binSize=20)
-# plotHistogram(allPositiveDelays, binMin=0, binMax=600, binSize=2, ylim=None, histtype='bar')
-
-# delayedFractionByDuration = []
-# meanDelayByDuration = []
-# stdDelayByDuration = []
-# for durationIndex in range(len(allPositiveDelaysByDuration)):
-#     durationDelays = allPositiveDelaysByDuration[durationIndex]
-#     durationCount = countByDuration[durationIndex]
-#     durationDelayedCount = delayedCountByDuration[durationIndex]
-
-#     if (len(durationDelays) < 5):
-#         print(durationIndex, durationIndex * 30, durationCount, durationDelayedCount, '-')
-#         meanDelayByDuration.append(0)
-#         continue
-
-#     # plotHistogram(durationDelays, binMin=0, binMax=600, binSize=2, ylim=None, color=None, histtype='bar', alpha=0.5)
-#     # plotLineHistogram(durationDelays, binMin=0, binMax=600, binSize=30, ylim=None, color=None)
-
-#     delayedFraction = durationDelayedCount / durationCount
-#     delayedFractionByDuration.append(delayedFraction)
-    
-#     mu, std = stats.norm.fit(durationDelays)
-#     meanDelayByDuration.append(mu)
-#     stdDelayByDuration.append(std)
-#     print(durationIndex, durationIndex * 30, durationCount, durationDelayedCount, delayedFraction)
+    filePath = './data-analysis/plots/{0}.png'.format(plotName)
+    plt.savefig(filePath, dpi=300, bbox_inches='tight', pad_inches=0.1)
+    plt.close()
 
 
-# plt.plot(averageDelayByDuration)
-# plt.xlim([0, 18])
+### Output
 
-# x = range(0, 18)
+# Basic info
+def printBasicInfo(allDelays, allPositiveDelays):
+    print('Number of activities:', len(allDelays))
+    print('Number of delayed activities:', len(allPositiveDelays))
+    print('Percentage of activities delayed:', str(100 * len(allPositiveDelays) / len(allDelays)) + "%")
 
-# y = meanDelayByDuration[0:18]
-# coef = np.polyfit(x, y, 2)
-# func = lambda x: coef[0] * x * x + coef[1] * x + coef[2]
-# print('%sx^2 + %sx + %s' % (coef[0], coef[1], coef[2]))
-# plt.plot(x, y, 'yo', x, func(x), '--k')
+# All delays histogram
+def plotAllDelays(allDelays):
+    beforePlot(xLabel='Delay amount (minutes)', yLabel='Share of total')
+    plotHistogram(allDelays, binMin=-300, binMax=300, binSize=10)
+    afterPlot(plotName='delays')
 
-# y2 = stdDelayByDuration[0:18]
-# coef2 = np.polyfit(x, y2, 1)
-# func2 = lambda x: coef2[0] * x + coef2[1]
-# print('%sx + %s' % (coef2[0], coef2[1]))
-# plt.plot(x, y2, 'yo', x, func2(x), '--k')
+# Positive delays histogram
+def plotAllPositiveDelays(allPositiveDelays):
+    beforePlot(xLabel='Delay amount (minutes)', yLabel='Share of total')
+    plotHistogram(allPositiveDelays, binMin=0, binMax=300, binSize=5)
+    plt.ylim([0, 0.19])
+    afterPlot(plotName='delays-positive')
 
-# y3 = delayedFractionByDuration[0:18]
-# coef3 = np.polyfit(x, y3, 1)
-# func3 = lambda x: coef3[0] * x + coef3[1]
-# print('%sx + %s' % (coef3[0], coef3[1]))
-# plt.plot(x, y3, 'yo', x, func3(x), '--k')
+# Driving vs non-driving info
+def printDrivingNonDrivingInfo(allDelaysDriving, allDelaysNonDriving, allPositiveDelaysDriving, allPositiveDelaysNonDriving):
+    print('Number of driving activities:', len(allDelaysDriving))
+    print('Number of non-driving activities:', len(allDelaysNonDriving))
+    print('Number of delayed driving activities:', len(allPositiveDelaysDriving))
+    print('Number of delayed non-driving activities:', len(allPositiveDelaysNonDriving))
+    print('Percentage of driving activities delayed:', str(100 * len(allPositiveDelaysDriving) / len(allDelaysDriving)) + "%")
+    print('Percentage of non-driving activities delayed:', str(100 * len(allPositiveDelaysNonDriving) / len(allDelaysNonDriving)) + "%")
 
-# allPositiveDelays = [delay for delay in allPositiveDelays if delay < 600]
+# Delays driving vs non-driving
+def plotDelaysDrivingNonDriving(allDelaysDriving, allDelaysNonDriving):
+    beforePlot(xLabel='Delay amount (minutes)', yLabel='Share of total')
+    plotHistogram(allDelaysDriving, binMin=-300, binMax=300, binSize=10, color=(0, 0.5, 1, 1), alpha=0.6)
+    plotHistogram(allDelaysNonDriving, binMin=-300, binMax=300, binSize=10, color=(1, 0.5, 0, 1), alpha=0.6)
+    afterPlot(plotName='delays-driving-nondriving')
 
-# a, loc, scale = stats.gamma.fit(allPositiveDelays)
-# print(a, loc, scale)
-# plotDistribution(lambda x: stats.gamma.cdf(x, a, loc, scale), binMin=0, binMax=600, binSize=2, ylim=[0,1])
+# Positive driving vs non-driving
+def plotPositiveDelaysDrivingNonDriving(allPositiveDelaysDriving, allPositiveDelaysNonDriving):
+    beforePlot(xLabel='Delay amount (minutes)', yLabel='Share of total')
+    plotHistogram(allPositiveDelaysDriving, binMin=0, binMax=300, binSize=5, color=(0, 0.5, 1, 1), alpha=0.6)
+    plotHistogram(allPositiveDelaysNonDriving, binMin=0, binMax=300, binSize=5, color=(1, 0.5, 0, 1), alpha=0.6)
+    afterPlot(plotName='delays-positive-driving-nondriving')
 
-# muAll, stdAll = stats.norm.fit(allPositiveDelays)
-# print(muAll, stdAll)
+# Positive delays gamma distribution
+def fitGammaDistributionToAllPositiveDelays(allPositiveDelays):
+    allPositiveDelaysCapped = [delay for delay in allPositiveDelays if delay < 600]
+    a, _, scale = stats.gamma.fit(allPositiveDelaysCapped, loc=0, floc=0)
+    print('All positive delays gamma distribution, alpha parameter:', a)
+    print('All positive delays gamma distribution, beta parameter:', 1 / scale)
+
+    # Print histogram comparison
+    beforePlot(xLabel='Delay amount (minutes)', yLabel='Share of total')
+    plotHistogram(allPositiveDelays, binMin=0, binMax=300, binSize=5, ylim=None)
+    plotDistribution(lambda x: stats.gamma.cdf(x, a, 0, scale), binMin=0, binMax=300, binSize=5, ylim=None, color=(1, 0.5, 0, 1), lineWidth=3)
+    plt.ylim([0, 0.19])
+    afterPlot(plotName='gamma-fit-histogram')
+
+    # Print probability plot
+    _, ax = beforePlot()
+    _, (_, _, r) = stats.probplot(allPositiveDelaysCapped, dist=stats.gamma, sparams=(a, 0, scale), plot=plt)
+    print('Coefficient of determination:', r * r)
+    plt.title('')
+    plt.xlabel('Distribution quantiles')
+    plt.ylabel('Data quantiles')
+    ax.get_lines()[0].set_markerfacecolor((0, 0.5, 1, 0.2))
+    ax.get_lines()[0].set_markeredgewidth(0)
+    ax.get_lines()[1].set_color((1, 0.5, 0, 1))
+    ax.get_lines()[1].set_linewidth(3)
+    afterPlot(plotName='gamma-fit-probplot')
+
+# Determine function of mean delay by duration
+def fitMeanDelayFunction(allPositiveDelaysFrequentDurations, allPositiveDelaysFrequent):
+    beforePlot(xLabel='Duration (minutes)', yLabel='Delay amount (minutes)')
+    muXs = allPositiveDelaysFrequentDurations
+    muXsModel = sorted(muXs)
+    muYs = allPositiveDelaysFrequent
+    muCoef = np.polyfit(muXs, muYs, 2)
+    muFunc = lambda x: muCoef[0] * x * x + muCoef[1] * x + muCoef[2]
+    print('Mean delay by duration: %sx^2 + %sx + %s' % (muCoef[0], muCoef[1], muCoef[2]))
+    muYsModel = [muFunc(x) for x in muXsModel]
+    plt.plot(muXs, muYs, 'o', color=(0, 0.5, 1, 0.1))
+    plt.plot(muXsModel, muYsModel, color=(1, 0.5, 0, 1), linewidth=3)
+    plt.xlim([0, 600])
+    plt.ylim([0, 1000])
+    afterPlot(plotName='delays-duration-mean')
+
+# Determine function of delay standard deviation by duration
+def showStdScatterPlot(allPositiveDelaysByDuration, durationIndexSize):
+    beforePlot(xLabel='Duration (minutes)', yLabel='Delay standard deviation (minutes)')
+    stdDelayByDuration = []
+    for durationIndex in range(len(allPositiveDelaysByDuration)):
+        durationDelays = allPositiveDelaysByDuration[durationIndex]
+        if (len(durationDelays) < 5): continue
+        _, std = stats.norm.fit(durationDelays)
+        stdDelayByDuration.append(std)
+    stdYs = stdDelayByDuration[0:18]
+    stdXs = range(0, len(stdYs) * durationIndexSize, durationIndexSize)
+    plt.plot(stdXs, stdYs, 'o', color=(0, 0.5, 1, 1))
+    afterPlot(plotName='delays-duration-std')
 
 
-# plotHistogram(allPositiveDelays, binMin=0, binMax=300, binSize=2, ylim=None)
-# # plotDistribution(lambda x: stats.gamma.cdf(x, a, loc, scale), binMin=0, binMax=300, binSize=2, ylim=None, color=(0, 1, 0, 1))
-# # plotDistribution(lambda x: stats.gamma.cdf(x, 1.69 * a, loc, 1.3 * scale), binMin=0, binMax=300, binSize=2, ylim=None, color='red')
-# plotDistribution(lambda x: stats.gamma.cdf(x, 0.5, 0, 120), binMin=0, binMax=300, binSize=2, ylim=None, color='red')
-# plotDistribution(lambda x: stats.gamma.cdf(x, 0.5, 0, 72), binMin=0, binMax=300, binSize=2, ylim=None, color=(0, 1, 0, 1))
-# plotDistribution(lambda x: stats.gamma.cdf(x, 0.5, 0, 72), binMin=0, binMax=300, binSize=2, ylim=None, color=(0, 1, 0, 1))
-# plt.ylim([0, 0.2])
 
+### Run
 
-# stats.probplot(allPositiveDelays, dist=stats.gamma, sparams=(a, loc, scale), plot=plt)
-# stats.probplot(allPositiveDelays, dist=stats.gamma, sparams=(0.5, 0, 120), plot=plt)
+def run(durationIndexSize):
+    # Read data
+    with open('./output/delays.json', 'r') as readFile:
+        data = json.load(readFile)
+    activities = data['activities']
 
-# plotFittedNormalDistribution(mu=0, std=120, binMin=-120, binMax=120, binSize=8)
+    # Process data
+    allDelays = []
+    allDelaysDriving = []
+    allDelaysNonDriving = []
+    allPositiveDelays = []
+    allPositiveDelaysDriving = []
+    allPositiveDelaysNonDriving = []
+    allPositiveDelaysFrequent = []
+    allPositiveDelaysFrequentDurations = []
+    allPositiveDelaysByDuration = [] # durations rounded down to nearest `durationIndexSize`
+    delayedCountByDuration = []
+    for activity in activities:
+        plannedDuration = activity['plannedDuration']
+        delays = activity['durationDelays']
+        allDelays.extend(delays)
+        positiveDelays = [delay for delay in delays if delay > 0]
+        allPositiveDelays.extend(positiveDelays)
 
-plt.show()
+        if activity['description'] == 'Drive train':
+            allDelaysDriving.extend(delays)
+            allPositiveDelaysDriving.extend(positiveDelays)
+        else:
+            allDelaysNonDriving.extend(delays)
+            allPositiveDelaysNonDriving.extend(positiveDelays)
+
+        durationIndex = floor(plannedDuration / durationIndexSize)
+        while len(allPositiveDelaysByDuration) < durationIndex + 1:
+            allPositiveDelaysByDuration.append([])
+            delayedCountByDuration.append(0)
+        allPositiveDelaysByDuration[durationIndex].extend(positiveDelays)
+        delayedCountByDuration[durationIndex] += len(positiveDelays)
+
+        if activity['occurrenceCount'] < 10:
+            continue
+
+        allPositiveDelaysFrequent.extend(positiveDelays)
+        for _ in range(len(positiveDelays)):
+            allPositiveDelaysFrequentDurations.append(plannedDuration)
+
+    # Perform output
+    printBasicInfo(allDelays, allPositiveDelays)
+    plotAllDelays(allDelays)
+    plotAllPositiveDelays(allPositiveDelays)
+    printDrivingNonDrivingInfo(allDelaysDriving, allDelaysNonDriving, allPositiveDelaysDriving, allPositiveDelaysNonDriving)
+    plotDelaysDrivingNonDriving(allDelaysDriving, allDelaysNonDriving)
+    plotPositiveDelaysDrivingNonDriving(allPositiveDelaysDriving, allPositiveDelaysNonDriving)
+    fitGammaDistributionToAllPositiveDelays(allPositiveDelays)
+    fitMeanDelayFunction(allPositiveDelaysFrequentDurations, allPositiveDelaysFrequent)
+    showStdScatterPlot(allPositiveDelaysByDuration, durationIndexSize)
+
+run(durationIndexSize=30)
