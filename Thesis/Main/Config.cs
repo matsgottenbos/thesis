@@ -21,6 +21,8 @@ namespace Thesis {
         // Shifts
         public const int MaxShiftLengthWithTravel = 12 * 60; // Maximum length of a shift, including travel
         public const int MaxShiftLengthWithoutTravel = 10 * 60; // Maximum length of a shift, excluding travel
+        public const int MaxNightShiftLengthWithTravel = 10 * 60; // Maximum length of a night shift, including travel
+        public const int MaxNightShiftLengthWithoutTravel = 8 * 60; // Maximum length of a night shift, excluding travel
         public const int MinRestTime = 11 * 60; // Minimum required resting time between two shifts
         public const int SingleFreeDayMinRestTime = 24 * 60; // Minimum required resting time between two shifts to count as a single free day
         public const int DoubleFreeDayMinRestTime = 48 * 60; // Minimum required resting time between two shifts to count as two consecutive free days
@@ -85,7 +87,7 @@ namespace Thesis {
         public const float TripDelayProbability = 0.179f; // Chance that a trip has a delay
         public static readonly Func<int, double> TripMeanDelayFunc = (int plannedDuration) => plannedDuration * plannedDuration / 3600 + 31 * plannedDuration / 150 + 38; // Trip mean delay by planned duration: x^2/3600 + 31x/150 + 19/15
         public static readonly Func<double, double> TripDelayGammaDistributionAlphaFunc = (double meanDelay) => meanDelay * meanDelay / 7200; // Alpha parameter of trip delay gamma distribution, by mean delay: x^2/7200
-        public static readonly Func<double, double> TripDelayGammaDistributionBetaFunc = (double meanDelay) => 2 * meanDelay; // Beta parameter of trip delay gamma distribution, by mean delay: 2x
+        public static readonly Func<double, double> TripDelayGammaDistributionBetaFunc = (double meanDelay) => 2 * meanDelay; // Beta parameter of trip delay gamma distribution, by mean delay: 2x (TODO: correct?)
         public const float TravelDelayProbability = 0.179f; // Chance that car travel has a delay
         public static readonly Func<int, double> TravelMeanDelayFunc = (int plannedDuration) => plannedDuration * plannedDuration / 3600 + 31 * plannedDuration / 150 + 38; // Travel mean delay by planned duration: x^2/3600 + 31x/150 + 19/15
         public static readonly Func<double, double> TravelDelayGammaDistributionAlphaFunc = (double meanDelay) => meanDelay * meanDelay / 7200; // Alpha parameter of travel delay gamma distribution, by mean delay: x^2/7200
@@ -93,7 +95,8 @@ namespace Thesis {
 
 
         /* Excel importer */
-        public static readonly DateTime ExcelPlanningStartDate = new DateTime(2022, 1, 8);
+        public static readonly string[] ExcelIncludedRailwayUndertakings = new string[] { "Rail Force One" };
+        public static readonly DateTime ExcelPlanningStartDate = new DateTime(2022, 5, 23);
         public static readonly DateTime ExcelPlanningNextDate = ExcelPlanningStartDate.AddDays(7);
         public const int ExcelInternalDriverContractTime = 40 * 60;
         public const int ExcelExternalDriverTypeCount = 5;

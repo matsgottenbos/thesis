@@ -48,23 +48,30 @@ namespace Thesis {
             List<string> stationCodesList = new List<string>();
             int timeframeLength = 0;
             dutiesTable.ForEachRow(dutyRow => {
+                // Skip if non-included order owner
+                string orderOwner = dutyRow.GetCell(dutiesTable.GetColumnIndex("RailwayUndertaking"))?.StringCellValue;
+                if (orderOwner == null || !Config.ExcelIncludedRailwayUndertakings.Contains(orderOwner)) return;
+
                 // Get duty, activity and project name name
-                string dutyName = dutyRow.GetCell(dutiesTable.GetColumnIndex("DutyNo")).StringCellValue;
-                string activityName = dutyRow.GetCell(dutiesTable.GetColumnIndex("ActivityDescriptionEN")).StringCellValue;
-                string projectName = dutyRow.GetCell(dutiesTable.GetColumnIndex("ProjectNo")).StringCellValue;
+                string dutyName = dutyRow.GetCell(dutiesTable.GetColumnIndex("DutyNo"))?.StringCellValue ?? "";
+                string activityName = dutyRow.GetCell(dutiesTable.GetColumnIndex("ActivityDescriptionEN"))?.StringCellValue ?? "";
+                string projectName = dutyRow.GetCell(dutiesTable.GetColumnIndex("ProjectNo"))?.StringCellValue ?? "";
 
                 // Get start and end stations
-                string startStationCode = dutyRow.GetCell(dutiesTable.GetColumnIndex("OriginLocationCode")).StringCellValue;
+                string startStationCode = dutyRow.GetCell(dutiesTable.GetColumnIndex("OriginLocationCode"))?.StringCellValue ?? "";
+                if (startStationCode == "") return; // Skip row if start location is empty
                 int startStationIndex = GetOrAddCodeIndex(startStationCode, stationCodesList);
-                string endStationCode = dutyRow.GetCell(dutiesTable.GetColumnIndex("DestinationLocationCode")).StringCellValue;
+                string endStationCode = dutyRow.GetCell(dutiesTable.GetColumnIndex("DestinationLocationCode"))?.StringCellValue ?? "";
+                if (endStationCode == "") return; // Skip row if end location is empty
                 int endStationIndex = GetOrAddCodeIndex(endStationCode, stationCodesList);
 
                 // Get start and end time
-                DateTime startTimeRaw = dutyRow.GetCell(dutiesTable.GetColumnIndex("PlannedStart")).DateCellValue;
-                if (startTimeRaw < planningStartDate || startTimeRaw > planningNextDate) return; // Skip trips outside planning timeframe
-                int startTime = (int)Math.Round((startTimeRaw - planningStartDate).TotalMinutes);
-                DateTime endTimeRaw = dutyRow.GetCell(dutiesTable.GetColumnIndex("PlannedEnd")).DateCellValue;
-                int endTime = (int)Math.Round((endTimeRaw - planningStartDate).TotalMinutes);
+                DateTime? startTimeRaw = dutyRow.GetCell(dutiesTable.GetColumnIndex("PlannedStart"))?.DateCellValue;
+                if (startTimeRaw == null || startTimeRaw < planningStartDate || startTimeRaw > planningNextDate) return; // Skip trips outside planning timeframe
+                int startTime = (int)Math.Round((startTimeRaw - planningStartDate).Value.TotalMinutes);
+                DateTime? endTimeRaw = dutyRow.GetCell(dutiesTable.GetColumnIndex("PlannedEnd"))?.DateCellValue;
+                if (endTimeRaw == null) return; // Skip row if required values are empty
+                int endTime = (int)Math.Round((endTimeRaw - planningStartDate).Value.TotalMinutes);
                 int duration = endTime - startTime;
 
                 // Set the timeframe length to the last end time of all trips
