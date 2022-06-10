@@ -110,13 +110,13 @@ def fitGammaDistributionToAllPositiveDelays(allPositiveDelays):
     plt.ylabel('Data quantiles')
     ax.get_lines()[0].set_markerfacecolor((0, 0.5, 1, 0.2))
     ax.get_lines()[0].set_markeredgewidth(0)
-    ax.get_lines()[1].set_color((1, 0.5, 0, 1))
-    ax.get_lines()[1].set_linewidth(3)
+    ax.get_lines()[1].set_color((0.7, 0.7, 0.7, 1))
+    ax.get_lines()[1].set_linewidth(2)
     afterPlot(plotName='gamma-fit-probplot')
 
 # Determine function of mean delay by duration
 def fitMeanDelayFunction(allPositiveDelaysFrequentDurations, allPositiveDelaysFrequent):
-    beforePlot(xLabel='Duration (minutes)', yLabel='Delay amount (minutes)')
+    beforePlot(xLabel='Planned duration (minutes)', yLabel='Delay amount (minutes)')
     muXs = allPositiveDelaysFrequentDurations
     muXsModel = sorted(muXs)
     muYs = allPositiveDelaysFrequent
@@ -127,12 +127,12 @@ def fitMeanDelayFunction(allPositiveDelaysFrequentDurations, allPositiveDelaysFr
     plt.plot(muXs, muYs, 'o', color=(0, 0.5, 1, 0.1))
     plt.plot(muXsModel, muYsModel, color=(1, 0.5, 0, 1), linewidth=3)
     plt.xlim([0, 600])
-    plt.ylim([0, 1000])
+    plt.ylim([0, 600])
     afterPlot(plotName='delays-duration-mean')
 
 # Determine function of delay standard deviation by duration
 def showStdScatterPlot(allPositiveDelaysByDuration, durationIndexSize):
-    beforePlot(xLabel='Duration (minutes)', yLabel='Delay standard deviation (minutes)')
+    beforePlot(xLabel='Planned duration (minutes)', yLabel='Delay standard deviation (minutes)')
     stdDelayByDuration = []
     for durationIndex in range(len(allPositiveDelaysByDuration)):
         durationDelays = allPositiveDelaysByDuration[durationIndex]
