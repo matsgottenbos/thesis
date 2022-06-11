@@ -1,0 +1,123 @@
+:root {
+    --dayLength: calc(24 * 60);
+    --originalTimeframeLength: calc(7 * var(--dayLength));
+    --bufferBeforeTimeframe: calc(2 * 60);
+    --bufferAfterTimeframe: calc(8 * 60);
+    --timeframeLength: calc(var(--originalTimeframeLength) + var(--bufferBeforeTimeframe) + var(--bufferAfterTimeframe));
+
+    --scheduleDaySize: calc(100% * var(--dayLength) / var(--timeframeLength));
+    --schedulePaddingLeft: calc(100% * var(--bufferBeforeTimeframe) / var(--timeframeLength));
+    --schedulePaddingRight: calc(100% * var(--bufferAfterTimeframe) / var(--timeframeLength));
+
+    --night-start-percentage: calc(100% * 23 / 24);
+    --night-end-percentage: calc(100% * 6 / 24);
+}
+
+body {
+    font-size: 16px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.details {
+    display: flex;
+}
+
+.driversColumn {
+    width: 10%;
+    padding: 0 2rem;
+    border-right: 1px solid rgba(150, 150, 150, 1);
+}
+
+.scheduleColumn {
+    width: 90%;
+}
+
+.scheduleInner {
+    padding-bottom: 1rem;
+    background-image: repeating-linear-gradient(90deg, rgba(200, 200, 200, 1) 0 1px, transparent 1px 100%), repeating-linear-gradient(90deg, rgba(200, 200, 200, 0.15) 0 var(--night-end-percentage), transparent var(--night-end-percentage) 100%),
+         repeating-linear-gradient(90deg, transparent 0 var(--night-start-percentage), rgba(200, 200, 200, 0.15) var(--night-start-percentage) 100%);
+    background-size: var(--scheduleDaySize) 100%;
+    background-position: var(--schedulePaddingLeft) 0;
+}
+
+.driversHeader, .scheduleHeader {
+    height: 3rem;
+    margin-bottom: 2rem;
+    font-weight: bold;
+}
+
+.scheduleHeader {
+    display: flex;
+    padding-left: var(--schedulePaddingLeft);
+    padding-right: var(--schedulePaddingRight);
+}
+
+.driversHeader, .dayHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dayHeader {
+    flex: 1;
+}
+
+.driver, .driverSchedule {
+    height: 2rem;
+}
+
+.driver:not(:last-child), .driverSchedule:not(:last-child) {
+    margin-bottom: 2rem;
+}
+
+.driver {
+    display: flex;
+    align-items: center;
+}
+
+.driverSchedule {
+    position: relative;
+    width: 100%;
+}
+
+.pathItem {
+    position: absolute;
+    height: 100%;
+    background-color: red;
+}
+.pathItem::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    border-top: 1px solid transparent;
+}
+.pathItem.trip {
+    background-color: rgba(140, 210, 255, 1);
+    border: 1px solid rgba(80, 150, 220, 1);
+}
+.pathItem.travelBefore, .pathItem.travelBetween, .pathItem.wait, .pathItem.travelAfter, .pathItem.travelBeforeHotel, .pathItem.travelAfterHotel, .pathItem.rest, .pathItem.hotel {
+    background-color: transparent;
+}
+.pathItem.travelBefore, .pathItem.travelAfterHotel {
+    border-left: 1px solid rgb(94, 193, 255);
+}
+.pathItem.travelBetween, .pathItem.travelAfter, .pathItem.travelBeforeHotel {
+    border-right: 1px solid rgb(94, 193, 255);
+}
+.pathItem.travelBetween, .pathItem.travelBefore, .pathItem.travelAfter, .pathItem.travelBeforeHotel, .pathItem.travelAfterHotel {
+    top: 25%;
+    height: 50%;
+}
+.pathItem.travelBefore::after, .pathItem.travelBetween::after, .pathItem.travelAfter::after, .pathItem.travelBeforeHotel::after, .pathItem.travelAfterHotel::after {
+    border-top-color: rgb(94, 193, 255);
+}
+.pathItem.wait::after {
+    border-top-color: rgb(200, 200, 200);
+    border-top-style: dashed;
+}
+.pathItem.hotel::after {
+    border-top-color: rgb(255, 174, 62);
+}

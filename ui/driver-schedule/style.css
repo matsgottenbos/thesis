@@ -1,0 +1,57 @@
+body {
+    font-size: 16px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.driverHeader {
+    margin-bottom: 2rem;
+    padding: 2rem;
+}
+
+.driverName {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.shift {
+    margin-bottom: 4rem;
+}
+
+.row {
+    padding: 0 2rem;
+    display: flex;
+}
+
+.shiftHeader {
+    padding: 0 2rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.shiftPathHeader {
+    font-weight: bold;
+}
+
+.cell {
+    padding: 0.75rem 0;
+}
+
+.cell.startTime, .cell.endTime, .cell.duration {
+    width: 10%;
+}
+.duty, .activity {
+    width: 20%;
+}
+.fromLocation, .toLocation {
+    width: 12.5%;
+}
+
+.pathItem {
+    width: 100%;
+}
+
+.pathItem:not(.trip) {
+    color: rgba(0, 0, 0, 0.4);
+}
