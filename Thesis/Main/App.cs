@@ -34,6 +34,9 @@ namespace Thesis {
             } else if (Config.DebugRunJsonExporter) {
                 Console.WriteLine("Running debug JSON exporter");
                 new DebugJsonExporter(instance);
+            } else if (Config.DebugRunDelaysExporter) {
+                Console.WriteLine("Running debug delays exporter");
+                DebugDelaysExporter.Run();
             } else {
                 // Simulated annealing
                 SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance);

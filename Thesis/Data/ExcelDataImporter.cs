@@ -55,7 +55,8 @@ namespace Thesis {
                 // Get duty, activity and project name name
                 string dutyName = dutyRow.GetCell(dutiesTable.GetColumnIndex("DutyNo"))?.StringCellValue ?? "";
                 string activityName = dutyRow.GetCell(dutiesTable.GetColumnIndex("ActivityDescriptionEN"))?.StringCellValue ?? "";
-                string projectName = dutyRow.GetCell(dutiesTable.GetColumnIndex("ProjectNo"))?.StringCellValue ?? "";
+                string dutyId = dutyRow.GetCell(dutiesTable.GetColumnIndex("DutyID"))?.StringCellValue ?? "";
+                string projectName = dutyRow.GetCell(dutiesTable.GetColumnIndex("Project"))?.StringCellValue ?? "";
 
                 // Get start and end stations
                 string startStationCode = dutyRow.GetCell(dutiesTable.GetColumnIndex("OriginLocationCode"))?.StringCellValue ?? "";
@@ -80,7 +81,7 @@ namespace Thesis {
                 // Temp: skip trips longer than max shift length
                 if (duration > Config.MaxShiftLengthWithoutTravel) return;
 
-                rawTripList.Add(new Trip(dutyName, activityName, projectName, startStationIndex, endStationIndex, startTime, endTime, duration));
+                rawTripList.Add(new Trip(dutyName, activityName, dutyId, projectName, startStationIndex, endStationIndex, startTime, endTime, duration));
             });
             Trip[] rawTrips = rawTripList.ToArray();
             string[] stationCodes = stationCodesList.ToArray();

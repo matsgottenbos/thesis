@@ -9,14 +9,15 @@ namespace Thesis {
         public int Index;
         public readonly int StartStationIndex, EndStationIndex, StartTime, EndTime, Duration;
         public int? SharedRouteIndex;
-        public readonly string DutyName, ActivityName, ProjectName;
+        public readonly string DutyName, ActivityName, DutyId, ProjectName;
         public readonly List<Trip> Successors;
 
-        public Trip(string dutyName, string activityName, string projectName, int startStationIndex, int endStationIndex, int startTime, int endTime, int duration) {
+        public Trip(string dutyName, string activityName, string dutyId, string projectName, int startStationIndex, int endStationIndex, int startTime, int endTime, int duration) {
             Index = -1;
             DutyName = dutyName;
             ProjectName = projectName;
             ActivityName = activityName;
+            DutyId = dutyId;
             StartStationIndex = startStationIndex;
             EndStationIndex = endStationIndex;
             Successors = new List<Trip>();

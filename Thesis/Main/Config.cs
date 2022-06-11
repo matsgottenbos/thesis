@@ -191,6 +191,7 @@ namespace Thesis {
         public const bool DebugSaLogAdditionalInfo = false;
         public const bool DebugRunInspector = false;
         public const bool DebugRunJsonExporter = false;
+        public const bool DebugRunDelaysExporter = false;
     }
 
     class SalaryRateInfo {
