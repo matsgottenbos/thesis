@@ -104,7 +104,7 @@ def fitGammaDistributionToAllPositiveDelays(allPositiveDelays):
     # Print probability plot
     _, ax = beforePlot()
     _, (_, _, r) = stats.probplot(allPositiveDelaysCapped, dist=stats.gamma, sparams=(a, 0, scale), plot=plt)
-    print('Coefficient of determination:', r * r)
+    print('Coefficient of determination R^2:', r * r)
     plt.title('')
     plt.xlabel('Distribution quantiles')
     plt.ylabel('Data quantiles')
@@ -126,7 +126,7 @@ def fitMeanDelayFunction(allPositiveDelaysFrequentDurations, allPositiveDelaysFr
     muYsModel = [muFunc(x) for x in muXsModel]
     plt.plot(muXs, muYs, 'o', color=(0, 0.5, 1, 0.1))
     plt.plot(muXsModel, muYsModel, color=(1, 0.5, 0, 1), linewidth=3)
-    plt.xlim([0, 600])
+    plt.xlim([0, 420])
     plt.ylim([0, 600])
     afterPlot(plotName='delays-duration-mean')
 
@@ -142,6 +142,8 @@ def showStdScatterPlot(allPositiveDelaysByDuration, durationIndexSize):
     stdYs = stdDelayByDuration[0:18]
     stdXs = range(0, len(stdYs) * durationIndexSize, durationIndexSize)
     plt.plot(stdXs, stdYs, 'o', color=(0, 0.5, 1, 1))
+    plt.xlim([0, 420])
+    plt.ylim([0, 600])
     afterPlot(plotName='delays-duration-std')
 
 
@@ -186,12 +188,10 @@ def run(durationIndexSize):
         allPositiveDelaysByDuration[durationIndex].extend(positiveDelays)
         delayedCountByDuration[durationIndex] += len(positiveDelays)
 
-        if activity['occurrenceCount'] < 10:
-            continue
-
-        allPositiveDelaysFrequent.extend(positiveDelays)
-        for _ in range(len(positiveDelays)):
-            allPositiveDelaysFrequentDurations.append(plannedDuration)
+        if len(positiveDelays) >= 5:
+            allPositiveDelaysFrequent.extend(positiveDelays)
+            for _ in range(len(positiveDelays)):
+                allPositiveDelaysFrequentDurations.append(plannedDuration)
 
     # Perform output
     printBasicInfo(allDelays, allPositiveDelays)
