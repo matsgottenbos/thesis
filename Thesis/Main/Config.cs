@@ -82,16 +82,13 @@ namespace Thesis {
         public static readonly TargetSatisfactionCriterium SatCriteriumContractTime = new TargetSatisfactionCriterium(driver => driver.ContractTime, driver => ContractTimeMaxDeviationFactor * driver.ContractTime, 0.2f);
 
         // Robustness
-        public const float RobustnessCostFactorSameProject = 500f; // Added cost for each expected conflict due to delays, if the conflict is between trips of the same project
-        public const float RobustnessCostFactorDifferentProject = 2000f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different projects
-        public const float TripDelayProbability = 0.179f; // Chance that a trip has a delay
-        public static readonly Func<int, double> TripMeanDelayFunc = (int plannedDuration) => plannedDuration * plannedDuration / 3600 + 31 * plannedDuration / 150 + 38; // Trip mean delay by planned duration: x^2/3600 + 31x/150 + 19/15
-        public static readonly Func<double, double> TripDelayGammaDistributionAlphaFunc = (double meanDelay) => meanDelay * meanDelay / 7200; // Alpha parameter of trip delay gamma distribution, by mean delay: x^2/7200
-        public static readonly Func<double, double> TripDelayGammaDistributionBetaFunc = (double meanDelay) => 2 * meanDelay; // Beta parameter of trip delay gamma distribution, by mean delay: 2x (TODO: correct?)
-        public const float TravelDelayProbability = 0.179f; // Chance that car travel has a delay
-        public static readonly Func<int, double> TravelMeanDelayFunc = (int plannedDuration) => plannedDuration * plannedDuration / 3600 + 31 * plannedDuration / 150 + 38; // Travel mean delay by planned duration: x^2/3600 + 31x/150 + 19/15
-        public static readonly Func<double, double> TravelDelayGammaDistributionAlphaFunc = (double meanDelay) => meanDelay * meanDelay / 7200; // Alpha parameter of travel delay gamma distribution, by mean delay: x^2/7200
-        public static readonly Func<double, double> TravelDelayGammaDistributionBetaFunc = (double meanDelay) => 2 * meanDelay; // Beta parameter of travel delay gamma distribution, by mean delay: 2x
+        public const float RobustnessCostFactorSameDuty = 0f; // Added cost for each expected conflict due to delays, if the conflict is between trips of the same duty
+        public const float RobustnessCostFactorSameProject = 500f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties but of the same project
+        public const float RobustnessCostFactorDifferentProject = 2000f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties and projects
+        public const float TripDelayProbability = 0.275f; // Chance that a trip has a delay
+        public static readonly Func<int, double> TripMeanDelayFunc = (int plannedDuration) => plannedDuration * plannedDuration / 5561 + 0.123 * plannedDuration + 37.38; // Trip mean delay by planned duration: p^2/5571 + 0.123p + 37.38
+        public static readonly Func<double, double> TripDelayGammaDistributionAlphaFunc = (double meanDelay) => meanDelay * meanDelay / 3879; // Alpha parameter of trip delay gamma distribution, by mean delay: p^2/3879
+        public static readonly Func<double, double> TripDelayGammaDistributionBetaFunc = (double meanDelay) => meanDelay / 3879; // Beta parameter of trip delay gamma distribution, by mean delay: p/3879
 
 
         /* Excel importer */

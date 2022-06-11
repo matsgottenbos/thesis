@@ -74,9 +74,8 @@ namespace Thesis {
                     Trip successor = trip.Successors[successorIndex];
                     tripSuccession[tripIndex, successor.Index] = true;
 
-                    int travelTimeBetween = CarTravelTime(trip, successor);
                     int waitingTime = WaitingTime(trip, successor);
-                    tripSuccessionRobustness[tripIndex, successor.Index] = GetSuccessionRobustness(trip, successor, trip.Duration, travelTimeBetween, waitingTime);
+                    tripSuccessionRobustness[tripIndex, successor.Index] = GetSuccessionRobustness(trip, successor, trip.Duration, waitingTime);
                 }
             }
 
@@ -128,49 +127,32 @@ namespace Thesis {
             return (trips, tripSuccession, tripSuccessionRobustness, tripsAreSameShift, timeframeLength, uniqueSharedRouteCount);
         }
 
-        static float GetSuccessionRobustness(Trip trip1, Trip trip2, int plannedDuration, int plannedTravelTime, int waitingTime) {
-            double conflictProb = GetConflictProbability(plannedDuration, plannedTravelTime, waitingTime);
+        static float GetSuccessionRobustness(Trip trip1, Trip trip2, int plannedDuration, int waitingTime) {
+            double conflictProb = GetConflictProbability(plannedDuration, waitingTime);
 
-            // Trips belong to the same project is their project names are equal and not empty
+            bool areSameDuty = trip1.DutyId == trip2.DutyId;
             bool areSameProject = trip1.ProjectName == trip2.ProjectName && trip1.ProjectName != "";
 
             double robustnessCost;
-            if (areSameProject) {
-                robustnessCost = conflictProb * Config.RobustnessCostFactorSameProject;
+            if (areSameDuty) {
+                robustnessCost = conflictProb * Config.RobustnessCostFactorSameDuty;
             } else {
-                robustnessCost = conflictProb * Config.RobustnessCostFactorDifferentProject;
+                if (areSameProject) {
+                    robustnessCost = conflictProb * Config.RobustnessCostFactorSameProject;
+                } else {
+                    robustnessCost = conflictProb * Config.RobustnessCostFactorDifferentProject;
+                }
             }
             return (float)robustnessCost;
         }
 
-        static double GetConflictProbability(int plannedDuration, int plannedTravelTime, int waitingTime) {
-            double conflictProb = 0;
-
-            // Trip delay only
-            double tripMeanDelay = Config.TripMeanDelayFunc(plannedDuration);
-            double tripDelayAlpha = Config.TripDelayGammaDistributionAlphaFunc(tripMeanDelay);
-            double tripDelayBeta = Config.TripDelayGammaDistributionBetaFunc(tripMeanDelay);
-            float onlyTripDelayProb = Config.TripDelayProbability * (1 - Config.TravelDelayProbability);
-            double conflictProbWhenOnlyTripDelayed = 1 - Gamma.CDF(tripDelayAlpha, 1 / tripDelayBeta, waitingTime);
-            conflictProb += onlyTripDelayProb * conflictProbWhenOnlyTripDelayed;
-
-            // Travel delay only
-            double travelMeanDelay = Config.TravelMeanDelayFunc(plannedTravelTime);
-            double travelDelayAlpha = Config.TravelDelayGammaDistributionAlphaFunc(travelMeanDelay);
-            double travelDelayBeta = Config.TravelDelayGammaDistributionBetaFunc(travelMeanDelay);
-            float onlyTravelDelayProb = (1 - Config.TripDelayProbability) * Config.TravelDelayProbability;
-            double conflictProbWhenOnlyTravelDelayed = 1 - Gamma.CDF(travelDelayAlpha, 1 / travelDelayBeta, waitingTime);
-            conflictProb += onlyTravelDelayProb * conflictProbWhenOnlyTravelDelayed;
-
-            // Both trip and travel delays
-            // Use approximation of Gamma distribution sum using the Welch–Satterthwaite equation
-            double sumOfAlphaBetaQuotients = tripDelayAlpha / tripDelayBeta + travelDelayAlpha / travelDelayBeta;
-            double summedAlpha = sumOfAlphaBetaQuotients * sumOfAlphaBetaQuotients / (tripDelayAlpha / tripDelayBeta / tripDelayBeta + travelDelayAlpha / travelDelayBeta / travelDelayBeta);
-            double summedBeta = summedAlpha / sumOfAlphaBetaQuotients;
-            float bothDelayedProb = Config.TripDelayProbability * Config.TravelDelayProbability;
-            double conflictProbWhenBothDelayed = 1 - Gamma.CDF(summedAlpha, 1 / summedBeta, waitingTime);
-            conflictProb += bothDelayedProb * conflictProbWhenBothDelayed;
-
+        static double GetConflictProbability(int plannedDuration, int waitingTime) {
+            double meanDelay = Config.TripMeanDelayFunc(plannedDuration);
+            double delayAlpha = Config.TripDelayGammaDistributionAlphaFunc(meanDelay);
+            double delayBeta = Config.TripDelayGammaDistributionBetaFunc(meanDelay);
+            float delayProb = Config.TripDelayProbability;
+            double conflictProbWhenDelayed = 1 - Gamma.CDF(delayAlpha, delayBeta, waitingTime);
+            double conflictProb = delayProb * conflictProbWhenDelayed;
             return conflictProb;
         }
 
