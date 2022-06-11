@@ -118,17 +118,6 @@ namespace Thesis {
             totalInfo.Log(isDiff, shouldLogZeros);
         }
 
-        public void LogDriverInfo() {
-            Console.WriteLine("\n* Driver info *");
-            if (driver is InternalDriver internalDriver) {
-                Console.WriteLine("Min contract time: {0}", internalDriver.MinContractTime);
-                Console.WriteLine("Max contract time: {0}", internalDriver.MaxContractTime);
-            } else {
-                Console.WriteLine("Min contract time: -");
-                Console.WriteLine("Max contract time: -");
-            }
-        }
-
         public static string ParseValuePairs(List<(int, int)> valuePairs) {
             return string.Join(" ", valuePairs.Select(valuePair => string.Format("({0}|{1})", valuePair.Item1, valuePair.Item2)));
         }

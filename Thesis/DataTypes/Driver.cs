@@ -58,32 +58,20 @@ namespace Thesis {
         }
 
 
-        /* Contract time */
-
-        protected abstract int GetMinContractTimeViolation(int workedTime);
-        protected abstract int GetMaxContractTimeViolation(int workedTime);
-
-        public int GetContractTimeViolation(int workedTime) {
-            return GetMinContractTimeViolation(workedTime) + GetMaxContractTimeViolation(workedTime);
-        }
-
-
         /* Satisfaction */
 
         public abstract double GetSatisfaction(DriverInfo driverInfo);
     }
 
     class InternalDriver : Driver {
-        public readonly int InternalIndex, ContractTime, MinContractTime, MaxContractTime;
+        public readonly int InternalIndex, ContractTime;
         readonly string InternalDriverName;
         public readonly bool[,] TrackProficiencies;
 
-        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, int[] oneWayTravelTimes, int contractTime, int minContractTime, int maxContractTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, Config.InternalDriverTravelSalaryRate) {
+        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, int[] oneWayTravelTimes, int contractTime, bool[,] trackProficiencies) : base(allDriversIndex, oneWayTravelTimes, Config.InternalDriverTravelSalaryRate) {
             InternalIndex = internalIndex;
             InternalDriverName = internalDriverName;
             ContractTime = contractTime;
-            MinContractTime = minContractTime;
-            MaxContractTime = maxContractTime;
             TrackProficiencies = trackProficiencies;
         }
 
@@ -102,14 +90,6 @@ namespace Thesis {
 
         protected override int GetPaidTravelTime(int travelTime) {
             return Math.Max(0, travelTime - Config.InternalDriverUnpaidTravelTimePerShift);
-        }
-
-        protected override int GetMinContractTimeViolation(int workedTime) {
-            return Math.Max(0, MinContractTime - workedTime);
-        }
-
-        protected override int GetMaxContractTimeViolation(int workedTime) {
-            return Math.Max(0, workedTime - MaxContractTime);
         }
 
         public override double GetSatisfaction(DriverInfo driverInfo) {
@@ -139,14 +119,6 @@ namespace Thesis {
 
         protected override int GetPaidTravelTime(int travelTime) {
             return travelTime;
-        }
-
-        protected override int GetMinContractTimeViolation(int workedTime) {
-            return 0;
-        }
-
-        protected override int GetMaxContractTimeViolation(int workedTime) {
-            return 0;
         }
 
         public override double GetSatisfaction(DriverInfo driverInfo) {

@@ -175,11 +175,7 @@ namespace Thesis {
                 int[] homeTravelTimes = internalDriversHomeTravelTimes[internalDriverIndex];
                 bool[,] trackProficiencies = internalDriversTrackProficiencies[internalDriverIndex];
 
-                // Contract time
-                int minContractTime = (int)Math.Ceiling(internalDriverContractTime * (1 - Config.ContractTimeMaxDeviationFactor));
-                int maxContractTime = (int)Math.Floor(internalDriverContractTime * (1 + Config.ContractTimeMaxDeviationFactor));
-
-                internalDrivers[internalDriverIndex] = new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, homeTravelTimes, internalDriverContractTime, minContractTime, maxContractTime, trackProficiencies);
+                internalDrivers[internalDriverIndex] = new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, homeTravelTimes, internalDriverContractTime, trackProficiencies);
             }
             return internalDrivers;
         }

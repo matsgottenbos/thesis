@@ -69,9 +69,6 @@ namespace Thesis {
         public const int HotelExtraTravelTime = 30;
         public const int HotelMaxRestTime = 24 * 60;
 
-        // Contract time deviations
-        public const float ContractTimeMaxDeviationFactor = 0.3f;
-
         // Satisfaction
         public static readonly RangeSatisfactionCriterium SatCriteriumHotels = new RangeSatisfactionCriterium(4, 0, 0.2f);
         public static readonly RangeSatisfactionCriterium SatCriteriumNightShifts = new RangeSatisfactionCriterium(5, 0, 0.1f);
@@ -79,7 +76,7 @@ namespace Thesis {
         public static readonly RangeSatisfactionCriterium SatCriteriumTravelTime = new RangeSatisfactionCriterium(30 * 60, 0, 0.1f);
         public static readonly RangeSatisfactionCriterium SatCriteriumDuplicateRoutes = new RangeSatisfactionCriterium(10, 0, 0.2f);
         public static readonly ConsecutiveFreeDaysCriterium SatCriteriumConsecutiveFreeDays = new ConsecutiveFreeDaysCriterium(0.1f);
-        public static readonly TargetSatisfactionCriterium SatCriteriumContractTime = new TargetSatisfactionCriterium(driver => driver.ContractTime, driver => ContractTimeMaxDeviationFactor * driver.ContractTime, 0.2f);
+        public static readonly TargetSatisfactionCriterium SatCriteriumContractTime = new TargetSatisfactionCriterium(driver => driver.ContractTime, driver => 0.3f * driver.ContractTime, 0.2f);
 
         // Robustness
         public const float RobustnessCostFactorSameDuty = 0f; // Added cost for each expected conflict due to delays, if the conflict is between trips of the same duty
@@ -163,8 +160,6 @@ namespace Thesis {
         public const double ShiftLengthViolationPenaltyPerMin = 5000 / 60f;
         public const double RestTimeViolationPenalty = 5000;
         public const double RestTimeViolationPenaltyPerMin = 5000 / 60f;
-        public const double ContractTimeViolationPenalty = 5000;
-        public const double ContractTimeViolationPenaltyPerMin = 5000 / 60f;
         public const double ShiftCountViolationPenaltyPerShift = 20000;
         public const double InvalidHotelPenalty = 20000;
 
