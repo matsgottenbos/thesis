@@ -10,16 +10,16 @@ namespace Thesis {
             PrecedenceViolationCount++;
         }
 
-        public void AddPossibleShiftLengthViolation(int shiftLengthWithoutTravel, int shiftLengthWithTravel) {
-            int shiftLengthViolationAmount = Math.Max(0, shiftLengthWithoutTravel - Config.MaxShiftLengthWithoutTravel) + Math.Max(0, shiftLengthWithTravel - Config.MaxShiftLengthWithTravel);
+        public void AddPossibleShiftLengthViolation(int shiftLengthWithoutTravel, int shiftLengthWithTravel, int maxShiftLengthWithoutTravel, int maxShiftLengthWithTravel) {
+            int shiftLengthViolationAmount = Math.Max(0, shiftLengthWithoutTravel - maxShiftLengthWithoutTravel) + Math.Max(0, shiftLengthWithTravel - maxShiftLengthWithTravel);
             if (shiftLengthViolationAmount > 0) {
                 ShiftLengthViolationCount++;
                 ShiftLengthViolationAmount += shiftLengthViolationAmount;
             }
         }
 
-        public void AddPossibleRestTimeViolation(int restTime) {
-            int shiftLengthViolation = Math.Max(0, Config.MinRestTime - restTime);
+        public void AddPossibleRestTimeViolation(int restTime, int minRestTime) {
+            int shiftLengthViolation = Math.Max(0, minRestTime - restTime);
             if (shiftLengthViolation > 0) {
                 RestTimeViolationCount++;
                 RestTimeViolationAmount += shiftLengthViolation;

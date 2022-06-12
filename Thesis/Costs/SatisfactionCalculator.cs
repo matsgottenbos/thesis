@@ -19,8 +19,8 @@ namespace Thesis {
             // Determine driver satisfaction
             double driverSatisfaction = 0;
             driverSatisfaction += Config.SatCriteriumHotels.GetSatisfaction(driverInfo.HotelCount, driver);
-            driverSatisfaction += Config.SatCriteriumNightShifts.GetSatisfaction(driverInfo.NightShiftCount, driver);
-            driverSatisfaction += Config.SatCriteriumWeekendShifts.GetSatisfaction(driverInfo.WeekendShiftCount, driver);
+            driverSatisfaction += Config.SatCriteriumNightShifts.GetSatisfaction(driverInfo.NightShiftCountByCompanyRules, driver);
+            driverSatisfaction += Config.SatCriteriumWeekendShifts.GetSatisfaction(driverInfo.WeekendShiftCountByCompanyRules, driver);
             driverSatisfaction += Config.SatCriteriumTravelTime.GetSatisfaction(driverInfo.TravelTime, driver);
             driverSatisfaction += Config.SatCriteriumDuplicateRoutes.GetSatisfaction(duplicateRouteCount, driver);
             driverSatisfaction += Config.SatCriteriumConsecutiveFreeDays.GetSatisfaction((driverInfo.SingleFreeDays, driverInfo.DoubleFreeDays), driver);

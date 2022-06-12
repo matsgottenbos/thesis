@@ -79,7 +79,7 @@ namespace Thesis {
                 timeframeLength = Math.Max(timeframeLength, endTime);
 
                 // Temp: skip trips longer than max shift length
-                if (duration > Config.MaxShiftLengthWithoutTravel) return;
+                if (duration > Config.NormalShiftMaxLengthWithoutTravel) return;
 
                 rawTripList.Add(new Trip(dutyName, activityName, dutyId, projectName, startStationIndex, endStationIndex, startTime, endTime, duration));
             });

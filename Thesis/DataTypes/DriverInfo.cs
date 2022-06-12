@@ -6,7 +6,7 @@ namespace Thesis {
         public readonly Instance Instance;
         public double Cost, RawCost, Robustness, Penalty, DriverSatisfaction;
         public double? SatisfactionScore;
-        public int WorkedTime, ShiftCount, HotelCount, NightShiftCount, WeekendShiftCount, TravelTime, SingleFreeDays, DoubleFreeDays;
+        public int WorkedTime, ShiftCount, HotelCount, NightShiftCountByCompanyRules, WeekendShiftCountByCompanyRules, TravelTime, SingleFreeDays, DoubleFreeDays;
         public int[] SharedRouteCounts;
         public PenaltyInfo PenaltyInfo;
 
@@ -27,8 +27,8 @@ namespace Thesis {
                 WorkedTime = -a.WorkedTime,
                 ShiftCount = -a.ShiftCount,
                 HotelCount = -a.HotelCount,
-                NightShiftCount = -a.NightShiftCount,
-                WeekendShiftCount = -a.WeekendShiftCount,
+                NightShiftCountByCompanyRules = -a.NightShiftCountByCompanyRules,
+                WeekendShiftCountByCompanyRules = -a.WeekendShiftCountByCompanyRules,
                 TravelTime = -a.TravelTime,
                 SingleFreeDays = -a.SingleFreeDays,
                 DoubleFreeDays = -a.DoubleFreeDays,
@@ -47,8 +47,8 @@ namespace Thesis {
                 WorkedTime = a.WorkedTime + b.WorkedTime,
                 ShiftCount = a.ShiftCount + b.ShiftCount,
                 HotelCount = a.HotelCount + b.HotelCount,
-                NightShiftCount = a.NightShiftCount + b.NightShiftCount,
-                WeekendShiftCount = a.WeekendShiftCount + b.WeekendShiftCount,
+                NightShiftCountByCompanyRules = a.NightShiftCountByCompanyRules + b.NightShiftCountByCompanyRules,
+                WeekendShiftCountByCompanyRules = a.WeekendShiftCountByCompanyRules + b.WeekendShiftCountByCompanyRules,
                 TravelTime = a.TravelTime + b.TravelTime,
                 SingleFreeDays = a.SingleFreeDays + b.SingleFreeDays,
                 DoubleFreeDays = a.DoubleFreeDays + b.DoubleFreeDays,
@@ -69,8 +69,8 @@ namespace Thesis {
                 a.WorkedTime == b.WorkedTime &&
                 a.ShiftCount == b.ShiftCount &&
                 a.HotelCount == b.HotelCount &&
-                a.NightShiftCount == b.NightShiftCount &&
-                a.WeekendShiftCount == b.WeekendShiftCount &&
+                a.NightShiftCountByCompanyRules == b.NightShiftCountByCompanyRules &&
+                a.WeekendShiftCountByCompanyRules == b.WeekendShiftCountByCompanyRules &&
                 a.TravelTime == b.TravelTime &&
                 a.SingleFreeDays == b.SingleFreeDays &&
                 a.DoubleFreeDays == b.DoubleFreeDays &&
@@ -122,8 +122,8 @@ namespace Thesis {
             ParseHelper.LogDebugValue(WorkedTime, "Worked time", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(ShiftCount, "Shift count", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(HotelCount, "Hotel count", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(NightShiftCount, "Night shift count", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(WeekendShiftCount, "Weekend shift count", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(NightShiftCountByCompanyRules, "Night shift count (company rules)", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(WeekendShiftCountByCompanyRules, "Weekend shift count (company rules)", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(TravelTime, "Travel time", isDiff, shouldLogZeros);
             PenaltyInfo.DebugLog(isDiff, shouldLogZeros);
         }

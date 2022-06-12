@@ -18,34 +18,43 @@ namespace Thesis {
         //public const DataSource SelectedDataSource = DataSource.Generator;
         //public const DataSource SelectedDataSource = DataSource.Odata;
 
-        // Shifts
-        public const int MaxShiftLengthWithTravel = 12 * 60; // Maximum length of a shift, including travel
-        public const int MaxShiftLengthWithoutTravel = 10 * 60; // Maximum length of a shift, excluding travel
-        public const int MaxNightShiftLengthWithTravel = 10 * 60; // Maximum length of a night shift, including travel
-        public const int MaxNightShiftLengthWithoutTravel = 8 * 60; // Maximum length of a night shift, excluding travel
-        public const int MinRestTime = 11 * 60; // Minimum required resting time between two shifts
+        // Shift constraints
+        public const int DriverMaxShiftCount = 5; // The maximum number of shifts a driver can have per week
+        public const int NormalShiftMaxLengthWithTravel = 12 * 60; // Maximum length of a shift, including travel
+        public const int NormalShiftMaxLengthWithoutTravel = 10 * 60; // Maximum length of a shift, excluding travel
+        public const int NightShiftMaxLengthWithTravel = 10 * 60; // Maximum length of a night shift, including travel
+        public const int NightShiftMaxLengthWithoutTravel = 8 * 60; // Maximum length of a night shift, excluding travel
+        public const int NormalShiftMinRestTime = 11 * 60; // Minimum required resting time after a non-night shift
+        public const int NightShiftMinRestTime = 14 * 60; // Minimum required resting time after a night shift
         public const int SingleFreeDayMinRestTime = 24 * 60; // Minimum required resting time between two shifts to count as a single free day
         public const int DoubleFreeDayMinRestTime = 48 * 60; // Minimum required resting time between two shifts to count as two consecutive free days
         public const int ShiftWaitingTimeThreshold = 6 * 60; // Waiting times shorter than this count as the same trip; waiting time longer start a new shift
-        public const int BetweenShiftsMaxStartTimeDiff = 36 * 60; // The maximum difference in start times considered when checking rest time between different shifts
-        public const int DriverMaxShiftCount = 5; // The maximum number of shifts a driver can have per week
 
         // Time periods
         public const int DayLength = 24 * 60;
-        public const int NightStartTimeInDay = 23 * 60;
-        public const int NightEndTimeInDay = 6 * 60;
-        public const int NightShiftNightTimeThreshold = 60; // Minimum amount of time during night for a shift to be considered a night shift
-        public const int WeekendStartTime = 5 * DayLength;
-        public const int WeekendEndTime = 7 * DayLength;
+
+        // Night/weekend shifts
+        public static readonly Func<int, int, bool> IsNightShiftByLawFunc = (int drivingTimeAtNight, int drivingTime) => drivingTimeAtNight >= 60; // Function determining whether a shift is a night shift, according to labour laws
+        public static readonly Func<int, int, bool> IsNightShiftByCompanyRulesFunc = (int drivingTimeAtNight, int drivingTime) => (float)drivingTimeAtNight / drivingTime >= 0.5; // Function determining whether a shift is a night shift, according to company rules
+        public static readonly Func<int, int, bool> IsWeekendShiftByCompanyRulesFunc = (int drivingTimeInWeekend, int drivingTime) => (float)drivingTimeInWeekend / drivingTime >= 0.5; // Function determining whether a shift is a weekend shift, according to company rules
         // TODO: configure holidays
+
+        // Salary types during the week (weekend/non-weekend)
+        public static readonly SalaryTypeInfo[] WeekSalaryTypes = new SalaryTypeInfo[] {
+            new SalaryTypeInfo(0, true), // Still weekend at Monday 0:00 (start of timeframe)
+            new SalaryTypeInfo(6 * 60, false), // Weekend ends Monday 6:00
+            new SalaryTypeInfo(4 * DayLength + 18 * 60, true), // Weekend starts Friday 18:00
+            new SalaryTypeInfo(7 * DayLength + 6 * 60, false), // Weekend ends Monday 6:00
+        };
 
         // Internal driver salaries
         public static readonly SalaryRateInfo[] InternalDriverWeekdaySalaryRates = new SalaryRateInfo[] {
-            new SalaryRateInfo(0 * 60,  60 / 60f), // Night 0-6: hourly rate of 60
-            new SalaryRateInfo(6 * 60,  55 / 60f), // Morning 6-8, hourly rate of 55
-            new SalaryRateInfo(8 * 60,  50 / 60f), // Day 8-19, hourly rate of 50
-            new SalaryRateInfo(19 * 60, 55 / 60f), // Evening 19-23, hourly rate of 55
-            new SalaryRateInfo(23 * 60, 60 / 60f), // Night 23-6, hourly rate of 60
+            new SalaryRateInfo(0 * 60,  60 / 60f, true, true), // Night 0-4: continuing hourly rate of 60
+            new SalaryRateInfo(4 * 60,  60 / 60f, false, true), // Night 4-6: hourly rate of 60
+            new SalaryRateInfo(6 * 60,  55 / 60f, false, false), // Morning 6-8, hourly rate of 55
+            new SalaryRateInfo(8 * 60,  50 / 60f, false, false), // Day 8-19, hourly rate of 50
+            new SalaryRateInfo(19 * 60, 55 / 60f, false, false), // Evening 19-23, hourly rate of 55
+            new SalaryRateInfo(23 * 60, 60 / 60f, true, true), // Night 23-0, continuing hourly rate of 60
         };
         public const float InternalDriverWeekendSalaryRate = 60 / 60f;
         public const float InternalDriverTravelSalaryRate = 50 / 60f;
@@ -54,11 +63,11 @@ namespace Thesis {
 
         // External driver salaries
         public static readonly SalaryRateInfo[] ExternalDriverWeekdaySalaryRates = new SalaryRateInfo[] {
-            new SalaryRateInfo(0 * 60,  80 / 60f), // Night 0-6: hourly rate of 80
-            new SalaryRateInfo(6 * 60,  75 / 60f), // Morning 6-7, hourly rate of 75
-            new SalaryRateInfo(7 * 60,  70 / 60f), // Day 7-18, hourly rate of 70
-            new SalaryRateInfo(18 * 60, 75 / 60f), // Evening 18-23, hourly rate of 75
-            new SalaryRateInfo(23 * 60, 80 / 60f), // Night 23-6, hourly rate of 80
+            new SalaryRateInfo(0 * 60,  80 / 60f, false), // Night 0-6: hourly rate of 80
+            new SalaryRateInfo(6 * 60,  75 / 60f, false), // Morning 6-7, hourly rate of 75
+            new SalaryRateInfo(7 * 60,  70 / 60f, false), // Day 7-18, hourly rate of 70
+            new SalaryRateInfo(18 * 60, 75 / 60f, false), // Evening 18-23, hourly rate of 75
+            new SalaryRateInfo(23 * 60, 80 / 60f, false), // Night 23-0, hourly rate of 80
         };
         public const float ExternalDriverWeekendSalaryRate = 80 / 60f;
         public const float ExternalDriverTravelSalaryRate = 70 / 60f;
@@ -80,12 +89,13 @@ namespace Thesis {
 
         // Robustness
         public const float RobustnessCostFactorSameDuty = 0f; // Added cost for each expected conflict due to delays, if the conflict is between trips of the same duty
-        public const float RobustnessCostFactorSameProject = 500f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties but of the same project
+        public const float RobustnessCostFactorSameProject = 1000f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties but of the same project
         public const float RobustnessCostFactorDifferentProject = 2000f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties and projects
         public const float TripDelayProbability = 0.275f; // Chance that a trip has a delay
         public static readonly Func<int, double> TripMeanDelayFunc = (int plannedDuration) => plannedDuration * plannedDuration / 5561 + 0.123 * plannedDuration + 37.38; // Trip mean delay by planned duration: p^2/5571 + 0.123p + 37.38
         public static readonly Func<double, double> TripDelayGammaDistributionAlphaFunc = (double meanDelay) => meanDelay * meanDelay / 3879; // Alpha parameter of trip delay gamma distribution, by mean delay: p^2/3879
         public static readonly Func<double, double> TripDelayGammaDistributionBetaFunc = (double meanDelay) => meanDelay / 3879; // Beta parameter of trip delay gamma distribution, by mean delay: p/3879
+        public static readonly Func<int, int> TravelDelayExpectedFunc = (int plannedTravelTime) => plannedTravelTime / 10 + 15; // Expected travel delay of 10% + 15 minutes
 
 
         /* Excel importer */
@@ -186,13 +196,30 @@ namespace Thesis {
         public const bool DebugRunDelaysExporter = false;
     }
 
+    class SalaryTypeInfo {
+        public readonly int StartTime;
+        public readonly bool IsWeekend;
+
+        public SalaryTypeInfo(int startTime, bool isWeekend) {
+            StartTime = startTime;
+            IsWeekend = isWeekend;
+        }
+    }
+
     class SalaryRateInfo {
         public readonly int StartTime;
         public readonly float SalaryRate;
+        public readonly float ContinuingRate; // A shift starting in this rate block will use the continuing rate as a minimum for the entire shift
+        public readonly bool? IsNight, IsWeekend; // IsNight should be filled in for internal salaries, IsWeekend is added automatically during processing
 
-        public SalaryRateInfo(int startTime, float salaryRate) {
+        public SalaryRateInfo(int startTime, float salaryRate, bool isContinuingRate, bool? isNight = null, bool? isWeekend = null) : this(startTime, salaryRate, isContinuingRate ? salaryRate : 0, isNight, isWeekend) { }
+
+        public SalaryRateInfo(int startTime, float salaryRate, float continuingRate, bool? isNight, bool? isWeekend) {
             StartTime = startTime;
             SalaryRate = salaryRate;
+            ContinuingRate = continuingRate;
+            IsNight = isNight;
+            IsWeekend = isWeekend;
         }
     }
 }

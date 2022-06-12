@@ -91,7 +91,7 @@ namespace Thesis {
             }
 
             // Check rest time
-            driverInfo.PenaltyInfo.AddPossibleRestTimeViolation(restTimeAfter);
+            driverInfo.PenaltyInfo.AddPossibleRestTimeViolation(restTimeAfter, shiftInfo.MinRestTimeAfter);
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
@@ -157,11 +157,11 @@ namespace Thesis {
             driverInfo.RawCost += shiftCost;
 
             // Check shift length
-            driverInfo.PenaltyInfo.AddPossibleShiftLengthViolation(shiftLengthWithoutTravel, shiftLengthWithTravel);
+            driverInfo.PenaltyInfo.AddPossibleShiftLengthViolation(shiftLengthWithoutTravel, shiftLengthWithTravel, shiftInfo.MaxShiftLengthWithoutTravel, shiftInfo.MaxShiftLengthWithTravel);
 
             // Update night and weekend counts
-            if (shiftInfo.IsNightShift) driverInfo.NightShiftCount++;
-            if (shiftInfo.IsWeekendShift) driverInfo.WeekendShiftCount++;
+            if (shiftInfo.IsNightShiftByCompanyRules) driverInfo.NightShiftCountByCompanyRules++;
+            if (shiftInfo.IsWeekendShiftByCompanyRules) driverInfo.WeekendShiftCountByCompanyRules++;
 
             #if DEBUG
             if (Config.DebugCheckAndLogOperations) {
