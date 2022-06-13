@@ -99,6 +99,16 @@ namespace Thesis {
         }
 
 
+        /* Parsing data */
+
+        public static string CleanDataString(string rawString) {
+            return rawString.Trim();
+        }
+
+        public static bool DataStringInList(string rawString, string[] list) {
+            return list.Contains(CleanDataString(rawString));
+        }
+
         /* Parsing assignment string */
 
         public static SaInfo ParseAssignmentString(string assignmentStr, Instance instance) {

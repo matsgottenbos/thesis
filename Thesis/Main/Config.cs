@@ -100,6 +100,25 @@ namespace Thesis {
 
         /* Excel importer */
         public static readonly string[] ExcelIncludedRailwayUndertakings = new string[] { "Rail Force One" };
+        public static readonly string[] ExcelIncludedActivityDescriptions = new string[] { // Activity descriptions in English; TODO: filter out trailing whitespace in data
+            "8-uurs controle",
+            "Aankomst controle",
+            "Abschlussdienst",
+            "Abstellung",
+            "Daily Check locomotive",
+            "Drive train",
+            "Exchange staff",
+            "Locomotive Exchange",
+            "Locomotive movement",
+            "Parking",
+            "Shunting",
+            "Terminal Process",
+            "Vertrekcontrole (VKC)",
+            "Vorbereitungsdienst",
+            "Wagon technical inspection"
+        };
+        public static readonly string[] ExcelIncludedJobTitlesNational = new string[] { "Machinist VB nationaal" };
+        public static readonly string[] ExcelIncludedJobTitlesInternational = new string[] { "Machinist VB Internationaal NL-D" };
         public static readonly DateTime ExcelPlanningStartDate = new DateTime(2022, 5, 23);
         public static readonly DateTime ExcelPlanningNextDate = ExcelPlanningStartDate.AddDays(7);
         public const int ExcelInternalDriverContractTime = 40 * 60;
