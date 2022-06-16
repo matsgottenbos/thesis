@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Thesis {
-    class PenaltyInfo {
+    class DriverPenaltyInfo {
         public int PrecedenceViolationCount, ShiftLengthViolationCount, ShiftLengthViolationAmount, RestTimeViolationCount, RestTimeViolationAmount, ShiftCountViolationAmount, InvalidHotelCount;
 
         /* Adding violations */
@@ -45,7 +45,7 @@ namespace Thesis {
             penalty += PrecedenceViolationCount * Config.PrecendenceViolationPenalty;
             penalty += ShiftLengthViolationCount * Config.ShiftLengthViolationPenalty + ShiftLengthViolationAmount * Config.ShiftLengthViolationPenaltyPerMin;
             penalty += RestTimeViolationCount * Config.RestTimeViolationPenalty + RestTimeViolationAmount * Config.RestTimeViolationPenaltyPerMin;
-            penalty += ShiftCountViolationAmount * Config.ShiftCountViolationPenaltyPerShift;
+            penalty += ShiftCountViolationAmount * Config.InternalShiftCountViolationPenaltyPerShift;
             penalty += InvalidHotelCount * Config.InvalidHotelPenalty;
             return penalty;
         }
@@ -53,8 +53,8 @@ namespace Thesis {
 
         /* Operators */
 
-        public static PenaltyInfo operator -(PenaltyInfo a) {
-            return new PenaltyInfo() {
+        public static DriverPenaltyInfo operator -(DriverPenaltyInfo a) {
+            return new DriverPenaltyInfo() {
                 PrecedenceViolationCount = -a.PrecedenceViolationCount,
                 ShiftLengthViolationCount = -a.ShiftLengthViolationCount,
                 ShiftLengthViolationAmount = -a.ShiftLengthViolationAmount,
@@ -64,8 +64,8 @@ namespace Thesis {
                 InvalidHotelCount = -a.InvalidHotelCount,
             };
         }
-        public static PenaltyInfo operator +(PenaltyInfo a, PenaltyInfo b) {
-            return new PenaltyInfo() {
+        public static DriverPenaltyInfo operator +(DriverPenaltyInfo a, DriverPenaltyInfo b) {
+            return new DriverPenaltyInfo() {
                 PrecedenceViolationCount = a.PrecedenceViolationCount + b.PrecedenceViolationCount,
                 ShiftLengthViolationCount = a.ShiftLengthViolationCount + b.ShiftLengthViolationCount,
                 ShiftLengthViolationAmount = a.ShiftLengthViolationAmount + b.ShiftLengthViolationAmount,
@@ -75,9 +75,9 @@ namespace Thesis {
                 InvalidHotelCount = a.InvalidHotelCount + b.InvalidHotelCount,
             };
         }
-        public static PenaltyInfo operator -(PenaltyInfo a, PenaltyInfo b) => a + -b;
+        public static DriverPenaltyInfo operator -(DriverPenaltyInfo a, DriverPenaltyInfo b) => a + -b;
 
-        public static bool AreEqual(PenaltyInfo a, PenaltyInfo b) {
+        public static bool AreEqual(DriverPenaltyInfo a, DriverPenaltyInfo b) {
             return (
                 a.PrecedenceViolationCount == b.PrecedenceViolationCount &&
                 a.ShiftLengthViolationCount == b.ShiftLengthViolationCount &&

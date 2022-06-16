@@ -23,15 +23,17 @@ namespace Thesis {
             bestInfoBySatisfaction = new SaInfo[Config.PercentageFactor];
             for (int i = 0; i < bestInfoBySatisfaction.Length; i++) {
                 SaInfo initialBestInfo = new SaInfo(instance);
-                initialBestInfo.TotalInfo = new DriverInfo(info.Instance) {
-                    Cost = double.MaxValue,
-                    SatisfactionScore = -1,
+                initialBestInfo.TotalInfo = new SaTotalInfo() {
+                    Stats = new SaStats() {
+                        Cost = double.MaxValue,
+                        SatisfactionScore = -1,
+                    },
                 };
                 bestInfoBySatisfaction[i] = initialBestInfo;
             }
 
             // Create a random assignment
-            (info.Assignment, info.ExternalDriverCountsByType) = GetInitialAssignment();
+            info.Assignment = GetInitialAssignment();
             info.ProcessDriverPaths();
 
             #if DEBUG
@@ -75,17 +77,17 @@ namespace Thesis {
                 else if (operationDouble < Config.SwapProbCumulative) operation = SwapOperation.CreateRandom(info);
                 else operation = ToggleHotelOperation.CreateRandom(info);
 
-                DriverInfo totalInfoDiff = operation.GetCostDiff();
-                double oldAdjustedCost = GetAdjustedCost(info.TotalInfo.Cost, info.TotalInfo.SatisfactionScore.Value, info.SatisfactionFactor);
-                double newAdjustedCost = GetAdjustedCost(info.TotalInfo.Cost + totalInfoDiff.Cost, info.TotalInfo.SatisfactionScore.Value + totalInfoDiff.SatisfactionScore.Value, info.SatisfactionFactor);
+                SaTotalInfo totalInfoDiff = operation.GetCostDiff();
+                double oldAdjustedCost = GetAdjustedCost(info.TotalInfo.Stats.Cost, info.TotalInfo.Stats.SatisfactionScore.Value, info.SatisfactionFactor);
+                double newAdjustedCost = GetAdjustedCost(info.TotalInfo.Stats.Cost + totalInfoDiff.Stats.Cost, info.TotalInfo.Stats.SatisfactionScore.Value + totalInfoDiff.Stats.SatisfactionScore.Value, info.SatisfactionFactor);
                 double adjustedCostDiff = newAdjustedCost - oldAdjustedCost;
 
                 bool isAccepted = adjustedCostDiff < 0 || fastRand.NextDouble() < Math.Exp(-adjustedCostDiff / info.Temperature);
                 if (isAccepted) {
                     operation.Execute();
 
-                    int satisfactionLevel = (int)Math.Round(info.TotalInfo.SatisfactionScore.Value * Config.PercentageFactor);
-                    if (info.TotalInfo.Penalty < 0.01 && info.TotalInfo.Cost < bestInfoBySatisfaction[satisfactionLevel].TotalInfo.Cost) {
+                    int satisfactionLevel = (int)Math.Round(info.TotalInfo.Stats.SatisfactionScore.Value * Config.PercentageFactor);
+                    if (info.TotalInfo.Stats.Penalty < 0.01 && info.TotalInfo.Stats.Cost < bestInfoBySatisfaction[satisfactionLevel].TotalInfo.Stats.Cost) {
                         info.LastImprovementIteration = info.IterationNum;
                         info.HasImprovementSinceLog = true;
 
@@ -95,7 +97,7 @@ namespace Thesis {
                         #if DEBUG
                         // Set debugger to next iteration
                         if (Config.DebugCheckAndLogOperations) {
-                            if (info.TotalInfo.Penalty > 0.01) throw new Exception("New best solution is invalid");
+                            if (info.TotalInfo.Stats.Penalty > 0.01) throw new Exception("New best solution is invalid");
                         }
                         #endif
 
@@ -105,7 +107,7 @@ namespace Thesis {
 
                         // Check if this solution also improves on best solutions for lower satisfaction levels
                         for (int searchSatisfactionLevel = satisfactionLevel - 1; searchSatisfactionLevel >= 0; searchSatisfactionLevel--) {
-                            if (info.TotalInfo.Cost < bestInfoBySatisfaction[searchSatisfactionLevel].TotalInfo.Cost) {
+                            if (info.TotalInfo.Stats.Cost < bestInfoBySatisfaction[searchSatisfactionLevel].TotalInfo.Stats.Cost) {
                                 bestInfoBySatisfaction[searchSatisfactionLevel] = bestInfo;
                             }
                         }
@@ -224,15 +226,16 @@ namespace Thesis {
             string lastImprovementIterationStr = info.LastImprovementIteration.HasValue ? ParseHelper.LargeNumToString(info.LastImprovementIteration.Value, "0") : "-";
             string hasImprovementStr = info.HasImprovementSinceLog ? " !!!" : "";
 
-            double logCost = info.TotalInfo.RawCost + info.TotalInfo.Robustness;
+            double logCost = info.TotalInfo.Stats.RawCost + info.TotalInfo.Stats.Robustness;
 
             // Log basic info
-            Console.WriteLine("# {0,4}    Last.impr: {1,4}    Speed: {2,6}    Cycle: {3,3}    Cost: {4,6} ({5,2}%)    Raw: {6,6}    Temp: {7,4}    Sat.f: {8,4}   Penalty: {9,-33}    {10}{11}", ParseHelper.LargeNumToString(info.IterationNum), lastImprovementIterationStr, speedStr, info.CycleNum, ParseHelper.LargeNumToString(logCost, "0.0"), ParseHelper.ToString(info.TotalInfo.SatisfactionScore.Value * 100, "0"), ParseHelper.LargeNumToString(info.TotalInfo.RawCost, "0.0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(info.TotalInfo), paretoFrontStr, hasImprovementStr);
+            Console.WriteLine("# {0,4}    Last.impr: {1,4}    Speed: {2,6}    Cycle: {3,3}    Cost: {4,6} ({5,2}%)    Raw: {6,6}    Temp: {7,4}    Sat.f: {8,4}   Penalty: {9,-33}    {10}{11}", ParseHelper.LargeNumToString(info.IterationNum), lastImprovementIterationStr, speedStr, info.CycleNum, ParseHelper.LargeNumToString(logCost, "0.0"), ParseHelper.ToString(info.TotalInfo.Stats.SatisfactionScore.Value * 100, "0"), ParseHelper.LargeNumToString(info.TotalInfo.Stats.RawCost, "0.0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(info.TotalInfo), paretoFrontStr, hasImprovementStr);
 
             if (Config.DebugSaLogAdditionalInfo) {
                 Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriverInfos.Select(driverInfo => driverInfo.WorkedTime).ToArray()));
                 Console.WriteLine("Contract time factors: {0}", ParseHelper.ToString(info.Instance.InternalDrivers.Select(driver => (double)info.DriverInfos[driver.AllDriversIndex].WorkedTime / driver.ContractTime).ToArray()));
                 Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(info.DriverInfos.Select(driverInfo => driverInfo.ShiftCount).ToArray()));
+                Console.WriteLine("External type shift counts: {0}", ParseHelper.ToString(info.ExternalDriverTypeInfos.Select(externalDriverTypeInfo => externalDriverTypeInfo.ExternalShiftCount).ToArray()));
             }
 
             if (Config.DebugSaLogCurrentSolution) {
@@ -251,9 +254,9 @@ namespace Thesis {
             SaInfo bestOfPrevLevel = null;
             for (int satisfactionLevel = bestInfoBySatisfaction.Length - 1; satisfactionLevel >= 0; satisfactionLevel--) {
                 SaInfo bestInfoOfLevel = bestInfoBySatisfaction[satisfactionLevel];
-                if (bestInfoOfLevel.TotalInfo.Cost == double.MaxValue) continue;
+                if (bestInfoOfLevel.TotalInfo.Stats.Cost == double.MaxValue) continue;
 
-                if (bestOfPrevLevel == null || bestInfoOfLevel.TotalInfo.Cost < bestOfPrevLevel.TotalInfo.Cost - Config.ParetoFrontMinCostDiff) {
+                if (bestOfPrevLevel == null || bestInfoOfLevel.TotalInfo.Stats.Cost < bestOfPrevLevel.TotalInfo.Stats.Cost - Config.ParetoFrontMinCostDiff) {
                     paretoFront.Add(bestInfoOfLevel);
                     bestOfPrevLevel = bestInfoOfLevel;
                 }
@@ -267,19 +270,18 @@ namespace Thesis {
         }
 
         static string ParetoPointToString(SaInfo paretoPoint) {
-            return string.Format("{0}% {1}", ParseHelper.ToString(paretoPoint.TotalInfo.SatisfactionScore.Value * Config.PercentageFactor, "0"), ParseHelper.LargeNumToString(paretoPoint.TotalInfo.Cost, "0"));
+            return string.Format("{0}% {1}", ParseHelper.ToString(paretoPoint.TotalInfo.Stats.SatisfactionScore.Value * Config.PercentageFactor, "0"), ParseHelper.LargeNumToString(paretoPoint.TotalInfo.Stats.Cost, "0"));
         }
 
-        (Driver[], int[]) GetInitialAssignment() {
+        Driver[] GetInitialAssignment() {
             Driver[] assignment = new Driver[info.Instance.Trips.Length];
             List<Trip>[] driverPaths = new List<Trip>[info.Instance.AllDrivers.Length];
             for (int i = 0; i < driverPaths.Length; i++) driverPaths[i] = new List<Trip>();
-            int[] externalDriverCountsByType = new int[info.Instance.ExternalDriversByType.Length];
 
             for (int tripIndex = 0; tripIndex < info.Instance.Trips.Length; tripIndex++) {
                 Trip trip = info.Instance.Trips[tripIndex];
 
-                // Greedily assign to random internal driver, if possible without precedence violations
+                // Greedily assign to random internal driver, avoiding precedence violations
                 InternalDriver[] internalDriversRandomOrder = Copy(info.Instance.InternalDrivers);
                 Shuffle(internalDriversRandomOrder);
                 bool isDone = false;
@@ -297,7 +299,7 @@ namespace Thesis {
                 }
                 if (isDone) continue;
 
-                // Greedily assign to random external driver, if possible without precedence violations
+                // Greedily assign to random external driver, avoiding precedence violations
                 ExternalDriver[][] externalDriverTypesRandomOrder = Copy(info.Instance.ExternalDriversByType);
                 Shuffle(externalDriverTypesRandomOrder);
                 for (int shuffledExternalDriverTypeIndex = 0; shuffledExternalDriverTypeIndex < externalDriverTypesRandomOrder.Length; shuffledExternalDriverTypeIndex++) {
@@ -312,7 +314,6 @@ namespace Thesis {
                             // We can add this trip to this driver without precedence violations
                             assignment[tripIndex] = externalDriver;
                             driverPath.Add(trip);
-                            externalDriverCountsByType[externalDriver.ExternalDriverTypeIndex]++;
                             isDone = true;
                             break;
                         }
@@ -329,9 +330,9 @@ namespace Thesis {
                 List<Trip> randomDriverPath = driverPaths[randomExternalDriver.AllDriversIndex];
                 assignment[tripIndex] = randomExternalDriver;
                 randomDriverPath.Add(trip);
-                externalDriverCountsByType[randomExternalDriver.ExternalDriverTypeIndex]++;
             }
-            return (assignment, externalDriverCountsByType);
+
+            return assignment;
         }
 
         void Shuffle<T>(T[] array) {

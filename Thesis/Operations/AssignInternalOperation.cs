@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class AssignInternalOperation : AbstractAssignOperation {
-        public AssignInternalOperation(int tripIndex, InternalDriver newInternalDriver, SaInfo info) : base(tripIndex, newInternalDriver, info) {
-
-        }
+        public AssignInternalOperation(int tripIndex, InternalDriver newInternalDriver, SaInfo info) : base(tripIndex, newInternalDriver, info) { }
 
         public static AbstractAssignOperation CreateRandom(SaInfo info) {
             int tripIndex = info.Instance.Rand.Next(info.Instance.Trips.Length);

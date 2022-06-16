@@ -79,10 +79,13 @@ namespace Thesis {
             return driverPathStr;
         }
 
-        public static string GetPenaltyString(DriverInfo driverInfo) {
-            return GetPenaltyString(driverInfo.Penalty, driverInfo.PenaltyInfo);
+        public static string GetPenaltyString(SaTotalInfo totalInfo) {
+            return GetPenaltyString(totalInfo.Stats.Penalty, totalInfo.PenaltyInfo, totalInfo.ExternalShiftCountViolationAmount);
         }
-        public static string GetPenaltyString(double penalty, PenaltyInfo penaltyInfo) {
+        public static string GetPenaltyString(SaDriverInfo driverInfo) {
+            return GetPenaltyString(driverInfo.Stats.Penalty, driverInfo.PenaltyInfo);
+        }
+        public static string GetPenaltyString(double penalty, DriverPenaltyInfo penaltyInfo, int externalShiftCountViolationAmount = 0) {
             string penaltyString = string.Format("{0,6}", "-");
             if (penalty > 0) {
                 List<string> penaltyTypes = new List<string>();
@@ -91,6 +94,7 @@ namespace Thesis {
                 if (penaltyInfo.RestTimeViolationCount > 0) penaltyTypes.Add("Rt" + penaltyInfo.RestTimeViolationCount);
                 if (penaltyInfo.ShiftCountViolationAmount > 0) penaltyTypes.Add("Sc" + penaltyInfo.ShiftCountViolationAmount);
                 if (penaltyInfo.InvalidHotelCount > 0) penaltyTypes.Add("Ih" + penaltyInfo.InvalidHotelCount);
+                if (externalShiftCountViolationAmount > 0) penaltyTypes.Add("Ec" + externalShiftCountViolationAmount);
                 string penaltyTypesStr = string.Join(" ", penaltyTypes);
 
                 penaltyString = string.Format("{0,6} ({1})", LargeNumToString(penalty, "0.0"), penaltyTypesStr);

@@ -10,9 +10,10 @@ namespace Thesis {
         public Driver[] Assignment;
         public List<Trip>[] DriverPaths;
         public bool[] IsHotelStayAfterTrip;
-        public int[] DriverPathIndices, ExternalDriverCountsByType;
-        public DriverInfo TotalInfo;
-        public DriverInfo[] DriverInfos;
+        public int[] DriverPathIndices;
+        public SaTotalInfo TotalInfo;
+        public SaDriverInfo[] DriverInfos;
+        public SaExternalDriverTypeInfo[] ExternalDriverTypeInfos;
         public int IterationNum, CycleNum;
         public int? LastImprovementIteration;
         public float Temperature, SatisfactionFactor;

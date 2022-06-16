@@ -29,17 +29,20 @@ namespace Thesis {
             int[,] carTravelTimes = DataGenerator.GenerateCarTravelTimes(stationCount, trainTravelTimes, rand);
 
             // Parse internal driver names and track proficiencies
-            string[] internalDriverNames = ParseInternalDriverNames(employeesTable);
+            (string[] internalDriverNames, bool[] internalDriverIsInternational) = ParseInternalDriverNamesAndInternationalStatus(employeesTable);
             //bool[][,] internalDriverTrackProficiencies = ParseInternalDriverTrackProficiencies(routeKnowledgeTable, internalDriverNames, stationCodes);
             int internalDriverCount = internalDriverNames.Length;
 
             // Generate remaining driver data; TODO: use real data
             int[][] internalDriversHomeTravelTimes = DataGenerator.GenerateInternalDriverHomeTravelTimes(internalDriverCount, stationCount, rand);
             bool[][,] internalDriverTrackProficiencies = DataGenerator.GenerateInternalDriverTrackProficiencies(internalDriverCount, stationCount, rand);
-            int[] externalDriverCounts = DataGenerator.GenerateExternalDriverCounts(Config.ExcelExternalDriverTypeCount, Config.ExcelExternalDriverMinCountPerType, Config.ExcelExternalDriverMaxCountPerType, rand);
-            int[][] externalDriversHomeTravelTimes = DataGenerator.GenerateExternalDriverHomeTravelTimes(Config.ExcelExternalDriverTypeCount, stationCount, rand);
+            int[][] externalDriversHomeTravelTimes = DataGenerator.GenerateExternalDriverHomeTravelTimes(Config.ExternalDriverTypes.Length, stationCount, rand);
 
-            return new Instance(rand, rawTrips, stationCodes, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, Config.ExcelInternalDriverContractTime, externalDriverCounts, externalDriversHomeTravelTimes);
+            // TODO: get internal driver contract times from settings
+            int[] internalDriversContractTimes = new int[internalDriverCount];
+            for (int i = 0; i < internalDriverCount; i++) internalDriversContractTimes[i] = Config.ExcelInternalDriverContractTime;
+
+            return new Instance(rand, rawTrips, stationCodes, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, internalDriversContractTimes, internalDriverIsInternational, externalDriversHomeTravelTimes);
         }
 
         static (Trip[], string[], int) ParseRawTripsAndStationCodes(DataTable dutiesTable, DateTime planningStartDate, DateTime planningNextDate) {
@@ -58,14 +61,16 @@ namespace Thesis {
                 string projectName = dutyRow.GetCell(dutiesTable.GetColumnIndex("Project"))?.StringCellValue ?? "";
 
                 // Filter to configured activity descriptions
-                if (ParseHelper.DataStringInList(activityName, Config.ExcelIncludedActivityDescriptions)) return;
+                if (!ParseHelper.DataStringInList(activityName, Config.ExcelIncludedActivityDescriptions)) return;
 
                 // Get start and end stations
                 string startStationName = dutyRow.GetCell(dutiesTable.GetColumnIndex("OriginLocationName"))?.StringCellValue ?? "";
                 if (startStationName == "") return; // Skip row if start location is empty
+
                 int startStationIndex = GetOrAddCodeIndex(startStationName, stationNameList);
                 string endStationName = dutyRow.GetCell(dutiesTable.GetColumnIndex("DestinationLocationName"))?.StringCellValue ?? "";
                 if (endStationName == "") return; // Skip row if end location is empty
+
                 int endStationIndex = GetOrAddCodeIndex(endStationName, stationNameList);
 
                 // Get start and end time
@@ -120,8 +125,9 @@ namespace Thesis {
             return trainTravelTimes;
         }
 
-        static string[] ParseInternalDriverNames(DataTable employeesTable) {
+        static (string[], bool[]) ParseInternalDriverNamesAndInternationalStatus(DataTable employeesTable) {
             List<string> internalDriverNames = new List<string>();
+            List<bool> internalDriverIsInternational = new List<bool>();
             employeesTable.ForEachRow(employeeRow => {
                 // Only include configures companies
                 string driverCompany = employeeRow.GetCell(employeesTable.GetColumnIndex("PrimaryCompany")).StringCellValue;
@@ -129,12 +135,23 @@ namespace Thesis {
 
                 // Only include configures job titles
                 string driverJobTitle = employeeRow.GetCell(employeesTable.GetColumnIndex("PrimaryJobTitle")).StringCellValue;
-                if (!ParseHelper.DataStringInList(driverJobTitle, Config.ExcelIncludedJobTitlesNational) && !ParseHelper.DataStringInList(driverJobTitle, Config.ExcelIncludedJobTitlesInternational)) return;
+                bool isInternationalDriver;
+                if (ParseHelper.DataStringInList(driverJobTitle, Config.ExcelIncludedJobTitlesNational)) {
+                    // National driver
+                    isInternationalDriver = true;
+                } else if (ParseHelper.DataStringInList(driverJobTitle, Config.ExcelIncludedJobTitlesInternational)) {
+                    // International driver
+                    isInternationalDriver = false;
+                } else {
+                    // Non-configured job title, ignore driver
+                    return;
+                }
 
                 string driverName = employeeRow.GetCell(employeesTable.GetColumnIndex("FullName")).StringCellValue;
                 internalDriverNames.Add(driverName);
+                internalDriverIsInternational.Add(isInternationalDriver);
             });
-            return internalDriverNames.ToArray();
+            return (internalDriverNames.ToArray(), internalDriverIsInternational.ToArray());
         }
 
         static bool[][,] ParseInternalDriverTrackProficiencies(DataTable routeKnowledgeTable, string[] internalDriverNames, string[] stationNames) {

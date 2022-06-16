@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class AssignExternalOperation : AbstractAssignOperation {
-        ExternalDriver newExternalDriver;
-
-        public AssignExternalOperation(int tripIndex, ExternalDriver newExternalDriver, SaInfo info) : base(tripIndex, newExternalDriver, info) {
-            this.newExternalDriver = newExternalDriver;
-        }
+        public AssignExternalOperation(int tripIndex, ExternalDriver newExternalDriver, SaInfo info) : base(tripIndex, newExternalDriver, info) { }
 
         public static AbstractAssignOperation CreateRandom(SaInfo info) {
             int tripIndex = info.Instance.Rand.Next(info.Instance.Trips.Length);
@@ -23,21 +19,12 @@ namespace Thesis {
                 int newExternalDriverTypeIndex = info.Instance.Rand.Next(info.Instance.ExternalDriversByType.Length);
                 ExternalDriver[] externalDriversOfCurrentType = info.Instance.ExternalDriversByType[newExternalDriverTypeIndex];
 
-                // Select random external driver of this type; equal chance to select each existing or a new driver
-                int currentCountOfType = info.ExternalDriverCountsByType[newExternalDriverTypeIndex];
-                int maxNewIndexInTypeExclusive = Math.Min(currentCountOfType + 1, externalDriversOfCurrentType.Length);
-                int newExternalDriverIndexInType = info.Instance.Rand.Next(maxNewIndexInTypeExclusive);
+                // Select random external driver of this type
+                int newExternalDriverIndexInType = info.Instance.Rand.Next(externalDriversOfCurrentType.Length);
                 newExternalDriver = externalDriversOfCurrentType[newExternalDriverIndexInType];
             } while (newExternalDriver == oldDriver);
 
             return new AssignExternalOperation(tripIndex, newExternalDriver, info);
-        }
-
-        public override void Execute() {
-            base.Execute();
-
-            // If this is a new driver of this type, update the corresponding count
-            info.ExternalDriverCountsByType[newExternalDriver.ExternalDriverTypeIndex] = Math.Max(info.ExternalDriverCountsByType[newExternalDriver.ExternalDriverTypeIndex], newExternalDriver.IndexInType + 1);
         }
     }
 }

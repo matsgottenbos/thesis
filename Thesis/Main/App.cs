@@ -12,11 +12,6 @@ namespace Thesis {
 
             Instance instance;
             switch (Config.SelectedDataSource) {
-                case DataSource.Generator:
-                    instance = DataGenerator.GenerateInstance(rand);
-                    Console.WriteLine("Instance generation complete");
-                    break;
-
                 case DataSource.Excel:
                     instance = ExcelDataImporter.Import(rand);
                     Console.WriteLine("Instance import from excel data complete");

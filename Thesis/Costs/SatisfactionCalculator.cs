@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class SatisfactionCalculator {
-        public static double GetDriverSatisfaction(DriverInfo driverInfo, InternalDriver driver) {
+        public static double GetDriverSatisfaction(SaDriverInfo driverInfo, InternalDriver driver) {
             // Determine duplicate route count
             int duplicateRouteCount = 0;
             for (int sharedRouteIndex = 0; sharedRouteIndex < driverInfo.SharedRouteCounts.Length; sharedRouteIndex++) {
@@ -29,13 +29,13 @@ namespace Thesis {
 
         public static double GetSatisfactionScore(SaInfo info) {
             // Average satisfaction
-            double averageDriverSatisfaction = info.TotalInfo.DriverSatisfaction / info.Instance.InternalDrivers.Length;
+            double averageDriverSatisfaction = info.TotalInfo.Stats.DriverSatisfaction / info.Instance.InternalDrivers.Length;
 
             // Minimum driver satisfaction
             double minDriverSatisfaction = double.MaxValue;
             for (int driverIndex = 0; driverIndex < info.Instance.InternalDrivers.Length; driverIndex++) {
-                DriverInfo driverInfo = info.DriverInfos[driverIndex];
-                if (driverInfo.DriverSatisfaction < minDriverSatisfaction) minDriverSatisfaction = driverInfo.DriverSatisfaction;
+                SaDriverInfo driverInfo = info.DriverInfos[driverIndex];
+                if (driverInfo.Stats.DriverSatisfaction < minDriverSatisfaction) minDriverSatisfaction = driverInfo.Stats.DriverSatisfaction;
             }
 
             // Total satisfaction
@@ -43,23 +43,23 @@ namespace Thesis {
             return totalSatisfactionDiff;
         }
 
-        public static double GetSatisfactionScoreDiff(DriverInfo totalInfoDiff, Driver driver1, DriverInfo driver1InfoDiff, Driver driver2, DriverInfo driver2InfoDiff, SaInfo info) {
+        public static double GetSatisfactionScoreDiff(SaTotalInfo totalInfoDiff, Driver driver1, SaDriverInfo driver1InfoDiff, Driver driver2, SaDriverInfo driver2InfoDiff, SaInfo info) {
             // Average satisfaction
-            double averageDriverSatisfactionDiff = totalInfoDiff.DriverSatisfaction / info.Instance.InternalDrivers.Length;
+            double averageDriverSatisfactionDiff = totalInfoDiff.Stats.DriverSatisfaction / info.Instance.InternalDrivers.Length;
 
             // Minimum driver satisfaction
             double oldMinDriverSatisfaction = double.MaxValue;
             double newMinDriverSatisfaction = double.MaxValue;
             for (int driverIndex = 0; driverIndex < info.Instance.InternalDrivers.Length; driverIndex++) {
-                DriverInfo oldDriverInfo = info.DriverInfos[driverIndex];
+                SaDriverInfo oldDriverInfo = info.DriverInfos[driverIndex];
 
                 // Get new minimum
-                double newDriverSatisfaction = oldDriverInfo.DriverSatisfaction;
-                if (driverIndex == driver1.AllDriversIndex) newDriverSatisfaction += driver1InfoDiff.DriverSatisfaction;
-                else if (driver2 != null && driverIndex == driver2.AllDriversIndex) newDriverSatisfaction += driver2InfoDiff.DriverSatisfaction;
+                double newDriverSatisfaction = oldDriverInfo.Stats.DriverSatisfaction;
+                if (driverIndex == driver1.AllDriversIndex) newDriverSatisfaction += driver1InfoDiff.Stats.DriverSatisfaction;
+                else if (driver2 != null && driverIndex == driver2.AllDriversIndex) newDriverSatisfaction += driver2InfoDiff.Stats.DriverSatisfaction;
 
                 // Update minimums
-                if (oldDriverInfo.DriverSatisfaction < oldMinDriverSatisfaction) oldMinDriverSatisfaction = oldDriverInfo.DriverSatisfaction;
+                if (oldDriverInfo.Stats.DriverSatisfaction < oldMinDriverSatisfaction) oldMinDriverSatisfaction = oldDriverInfo.Stats.DriverSatisfaction;
                 if (newDriverSatisfaction < newMinDriverSatisfaction) newMinDriverSatisfaction = newDriverSatisfaction;
             }
             double minDriverSatisfactionDiff = newMinDriverSatisfaction - oldMinDriverSatisfaction;

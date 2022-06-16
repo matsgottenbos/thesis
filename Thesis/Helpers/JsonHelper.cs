@@ -10,12 +10,12 @@ namespace Thesis {
     static class JsonHelper {
         public static void ExportSolutionJson(string folderPath, SaInfo info) {
             JObject jsonObj = new JObject();
-            jsonObj["cost"] = info.TotalInfo.RawCost;
-            jsonObj["satisfaction"] = info.TotalInfo.SatisfactionScore.Value;
+            jsonObj["cost"] = info.TotalInfo.Stats.RawCost;
+            jsonObj["satisfaction"] = info.TotalInfo.Stats.SatisfactionScore.Value;
             jsonObj["drivers"] = CreateDriversJArray(info.DriverPaths, info);
 
             string jsonString = jsonObj.ToString();
-            string fileName = string.Format("{0}k-{1}p.json", Math.Round(info.TotalInfo.Cost / 1000), Math.Round(info.TotalInfo.SatisfactionScore.Value * 100));
+            string fileName = string.Format("{0}k-{1}p.json", Math.Round(info.TotalInfo.Stats.Cost / 1000), Math.Round(info.TotalInfo.Stats.SatisfactionScore.Value * 100));
             string filePath = Path.Combine(folderPath, fileName);
             File.WriteAllText(filePath, jsonString);
         }
@@ -26,12 +26,12 @@ namespace Thesis {
 
         static JObject CreateDriverJObject(int driverIndex, List<Trip> driverPath, SaInfo info) {
             Driver driver = info.Instance.AllDrivers[driverIndex];
-            DriverInfo driverInfo = info.DriverInfos[driverIndex];
+            SaDriverInfo driverInfo = info.DriverInfos[driverIndex];
 
             JObject driverJObject = new JObject();
             driverJObject["driverName"] = driver.GetName(false);
             driverJObject["realDriverName"] = driver.GetName(true);
-            if (driver is InternalDriver) driverJObject["driverSatisfaction"] = driverInfo.DriverSatisfaction;
+            if (driver is InternalDriver) driverJObject["driverSatisfaction"] = driverInfo.Stats.DriverSatisfaction;
             driverJObject["driverPath"] = CreateFullDriverPathJArray(driver, driverPath, info);
             return driverJObject;
         }
@@ -74,6 +74,7 @@ namespace Thesis {
         static void AddTripToPath(Trip trip, JArray fullDriverPathJArray, SaInfo info) {
             JObject tripPathItem = new JObject();
             tripPathItem["type"] = "trip";
+            tripPathItem["tripIndex"] = trip.Index;
             tripPathItem["startTime"] = trip.StartTime;
             tripPathItem["endTime"] = trip.EndTime;
             tripPathItem["dutyName"] = trip.DutyName;

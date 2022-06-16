@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace Thesis {
     static class RangeCostCalculator {
         /** Get costs of part of a driver's path; penalty are computed with without worked time and shift count penalties */
-        public static DriverInfo GetRangeCost(Trip rangeFirstTrip, Trip rangeLastTrip, Func<Trip, bool> isHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
-            DriverInfo driverInfo = new DriverInfo(info.Instance);
+        public static SaDriverInfo GetRangeCost(Trip rangeFirstTrip, Trip rangeLastTrip, Func<Trip, bool> isHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+            SaDriverInfo driverInfo = new SaDriverInfo(info.Instance);
             if (driverPath.Count == 0) return driverInfo;
 
             int rangeFirstPathIndex = info.DriverPathIndices[rangeFirstTrip.Index];
@@ -24,8 +24,8 @@ namespace Thesis {
         }
 
         /** Get costs of part of a driver's path where a trip is unassigned; penalty are computed with without worked time and shift count penalties */
-        public static DriverInfo GetRangeCostWithUnassign(Trip rangeFirstTrip, Trip rangeLastTrip, Trip unassignedTrip, Func<Trip, bool> isHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
-            DriverInfo driverInfo = new DriverInfo(info.Instance);
+        public static SaDriverInfo GetRangeCostWithUnassign(Trip rangeFirstTrip, Trip rangeLastTrip, Trip unassignedTrip, Func<Trip, bool> isHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+            SaDriverInfo driverInfo = new SaDriverInfo(info.Instance);
             int rangeFirstPathIndex = info.DriverPathIndices[rangeFirstTrip.Index];
             int rangeLastPathIndex = info.DriverPathIndices[rangeLastTrip.Index];
             Trip shiftFirstTrip = null, parkingTrip = null, prevTrip = null, beforeHotelTrip = null;
@@ -46,8 +46,8 @@ namespace Thesis {
         }
 
         /** Get costs of part of a driver's path where a trip is assigned; penalty are computed with without worked time and shift count penalties */
-        public static DriverInfo GetRangeCostWithAssign(Trip rangeFirstTrip, Trip rangeLastTrip, Trip assignedTrip, Func<Trip, bool> isHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
-            DriverInfo driverInfo = new DriverInfo(info.Instance);
+        public static SaDriverInfo GetRangeCostWithAssign(Trip rangeFirstTrip, Trip rangeLastTrip, Trip assignedTrip, Func<Trip, bool> isHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+            SaDriverInfo driverInfo = new SaDriverInfo(info.Instance);
             Trip shiftFirstTrip = null, parkingTrip = null, prevTrip = null, beforeHotelTrip = null;
 
             if (driverPath.Count == 0) {
@@ -93,8 +93,8 @@ namespace Thesis {
         }
 
         /** Get costs of part of a driver's path where a trip is unassigned and another assigned; penalty are computed with without worked time and shift count penalties */
-        public static DriverInfo GetRangeCostWithSwap(Trip rangeFirstTrip, Trip rangeLastTrip, Trip unassignedTrip, Trip assignedTrip, Func<Trip, bool> isHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
-            DriverInfo driverInfo = new DriverInfo(info.Instance);
+        public static SaDriverInfo GetRangeCostWithSwap(Trip rangeFirstTrip, Trip rangeLastTrip, Trip unassignedTrip, Trip assignedTrip, Func<Trip, bool> isHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+            SaDriverInfo driverInfo = new SaDriverInfo(info.Instance);
             Trip shiftFirstTrip = null, parkingTrip = null, prevTrip = null, beforeHotelTrip = null;
 
             if (driverPath.Count == 0) {

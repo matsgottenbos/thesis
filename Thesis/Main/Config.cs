@@ -15,7 +15,6 @@ namespace Thesis {
     static class Config {
         // App
         public const DataSource SelectedDataSource = DataSource.Excel;
-        //public const DataSource SelectedDataSource = DataSource.Generator;
         //public const DataSource SelectedDataSource = DataSource.Odata;
 
         // Shift constraints
@@ -31,7 +30,8 @@ namespace Thesis {
         public const int ShiftWaitingTimeThreshold = 6 * 60; // Waiting times shorter than this count as the same trip; waiting time longer start a new shift
 
         // Time periods
-        public const int DayLength = 24 * 60;
+        public const int HourLength = 24 * 60;
+        public const int DayLength = 24 * HourLength;
 
         // Night/weekend shifts
         public static readonly Func<int, int, bool> IsNightShiftByLawFunc = (int drivingTimeAtNight, int drivingTime) => drivingTimeAtNight >= 60; // Function determining whether a shift is a night shift, according to labour laws
@@ -39,39 +39,87 @@ namespace Thesis {
         public static readonly Func<int, int, bool> IsWeekendShiftByCompanyRulesFunc = (int drivingTimeInWeekend, int drivingTime) => (float)drivingTimeInWeekend / drivingTime >= 0.5; // Function determining whether a shift is a weekend shift, according to company rules
         // TODO: configure holidays
 
-        // Salary types during the week (weekend/non-weekend)
-        public static readonly SalaryTypeInfo[] WeekSalaryTypes = new SalaryTypeInfo[] {
-            new SalaryTypeInfo(0, true), // Still weekend at Monday 0:00 (start of timeframe)
-            new SalaryTypeInfo(6 * 60, false), // Weekend ends Monday 6:00
-            new SalaryTypeInfo(4 * DayLength + 18 * 60, true), // Weekend starts Friday 18:00
-            new SalaryTypeInfo(7 * DayLength + 6 * 60, false), // Weekend ends Monday 6:00
+        // Weekend/non-weekend parts of the week
+        public static readonly TimePart[] WeekPartsForWeekend = new TimePart[] {
+            new TimePart(0, true), // Still weekend at Monday 0:00 (start of timeframe)
+            new TimePart(6 * 60, false), // Weekend ends Monday 6:00
+            new TimePart(4 * DayLength + 18 * 60, true), // Weekend starts Friday 18:00
+            new TimePart(7 * DayLength + 6 * 60, false), // Weekend ends Monday 6:00
         };
 
-        // Internal driver salaries
-        public static readonly SalaryRateInfo[] InternalDriverWeekdaySalaryRates = new SalaryRateInfo[] {
-            new SalaryRateInfo(0 * 60,  60 / 60f, true, true), // Night 0-4: continuing hourly rate of 60
-            new SalaryRateInfo(4 * 60,  60 / 60f, false, true), // Night 4-6: hourly rate of 60
-            new SalaryRateInfo(6 * 60,  55 / 60f, false, false), // Morning 6-8, hourly rate of 55
-            new SalaryRateInfo(8 * 60,  50 / 60f, false, false), // Day 8-19, hourly rate of 50
-            new SalaryRateInfo(19 * 60, 55 / 60f, false, false), // Evening 19-23, hourly rate of 55
-            new SalaryRateInfo(23 * 60, 60 / 60f, true, true), // Night 23-0, continuing hourly rate of 60
+        // Day/night parts of the day
+        public static readonly TimePart[] DayPartsForNight = new TimePart[] {
+            new TimePart(0, true), // Still night at 0:00 (start of day)
+            new TimePart(6 * 60, false), // Night ends 6:00
+            new TimePart(23 * 60, true), // Night starts 23:00
         };
-        public const float InternalDriverWeekendSalaryRate = 60 / 60f;
-        public const float InternalDriverTravelSalaryRate = 50 / 60f;
-        public const int InternalDriverMinPaidShiftTime = 6 * 60; // The minimum amount of worked time that is paid per shift, for an internal driver
-        public const int InternalDriverUnpaidTravelTimePerShift = 60;
 
-        // External driver salaries
-        public static readonly SalaryRateInfo[] ExternalDriverWeekdaySalaryRates = new SalaryRateInfo[] {
-            new SalaryRateInfo(0 * 60,  80 / 60f, false), // Night 0-6: hourly rate of 80
-            new SalaryRateInfo(6 * 60,  75 / 60f, false), // Morning 6-7, hourly rate of 75
-            new SalaryRateInfo(7 * 60,  70 / 60f, false), // Day 7-18, hourly rate of 70
-            new SalaryRateInfo(18 * 60, 75 / 60f, false), // Evening 18-23, hourly rate of 75
-            new SalaryRateInfo(23 * 60, 80 / 60f, false), // Night 23-0, hourly rate of 80
+        // Driver salaries
+        public static readonly SalarySettings InternalNationalSalaryInfo = SalarySettings.CreateByHours(
+            new SalaryRateBlock[] { // Weekday salary rates
+                SalaryRateBlock.CreateByHours(0, 55, true), // Night 0-4, continuing hourly rate of 55
+                SalaryRateBlock.CreateByHours(4, 55), // Night 4-6, hourly rate of 55
+                SalaryRateBlock.CreateByHours(6, 50), // Morning 6-8, hourly rate of 50
+                SalaryRateBlock.CreateByHours(8, 45), // Day 8-19, hourly rate of 45
+                SalaryRateBlock.CreateByHours(19, 50), // Evening 19-23, hourly rate of 50
+                SalaryRateBlock.CreateByHours(23, 55, true), // Night 23-0, continuing hourly rate of 55
+            },
+            55, // Weekend rate
+            45, // Travel rate
+            6, // Minimum paid shift time (hours)
+            1 // Unpaid travel time per shift (hours)
+        );
+        public static readonly SalarySettings InternalInternationalSalaryInfo = SalarySettings.CreateByHours(
+            new SalaryRateBlock[] { // Weekday salary rates
+                SalaryRateBlock.CreateByHours(0, 55, true), // Night 0-4, continuing hourly rate of 55
+                SalaryRateBlock.CreateByHours(4, 55), // Night 4-6, hourly rate of 55
+                SalaryRateBlock.CreateByHours(6, 50), // Morning 6-8, hourly rate of 50
+                SalaryRateBlock.CreateByHours(8, 45), // Day 8-19, hourly rate of 45
+                SalaryRateBlock.CreateByHours(19, 50), // Evening 19-23, hourly rate of 50
+                SalaryRateBlock.CreateByHours(23, 55, true), // Night 23-0, continuing hourly rate of 55
+            },
+            60, // Weekend rate
+            50, // Travel rate
+            6, // Minimum paid shift time (hours)
+            1 // Unpaid travel time per shift (hours)
+        );
+        public static readonly SalarySettings ExternalNationalSalaryInfo = SalarySettings.CreateByHours(
+            new SalaryRateBlock[] {
+                SalaryRateBlock.CreateByHours(0, 75), // Night 0-6, hourly rate of 75
+                SalaryRateBlock.CreateByHours(6, 70), // Morning 6-7, hourly rate of 70
+                SalaryRateBlock.CreateByHours(7, 65), // Day 7-18, hourly rate of 65
+                SalaryRateBlock.CreateByHours(18, 70), // Evening 18-23, hourly rate of 70
+                SalaryRateBlock.CreateByHours(23, 75), // Night 23-0, hourly rate of 75
+            },
+            75, // Weekend rate
+            30, // Travel rate
+            8, // Minimum paid shift time (hours)
+            1 // Unpaid travel time per shift (hours)
+        );
+        public static readonly SalarySettings ExternalInternationalSalaryInfo = SalarySettings.CreateByHours(
+            new SalaryRateBlock[] {
+                SalaryRateBlock.CreateByHours(0, 80), // Night 0-6, hourly rate of 80
+                SalaryRateBlock.CreateByHours(6, 75), // Morning 6-7, hourly rate of 75
+                SalaryRateBlock.CreateByHours(7, 70), // Day 7-18, hourly rate of 70
+                SalaryRateBlock.CreateByHours(18, 75), // Evening 18-23, hourly rate of 75
+                SalaryRateBlock.CreateByHours(23, 80), // Night 23-0, hourly rate of 80
+            },
+            80, // Weekend rate
+            30, // Travel rate
+            8, // Minimum paid shift time (hours)
+            1 // Unpaid travel time per shift (hours)
+        );
+
+        public static readonly ExternalDriverTypeSettings[] ExternalDriverTypes = new ExternalDriverTypeSettings[] {
+            new ExternalDriverTypeSettings("Machinext national", false, 8, 15),
+            new ExternalDriverTypeSettings("Machinext international", true, 3, 4),
+            new ExternalDriverTypeSettings("Aeterno national", false, 7, 12),
+            new ExternalDriverTypeSettings("Aeterno international", true, 4, 7),
+            new ExternalDriverTypeSettings("Spoorlutions national", false, 10, 18),
+            new ExternalDriverTypeSettings("Logisticle national", false, 4, 6),
+            new ExternalDriverTypeSettings("Logisticle international", true, 4, 6),
+            // TODO: add Railflex and MOB?
         };
-        public const float ExternalDriverWeekendSalaryRate = 80 / 60f;
-        public const float ExternalDriverTravelSalaryRate = 70 / 60f;
-        public const int ExternalDriverMinPaidShiftTime = 8 * 60; // The minimum amount of worked time that is paid per shift, for an external driver
 
         // Hotels
         public const float HotelCosts = 130f;
@@ -89,8 +137,8 @@ namespace Thesis {
 
         // Robustness
         public const float RobustnessCostFactorSameDuty = 0f; // Added cost for each expected conflict due to delays, if the conflict is between trips of the same duty
-        public const float RobustnessCostFactorSameProject = 1000f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties but of the same project
-        public const float RobustnessCostFactorDifferentProject = 2000f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties and projects
+        public const float RobustnessCostFactorSameProject = 500f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties but of the same project
+        public const float RobustnessCostFactorDifferentProject = 1000f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties and projects
         public const float TripDelayProbability = 0.275f; // Chance that a trip has a delay
         public static readonly Func<int, double> TripMeanDelayFunc = (int plannedDuration) => plannedDuration * plannedDuration / 5561 + 0.123 * plannedDuration + 37.38; // Trip mean delay by planned duration: p^2/5571 + 0.123p + 37.38
         public static readonly Func<double, double> TripDelayGammaDistributionAlphaFunc = (double meanDelay) => meanDelay * meanDelay / 3879; // Alpha parameter of trip delay gamma distribution, by mean delay: p^2/3879
@@ -100,7 +148,7 @@ namespace Thesis {
 
         /* Excel importer */
         public static readonly string[] ExcelIncludedRailwayUndertakings = new string[] { "Rail Force One" };
-        public static readonly string[] ExcelIncludedActivityDescriptions = new string[] { // Activity descriptions in English; TODO: filter out trailing whitespace in data
+        public static readonly string[] ExcelIncludedActivityDescriptions = new string[] { // Activity descriptions in English
             "8-uurs controle",
             "Aankomst controle",
             "Abschlussdienst",
@@ -117,7 +165,7 @@ namespace Thesis {
             "Vorbereitungsdienst",
             "Wagon technical inspection"
         };
-        public static readonly string[] ExcelIncludedJobTitlesNational = new string[] { "Machinist VB nationaal" };
+        public static readonly string[] ExcelIncludedJobTitlesNational = new string[] { "Machinist VB nationaal", "Rangeerder" }; // TODO: rangeerders wel of niet meenemen?
         public static readonly string[] ExcelIncludedJobTitlesInternational = new string[] { "Machinist VB Internationaal NL-D" };
         public static readonly DateTime ExcelPlanningStartDate = new DateTime(2022, 5, 23);
         public static readonly DateTime ExcelPlanningNextDate = ExcelPlanningStartDate.AddDays(7);
@@ -128,42 +176,16 @@ namespace Thesis {
 
 
         /* Generator */
-        // Counts
-        public const int GenTimeframeLength = 2 * 24 * 60;
-        public const int GenStationCount = 10;
-        public const int GenTripCount = 30;
-        public const int GenInternalDriverCount = 10;
-        public const int GenExternaDriverTypeCount = 2;
-        public const int GenExternalDriverMinCountPerType = 2;
-        public const int GenExternalDriverMaxCountPerType = 5;
-
-        // Travel times
         public const int GenMinStationTravelTime = 30;
-        public const int GenMaxStationTravelTime = 4 * 60;
+        public const int GenMaxStationTravelTime = 3 * 60;
         public const float GenMinCarTravelTimeFactor = 0.5f;
         public const float GenMaxCarTravelTimeFactor = 0.8f;
         public const int GenMaxHomeTravelTime = 2 * 60;
-
-        // Contract times
-        public const int GenInternalDriverContractTime = GenTimeframeLength / 4;
-
-        // Generator probabilities
-        public const float GenTrackProficiencyProb = 0.9f;
+        public const float GenTrackProficiencyProb = 0.7f;
 
 
         /* Simulated annealing */
-        // SA parameters (generated)
-        //public const int SaIterationCount = 10000000;
-        //public const int SaCheckCostFrequency = 100000;
-        //public const int SaLogFrequency = 1000000;
-        //public const int SaParameterUpdateFrequency = 100000;
-        //public const float SaInitialTemperature = 500f;
-        //public const float SaCycleInitialTemperatureMin = 50f;
-        //public const float SaCycleInitialTemperatureMax = 700f;
-        //public const float SaTemperatureReductionFactor = 0.9f;
-        //public const float SaEndCycleTemperature = 30f;
-
-        // SA parameters (Excel)
+        // SA parameters
         public const int SaIterationCount = 500000000;
         public const int SaCheckCostFrequency = 100000;
         public const int SaLogFrequency = 1000000;
@@ -178,7 +200,7 @@ namespace Thesis {
         public const float ParetoFrontMinCostDiff = 500f; // Minmum cost different to consider two solutions to be separate points on the pareto front
 
         // Operation probabilities
-        public const float AssignInternalProbCumulative = 0.5f;
+        public const float AssignInternalProbCumulative = 0.3f;
         public const float AssignExternalProbCumulative = 0.6f;
         public const float SwapProbCumulative = 0.9999f;
         public const float ToggleHotelProbCumulative = 1f;
@@ -189,8 +211,9 @@ namespace Thesis {
         public const double ShiftLengthViolationPenaltyPerMin = 5000 / 60f;
         public const double RestTimeViolationPenalty = 5000;
         public const double RestTimeViolationPenaltyPerMin = 5000 / 60f;
-        public const double ShiftCountViolationPenaltyPerShift = 20000;
+        public const double InternalShiftCountViolationPenaltyPerShift = 20000;
         public const double InvalidHotelPenalty = 20000;
+        public const double ExternalShiftCountPenaltyPerShift = 20000;
 
 
         /* File structure */
@@ -208,37 +231,85 @@ namespace Thesis {
         // Debug
         public const bool DebugUseSeededSa = true;
         public const bool DebugCheckAndLogOperations = false;
-        public const bool DebugSaLogCurrentSolution = false;
-        public const bool DebugSaLogAdditionalInfo = false;
+        public const bool DebugSaLogCurrentSolution = true;
+        public const bool DebugSaLogAdditionalInfo = true;
         public const bool DebugRunInspector = false;
         public const bool DebugRunJsonExporter = false;
         public const bool DebugRunDelaysExporter = false;
     }
 
-    class SalaryTypeInfo {
-        public readonly int StartTime;
-        public readonly bool IsWeekend;
+    class SalarySettings {
+        public int DriverTypeIndex;
+        public readonly SalaryRateBlock[] WeekdaySalaryRates;
+        public readonly float WeekendSalaryRate, TravelSalaryRate;
+        public readonly int MinPaidShiftTime; // The minimum amount of worked time that is paid per shift, for an internal driver
+        public readonly int UnpaidTravelTimePerShift; // For each shift, only travel time longer than this is paid
 
-        public SalaryTypeInfo(int startTime, bool isWeekend) {
-            StartTime = startTime;
-            IsWeekend = isWeekend;
+        public SalarySettings(SalaryRateBlock[] weekdaySalaryRates, float weekendSalaryRate, float travelSalaryRate, int minPaidShiftTime, int unpaidTravelTimePerShift) {
+            WeekdaySalaryRates = weekdaySalaryRates;
+            WeekendSalaryRate = weekendSalaryRate;
+            TravelSalaryRate = travelSalaryRate;
+            MinPaidShiftTime = minPaidShiftTime;
+            UnpaidTravelTimePerShift = unpaidTravelTimePerShift;
+            DriverTypeIndex = -1;
+        }
+
+        // Index should be set during processing
+        public void SetDriverTypeIndex(int salaryInfoIndex) {
+            DriverTypeIndex = salaryInfoIndex;
+        }
+
+        public static SalarySettings CreateByHours(SalaryRateBlock[] weekdaySalaryRates, float weekendHourlySalaryRate, float travelHourlySalaryRate, float minPaidShiftTimeHours, float unpaidTravelTimePerShiftHours) {
+            return new SalarySettings(
+                weekdaySalaryRates,
+                weekendHourlySalaryRate / Config.HourLength,
+                travelHourlySalaryRate / Config.HourLength,
+                (int)Math.Round(minPaidShiftTimeHours * Config.HourLength),
+                (int)Math.Round(unpaidTravelTimePerShiftHours * Config.HourLength)
+            );
         }
     }
 
-    class SalaryRateInfo {
+    class ExternalDriverTypeSettings {
+        public readonly string CompanyName;
+        public readonly bool IsInternational;
+        public readonly int MinShiftCount, MaxShiftCount;
+
+        public ExternalDriverTypeSettings(string companyName, bool isInternational, int minShiftCount, int maxShiftCount) {
+            CompanyName = companyName;
+            IsInternational = isInternational;
+            MinShiftCount = minShiftCount;
+            MaxShiftCount = maxShiftCount;
+        }
+    }
+
+    class TimePart {
+        public readonly int StartTime;
+        public readonly bool IsSelected;
+
+        public TimePart(int startTime, bool isWeekend) {
+            StartTime = startTime;
+            IsSelected = isWeekend;
+        }
+    }
+
+    class SalaryRateBlock {
         public readonly int StartTime;
         public readonly float SalaryRate;
         public readonly float ContinuingRate; // A shift starting in this rate block will use the continuing rate as a minimum for the entire shift
-        public readonly bool? IsNight, IsWeekend; // IsNight should be filled in for internal salaries, IsWeekend is added automatically during processing
 
-        public SalaryRateInfo(int startTime, float salaryRate, bool isContinuingRate, bool? isNight = null, bool? isWeekend = null) : this(startTime, salaryRate, isContinuingRate ? salaryRate : 0, isNight, isWeekend) { }
-
-        public SalaryRateInfo(int startTime, float salaryRate, float continuingRate, bool? isNight, bool? isWeekend) {
+        public SalaryRateBlock(int startTime, float salaryRate, float continuingRate) {
             StartTime = startTime;
             SalaryRate = salaryRate;
             ContinuingRate = continuingRate;
-            IsNight = isNight;
-            IsWeekend = isWeekend;
+        }
+
+        public static SalaryRateBlock CreateByHours(float startTimeHours, float hourlySalaryRate, bool isContinuingRate = false) {
+            return new SalaryRateBlock(
+                (int)Math.Round(startTimeHours * Config.HourLength),
+                hourlySalaryRate / Config.HourLength,
+                isContinuingRate ? hourlySalaryRate / Config.HourLength : 0f
+            );
         }
     }
 }

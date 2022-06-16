@@ -16,7 +16,7 @@ namespace Thesis {
             return CurrentOperation.CurrentPart;
         }
 
-        public static TotalInfo GetCurrentStageInfo() {
+        public static DebugTotalInfo GetCurrentStageInfo() {
             return CurrentOperation.CurrentPart.GetCurrentStageInfo();
         }
 
@@ -55,7 +55,7 @@ namespace Thesis {
 
     class OperationPart {
         OperationPartStage stage;
-        readonly TotalInfo oldNormalInfo, newNormalInfo, oldCheckedInfo, newCheckedInfo;
+        readonly DebugTotalInfo oldNormalInfo, newNormalInfo, oldCheckedInfo, newCheckedInfo;
         readonly string description;
         readonly OperationInfo operation;
         readonly Driver driver;
@@ -66,17 +66,17 @@ namespace Thesis {
             this.operation = operation;
             this.driver = driver;
             this.info = info;
-            oldNormalInfo = new TotalInfo();
-            newNormalInfo = new TotalInfo();
-            oldCheckedInfo = new TotalInfo();
-            newCheckedInfo = new TotalInfo();
+            oldNormalInfo = new DebugTotalInfo();
+            newNormalInfo = new DebugTotalInfo();
+            oldCheckedInfo = new DebugTotalInfo();
+            newCheckedInfo = new DebugTotalInfo();
         }
 
         public void SetStage(OperationPartStage stage) {
             this.stage = stage;
         }
 
-        public TotalInfo GetCurrentStageInfo() {
+        public DebugTotalInfo GetCurrentStageInfo() {
             return stage switch {
                 OperationPartStage.OldNormal => oldNormalInfo,
                 OperationPartStage.NewNormal => newNormalInfo,
@@ -86,36 +86,96 @@ namespace Thesis {
             };
         }
 
-        public void CheckErrors() {
-            TotalInfoBasic normalDiff = newNormalInfo - oldNormalInfo;
-            TotalInfoBasic checkedDiff = newCheckedInfo - oldCheckedInfo;
-            if (!TotalInfoBasic.AreEqual(normalDiff, checkedDiff)) {
-                TotalInfoBasic errorAmounts = normalDiff - checkedDiff;
+        public void CheckDriverErrors() {
+            // Check diffs
+            SaDriverInfo normalDiff = newNormalInfo.DriverInfo - oldNormalInfo.DriverInfo;
+            SaDriverInfo checkedDiff = newCheckedInfo.DriverInfo - oldCheckedInfo.DriverInfo;
+            if (!SaDriverInfo.AreEqual(normalDiff, checkedDiff)) {
+                SaDriverInfo errorAmounts = normalDiff - checkedDiff;
 
-                LogErrorHeader("Operation error");
-                LogTotalInfo("Error amounts", errorAmounts, false, false);
-                LogTotalInfo("Normal diff", normalDiff, true);
-                LogTotalInfo("Checked diff", checkedDiff, true);
-                LogTotalInfo("Old normal info", oldNormalInfo, false);
-                LogTotalInfo("New normal info", newNormalInfo, false);
-                LogTotalInfo("Old checked info", oldCheckedInfo, false);
-                LogTotalInfo("New checked info", newCheckedInfo, false);
+                LogErrorHeader("Operation error: incorrect operation diff");
+                LogInfo("Error amounts", errorAmounts, false, false);
+                LogInfo("Normal diff", normalDiff, true);
+                LogInfo("Checked diff", checkedDiff, true);
+                LogInfo("Old normal info", oldNormalInfo, false);
+                LogInfo("New normal info", newNormalInfo, false);
+                LogInfo("Old checked info", oldCheckedInfo, false);
+                LogInfo("New checked info", newCheckedInfo, false);
 
                 Console.ReadLine();
                 throw new Exception("Operation part calculations incorrect, see console");
             }
         }
 
-        public void LogErrorHeader(string title) {
+        public void CheckExternalDriverTypeErrors() {
+            // Check old value
+            if (!SaExternalDriverTypeInfo.AreEqual(oldNormalInfo.ExternalDriverTypeInfo, oldCheckedInfo.ExternalDriverTypeInfo)) {
+                SaExternalDriverTypeInfo errorAmounts = oldNormalInfo.ExternalDriverTypeInfo - oldCheckedInfo.ExternalDriverTypeInfo;
+
+                LogErrorHeader("Operation error: incorrect old values");
+                LogInfo("Error amounts", errorAmounts, false, false);
+                LogInfo("Old normal info", oldNormalInfo, false);
+                LogInfo("Old checked info", oldCheckedInfo, false);
+
+                if (driver is ExternalDriver externalDriver) {
+                    LogExternalDriverInfo(externalDriver);
+                }
+
+                Console.ReadLine();
+                throw new Exception("Operation part calculations incorrect, see console");
+            }
+
+            // Check diffs
+            SaExternalDriverTypeInfo normalDiff = newNormalInfo.ExternalDriverTypeInfo - oldNormalInfo.ExternalDriverTypeInfo;
+            SaExternalDriverTypeInfo checkedDiff = newCheckedInfo.ExternalDriverTypeInfo - oldCheckedInfo.ExternalDriverTypeInfo;
+            if (!SaExternalDriverTypeInfo.AreEqual(normalDiff, checkedDiff)) {
+                SaExternalDriverTypeInfo errorAmounts = normalDiff - checkedDiff;
+
+                LogErrorHeader("Operation error: incorrect operation diff");
+                LogInfo("Error amounts", errorAmounts, false, false);
+                LogInfo("Normal diff", normalDiff, true);
+                LogInfo("Checked diff", checkedDiff, true);
+                LogInfo("Old normal info", oldNormalInfo, false);
+                LogInfo("New normal info", newNormalInfo, false);
+                LogInfo("Old checked info", oldCheckedInfo, false);
+                LogInfo("New checked info", newCheckedInfo, false);
+
+                if (driver is ExternalDriver externalDriver) {
+                    LogExternalDriverInfo(externalDriver);
+                }
+
+                Console.ReadLine();
+                throw new Exception("Operation part calculations incorrect, see console");
+            }
+        }
+
+        void LogErrorHeader(string title) {
             Console.WriteLine("*** {0} in iteration {1} ***", title, info.IterationNum);
             Console.WriteLine("Current operation: {0}", operation.Description);
             for (int i = 0; i < operation.Parts.Count; i++) Console.WriteLine("Previous part: {0}", operation.Parts[i].description);
             Console.WriteLine("Current part: {0}", description);
         }
 
-        public static void LogTotalInfo(string title, TotalInfoBasic totalInfo, bool isDiff, bool shouldLogZeros = true) {
+        static void LogInfo(string title, DebugTotalInfoBasic totalInfo, bool isDiff, bool shouldLogZeros = true) {
             Console.WriteLine("\n* {0} *", title);
             totalInfo.Log(isDiff, shouldLogZeros);
+        }
+        static void LogInfo(string title, SaDriverInfo driverInfo, bool isDiff, bool shouldLogZeros = true) {
+            Console.WriteLine("\n* {0} *", title);
+            driverInfo.DebugLog(isDiff, shouldLogZeros);
+        }
+        static void LogInfo(string title, SaExternalDriverTypeInfo externalDriverTypeInfo, bool isDiff, bool shouldLogZeros = true) {
+            Console.WriteLine("\n* {0} *", title);
+            externalDriverTypeInfo.DebugLog(isDiff, shouldLogZeros);
+        }
+
+        static void LogExternalDriverInfo(ExternalDriver externalDriver) {
+            ExternalDriverTypeSettings externalDriverTypeSettings = Config.ExternalDriverTypes[externalDriver.ExternalDriverTypeIndex];
+            Console.WriteLine("\n* External driver type *");
+            Console.WriteLine("Company name: {0}", externalDriverTypeSettings.CompanyName);
+            Console.WriteLine("Is international: {0}", externalDriverTypeSettings.IsInternational);
+            Console.WriteLine("Min shift count: {0}", externalDriverTypeSettings.MinShiftCount);
+            Console.WriteLine("Max shift count: {0}", externalDriverTypeSettings.MaxShiftCount);
         }
 
         public static string ParseValuePairs(List<(int, int)> valuePairs) {
@@ -123,11 +183,11 @@ namespace Thesis {
         }
     }
 
-    class TotalInfo : TotalInfoBasic {
+    class DebugTotalInfo : DebugTotalInfoBasic {
         readonly List<DebugShiftInfo> shifts;
         DebugShiftInfo currentShift;
 
-        public TotalInfo() {
+        public DebugTotalInfo() {
             shifts = new List<DebugShiftInfo>();
             currentShift = new DebugShiftInfo();
         }
@@ -183,33 +243,22 @@ namespace Thesis {
         }
     }
 
-    class TotalInfoBasic {
-        public DriverInfo DriverInfo;
+    class DebugTotalInfoBasic {
+        public SaDriverInfo DriverInfo;
+        public SaExternalDriverTypeInfo ExternalDriverTypeInfo;
 
-        public void SetDriverInfo(DriverInfo driverInfo) {
+        public void SetDriverInfo(SaDriverInfo driverInfo) {
             DriverInfo = driverInfo;
         }
 
+        public void SetExternalDriverTypeInfo(SaExternalDriverTypeInfo externalDriverTypeInfo) {
+            ExternalDriverTypeInfo = externalDriverTypeInfo;
+        }
+
         public virtual void Log(bool isDiff, bool shouldLogZeros = true) {
-            DriverInfo.DebugLog(isDiff, shouldLogZeros);
+            if (DriverInfo != null) DriverInfo.DebugLog(isDiff, shouldLogZeros);
+            if (ExternalDriverTypeInfo != null) ExternalDriverTypeInfo.DebugLog(isDiff, shouldLogZeros);
         }
-
-        public static bool AreEqual(TotalInfoBasic a, TotalInfoBasic b) {
-            return DriverInfo.AreEqual(a.DriverInfo, b.DriverInfo);
-        }
-
-
-        public static TotalInfoBasic operator -(TotalInfoBasic a) {
-            return new TotalInfoBasic() {
-                DriverInfo = -a.DriverInfo,
-            };
-        }
-        public static TotalInfoBasic operator +(TotalInfoBasic a, TotalInfoBasic b) {
-            return new TotalInfoBasic() {
-                DriverInfo = a.DriverInfo + b.DriverInfo,
-            };
-        }
-        public static TotalInfoBasic operator -(TotalInfoBasic a, TotalInfoBasic b) => a + -b;
     }
 
     class DebugShiftInfo {
@@ -239,7 +288,7 @@ namespace Thesis {
 
 
     class CheckedTotal {
-        public readonly TotalInfoBasic Total = new TotalInfoBasic();
+        public readonly DebugTotalInfoBasic Total = new DebugTotalInfoBasic();
         public string DriverPathString = "";
         public List<(int, int)> ShiftLengths = new List<(int, int)>();
         public List<int> RestTimes = new List<int>();
