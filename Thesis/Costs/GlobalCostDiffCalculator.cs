@@ -45,12 +45,12 @@ namespace Thesis {
 
         static SaExternalDriverTypeInfo GetExternalDriverTypeCostDiff(ExternalDriver externalDriver, SaExternalDriverTypeInfo oldExternalDriverTypeInfo, SaDriverInfo driverInfoDiff, SaInfo info) {
             #if DEBUG
-            if (Config.DebugCheckAndLogOperations) {
+            if (AppConfig.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentOperation().StartPart(string.Format("Global cost diff for external driver {0}", externalDriver.GetId()), externalDriver);
             }
             #endif
 
-            ExternalDriverTypeSettings externalDriverTypeSettings = Config.ExternalDriverTypes[externalDriver.ExternalDriverTypeIndex];
+            ExternalDriverTypeSettings externalDriverTypeSettings = DataConfig.ExternalDriverTypes[externalDriver.ExternalDriverTypeIndex];
 
             int newShiftCount = oldExternalDriverTypeInfo.ExternalShiftCount + driverInfoDiff.ShiftCount;
             SaExternalDriverTypeInfo newExternalDriverTypeInfo = new SaExternalDriverTypeInfo() {
@@ -61,7 +61,7 @@ namespace Thesis {
             SaExternalDriverTypeInfo externalDriverTypeInfoDiff = newExternalDriverTypeInfo - oldExternalDriverTypeInfo;
 
             #if DEBUG
-            if (Config.DebugCheckAndLogOperations) {
+            if (AppConfig.DebugCheckAndLogOperations) {
                 CheckErrors(externalDriverTypeInfoDiff, driverInfoDiff, externalDriver, info);
             }
             #endif

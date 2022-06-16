@@ -13,7 +13,7 @@ namespace Thesis {
 
         public void AddPotentialShiftCountViolation(int shiftCount, ExternalDriverTypeSettings externalDriverTypeSettings) {
             ExternalShiftCountViolationAmount += Math.Max(0, externalDriverTypeSettings.MinShiftCount - shiftCount) + Math.Max(0, shiftCount - externalDriverTypeSettings.MaxShiftCount);
-            Penalty = ExternalShiftCountViolationAmount * Config.ExternalShiftCountPenaltyPerShift;
+            Penalty = ExternalShiftCountViolationAmount * SaConfig.ExternalShiftCountPenaltyPerShift;
             Cost = Penalty;
         }
 

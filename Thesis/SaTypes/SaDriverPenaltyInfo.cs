@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Thesis {
-    class DriverPenaltyInfo {
+    class SaDriverPenaltyInfo {
         public int PrecedenceViolationCount, ShiftLengthViolationCount, ShiftLengthViolationAmount, RestTimeViolationCount, RestTimeViolationAmount, ShiftCountViolationAmount, InvalidHotelCount;
 
         /* Adding violations */
@@ -27,7 +27,7 @@ namespace Thesis {
         }
 
         public void AddPossibleShiftCountViolation(int shiftCount) {
-            int shiftCountViolation = Math.Max(0, shiftCount - Config.DriverMaxShiftCount);
+            int shiftCountViolation = Math.Max(0, shiftCount - RulesConfig.DriverMaxShiftCount);
             if (shiftCountViolation > 0) {
                 ShiftCountViolationAmount += shiftCountViolation;
             }
@@ -42,19 +42,19 @@ namespace Thesis {
 
         public double GetPenalty() {
             double penalty = 0;
-            penalty += PrecedenceViolationCount * Config.PrecendenceViolationPenalty;
-            penalty += ShiftLengthViolationCount * Config.ShiftLengthViolationPenalty + ShiftLengthViolationAmount * Config.ShiftLengthViolationPenaltyPerMin;
-            penalty += RestTimeViolationCount * Config.RestTimeViolationPenalty + RestTimeViolationAmount * Config.RestTimeViolationPenaltyPerMin;
-            penalty += ShiftCountViolationAmount * Config.InternalShiftCountViolationPenaltyPerShift;
-            penalty += InvalidHotelCount * Config.InvalidHotelPenalty;
+            penalty += PrecedenceViolationCount * SaConfig.PrecendenceViolationPenalty;
+            penalty += ShiftLengthViolationCount * SaConfig.ShiftLengthViolationPenalty + ShiftLengthViolationAmount * SaConfig.ShiftLengthViolationPenaltyPerMin;
+            penalty += RestTimeViolationCount * SaConfig.RestTimeViolationPenalty + RestTimeViolationAmount * SaConfig.RestTimeViolationPenaltyPerMin;
+            penalty += ShiftCountViolationAmount * SaConfig.InternalShiftCountViolationPenaltyPerShift;
+            penalty += InvalidHotelCount * SaConfig.InvalidHotelPenalty;
             return penalty;
         }
 
 
         /* Operators */
 
-        public static DriverPenaltyInfo operator -(DriverPenaltyInfo a) {
-            return new DriverPenaltyInfo() {
+        public static SaDriverPenaltyInfo operator -(SaDriverPenaltyInfo a) {
+            return new SaDriverPenaltyInfo() {
                 PrecedenceViolationCount = -a.PrecedenceViolationCount,
                 ShiftLengthViolationCount = -a.ShiftLengthViolationCount,
                 ShiftLengthViolationAmount = -a.ShiftLengthViolationAmount,
@@ -64,8 +64,8 @@ namespace Thesis {
                 InvalidHotelCount = -a.InvalidHotelCount,
             };
         }
-        public static DriverPenaltyInfo operator +(DriverPenaltyInfo a, DriverPenaltyInfo b) {
-            return new DriverPenaltyInfo() {
+        public static SaDriverPenaltyInfo operator +(SaDriverPenaltyInfo a, SaDriverPenaltyInfo b) {
+            return new SaDriverPenaltyInfo() {
                 PrecedenceViolationCount = a.PrecedenceViolationCount + b.PrecedenceViolationCount,
                 ShiftLengthViolationCount = a.ShiftLengthViolationCount + b.ShiftLengthViolationCount,
                 ShiftLengthViolationAmount = a.ShiftLengthViolationAmount + b.ShiftLengthViolationAmount,
@@ -75,9 +75,9 @@ namespace Thesis {
                 InvalidHotelCount = a.InvalidHotelCount + b.InvalidHotelCount,
             };
         }
-        public static DriverPenaltyInfo operator -(DriverPenaltyInfo a, DriverPenaltyInfo b) => a + -b;
+        public static SaDriverPenaltyInfo operator -(SaDriverPenaltyInfo a, SaDriverPenaltyInfo b) => a + -b;
 
-        public static bool AreEqual(DriverPenaltyInfo a, DriverPenaltyInfo b) {
+        public static bool AreEqual(SaDriverPenaltyInfo a, SaDriverPenaltyInfo b) {
             return (
                 a.PrecedenceViolationCount == b.PrecedenceViolationCount &&
                 a.ShiftLengthViolationCount == b.ShiftLengthViolationCount &&

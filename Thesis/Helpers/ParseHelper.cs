@@ -85,7 +85,7 @@ namespace Thesis {
         public static string GetPenaltyString(SaDriverInfo driverInfo) {
             return GetPenaltyString(driverInfo.Stats.Penalty, driverInfo.PenaltyInfo);
         }
-        public static string GetPenaltyString(double penalty, DriverPenaltyInfo penaltyInfo, int externalShiftCountViolationAmount = 0) {
+        public static string GetPenaltyString(double penalty, SaDriverPenaltyInfo penaltyInfo, int externalShiftCountViolationAmount = 0) {
             string penaltyString = string.Format("{0,6}", "-");
             if (penalty > 0) {
                 List<string> penaltyTypes = new List<string>();
@@ -158,7 +158,7 @@ namespace Thesis {
         }
         public static void LogDebugValue(double value, string name, bool isDiff, bool shouldLogZeros) {
             string diffStr = isDiff ? " diff" : "";
-            bool isZero = Math.Abs(value) < Config.FloatingPointMargin;
+            bool isZero = Math.Abs(value) < MiscConfig.FloatingPointMargin;
             if (shouldLogZeros || !isZero) Console.WriteLine("{0}{1}: {2}", name, diffStr, ToString(value));
         }
         public static void LogDebugValue(int? value, string name, bool isDiff, bool shouldLogZeros) {
@@ -170,7 +170,7 @@ namespace Thesis {
         public static void LogDebugValue(double? value, string name, bool isDiff, bool shouldLogZeros) {
             string valueStr = value.HasValue ? ToString(value.Value) : "-";
             string diffStr = isDiff ? " diff" : "";
-            bool isZero = !value.HasValue || Math.Abs(value.Value) < Config.FloatingPointMargin;
+            bool isZero = !value.HasValue || Math.Abs(value.Value) < MiscConfig.FloatingPointMargin;
             if (shouldLogZeros || !isZero) Console.WriteLine("{0}{1}: {2}", name, diffStr, valueStr);
         }
     }

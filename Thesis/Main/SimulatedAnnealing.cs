@@ -15,12 +15,12 @@ namespace Thesis {
         public SimulatedAnnealing(Instance instance) {
             // Initialise info
             info = new SaInfo(instance);
-            info.Temperature = Config.SaInitialTemperature;
-            info.SatisfactionFactor = (float)info.Instance.Rand.NextDouble(Config.SaCycleMinSatisfactionFactor, Config.SaCycleMaxSatisfactionFactor);
+            info.Temperature = SaConfig.SaInitialTemperature;
+            info.SatisfactionFactor = (float)info.Instance.Rand.NextDouble(SaConfig.SaCycleMinSatisfactionFactor, SaConfig.SaCycleMaxSatisfactionFactor);
             info.IsHotelStayAfterTrip = new bool[instance.Trips.Length];
 
             // Initialise best info
-            bestInfoBySatisfaction = new SaInfo[Config.PercentageFactor];
+            bestInfoBySatisfaction = new SaInfo[MiscConfig.PercentageFactor];
             for (int i = 0; i < bestInfoBySatisfaction.Length; i++) {
                 SaInfo initialBestInfo = new SaInfo(instance);
                 initialBestInfo.TotalInfo = new SaTotalInfo() {
@@ -38,7 +38,7 @@ namespace Thesis {
 
             #if DEBUG
             // Initialise debugger
-            if (Config.DebugCheckAndLogOperations) {
+            if (AppConfig.DebugCheckAndLogOperations) {
                 SaDebugger.ResetIteration(info);
                 SaDebugger.GetCurrentOperation().StartPart("Initial assignment", null);
                 SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.OldChecked);
@@ -50,7 +50,7 @@ namespace Thesis {
 
             #if DEBUG
             // Reset iteration in debugger after initial assignment cost
-            if (Config.DebugCheckAndLogOperations) {
+            if (AppConfig.DebugCheckAndLogOperations) {
                 SaDebugger.ResetIteration(info);
             }
             #endif
@@ -68,13 +68,13 @@ namespace Thesis {
 
             XorShiftRandom fastRand = info.Instance.Rand;
 
-            while (info.IterationNum < Config.SaIterationCount) {
+            while (info.IterationNum < SaConfig.SaIterationCount) {
                 // Pick a random operation based on the configured probabilities
                 double operationDouble = fastRand.NextDouble();
                 AbstractOperation operation;
-                if (operationDouble < Config.AssignInternalProbCumulative) operation = AssignInternalOperation.CreateRandom(info);
-                else if (operationDouble < Config.AssignExternalProbCumulative) operation = AssignExternalOperation.CreateRandom(info);
-                else if (operationDouble < Config.SwapProbCumulative) operation = SwapOperation.CreateRandom(info);
+                if (operationDouble < SaConfig.AssignInternalProbCumulative) operation = AssignInternalOperation.CreateRandom(info);
+                else if (operationDouble < SaConfig.AssignExternalProbCumulative) operation = AssignExternalOperation.CreateRandom(info);
+                else if (operationDouble < SaConfig.SwapProbCumulative) operation = SwapOperation.CreateRandom(info);
                 else operation = ToggleHotelOperation.CreateRandom(info);
 
                 SaTotalInfo totalInfoDiff = operation.GetCostDiff();
@@ -86,7 +86,7 @@ namespace Thesis {
                 if (isAccepted) {
                     operation.Execute();
 
-                    int satisfactionLevel = (int)Math.Round(info.TotalInfo.Stats.SatisfactionScore.Value * Config.PercentageFactor);
+                    int satisfactionLevel = (int)Math.Round(info.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor);
                     if (info.TotalInfo.Stats.Penalty < 0.01 && info.TotalInfo.Stats.Cost < bestInfoBySatisfaction[satisfactionLevel].TotalInfo.Stats.Cost) {
                         info.LastImprovementIteration = info.IterationNum;
                         info.HasImprovementSinceLog = true;
@@ -96,7 +96,7 @@ namespace Thesis {
 
                         #if DEBUG
                         // Set debugger to next iteration
-                        if (Config.DebugCheckAndLogOperations) {
+                        if (AppConfig.DebugCheckAndLogOperations) {
                             if (info.TotalInfo.Stats.Penalty > 0.01) throw new Exception("New best solution is invalid");
                         }
                         #endif
@@ -119,13 +119,13 @@ namespace Thesis {
 
                 #if DEBUG
                 // Set debugger to next iteration
-                if (Config.DebugCheckAndLogOperations) {
+                if (AppConfig.DebugCheckAndLogOperations) {
                     SaDebugger.NextIteration(info);
                 }
                 #endif
 
                 // Log
-                if (info.IterationNum % Config.SaLogFrequency == 0) {
+                if (info.IterationNum % SaConfig.SaLogFrequency == 0) {
                     // Check cost to remove floating point imprecisions
                     TotalCostCalculator.ProcessAssignmentCost(info);
 
@@ -133,14 +133,14 @@ namespace Thesis {
                 }
 
                 // Update temperature and penalty factor
-                if (info.IterationNum % Config.SaParameterUpdateFrequency == 0) {
-                    info.Temperature *= Config.SaTemperatureReductionFactor;
+                if (info.IterationNum % SaConfig.SaParameterUpdateFrequency == 0) {
+                    info.Temperature *= SaConfig.SaTemperatureReductionFactor;
 
                     // Check if we should end the cycle
-                    if (info.Temperature <= Config.SaEndCycleTemperature) {
+                    if (info.Temperature <= SaConfig.SaEndCycleTemperature) {
                         info.CycleNum++;
-                        info.Temperature = (float)fastRand.NextDouble(Config.SaCycleMinInitialTemperature, Config.SaCycleMaxInitialTemperature);
-                        info.SatisfactionFactor = (float)fastRand.NextDouble(Config.SaCycleMinSatisfactionFactor, Config.SaCycleMaxSatisfactionFactor);
+                        info.Temperature = (float)fastRand.NextDouble(SaConfig.SaCycleMinInitialTemperature, SaConfig.SaCycleMaxInitialTemperature);
+                        info.SatisfactionFactor = (float)fastRand.NextDouble(SaConfig.SaCycleMinSatisfactionFactor, SaConfig.SaCycleMaxSatisfactionFactor);
                     }
 
                     TotalCostCalculator.ProcessAssignmentCost(info);
@@ -148,7 +148,7 @@ namespace Thesis {
 
                 #if DEBUG
                 // Reset iteration in debugger after additional checks
-                if (Config.DebugCheckAndLogOperations) {
+                if (AppConfig.DebugCheckAndLogOperations) {
                     SaDebugger.ResetIteration(info);
                 }
                 #endif
@@ -156,7 +156,7 @@ namespace Thesis {
 
             stopwatch.Stop();
             float saDuration = stopwatch.ElapsedMilliseconds / 1000f;
-            float saSpeed = Config.SaIterationCount / saDuration;
+            float saSpeed = SaConfig.SaIterationCount / saDuration;
             Console.WriteLine("SA finished {0} iterations in {1} s  |  Speed: {2} iterations/s", ParseHelper.LargeNumToString(info.IterationNum), ParseHelper.ToString(saDuration), ParseHelper.LargeNumToString(saSpeed));
 
             // Get Pareto-optimal front
@@ -176,7 +176,7 @@ namespace Thesis {
 
             // Create output subfolder
             string dateStr = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
-            string outputSubfolderPath = Path.Combine(Config.OutputFolder, dateStr);
+            string outputSubfolderPath = Path.Combine(AppConfig.OutputFolder, dateStr);
             Directory.CreateDirectory(outputSubfolderPath);
 
             // Log summary to file
@@ -231,14 +231,14 @@ namespace Thesis {
             // Log basic info
             Console.WriteLine("# {0,4}    Last.impr: {1,4}    Speed: {2,6}    Cycle: {3,3}    Cost: {4,6} ({5,2}%)    Raw: {6,6}    Temp: {7,4}    Sat.f: {8,4}   Penalty: {9,-33}    {10}{11}", ParseHelper.LargeNumToString(info.IterationNum), lastImprovementIterationStr, speedStr, info.CycleNum, ParseHelper.LargeNumToString(logCost, "0.0"), ParseHelper.ToString(info.TotalInfo.Stats.SatisfactionScore.Value * 100, "0"), ParseHelper.LargeNumToString(info.TotalInfo.Stats.RawCost, "0.0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(info.TotalInfo), paretoFrontStr, hasImprovementStr);
 
-            if (Config.DebugSaLogAdditionalInfo) {
+            if (AppConfig.DebugSaLogAdditionalInfo) {
                 Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriverInfos.Select(driverInfo => driverInfo.WorkedTime).ToArray()));
                 Console.WriteLine("Contract time factors: {0}", ParseHelper.ToString(info.Instance.InternalDrivers.Select(driver => (double)info.DriverInfos[driver.AllDriversIndex].WorkedTime / driver.ContractTime).ToArray()));
                 Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(info.DriverInfos.Select(driverInfo => driverInfo.ShiftCount).ToArray()));
                 Console.WriteLine("External type shift counts: {0}", ParseHelper.ToString(info.ExternalDriverTypeInfos.Select(externalDriverTypeInfo => externalDriverTypeInfo.ExternalShiftCount).ToArray()));
             }
 
-            if (Config.DebugSaLogCurrentSolution) {
+            if (AppConfig.DebugSaLogCurrentSolution) {
                 Console.WriteLine("Current solution: {0}", ParseHelper.AssignmentToString(info));
             }
 
@@ -256,7 +256,7 @@ namespace Thesis {
                 SaInfo bestInfoOfLevel = bestInfoBySatisfaction[satisfactionLevel];
                 if (bestInfoOfLevel.TotalInfo.Stats.Cost == double.MaxValue) continue;
 
-                if (bestOfPrevLevel == null || bestInfoOfLevel.TotalInfo.Stats.Cost < bestOfPrevLevel.TotalInfo.Stats.Cost - Config.ParetoFrontMinCostDiff) {
+                if (bestOfPrevLevel == null || bestInfoOfLevel.TotalInfo.Stats.Cost < bestOfPrevLevel.TotalInfo.Stats.Cost - SaConfig.ParetoFrontMinCostDiff) {
                     paretoFront.Add(bestInfoOfLevel);
                     bestOfPrevLevel = bestInfoOfLevel;
                 }
@@ -270,7 +270,7 @@ namespace Thesis {
         }
 
         static string ParetoPointToString(SaInfo paretoPoint) {
-            return string.Format("{0}% {1}", ParseHelper.ToString(paretoPoint.TotalInfo.Stats.SatisfactionScore.Value * Config.PercentageFactor, "0"), ParseHelper.LargeNumToString(paretoPoint.TotalInfo.Stats.Cost, "0"));
+            return string.Format("{0}% {1}", ParseHelper.ToString(paretoPoint.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor, "0"), ParseHelper.LargeNumToString(paretoPoint.TotalInfo.Stats.Cost, "0"));
         }
 
         Driver[] GetInitialAssignment() {

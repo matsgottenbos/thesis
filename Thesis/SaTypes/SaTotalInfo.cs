@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace Thesis {
     class SaTotalInfo {
         public SaStats Stats;
-        public DriverPenaltyInfo PenaltyInfo;
+        public SaDriverPenaltyInfo PenaltyInfo;
         public int ExternalShiftCountViolationAmount;
 
         public SaTotalInfo() {
             Stats = new SaStats();
-            PenaltyInfo = new DriverPenaltyInfo();
+            PenaltyInfo = new SaDriverPenaltyInfo();
         }
 
 
@@ -51,7 +51,7 @@ namespace Thesis {
         public static bool AreEqual(SaTotalInfo a, SaTotalInfo b) {
             return (
                 SaStats.AreEqual(a.Stats, b.Stats) &&
-                DriverPenaltyInfo.AreEqual(a.PenaltyInfo, b.PenaltyInfo) &&
+                SaDriverPenaltyInfo.AreEqual(a.PenaltyInfo, b.PenaltyInfo) &&
                 a.ExternalShiftCountViolationAmount == b.ExternalShiftCountViolationAmount
             );
         }

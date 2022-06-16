@@ -18,12 +18,12 @@ namespace Thesis {
 
             // Determine driver satisfaction
             double driverSatisfaction = 0;
-            driverSatisfaction += Config.SatCriteriumHotels.GetSatisfaction(driverInfo.HotelCount, driver);
-            driverSatisfaction += Config.SatCriteriumNightShifts.GetSatisfaction(driverInfo.NightShiftCountByCompanyRules, driver);
-            driverSatisfaction += Config.SatCriteriumWeekendShifts.GetSatisfaction(driverInfo.WeekendShiftCountByCompanyRules, driver);
-            driverSatisfaction += Config.SatCriteriumTravelTime.GetSatisfaction(driverInfo.TravelTime, driver);
-            driverSatisfaction += Config.SatCriteriumDuplicateRoutes.GetSatisfaction(duplicateRouteCount, driver);
-            driverSatisfaction += Config.SatCriteriumConsecutiveFreeDays.GetSatisfaction((driverInfo.SingleFreeDays, driverInfo.DoubleFreeDays), driver);
+            driverSatisfaction += RulesConfig.SatCriteriumHotels.GetSatisfaction(driverInfo.HotelCount, driver);
+            driverSatisfaction += RulesConfig.SatCriteriumNightShifts.GetSatisfaction(driverInfo.NightShiftCountByCompanyRules, driver);
+            driverSatisfaction += RulesConfig.SatCriteriumWeekendShifts.GetSatisfaction(driverInfo.WeekendShiftCountByCompanyRules, driver);
+            driverSatisfaction += RulesConfig.SatCriteriumTravelTime.GetSatisfaction(driverInfo.TravelTime, driver);
+            driverSatisfaction += RulesConfig.SatCriteriumDuplicateRoutes.GetSatisfaction(duplicateRouteCount, driver);
+            driverSatisfaction += RulesConfig.SatCriteriumConsecutiveFreeDays.GetSatisfaction((driverInfo.SingleFreeDays, driverInfo.DoubleFreeDays), driver);
             return driverSatisfaction;
         }
 

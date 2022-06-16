@@ -19,7 +19,7 @@ namespace Thesis {
 
         void Init(string debugName) {
             string dateStr = string.Format("{0}-{1}", DateTime.Now.ToString("yyyy-MM-dd-HH-mm"), debugName);
-            outputSubfolderPath = Path.Combine(Config.OutputFolder, dateStr);
+            outputSubfolderPath = Path.Combine(AppConfig.OutputFolder, dateStr);
             Directory.CreateDirectory(outputSubfolderPath);
         }
 

@@ -20,7 +20,7 @@ namespace Thesis {
             IEnumerable<DutyActivityModel> activities = context.DutyActivities.Where(activity => activity.PlannedStart >= activityStartMin && activity.PlannedStart <= activityStartMax).OrderBy(duty => duty.PlannedStart);
             foreach (DutyActivityModel activity in activities) {
                 // Include only the selected railway undertakings
-                if (!Config.ExcelIncludedRailwayUndertakings.Contains(activity.RailwayUndertaking)) continue;
+                if (!DataConfig.ExcelIncludedRailwayUndertakings.Contains(activity.RailwayUndertaking)) continue;
 
                 string name = activity.DutyNo;
                 string description = activity.ActivityDescriptionEN;
@@ -55,7 +55,7 @@ namespace Thesis {
             jsonObj["activities"] = new JArray(delayInfos.Select(delayInfo => delayInfo.ToJson()));
 
             string jsonStr = jsonObj.ToString();
-            string fileName = Path.Combine(Config.OutputFolder, "delays.json");
+            string fileName = Path.Combine(AppConfig.OutputFolder, "delays.json");
             File.WriteAllText(fileName, jsonStr);
             Console.WriteLine("Export done");
         }

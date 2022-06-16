@@ -20,8 +20,8 @@ namespace Thesis {
             }
             info.TotalInfo.Stats.SatisfactionScore = SatisfactionCalculator.GetSatisfactionScore(info);
 
-            info.ExternalDriverTypeInfos = new SaExternalDriverTypeInfo[Config.ExternalDriverTypes.Length];
-            for (int externalDriverTypeIndex = 0; externalDriverTypeIndex < Config.ExternalDriverTypes.Length; externalDriverTypeIndex++) {
+            info.ExternalDriverTypeInfos = new SaExternalDriverTypeInfo[DataConfig.ExternalDriverTypes.Length];
+            for (int externalDriverTypeIndex = 0; externalDriverTypeIndex < DataConfig.ExternalDriverTypes.Length; externalDriverTypeIndex++) {
                 SaExternalDriverTypeInfo externalDriverTypeInfo = GetExternalDriverTypeInfo(info.DriverInfos, externalDriverTypeIndex, info);
                 info.ExternalDriverTypeInfos[externalDriverTypeIndex] = externalDriverTypeInfo;
                 info.TotalInfo.AddExternalDriverTypeInfo(externalDriverTypeInfo);
@@ -49,7 +49,7 @@ namespace Thesis {
         }
 
         public static SaExternalDriverTypeInfo GetExternalDriverTypeInfo(SaDriverInfo[] driverInfos, int externalDriverTypeIndex, SaInfo info) {
-            ExternalDriverTypeSettings externalDriverTypeSettings = Config.ExternalDriverTypes[externalDriverTypeIndex];
+            ExternalDriverTypeSettings externalDriverTypeSettings = DataConfig.ExternalDriverTypes[externalDriverTypeIndex];
             ExternalDriver[] externalDriversOfType = info.Instance.ExternalDriversByType[externalDriverTypeIndex];
             int shiftCount = 0;
             for (int externalDriverOfTypeIndex = 0; externalDriverOfTypeIndex < externalDriversOfType.Length; externalDriverOfTypeIndex++) {

@@ -21,7 +21,7 @@ namespace Thesis {
 
         public override SaTotalInfo GetCostDiff() {
             #if DEBUG
-            if (Config.DebugCheckAndLogOperations) {
+            if (AppConfig.DebugCheckAndLogOperations) {
                 string templateStr = isAddition ? "Add hotel stay to trip {0} with driver {1}" : "Remove hotel stay from trip {0} with driver {1}";
                 SaDebugger.GetCurrentOperation().Description = string.Format(templateStr, trip.Index, driver.GetId());
             }

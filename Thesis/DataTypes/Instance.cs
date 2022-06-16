@@ -52,7 +52,7 @@ namespace Thesis {
                     if (plannedTravelTimeBetween == 0) {
                         expectedCarTravelTimes[location1Index, location2Index] = 0;
                     } else {
-                        expectedCarTravelTimes[location1Index, location2Index] = Config.TravelDelayExpectedFunc(plannedTravelTimeBetween);
+                        expectedCarTravelTimes[location1Index, location2Index] = RulesConfig.TravelDelayExpectedFunc(plannedTravelTimeBetween);
                     }
                 }
             }
@@ -102,7 +102,7 @@ namespace Thesis {
                 Trip trip1 = trips[trip1Index];
                 for (int trip2Index = trip1Index; trip2Index < trips.Length; trip2Index++) {
                     Trip trip2 = trips[trip2Index];
-                    tripsAreSameShift[trip1.Index, trip2.Index] = WaitingTime(trip1, trip2) <= Config.ShiftWaitingTimeThreshold;
+                    tripsAreSameShift[trip1.Index, trip2.Index] = WaitingTime(trip1, trip2) <= SaConfig.ShiftWaitingTimeThreshold;
                 }
             }
 
@@ -152,22 +152,22 @@ namespace Thesis {
 
             double robustnessCost;
             if (areSameDuty) {
-                robustnessCost = conflictProb * Config.RobustnessCostFactorSameDuty;
+                robustnessCost = conflictProb * RulesConfig.RobustnessCostFactorSameDuty;
             } else {
                 if (areSameProject) {
-                    robustnessCost = conflictProb * Config.RobustnessCostFactorSameProject;
+                    robustnessCost = conflictProb * RulesConfig.RobustnessCostFactorSameProject;
                 } else {
-                    robustnessCost = conflictProb * Config.RobustnessCostFactorDifferentProject;
+                    robustnessCost = conflictProb * RulesConfig.RobustnessCostFactorDifferentProject;
                 }
             }
             return (float)robustnessCost;
         }
 
         static double GetConflictProbability(int plannedDuration, int waitingTime) {
-            double meanDelay = Config.TripMeanDelayFunc(plannedDuration);
-            double delayAlpha = Config.TripDelayGammaDistributionAlphaFunc(meanDelay);
-            double delayBeta = Config.TripDelayGammaDistributionBetaFunc(meanDelay);
-            float delayProb = Config.TripDelayProbability;
+            double meanDelay = RulesConfig.TripMeanDelayFunc(plannedDuration);
+            double delayAlpha = RulesConfig.TripDelayGammaDistributionAlphaFunc(meanDelay);
+            double delayBeta = RulesConfig.TripDelayGammaDistributionBetaFunc(meanDelay);
+            float delayProb = RulesConfig.TripDelayProbability;
             double conflictProbWhenDelayed = 1 - Gamma.CDF(delayAlpha, delayBeta, waitingTime);
             double conflictProb = delayProb * conflictProbWhenDelayed;
             return conflictProb;
@@ -194,7 +194,7 @@ namespace Thesis {
                 int contractTime = internalDriverContractTimes[internalDriverIndex];
                 bool isInternational = internalDriverIsInternational[internalDriverIndex];
 
-                SalarySettings salaryInfo = isInternational ? Config.InternalInternationalSalaryInfo : Config.InternalNationalSalaryInfo;
+                SalarySettings salaryInfo = isInternational ? SalaryConfig.InternalInternationalSalaryInfo : SalaryConfig.InternalNationalSalaryInfo;
 
                 internalDrivers[internalDriverIndex] = new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, homeTravelTimes, trackProficiencies, contractTime, salaryInfo);
             }
@@ -202,12 +202,12 @@ namespace Thesis {
         }
 
         static ExternalDriver[][] CreateExternalDrivers(int[][] externalDriversHomeTravelTimes, int indexOffset) {
-            ExternalDriver[][] externalDriversByType = new ExternalDriver[Config.ExternalDriverTypes.Length][];
+            ExternalDriver[][] externalDriversByType = new ExternalDriver[DataConfig.ExternalDriverTypes.Length][];
             int allDriverIndex = indexOffset;
-            for (int externalDriverTypeIndex = 0; externalDriverTypeIndex < Config.ExternalDriverTypes.Length; externalDriverTypeIndex++) {
-                ExternalDriverTypeSettings externalCompanyInfo = Config.ExternalDriverTypes[externalDriverTypeIndex];
+            for (int externalDriverTypeIndex = 0; externalDriverTypeIndex < DataConfig.ExternalDriverTypes.Length; externalDriverTypeIndex++) {
+                ExternalDriverTypeSettings externalCompanyInfo = DataConfig.ExternalDriverTypes[externalDriverTypeIndex];
                 int[] homeTravelTimes = externalDriversHomeTravelTimes[externalDriverTypeIndex];
-                SalarySettings salaryInfo = externalCompanyInfo.IsInternational ? Config.ExternalInternationalSalaryInfo : Config.ExternalNationalSalaryInfo;
+                SalarySettings salaryInfo = externalCompanyInfo.IsInternational ? SalaryConfig.ExternalInternationalSalaryInfo : SalaryConfig.ExternalNationalSalaryInfo;
 
                 ExternalDriver[] currentTypeDrivers = new ExternalDriver[externalCompanyInfo.MaxShiftCount];
                 for (int indexInType = 0; indexInType < externalCompanyInfo.MaxShiftCount; indexInType++) {
@@ -236,10 +236,10 @@ namespace Thesis {
 
                     // Determine driving costs for driver types
                     SalarySettings[] salarySettingsByDriverType = new SalarySettings[] {
-                        Config.InternalNationalSalaryInfo,
-                        Config.InternalInternationalSalaryInfo,
-                        Config.ExternalNationalSalaryInfo,
-                        Config.ExternalInternationalSalaryInfo,
+                        SalaryConfig.InternalNationalSalaryInfo,
+                        SalaryConfig.InternalInternationalSalaryInfo,
+                        SalaryConfig.ExternalNationalSalaryInfo,
+                        SalaryConfig.ExternalInternationalSalaryInfo,
                     };
                     float[] drivingCostsByDriverType = new float[salarySettingsByDriverType.Length];
                     for (int driverTypeIndex = 0; driverTypeIndex < salarySettingsByDriverType.Length; driverTypeIndex++) {
@@ -251,19 +251,19 @@ namespace Thesis {
                     // Get time in night and weekend
                     (int drivingTimeAtNight, int drivingTimeInWeekend) = GetShiftNightWeekendTime(firstTripInternal, lastTripInternal, timeframeLength);
 
-                    bool isNightShiftByLaw = Config.IsNightShiftByLawFunc(drivingTimeAtNight, drivingTime);
-                    bool isNightShiftByCompanyRules = Config.IsNightShiftByCompanyRulesFunc(drivingTimeAtNight, drivingTime);
-                    bool isWeekendShiftByCompanyRules = Config.IsWeekendShiftByCompanyRulesFunc(drivingTimeInWeekend, drivingTime);
+                    bool isNightShiftByLaw = RulesConfig.IsNightShiftByLawFunc(drivingTimeAtNight, drivingTime);
+                    bool isNightShiftByCompanyRules = RulesConfig.IsNightShiftByCompanyRulesFunc(drivingTimeAtNight, drivingTime);
+                    bool isWeekendShiftByCompanyRules = RulesConfig.IsWeekendShiftByCompanyRulesFunc(drivingTimeInWeekend, drivingTime);
 
                     int maxShiftLengthWithoutTravel, maxShiftLengthWithTravel, minRestTimeAfter;
                     if (isNightShiftByLaw) {
-                        maxShiftLengthWithoutTravel = Config.NightShiftMaxLengthWithoutTravel;
-                        maxShiftLengthWithTravel = Config.NightShiftMaxLengthWithTravel;
-                        minRestTimeAfter = Config.NightShiftMinRestTime;
+                        maxShiftLengthWithoutTravel = RulesConfig.NightShiftMaxLengthWithoutTravel;
+                        maxShiftLengthWithTravel = RulesConfig.NightShiftMaxLengthWithTravel;
+                        minRestTimeAfter = RulesConfig.NightShiftMinRestTime;
                     } else {
-                        maxShiftLengthWithoutTravel = Config.NormalShiftMaxLengthWithoutTravel;
-                        maxShiftLengthWithTravel = Config.NormalShiftMaxLengthWithTravel;
-                        minRestTimeAfter = Config.NormalShiftMinRestTime;
+                        maxShiftLengthWithoutTravel = RulesConfig.NormalShiftMaxLengthWithoutTravel;
+                        maxShiftLengthWithTravel = RulesConfig.NormalShiftMaxLengthWithTravel;
+                        minRestTimeAfter = RulesConfig.NormalShiftMinRestTime;
                     }
 
                     shiftInfos[firstTripIndex, lastTripIndex] = new ShiftInfo(drivingTime, maxShiftLengthWithoutTravel, maxShiftLengthWithTravel, minRestTimeAfter, drivingCostsByDriverType, isNightShiftByLaw, isNightShiftByCompanyRules, isWeekendShiftByCompanyRules);
@@ -275,25 +275,25 @@ namespace Thesis {
 
         static float GetDrivingCost(Trip firstTripInternal, Trip lastTripInternal, SalarySettings salaryInfo, int timeframeLength) {
             // Repeat salary rate to cover entire week
-            int timeframeDayCount = (int)Math.Floor((float)timeframeLength / Config.DayLength) + 1;
+            int timeframeDayCount = (int)Math.Floor((float)timeframeLength / MiscConfig.DayLength) + 1;
             List<SalaryRateBlock> processedSalaryRates = new List<SalaryRateBlock>();
             int weekPartIndex = 0;
-            bool isCurrentlyWeekend = Config.WeekPartsForWeekend[weekPartIndex].IsSelected;
+            bool isCurrentlyWeekend = RulesConfig.WeekPartsForWeekend[weekPartIndex].IsSelected;
             for (int dayIndex = 0; dayIndex < timeframeDayCount; dayIndex++) {
                 for (int salaryRateIndex = 0; salaryRateIndex < salaryInfo.WeekdaySalaryRates.Length; salaryRateIndex++) {
-                    int rateStartTime = dayIndex * Config.DayLength + salaryInfo.WeekdaySalaryRates[salaryRateIndex].StartTime;
+                    int rateStartTime = dayIndex * MiscConfig.DayLength + salaryInfo.WeekdaySalaryRates[salaryRateIndex].StartTime;
 
-                    while (weekPartIndex + 1 < Config.WeekPartsForWeekend.Length && Config.WeekPartsForWeekend[weekPartIndex + 1].StartTime <= rateStartTime) {
+                    while (weekPartIndex + 1 < RulesConfig.WeekPartsForWeekend.Length && RulesConfig.WeekPartsForWeekend[weekPartIndex + 1].StartTime <= rateStartTime) {
                         weekPartIndex++;
-                        isCurrentlyWeekend = Config.WeekPartsForWeekend[weekPartIndex].IsSelected;
+                        isCurrentlyWeekend = RulesConfig.WeekPartsForWeekend[weekPartIndex].IsSelected;
 
                         SalaryRateBlock previousSalaryRateInfo = salaryRateIndex > 0 ? salaryInfo.WeekdaySalaryRates[salaryRateIndex - 1] : new SalaryRateBlock(-1, 0, 0);
                         if (isCurrentlyWeekend) {
                             // Start weekend within previous salary rate
-                            processedSalaryRates.Add(new SalaryRateBlock(Config.WeekPartsForWeekend[weekPartIndex].StartTime, salaryInfo.WeekendSalaryRate, previousSalaryRateInfo.ContinuingRate));
+                            processedSalaryRates.Add(new SalaryRateBlock(RulesConfig.WeekPartsForWeekend[weekPartIndex].StartTime, salaryInfo.WeekendSalaryRate, previousSalaryRateInfo.ContinuingRate));
                         } else {
                             // End weekend within previous salary rate
-                            processedSalaryRates.Add(new SalaryRateBlock(Config.WeekPartsForWeekend[weekPartIndex].StartTime, previousSalaryRateInfo.SalaryRate, previousSalaryRateInfo.ContinuingRate));
+                            processedSalaryRates.Add(new SalaryRateBlock(RulesConfig.WeekPartsForWeekend[weekPartIndex].StartTime, previousSalaryRateInfo.SalaryRate, previousSalaryRateInfo.ContinuingRate));
                         }
                     }
 
@@ -333,12 +333,12 @@ namespace Thesis {
 
         static (int, int) GetShiftNightWeekendTime(Trip firstTripInternal, Trip lastTripInternal, int timeframeLength) {
             // Repeat day parts for night info to cover entire week
-            int timeframeDayCount = (int)Math.Floor((float)timeframeLength / Config.DayLength) + 1;
+            int timeframeDayCount = (int)Math.Floor((float)timeframeLength / MiscConfig.DayLength) + 1;
             List<TimePart> weekPartsForNight = new List<TimePart>();
             for (int dayIndex = 0; dayIndex < timeframeDayCount; dayIndex++) {
-                for (int i = 0; i < Config.DayPartsForNight.Length; i++) {
-                    int rateStartTime = dayIndex * Config.DayLength + Config.DayPartsForNight[i].StartTime;
-                    weekPartsForNight.Add(new TimePart(rateStartTime, Config.DayPartsForNight[i].IsSelected));
+                for (int i = 0; i < RulesConfig.DayPartsForNight.Length; i++) {
+                    int rateStartTime = dayIndex * MiscConfig.DayLength + RulesConfig.DayPartsForNight[i].StartTime;
+                    weekPartsForNight.Add(new TimePart(rateStartTime, RulesConfig.DayPartsForNight[i].IsSelected));
                 }
             }
 
@@ -348,7 +348,7 @@ namespace Thesis {
 
             // Determine driving time at night
             int drivingTimeAtNight = GetTimeInSelectedTimeParts(drivingStartTime, drivingEndTime, weekPartsForNight.ToArray());
-            int drivingTimeInWeekend = GetTimeInSelectedTimeParts(drivingStartTime, drivingEndTime, Config.WeekPartsForWeekend);
+            int drivingTimeInWeekend = GetTimeInSelectedTimeParts(drivingStartTime, drivingEndTime, RulesConfig.WeekPartsForWeekend);
 
             return (drivingTimeAtNight, drivingTimeInWeekend);
         }
@@ -395,11 +395,11 @@ namespace Thesis {
         }
 
         public int TravelTimeViaHotel(Trip trip1, Trip trip2) {
-            return expectedCarTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex] + Config.HotelExtraTravelTime;
+            return expectedCarTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex] + RulesConfig.HotelExtraTravelTime;
         }
 
         public int HalfTravelTimeViaHotel(Trip trip1, Trip trip2) {
-            return (expectedCarTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex] + Config.HotelExtraTravelTime) / 2;
+            return (expectedCarTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex] + RulesConfig.HotelExtraTravelTime) / 2;
         }
 
         public int RestTimeWithTravelTime(Trip trip1, Trip trip2, int travelTime) {

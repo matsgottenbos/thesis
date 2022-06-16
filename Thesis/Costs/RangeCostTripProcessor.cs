@@ -64,10 +64,10 @@ namespace Thesis {
                 driverInfo.HotelCount++;
                 travelTimeAfter = instance.HalfTravelTimeViaHotel(prevTrip, searchTrip);
                 restTimeAfter = instance.RestTimeViaHotel(prevTrip, searchTrip);
-                driverInfo.Stats.RawCost += Config.HotelCosts;
+                driverInfo.Stats.RawCost += SalaryConfig.HotelCosts;
 
                 // Check if the hotel stay isn't too long
-                if (restTimeAfter > Config.HotelMaxRestTime) {
+                if (restTimeAfter > RulesConfig.HotelMaxRestTime) {
                     driverInfo.PenaltyInfo.AddInvalidHotel();
                     isInvalidHotelAfter = true;
                 }
@@ -79,9 +79,9 @@ namespace Thesis {
                 restTimeAfter = instance.RestTimeWithTravelTime(prevTrip, searchTrip, travelTimeAfter + driver.HomeTravelTimeToStart(searchTrip));
 
                 // Update free days
-                if (restTimeAfter > Config.DoubleFreeDayMinRestTime) {
+                if (restTimeAfter > RulesConfig.DoubleFreeDayMinRestTime) {
                     driverInfo.SingleFreeDays++;
-                } else if (restTimeAfter > Config.SingleFreeDayMinRestTime) {
+                } else if (restTimeAfter > RulesConfig.SingleFreeDayMinRestTime) {
                     driverInfo.DoubleFreeDays++;
                 }
 
@@ -94,7 +94,7 @@ namespace Thesis {
             driverInfo.PenaltyInfo.AddPossibleRestTimeViolation(restTimeAfter, shiftInfo.MinRestTimeAfter);
 
             #if DEBUG
-            if (Config.DebugCheckAndLogOperations) {
+            if (AppConfig.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentStageInfo().EndShiftPart1(restTimeAfter, isHotelAfter, isInvalidHotelAfter);
             }
             #endif
@@ -119,7 +119,7 @@ namespace Thesis {
             }
 
             #if DEBUG
-            if (Config.DebugCheckAndLogOperations) {
+            if (AppConfig.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentStageInfo().EndShiftPart1(null, false, isInvalidHotelAfter);
             }
             #endif
@@ -164,7 +164,7 @@ namespace Thesis {
             if (shiftInfo.IsWeekendShiftByCompanyRules) driverInfo.WeekendShiftCountByCompanyRules++;
 
             #if DEBUG
-            if (Config.DebugCheckAndLogOperations) {
+            if (AppConfig.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentStageInfo().EndShiftPart2(shiftInfo, shiftLengthWithTravel, travelTimeBefore, travelTimeAfter);
             }
             #endif
@@ -178,7 +178,7 @@ namespace Thesis {
             }
 
             #if DEBUG
-            if (Config.DebugCheckAndLogOperations) {
+            if (AppConfig.DebugCheckAndLogOperations) {
                 SaDebugger.GetCurrentStageInfo().AddTrip(trip, isPrecedenceViolation, isInvalidHotelAfter);
             }
             #endif

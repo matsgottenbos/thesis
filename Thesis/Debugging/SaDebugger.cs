@@ -170,7 +170,7 @@ namespace Thesis {
         }
 
         static void LogExternalDriverInfo(ExternalDriver externalDriver) {
-            ExternalDriverTypeSettings externalDriverTypeSettings = Config.ExternalDriverTypes[externalDriver.ExternalDriverTypeIndex];
+            ExternalDriverTypeSettings externalDriverTypeSettings = DataConfig.ExternalDriverTypes[externalDriver.ExternalDriverTypeIndex];
             Console.WriteLine("\n* External driver type *");
             Console.WriteLine("Company name: {0}", externalDriverTypeSettings.CompanyName);
             Console.WriteLine("Is international: {0}", externalDriverTypeSettings.IsInternational);

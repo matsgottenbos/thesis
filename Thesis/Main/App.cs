@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace Thesis {
     class App {
         public App() {
-            XorShiftRandom rand = Config.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
+            XorShiftRandom rand = AppConfig.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
 
             Instance instance;
-            switch (Config.SelectedDataSource) {
+            switch (AppConfig.SelectedDataSource) {
                 case DataSource.Excel:
                     instance = ExcelDataImporter.Import(rand);
                     Console.WriteLine("Instance import from excel data complete");
@@ -23,13 +23,13 @@ namespace Thesis {
                     break;
             }
 
-            if (Config.DebugRunInspector) {
+            if (AppConfig.DebugRunInspector) {
                 Console.WriteLine("Running debug inspector");
                 new DebugInspector(instance);
-            } else if (Config.DebugRunJsonExporter) {
+            } else if (AppConfig.DebugRunJsonExporter) {
                 Console.WriteLine("Running debug JSON exporter");
                 new DebugJsonExporter(instance);
-            } else if (Config.DebugRunDelaysExporter) {
+            } else if (AppConfig.DebugRunDelaysExporter) {
                 Console.WriteLine("Running debug delays exporter");
                 DebugDelaysExporter.Run();
             } else {

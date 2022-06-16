@@ -5,14 +5,14 @@ namespace Thesis {
     class SaDriverInfo {
         public readonly Instance Instance;
         public SaStats Stats;
-        public DriverPenaltyInfo PenaltyInfo;
+        public SaDriverPenaltyInfo PenaltyInfo;
         public int WorkedTime, ShiftCount, HotelCount, NightShiftCountByCompanyRules, WeekendShiftCountByCompanyRules, TravelTime, SingleFreeDays, DoubleFreeDays;
         public int[] SharedRouteCounts;
 
         public SaDriverInfo(Instance instance) {
             Instance = instance;
             Stats = new SaStats();
-            PenaltyInfo = new DriverPenaltyInfo();
+            PenaltyInfo = new SaDriverPenaltyInfo();
             SharedRouteCounts = new int[instance.UniqueSharedRouteCount];
         }
 
@@ -51,7 +51,7 @@ namespace Thesis {
         public static bool AreEqual(SaDriverInfo a, SaDriverInfo b) {
             return (
                 SaStats.AreEqual(a.Stats, b.Stats) &&
-                DriverPenaltyInfo.AreEqual(a.PenaltyInfo, b.PenaltyInfo) &&
+                SaDriverPenaltyInfo.AreEqual(a.PenaltyInfo, b.PenaltyInfo) &&
                 a.WorkedTime == b.WorkedTime &&
                 a.ShiftCount == b.ShiftCount &&
                 a.HotelCount == b.HotelCount &&
