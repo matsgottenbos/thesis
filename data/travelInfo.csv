@@ -1,0 +1,3161 @@
+station1Name,station2Name,travelTimeMinutes,travelDistanceKilometers
+Acht,"Almelo, emplacement",114,169
+Acht,"Amersfoort, emplacement sp.12",75,107
+Acht,"Amersfoort, remise Strukton",74,104
+Acht,Amsterdam Centraal,91,124
+Acht,Amsterdam Westhaven,84,127
+Acht,Amsterdam Westhaven West,89,135
+Acht,"Arnhem, goederenemplacement",62,87
+Acht,"Bad Bentheim, empl. / staalfabriek",129,200
+Acht,"Bad Bentheim, Hilgenstiege sp.25",129,201
+Acht,"Beverwijk, emplacement",92,142
+Acht,"Blerick, emplacement en werkplaats",47,63
+Acht,"Born, emplacement",51,72
+Acht,"Botlek, emplacement",80,117
+Acht,Bottrop,94,128
+Acht,"Coevorden, euroterminal",140,207
+Acht,Deventer goed. empl.,85,127
+Acht,"Deventer, goederenemplacement",86,127
+Acht,"Dordrecht, dok",60,86
+Acht,"Dortmund Obereving, emplacement",122,164
+Acht,Duisburg Ruhrorthafen,79,110
+Acht,"Duisburg, Hochfeld Süd Vorbahnhof",81,116
+Acht,"Eindhoven, emplacement",19,9
+Acht,"Eindhoven, emplacement Acht",5,3
+Acht,Eltville Ost,222,339
+Acht,"Emmerich, station",84,123
+Acht,Euromax,103,152
+Acht,"Europoort, emplacement",86,128
+Acht,"Gekkengraaf, emplacement",43,58
+Acht,Germersheim,258,405
+Acht,Goes,90,132
+Acht,"Hengelo, emplacement",114,172
+Acht,"Herzogenrath, station",77,103
+Acht,Holland Cargo Terminal,91,136
+Acht,"Houtrakpolder, emplacement",86,133
+Acht,"IJsselmonde, emplacement",72,102
+Acht,"Kaldenkirchen, station",52,72
+Acht,"Kijfhoek, emplacement",60,88
+Acht,"Köln Eifeltor, emplacement",109,160
+Acht,Koole Vondelingenweg,80,114
+Acht,"Krefeld Linn, emplacement",81,108
+Acht,"Lage Zwaluwe, emplacement",52,73
+Acht,"Leusden, PON",70,105
+Acht,Ludwigshafen-Oggersheim,238,370
+Acht,"Maasvlakte, emplacement",97,143
+Acht,Magdeburg Hbf,315,512
+Acht,"Marl-Sinsen, emplacement",108,158
+Acht,Matrans Rotterdam Terminal,87,111
+Acht,"Moerdijk, emplacement",58,80
+Acht,Moers,71,101
+Acht,"Neuss, guterbahnhof",83,119
+Acht,"Nijmegen, emplacement",53,69
+Acht,NWB terminal,87,128
+Acht,OBA,87,128
+Acht,"Oberhausen West, emplacement",79,114
+Acht,"Oldenzaal, emplacement",119,181
+Acht,"Onnen, emplacement noordingang",161,250
+Acht,"Onnen, emplacement zuidingang",157,246
+Acht,Opladen,108,157
+Acht,"Oss, terminal OOC",39,50
+Acht,"Pernis, emplacement",79,113
+Acht,Rheine,144,221
+Acht,"Rheinhausen, emplacement",77,109
+Acht,"Roosendaal, emplacement",62,86
+Acht,"Sittard, emplacement",57,79
+Acht,Sloehaven empl.,95,144
+Acht,Steinweg Amsterdam,89,135
+Acht,Stroe,80,109
+Acht,"Tilburg, industrie",24,28
+Acht,"Uitgeest, emplacement",97,151
+Acht,"Valburg, emplacement CUP",52,76
+Acht,"Venlo, emplacement",50,64
+Acht,"Viersen, guterbahnhof",69,90
+Acht,"Vlissingen Sloe, emplacement",95,144
+Acht,Vopak-Sloe,96,144
+Acht,"Waalhaven, emplacement",73,107
+Acht,"Waalhaven, kantoor RFO",75,108
+Acht,"Westhaven, emplacement",86,127
+Acht,Zevenaar grens,74,106
+Acht,"Zutphen, emplacement",87,118
+"Almelo, emplacement","Amersfoort, emplacement sp.12",79,106
+"Almelo, emplacement","Amersfoort, remise Strukton",79,112
+"Almelo, emplacement",Amsterdam Centraal,107,155
+"Almelo, emplacement",Amsterdam Westhaven,105,158
+"Almelo, emplacement",Amsterdam Westhaven West,108,162
+"Almelo, emplacement","Arnhem, goederenemplacement",65,85
+"Almelo, emplacement","Bad Bentheim, empl. / staalfabriek",38,47
+"Almelo, emplacement","Bad Bentheim, Hilgenstiege sp.25",38,47
+"Almelo, emplacement","Beverwijk, emplacement",115,175
+"Almelo, emplacement","Blerick, emplacement en werkplaats",116,174
+"Almelo, emplacement","Born, emplacement",146,224
+"Almelo, emplacement","Botlek, emplacement",135,203
+"Almelo, emplacement",Bottrop,87,125
+"Almelo, emplacement","Coevorden, euroterminal",41,48
+"Almelo, emplacement",Deventer goed. empl.,40,49
+"Almelo, emplacement","Deventer, goederenemplacement",41,49
+"Almelo, emplacement","Dordrecht, dok",124,181
+"Almelo, emplacement","Dortmund Obereving, emplacement",109,151
+"Almelo, emplacement",Duisburg Ruhrorthafen,96,137
+"Almelo, emplacement","Duisburg, Hochfeld Süd Vorbahnhof",100,148
+"Almelo, emplacement","Eindhoven, emplacement",112,166
+"Almelo, emplacement","Eindhoven, emplacement Acht",113,169
+"Almelo, emplacement",Eltville Ost,248,379
+"Almelo, emplacement","Emmerich, station",79,112
+"Almelo, emplacement",Euromax,157,238
+"Almelo, emplacement","Europoort, emplacement",140,214
+"Almelo, emplacement","Gekkengraaf, emplacement",115,173
+"Almelo, emplacement",Germersheim,299,469
+"Almelo, emplacement",Goes,176,267
+"Almelo, emplacement","Hengelo, emplacement",23,19
+"Almelo, emplacement","Herzogenrath, station",167,252
+"Almelo, emplacement",Holland Cargo Terminal,111,166
+"Almelo, emplacement","Houtrakpolder, emplacement",107,162
+"Almelo, emplacement","IJsselmonde, emplacement",125,186
+"Almelo, emplacement","Kaldenkirchen, station",120,183
+"Almelo, emplacement","Kijfhoek, emplacement",123,188
+"Almelo, emplacement","Köln Eifeltor, emplacement",144,215
+"Almelo, emplacement",Koole Vondelingenweg,135,200
+"Almelo, emplacement","Krefeld Linn, emplacement",114,160
+"Almelo, emplacement","Lage Zwaluwe, emplacement",129,195
+"Almelo, emplacement","Leusden, PON",73,107
+"Almelo, emplacement",Ludwigshafen-Oggersheim,279,435
+"Almelo, emplacement","Maasvlakte, emplacement",151,229
+"Almelo, emplacement",Magdeburg Hbf,241,386
+"Almelo, emplacement","Marl-Sinsen, emplacement",88,117
+"Almelo, emplacement",Matrans Rotterdam Terminal,144,201
+"Almelo, emplacement","Moerdijk, emplacement",134,199
+"Almelo, emplacement",Moers,105,148
+"Almelo, emplacement","Neuss, guterbahnhof",121,173
+"Almelo, emplacement","Nijmegen, emplacement",84,108
+"Almelo, emplacement",NWB terminal,109,162
+"Almelo, emplacement",OBA,107,160
+"Almelo, emplacement","Oberhausen West, emplacement",88,133
+"Almelo, emplacement","Oldenzaal, emplacement",28,27
+"Almelo, emplacement","Onnen, emplacement noordingang",82,111
+"Almelo, emplacement","Onnen, emplacement zuidingang",78,107
+"Almelo, emplacement",Opladen,124,186
+"Almelo, emplacement","Oss, terminal OOC",90,127
+"Almelo, emplacement","Pernis, emplacement",134,199
+"Almelo, emplacement",Rheine,53,68
+"Almelo, emplacement","Rheinhausen, emplacement",108,149
+"Almelo, emplacement","Roosendaal, emplacement",143,215
+"Almelo, emplacement","Sittard, emplacement",153,230
+"Almelo, emplacement",Sloehaven empl.,181,279
+"Almelo, emplacement",Steinweg Amsterdam,108,162
+"Almelo, emplacement",Stroe,59,84
+"Almelo, emplacement","Tilburg, industrie",116,167
+"Almelo, emplacement","Uitgeest, emplacement",118,173
+"Almelo, emplacement","Valburg, emplacement CUP",74,108
+"Almelo, emplacement","Venlo, emplacement",119,176
+"Almelo, emplacement","Viersen, guterbahnhof",130,190
+"Almelo, emplacement","Vlissingen Sloe, emplacement",181,279
+"Almelo, emplacement",Vopak-Sloe,182,279
+"Almelo, emplacement","Waalhaven, emplacement",130,196
+"Almelo, emplacement","Waalhaven, kantoor RFO",132,197
+"Almelo, emplacement","Westhaven, emplacement",106,159
+"Almelo, emplacement",Zevenaar grens,69,95
+"Almelo, emplacement","Zutphen, emplacement",46,56
+"Amersfoort, emplacement sp.12","Amersfoort, remise Strukton",5,2
+"Amersfoort, emplacement sp.12",Amsterdam Centraal,48,56
+"Amersfoort, emplacement sp.12",Amsterdam Westhaven,45,59
+"Amersfoort, emplacement sp.12",Amsterdam Westhaven West,48,63
+"Amersfoort, emplacement sp.12","Arnhem, goederenemplacement",53,62
+"Amersfoort, emplacement sp.12","Bad Bentheim, empl. / staalfabriek",94,138
+"Amersfoort, emplacement sp.12","Bad Bentheim, Hilgenstiege sp.25",94,138
+"Amersfoort, emplacement sp.12","Beverwijk, emplacement",56,76
+"Amersfoort, emplacement sp.12","Blerick, emplacement en werkplaats",95,138
+"Amersfoort, emplacement sp.12","Born, emplacement",115,173
+"Amersfoort, emplacement sp.12","Botlek, emplacement",74,102
+"Amersfoort, emplacement sp.12",Bottrop,106,153
+"Amersfoort, emplacement sp.12","Coevorden, euroterminal",93,125
+"Amersfoort, emplacement sp.12",Deventer goed. empl.,50,65
+"Amersfoort, emplacement sp.12","Deventer, goederenemplacement",51,65
+"Amersfoort, emplacement sp.12","Dordrecht, dok",64,80
+"Amersfoort, emplacement sp.12","Dortmund Obereving, emplacement",131,197
+"Amersfoort, emplacement sp.12",Duisburg Ruhrorthafen,106,156
+"Amersfoort, emplacement sp.12","Duisburg, Hochfeld Süd Vorbahnhof",110,166
+"Amersfoort, emplacement sp.12","Eindhoven, emplacement",78,110
+"Amersfoort, emplacement sp.12","Eindhoven, emplacement Acht",75,106
+"Amersfoort, emplacement sp.12",Eltville Ost,258,398
+"Amersfoort, emplacement sp.12","Emmerich, station",67,89
+"Amersfoort, emplacement sp.12",Euromax,97,137
+"Amersfoort, emplacement sp.12","Europoort, emplacement",80,113
+"Amersfoort, emplacement sp.12","Gekkengraaf, emplacement",94,136
+"Amersfoort, emplacement sp.12",Germersheim,306,480
+"Amersfoort, emplacement sp.12",Goes,116,166
+"Amersfoort, emplacement sp.12","Hengelo, emplacement",79,110
+"Amersfoort, emplacement sp.12","Herzogenrath, station",141,204
+"Amersfoort, emplacement sp.12",Holland Cargo Terminal,52,66
+"Amersfoort, emplacement sp.12","Houtrakpolder, emplacement",47,63
+"Amersfoort, emplacement sp.12","IJsselmonde, emplacement",65,85
+"Amersfoort, emplacement sp.12","Kaldenkirchen, station",100,147
+"Amersfoort, emplacement sp.12","Kijfhoek, emplacement",62,87
+"Amersfoort, emplacement sp.12","Köln Eifeltor, emplacement",154,233
+"Amersfoort, emplacement sp.12",Koole Vondelingenweg,74,99
+"Amersfoort, emplacement sp.12","Krefeld Linn, emplacement",121,175
+"Amersfoort, emplacement sp.12","Lage Zwaluwe, emplacement",69,94
+"Amersfoort, emplacement sp.12","Leusden, PON",12,6
+"Amersfoort, emplacement sp.12",Ludwigshafen-Oggersheim,286,445
+"Amersfoort, emplacement sp.12","Maasvlakte, emplacement",91,128
+"Amersfoort, emplacement sp.12",Magdeburg Hbf,297,477
+"Amersfoort, emplacement sp.12","Marl-Sinsen, emplacement",118,181
+"Amersfoort, emplacement sp.12",Matrans Rotterdam Terminal,83,100
+"Amersfoort, emplacement sp.12","Moerdijk, emplacement",74,98
+"Amersfoort, emplacement sp.12",Moers,110,164
+"Amersfoort, emplacement sp.12","Neuss, guterbahnhof",128,192
+"Amersfoort, emplacement sp.12","Nijmegen, emplacement",64,82
+"Amersfoort, emplacement sp.12",NWB terminal,49,63
+"Amersfoort, emplacement sp.12",OBA,48,61
+"Amersfoort, emplacement sp.12","Oberhausen West, emplacement",98,152
+"Amersfoort, emplacement sp.12","Oldenzaal, emplacement",84,118
+"Amersfoort, emplacement sp.12","Onnen, emplacement noordingang",113,167
+"Amersfoort, emplacement sp.12","Onnen, emplacement zuidingang",109,164
+"Amersfoort, emplacement sp.12",Opladen,134,205
+"Amersfoort, emplacement sp.12","Oss, terminal OOC",70,95
+"Amersfoort, emplacement sp.12","Pernis, emplacement",74,98
+"Amersfoort, emplacement sp.12",Rheine,109,159
+"Amersfoort, emplacement sp.12","Rheinhausen, emplacement",117,176
+"Amersfoort, emplacement sp.12","Roosendaal, emplacement",83,114
+"Amersfoort, emplacement sp.12","Sittard, emplacement",122,179
+"Amersfoort, emplacement sp.12",Sloehaven empl.,120,178
+"Amersfoort, emplacement sp.12",Steinweg Amsterdam,49,63
+"Amersfoort, emplacement sp.12",Stroe,26,29
+"Amersfoort, emplacement sp.12","Tilburg, industrie",73,100
+"Amersfoort, emplacement sp.12","Uitgeest, emplacement",58,74
+"Amersfoort, emplacement sp.12","Valburg, emplacement CUP",53,72
+"Amersfoort, emplacement sp.12","Venlo, emplacement",98,139
+"Amersfoort, emplacement sp.12","Viersen, guterbahnhof",117,165
+"Amersfoort, emplacement sp.12","Vlissingen Sloe, emplacement",120,178
+"Amersfoort, emplacement sp.12",Vopak-Sloe,121,178
+"Amersfoort, emplacement sp.12","Waalhaven, emplacement",69,95
+"Amersfoort, emplacement sp.12","Waalhaven, kantoor RFO",72,96
+"Amersfoort, emplacement sp.12","Westhaven, emplacement",46,60
+"Amersfoort, emplacement sp.12",Zevenaar grens,57,72
+"Amersfoort, emplacement sp.12","Zutphen, emplacement",58,68
+"Amersfoort, remise Strukton",Amsterdam Centraal,47,55
+"Amersfoort, remise Strukton",Amsterdam Westhaven,44,59
+"Amersfoort, remise Strukton",Amsterdam Westhaven West,47,62
+"Amersfoort, remise Strukton","Arnhem, goederenemplacement",54,60
+"Amersfoort, remise Strukton","Bad Bentheim, empl. / staalfabriek",95,143
+"Amersfoort, remise Strukton","Bad Bentheim, Hilgenstiege sp.25",94,144
+"Amersfoort, remise Strukton","Beverwijk, emplacement",54,76
+"Amersfoort, remise Strukton","Blerick, emplacement en werkplaats",96,135
+"Amersfoort, remise Strukton","Born, emplacement",113,170
+"Amersfoort, remise Strukton","Botlek, emplacement",72,99
+"Amersfoort, remise Strukton",Bottrop,107,151
+"Amersfoort, remise Strukton","Coevorden, euroterminal",93,130
+"Amersfoort, remise Strukton",Deventer goed. empl.,51,70
+"Amersfoort, remise Strukton","Deventer, goederenemplacement",52,70
+"Amersfoort, remise Strukton","Dordrecht, dok",62,78
+"Amersfoort, remise Strukton","Dortmund Obereving, emplacement",132,195
+"Amersfoort, remise Strukton",Duisburg Ruhrorthafen,107,154
+"Amersfoort, remise Strukton","Duisburg, Hochfeld Süd Vorbahnhof",111,164
+"Amersfoort, remise Strukton","Eindhoven, emplacement",76,107
+"Amersfoort, remise Strukton","Eindhoven, emplacement Acht",73,104
+"Amersfoort, remise Strukton",Eltville Ost,259,396
+"Amersfoort, remise Strukton","Emmerich, station",68,87
+"Amersfoort, remise Strukton",Euromax,95,134
+"Amersfoort, remise Strukton","Europoort, emplacement",78,111
+"Amersfoort, remise Strukton","Gekkengraaf, emplacement",96,134
+"Amersfoort, remise Strukton",Germersheim,307,477
+"Amersfoort, remise Strukton",Goes,114,164
+"Amersfoort, remise Strukton","Hengelo, emplacement",80,115
+"Amersfoort, remise Strukton","Herzogenrath, station",139,201
+"Amersfoort, remise Strukton",Holland Cargo Terminal,50,66
+"Amersfoort, remise Strukton","Houtrakpolder, emplacement",46,63
+"Amersfoort, remise Strukton","IJsselmonde, emplacement",63,82
+"Amersfoort, remise Strukton","Kaldenkirchen, station",101,145
+"Amersfoort, remise Strukton","Kijfhoek, emplacement",60,84
+"Amersfoort, remise Strukton","Köln Eifeltor, emplacement",156,231
+"Amersfoort, remise Strukton",Koole Vondelingenweg,72,96
+"Amersfoort, remise Strukton","Krefeld Linn, emplacement",123,173
+"Amersfoort, remise Strukton","Lage Zwaluwe, emplacement",67,92
+"Amersfoort, remise Strukton","Leusden, PON",11,8
+"Amersfoort, remise Strukton",Ludwigshafen-Oggersheim,287,443
+"Amersfoort, remise Strukton","Maasvlakte, emplacement",89,125
+"Amersfoort, remise Strukton",Magdeburg Hbf,297,482
+"Amersfoort, remise Strukton","Marl-Sinsen, emplacement",119,179
+"Amersfoort, remise Strukton",Matrans Rotterdam Terminal,81,97
+"Amersfoort, remise Strukton","Moerdijk, emplacement",72,95
+"Amersfoort, remise Strukton",Moers,111,162
+"Amersfoort, remise Strukton","Neuss, guterbahnhof",129,190
+"Amersfoort, remise Strukton","Nijmegen, emplacement",65,80
+"Amersfoort, remise Strukton",NWB terminal,48,63
+"Amersfoort, remise Strukton",OBA,47,60
+"Amersfoort, remise Strukton","Oberhausen West, emplacement",99,150
+"Amersfoort, remise Strukton","Oldenzaal, emplacement",85,124
+"Amersfoort, remise Strukton","Onnen, emplacement noordingang",114,172
+"Amersfoort, remise Strukton","Onnen, emplacement zuidingang",110,169
+"Amersfoort, remise Strukton",Opladen,135,203
+"Amersfoort, remise Strukton","Oss, terminal OOC",68,92
+"Amersfoort, remise Strukton","Pernis, emplacement",72,96
+"Amersfoort, remise Strukton",Rheine,109,164
+"Amersfoort, remise Strukton","Rheinhausen, emplacement",118,174
+"Amersfoort, remise Strukton","Roosendaal, emplacement",81,111
+"Amersfoort, remise Strukton","Sittard, emplacement",120,177
+"Amersfoort, remise Strukton",Sloehaven empl.,118,175
+"Amersfoort, remise Strukton",Steinweg Amsterdam,47,63
+"Amersfoort, remise Strukton",Stroe,27,34
+"Amersfoort, remise Strukton","Tilburg, industrie",71,97
+"Amersfoort, remise Strukton","Uitgeest, emplacement",57,73
+"Amersfoort, remise Strukton","Valburg, emplacement CUP",55,70
+"Amersfoort, remise Strukton","Venlo, emplacement",99,137
+"Amersfoort, remise Strukton","Viersen, guterbahnhof",119,163
+"Amersfoort, remise Strukton","Vlissingen Sloe, emplacement",118,175
+"Amersfoort, remise Strukton",Vopak-Sloe,119,175
+"Amersfoort, remise Strukton","Waalhaven, emplacement",67,93
+"Amersfoort, remise Strukton","Waalhaven, kantoor RFO",70,94
+"Amersfoort, remise Strukton","Westhaven, emplacement",45,59
+"Amersfoort, remise Strukton",Zevenaar grens,58,70
+"Amersfoort, remise Strukton","Zutphen, emplacement",58,73
+Amsterdam Centraal,Amsterdam Westhaven,11,6
+Amsterdam Centraal,Amsterdam Westhaven West,20,11
+Amsterdam Centraal,"Arnhem, goederenemplacement",81,109
+Amsterdam Centraal,"Bad Bentheim, empl. / staalfabriek",123,185
+Amsterdam Centraal,"Bad Bentheim, Hilgenstiege sp.25",122,186
+Amsterdam Centraal,"Beverwijk, emplacement",32,27
+Amsterdam Centraal,"Blerick, emplacement en werkplaats",126,181
+Amsterdam Centraal,"Born, emplacement",132,197
+Amsterdam Centraal,"Botlek, emplacement",67,89
+Amsterdam Centraal,Bottrop,135,200
+Amsterdam Centraal,"Coevorden, euroterminal",122,172
+Amsterdam Centraal,Deventer goed. empl.,79,112
+Amsterdam Centraal,"Deventer, goederenemplacement",80,112
+Amsterdam Centraal,"Dordrecht, dok",74,101
+Amsterdam Centraal,"Dortmund Obereving, emplacement",160,244
+Amsterdam Centraal,Duisburg Ruhrorthafen,134,203
+Amsterdam Centraal,"Duisburg, Hochfeld Süd Vorbahnhof",138,214
+Amsterdam Centraal,"Eindhoven, emplacement",94,134
+Amsterdam Centraal,"Eindhoven, emplacement Acht",91,131
+Amsterdam Centraal,Eltville Ost,286,445
+Amsterdam Centraal,"Emmerich, station",96,136
+Amsterdam Centraal,Euromax,89,124
+Amsterdam Centraal,"Europoort, emplacement",72,101
+Amsterdam Centraal,"Gekkengraaf, emplacement",124,183
+Amsterdam Centraal,Germersheim,337,523
+Amsterdam Centraal,Goes,125,181
+Amsterdam Centraal,"Hengelo, emplacement",108,157
+Amsterdam Centraal,"Herzogenrath, station",158,228
+Amsterdam Centraal,Holland Cargo Terminal,25,15
+Amsterdam Centraal,"Houtrakpolder, emplacement",20,11
+Amsterdam Centraal,"IJsselmonde, emplacement",69,92
+Amsterdam Centraal,"Kaldenkirchen, station",131,190
+Amsterdam Centraal,"Kijfhoek, emplacement",71,98
+Amsterdam Centraal,"Köln Eifeltor, emplacement",183,280
+Amsterdam Centraal,Koole Vondelingenweg,67,86
+Amsterdam Centraal,"Krefeld Linn, emplacement",152,219
+Amsterdam Centraal,"Lage Zwaluwe, emplacement",82,115
+Amsterdam Centraal,"Leusden, PON",47,62
+Amsterdam Centraal,Ludwigshafen-Oggersheim,317,489
+Amsterdam Centraal,"Maasvlakte, emplacement",83,115
+Amsterdam Centraal,Magdeburg Hbf,326,524
+Amsterdam Centraal,"Marl-Sinsen, emplacement",147,228
+Amsterdam Centraal,Matrans Rotterdam Terminal,76,88
+Amsterdam Centraal,"Moerdijk, emplacement",87,119
+Amsterdam Centraal,Moers,141,207
+Amsterdam Centraal,"Neuss, guterbahnhof",159,236
+Amsterdam Centraal,"Nijmegen, emplacement",95,126
+Amsterdam Centraal,NWB terminal,16,7
+Amsterdam Centraal,OBA,14,7
+Amsterdam Centraal,"Oberhausen West, emplacement",127,199
+Amsterdam Centraal,"Oldenzaal, emplacement",113,166
+Amsterdam Centraal,"Onnen, emplacement noordingang",127,191
+Amsterdam Centraal,"Onnen, emplacement zuidingang",128,196
+Amsterdam Centraal,Opladen,162,252
+Amsterdam Centraal,"Oss, terminal OOC",86,119
+Amsterdam Centraal,"Pernis, emplacement",66,86
+Amsterdam Centraal,Rheine,137,206
+Amsterdam Centraal,"Rheinhausen, emplacement",148,220
+Amsterdam Centraal,"Roosendaal, emplacement",96,135
+Amsterdam Centraal,"Sittard, emplacement",138,204
+Amsterdam Centraal,Sloehaven empl.,129,193
+Amsterdam Centraal,Steinweg Amsterdam,21,11
+Amsterdam Centraal,Stroe,55,76
+Amsterdam Centraal,"Tilburg, industrie",89,121
+Amsterdam Centraal,"Uitgeest, emplacement",31,29
+Amsterdam Centraal,"Valburg, emplacement CUP",85,122
+Amsterdam Centraal,"Venlo, emplacement",129,183
+Amsterdam Centraal,"Viersen, guterbahnhof",148,209
+Amsterdam Centraal,"Vlissingen Sloe, emplacement",129,193
+Amsterdam Centraal,Vopak-Sloe,130,193
+Amsterdam Centraal,"Waalhaven, emplacement",62,84
+Amsterdam Centraal,"Waalhaven, kantoor RFO",66,86
+Amsterdam Centraal,"Westhaven, emplacement",12,6
+Amsterdam Centraal,Zevenaar grens,86,119
+Amsterdam Centraal,"Zutphen, emplacement",86,115
+Amsterdam Westhaven,Amsterdam Westhaven West,13,7
+Amsterdam Westhaven,"Arnhem, goederenemplacement",80,114
+Amsterdam Westhaven,"Bad Bentheim, empl. / staalfabriek",121,189
+Amsterdam Westhaven,"Bad Bentheim, Hilgenstiege sp.25",121,190
+Amsterdam Westhaven,"Beverwijk, emplacement",25,23
+Amsterdam Westhaven,"Blerick, emplacement en werkplaats",121,179
+Amsterdam Westhaven,"Born, emplacement",126,195
+Amsterdam Westhaven,"Botlek, emplacement",61,87
+Amsterdam Westhaven,Bottrop,133,205
+Amsterdam Westhaven,"Coevorden, euroterminal",121,176
+Amsterdam Westhaven,Deventer goed. empl.,77,116
+Amsterdam Westhaven,"Deventer, goederenemplacement",78,116
+Amsterdam Westhaven,"Dordrecht, dok",69,99
+Amsterdam Westhaven,"Dortmund Obereving, emplacement",158,249
+Amsterdam Westhaven,Duisburg Ruhrorthafen,133,207
+Amsterdam Westhaven,"Duisburg, Hochfeld Süd Vorbahnhof",137,218
+Amsterdam Westhaven,"Eindhoven, emplacement",89,132
+Amsterdam Westhaven,"Eindhoven, emplacement Acht",86,129
+Amsterdam Westhaven,Eltville Ost,285,449
+Amsterdam Westhaven,"Emmerich, station",94,141
+Amsterdam Westhaven,Euromax,84,122
+Amsterdam Westhaven,"Europoort, emplacement",67,98
+Amsterdam Westhaven,"Gekkengraaf, emplacement",119,181
+Amsterdam Westhaven,Germersheim,331,521
+Amsterdam Westhaven,Goes,119,179
+Amsterdam Westhaven,"Hengelo, emplacement",106,161
+Amsterdam Westhaven,"Herzogenrath, station",152,226
+Amsterdam Westhaven,Holland Cargo Terminal,18,11
+Amsterdam Westhaven,"Houtrakpolder, emplacement",13,8
+Amsterdam Westhaven,"IJsselmonde, emplacement",64,89
+Amsterdam Westhaven,"Kaldenkirchen, station",125,188
+Amsterdam Westhaven,"Kijfhoek, emplacement",65,96
+Amsterdam Westhaven,"Köln Eifeltor, emplacement",182,285
+Amsterdam Westhaven,Koole Vondelingenweg,62,84
+Amsterdam Westhaven,"Krefeld Linn, emplacement",147,217
+Amsterdam Westhaven,"Lage Zwaluwe, emplacement",77,113
+Amsterdam Westhaven,"Leusden, PON",45,66
+Amsterdam Westhaven,Ludwigshafen-Oggersheim,312,487
+Amsterdam Westhaven,"Maasvlakte, emplacement",78,112
+Amsterdam Westhaven,Magdeburg Hbf,324,529
+Amsterdam Westhaven,"Marl-Sinsen, emplacement",145,232
+Amsterdam Westhaven,Matrans Rotterdam Terminal,71,86
+Amsterdam Westhaven,"Moerdijk, emplacement",82,116
+Amsterdam Westhaven,Moers,136,205
+Amsterdam Westhaven,"Neuss, guterbahnhof",154,233
+Amsterdam Westhaven,"Nijmegen, emplacement",90,123
+Amsterdam Westhaven,NWB terminal,6,3
+Amsterdam Westhaven,OBA,3,2
+Amsterdam Westhaven,"Oberhausen West, emplacement",125,203
+Amsterdam Westhaven,"Oldenzaal, emplacement",111,170
+Amsterdam Westhaven,"Onnen, emplacement noordingang",125,196
+Amsterdam Westhaven,"Onnen, emplacement zuidingang",126,201
+Amsterdam Westhaven,Opladen,161,256
+Amsterdam Westhaven,"Oss, terminal OOC",81,117
+Amsterdam Westhaven,"Pernis, emplacement",61,83
+Amsterdam Westhaven,Rheine,136,211
+Amsterdam Westhaven,"Rheinhausen, emplacement",143,218
+Amsterdam Westhaven,"Roosendaal, emplacement",91,132
+Amsterdam Westhaven,"Sittard, emplacement",133,202
+Amsterdam Westhaven,Sloehaven empl.,124,191
+Amsterdam Westhaven,Steinweg Amsterdam,14,7
+Amsterdam Westhaven,Stroe,54,80
+Amsterdam Westhaven,"Tilburg, industrie",84,119
+Amsterdam Westhaven,"Uitgeest, emplacement",25,26
+Amsterdam Westhaven,"Valburg, emplacement CUP",80,120
+Amsterdam Westhaven,"Venlo, emplacement",124,181
+Amsterdam Westhaven,"Viersen, guterbahnhof",143,207
+Amsterdam Westhaven,"Vlissingen Sloe, emplacement",124,191
+Amsterdam Westhaven,Vopak-Sloe,125,191
+Amsterdam Westhaven,"Waalhaven, emplacement",57,82
+Amsterdam Westhaven,"Waalhaven, kantoor RFO",60,84
+Amsterdam Westhaven,"Westhaven, emplacement",1,1
+Amsterdam Westhaven,Zevenaar grens,84,124
+Amsterdam Westhaven,"Zutphen, emplacement",85,120
+Amsterdam Westhaven West,"Arnhem, goederenemplacement",81,116
+Amsterdam Westhaven West,"Bad Bentheim, empl. / staalfabriek",122,192
+Amsterdam Westhaven West,"Bad Bentheim, Hilgenstiege sp.25",122,192
+Amsterdam Westhaven West,"Beverwijk, emplacement",20,25
+Amsterdam Westhaven West,"Blerick, emplacement en werkplaats",122,180
+Amsterdam Westhaven West,"Born, emplacement",128,197
+Amsterdam Westhaven West,"Botlek, emplacement",58,84
+Amsterdam Westhaven West,Bottrop,134,207
+Amsterdam Westhaven West,"Coevorden, euroterminal",122,179
+Amsterdam Westhaven West,Deventer goed. empl.,78,119
+Amsterdam Westhaven West,"Deventer, goederenemplacement",79,119
+Amsterdam Westhaven West,"Dordrecht, dok",66,97
+Amsterdam Westhaven West,"Dortmund Obereving, emplacement",159,251
+Amsterdam Westhaven West,Duisburg Ruhrorthafen,134,210
+Amsterdam Westhaven West,"Duisburg, Hochfeld Süd Vorbahnhof",138,220
+Amsterdam Westhaven West,"Eindhoven, emplacement",91,133
+Amsterdam Westhaven West,"Eindhoven, emplacement Acht",88,130
+Amsterdam Westhaven West,Eltville Ost,286,452
+Amsterdam Westhaven West,"Emmerich, station",95,143
+Amsterdam Westhaven West,Euromax,81,119
+Amsterdam Westhaven West,"Europoort, emplacement",64,96
+Amsterdam Westhaven West,"Gekkengraaf, emplacement",121,183
+Amsterdam Westhaven West,Germersheim,333,522
+Amsterdam Westhaven West,Goes,116,177
+Amsterdam Westhaven West,"Hengelo, emplacement",107,164
+Amsterdam Westhaven West,"Herzogenrath, station",154,227
+Amsterdam Westhaven West,Holland Cargo Terminal,11,7
+Amsterdam Westhaven West,"Houtrakpolder, emplacement",6,4
+Amsterdam Westhaven West,"IJsselmonde, emplacement",60,87
+Amsterdam Westhaven West,"Kaldenkirchen, station",127,189
+Amsterdam Westhaven West,"Kijfhoek, emplacement",62,93
+Amsterdam Westhaven West,"Köln Eifeltor, emplacement",183,287
+Amsterdam Westhaven West,Koole Vondelingenweg,58,81
+Amsterdam Westhaven West,"Krefeld Linn, emplacement",149,218
+Amsterdam Westhaven West,"Lage Zwaluwe, emplacement",73,110
+Amsterdam Westhaven West,"Leusden, PON",46,69
+Amsterdam Westhaven West,Ludwigshafen-Oggersheim,314,488
+Amsterdam Westhaven West,"Maasvlakte, emplacement",75,110
+Amsterdam Westhaven West,Magdeburg Hbf,325,531
+Amsterdam Westhaven West,"Marl-Sinsen, emplacement",146,235
+Amsterdam Westhaven West,Matrans Rotterdam Terminal,68,84
+Amsterdam Westhaven West,"Moerdijk, emplacement",78,114
+Amsterdam Westhaven West,Moers,138,206
+Amsterdam Westhaven West,"Neuss, guterbahnhof",156,235
+Amsterdam Westhaven West,"Nijmegen, emplacement",92,125
+Amsterdam Westhaven West,NWB terminal,5,2
+Amsterdam Westhaven West,OBA,8,5
+Amsterdam Westhaven West,"Oberhausen West, emplacement",126,206
+Amsterdam Westhaven West,"Oldenzaal, emplacement",112,172
+Amsterdam Westhaven West,"Onnen, emplacement noordingang",126,198
+Amsterdam Westhaven West,"Onnen, emplacement zuidingang",127,203
+Amsterdam Westhaven West,Opladen,162,259
+Amsterdam Westhaven West,"Oss, terminal OOC",83,118
+Amsterdam Westhaven West,"Pernis, emplacement",58,81
+Amsterdam Westhaven West,Rheine,137,213
+Amsterdam Westhaven West,"Rheinhausen, emplacement",145,219
+Amsterdam Westhaven West,"Roosendaal, emplacement",87,130
+Amsterdam Westhaven West,"Sittard, emplacement",135,203
+Amsterdam Westhaven West,Sloehaven empl.,120,188
+Amsterdam Westhaven West,Steinweg Amsterdam,2,1
+Amsterdam Westhaven West,Stroe,55,83
+Amsterdam Westhaven West,"Tilburg, industrie",86,120
+Amsterdam Westhaven West,"Uitgeest, emplacement",24,34
+Amsterdam Westhaven West,"Valburg, emplacement CUP",81,121
+Amsterdam Westhaven West,"Venlo, emplacement",126,182
+Amsterdam Westhaven West,"Viersen, guterbahnhof",145,208
+Amsterdam Westhaven West,"Vlissingen Sloe, emplacement",121,188
+Amsterdam Westhaven West,Vopak-Sloe,122,188
+Amsterdam Westhaven West,"Waalhaven, emplacement",53,79
+Amsterdam Westhaven West,"Waalhaven, kantoor RFO",57,81
+Amsterdam Westhaven West,"Westhaven, emplacement",7,4
+Amsterdam Westhaven West,Zevenaar grens,85,126
+Amsterdam Westhaven West,"Zutphen, emplacement",86,122
+"Arnhem, goederenemplacement","Bad Bentheim, empl. / staalfabriek",82,121
+"Arnhem, goederenemplacement","Bad Bentheim, Hilgenstiege sp.25",82,121
+"Arnhem, goederenemplacement","Beverwijk, emplacement",88,132
+"Arnhem, goederenemplacement","Blerick, emplacement en werkplaats",65,83
+"Arnhem, goederenemplacement","Born, emplacement",96,133
+"Arnhem, goederenemplacement","Botlek, emplacement",88,128
+"Arnhem, goederenemplacement",Bottrop,69,96
+"Arnhem, goederenemplacement","Coevorden, euroterminal",93,128
+"Arnhem, goederenemplacement",Deventer goed. empl.,38,48
+"Arnhem, goederenemplacement","Deventer, goederenemplacement",39,48
+"Arnhem, goederenemplacement","Dordrecht, dok",75,103
+"Arnhem, goederenemplacement","Dortmund Obereving, emplacement",94,140
+"Arnhem, goederenemplacement",Duisburg Ruhrorthafen,69,99
+"Arnhem, goederenemplacement","Duisburg, Hochfeld Süd Vorbahnhof",73,109
+"Arnhem, goederenemplacement","Eindhoven, emplacement",61,83
+"Arnhem, goederenemplacement","Eindhoven, emplacement Acht",62,87
+"Arnhem, goederenemplacement",Eltville Ost,221,341
+"Arnhem, goederenemplacement","Emmerich, station",30,32
+"Arnhem, goederenemplacement",Euromax,111,163
+"Arnhem, goederenemplacement","Europoort, emplacement",94,140
+"Arnhem, goederenemplacement","Gekkengraaf, emplacement",65,82
+"Arnhem, goederenemplacement",Germersheim,272,430
+"Arnhem, goederenemplacement",Goes,127,189
+"Arnhem, goederenemplacement","Hengelo, emplacement",67,92
+"Arnhem, goederenemplacement","Herzogenrath, station",122,164
+"Arnhem, goederenemplacement",Holland Cargo Terminal,85,124
+"Arnhem, goederenemplacement","Houtrakpolder, emplacement",81,121
+"Arnhem, goederenemplacement","IJsselmonde, emplacement",80,114
+"Arnhem, goederenemplacement","Kaldenkirchen, station",70,93
+"Arnhem, goederenemplacement","Kijfhoek, emplacement",74,109
+"Arnhem, goederenemplacement","Köln Eifeltor, emplacement",118,176
+"Arnhem, goederenemplacement",Koole Vondelingenweg,88,125
+"Arnhem, goederenemplacement","Krefeld Linn, emplacement",87,122
+"Arnhem, goederenemplacement","Lage Zwaluwe, emplacement",81,117
+"Arnhem, goederenemplacement","Leusden, PON",46,56
+"Arnhem, goederenemplacement",Ludwigshafen-Oggersheim,252,396
+"Arnhem, goederenemplacement","Maasvlakte, emplacement",105,154
+"Arnhem, goederenemplacement",Magdeburg Hbf,285,460
+"Arnhem, goederenemplacement","Marl-Sinsen, emplacement",81,124
+"Arnhem, goederenemplacement",Matrans Rotterdam Terminal,95,122
+"Arnhem, goederenemplacement","Moerdijk, emplacement",86,120
+"Arnhem, goederenemplacement",Moers,77,97
+"Arnhem, goederenemplacement","Neuss, guterbahnhof",94,135
+"Arnhem, goederenemplacement","Nijmegen, emplacement",24,19
+"Arnhem, goederenemplacement",NWB terminal,83,121
+"Arnhem, goederenemplacement",OBA,82,118
+"Arnhem, goederenemplacement","Oberhausen West, emplacement",61,95
+"Arnhem, goederenemplacement","Oldenzaal, emplacement",72,101
+"Arnhem, goederenemplacement","Onnen, emplacement noordingang",114,170
+"Arnhem, goederenemplacement","Onnen, emplacement zuidingang",110,167
+"Arnhem, goederenemplacement",Opladen,97,148
+"Arnhem, goederenemplacement","Oss, terminal OOC",40,45
+"Arnhem, goederenemplacement","Pernis, emplacement",87,124
+"Arnhem, goederenemplacement",Rheine,97,142
+"Arnhem, goederenemplacement","Rheinhausen, emplacement",81,111
+"Arnhem, goederenemplacement","Roosendaal, emplacement",94,136
+"Arnhem, goederenemplacement","Sittard, emplacement",102,140
+"Arnhem, goederenemplacement",Sloehaven empl.,132,200
+"Arnhem, goederenemplacement",Steinweg Amsterdam,82,121
+"Arnhem, goederenemplacement",Stroe,38,33
+"Arnhem, goederenemplacement","Tilburg, industrie",65,85
+"Arnhem, goederenemplacement","Uitgeest, emplacement",92,140
+"Arnhem, goederenemplacement","Valburg, emplacement CUP",18,16
+"Arnhem, goederenemplacement","Venlo, emplacement",69,85
+"Arnhem, goederenemplacement","Viersen, guterbahnhof",88,111
+"Arnhem, goederenemplacement","Vlissingen Sloe, emplacement",132,200
+"Arnhem, goederenemplacement",Vopak-Sloe,133,200
+"Arnhem, goederenemplacement","Waalhaven, emplacement",81,118
+"Arnhem, goederenemplacement","Waalhaven, kantoor RFO",83,119
+"Arnhem, goederenemplacement","Westhaven, emplacement",80,117
+"Arnhem, goederenemplacement",Zevenaar grens,20,15
+"Arnhem, goederenemplacement","Zutphen, emplacement",33,32
+"Bad Bentheim, empl. / staalfabriek","Bad Bentheim, Hilgenstiege sp.25",3,2
+"Bad Bentheim, empl. / staalfabriek","Beverwijk, emplacement",130,205
+"Bad Bentheim, empl. / staalfabriek","Blerick, emplacement en werkplaats",106,162
+"Bad Bentheim, empl. / staalfabriek","Born, emplacement",137,212
+"Bad Bentheim, empl. / staalfabriek","Botlek, emplacement",149,233
+"Bad Bentheim, empl. / staalfabriek",Bottrop,65,97
+"Bad Bentheim, empl. / staalfabriek","Coevorden, euroterminal",52,55
+"Bad Bentheim, empl. / staalfabriek",Deventer goed. empl.,54,79
+"Bad Bentheim, empl. / staalfabriek","Deventer, goederenemplacement",55,79
+"Bad Bentheim, empl. / staalfabriek","Dordrecht, dok",139,211
+"Bad Bentheim, empl. / staalfabriek","Dortmund Obereving, emplacement",88,124
+"Bad Bentheim, empl. / staalfabriek",Duisburg Ruhrorthafen,74,109
+"Bad Bentheim, empl. / staalfabriek","Duisburg, Hochfeld Süd Vorbahnhof",78,120
+"Bad Bentheim, empl. / staalfabriek","Eindhoven, emplacement",127,196
+"Bad Bentheim, empl. / staalfabriek","Eindhoven, emplacement Acht",127,199
+"Bad Bentheim, empl. / staalfabriek",Eltville Ost,226,351
+"Bad Bentheim, empl. / staalfabriek","Emmerich, station",80,113
+"Bad Bentheim, empl. / staalfabriek",Euromax,172,268
+"Bad Bentheim, empl. / staalfabriek","Europoort, emplacement",155,244
+"Bad Bentheim, empl. / staalfabriek","Gekkengraaf, emplacement",109,165
+"Bad Bentheim, empl. / staalfabriek",Germersheim,277,441
+"Bad Bentheim, empl. / staalfabriek",Goes,191,297
+"Bad Bentheim, empl. / staalfabriek","Hengelo, emplacement",30,32
+"Bad Bentheim, empl. / staalfabriek","Herzogenrath, station",145,224
+"Bad Bentheim, empl. / staalfabriek",Holland Cargo Terminal,126,195
+"Bad Bentheim, empl. / staalfabriek","Houtrakpolder, emplacement",121,192
+"Bad Bentheim, empl. / staalfabriek","IJsselmonde, emplacement",140,216
+"Bad Bentheim, empl. / staalfabriek","Kaldenkirchen, station",105,157
+"Bad Bentheim, empl. / staalfabriek","Kijfhoek, emplacement",137,218
+"Bad Bentheim, empl. / staalfabriek","Köln Eifeltor, emplacement",123,187
+"Bad Bentheim, empl. / staalfabriek",Koole Vondelingenweg,149,230
+"Bad Bentheim, empl. / staalfabriek","Krefeld Linn, emplacement",92,132
+"Bad Bentheim, empl. / staalfabriek","Lage Zwaluwe, emplacement",144,225
+"Bad Bentheim, empl. / staalfabriek","Leusden, PON",88,137
+"Bad Bentheim, empl. / staalfabriek",Ludwigshafen-Oggersheim,257,407
+"Bad Bentheim, empl. / staalfabriek","Maasvlakte, emplacement",166,258
+"Bad Bentheim, empl. / staalfabriek",Magdeburg Hbf,214,348
+"Bad Bentheim, empl. / staalfabriek","Marl-Sinsen, emplacement",66,89
+"Bad Bentheim, empl. / staalfabriek",Matrans Rotterdam Terminal,158,231
+"Bad Bentheim, empl. / staalfabriek","Moerdijk, emplacement",149,229
+"Bad Bentheim, empl. / staalfabriek",Moers,83,120
+"Bad Bentheim, empl. / staalfabriek","Neuss, guterbahnhof",99,146
+"Bad Bentheim, empl. / staalfabriek","Nijmegen, emplacement",98,138
+"Bad Bentheim, empl. / staalfabriek",NWB terminal,123,192
+"Bad Bentheim, empl. / staalfabriek",OBA,122,190
+"Bad Bentheim, empl. / staalfabriek","Oberhausen West, emplacement",66,106
+"Bad Bentheim, empl. / staalfabriek","Oldenzaal, emplacement",21,22
+"Bad Bentheim, empl. / staalfabriek","Onnen, emplacement noordingang",95,141
+"Bad Bentheim, empl. / staalfabriek","Onnen, emplacement zuidingang",91,138
+"Bad Bentheim, empl. / staalfabriek",Opladen,102,159
+"Bad Bentheim, empl. / staalfabriek","Oss, terminal OOC",105,157
+"Bad Bentheim, empl. / staalfabriek","Pernis, emplacement",149,229
+"Bad Bentheim, empl. / staalfabriek",Rheine,25,30
+"Bad Bentheim, empl. / staalfabriek","Rheinhausen, emplacement",86,121
+"Bad Bentheim, empl. / staalfabriek","Roosendaal, emplacement",158,245
+"Bad Bentheim, empl. / staalfabriek","Sittard, emplacement",144,218
+"Bad Bentheim, empl. / staalfabriek",Sloehaven empl.,195,309
+"Bad Bentheim, empl. / staalfabriek",Steinweg Amsterdam,123,192
+"Bad Bentheim, empl. / staalfabriek",Stroe,73,113
+"Bad Bentheim, empl. / staalfabriek","Tilburg, industrie",130,197
+"Bad Bentheim, empl. / staalfabriek","Uitgeest, emplacement",132,202
+"Bad Bentheim, empl. / staalfabriek","Valburg, emplacement CUP",89,138
+"Bad Bentheim, empl. / staalfabriek","Venlo, emplacement",106,158
+"Bad Bentheim, empl. / staalfabriek","Viersen, guterbahnhof",108,163
+"Bad Bentheim, empl. / staalfabriek","Vlissingen Sloe, emplacement",196,309
+"Bad Bentheim, empl. / staalfabriek",Vopak-Sloe,196,308
+"Bad Bentheim, empl. / staalfabriek","Waalhaven, emplacement",144,226
+"Bad Bentheim, empl. / staalfabriek","Waalhaven, kantoor RFO",147,227
+"Bad Bentheim, empl. / staalfabriek","Westhaven, emplacement",120,189
+"Bad Bentheim, empl. / staalfabriek",Zevenaar grens,84,125
+"Bad Bentheim, empl. / staalfabriek","Zutphen, emplacement",61,86
+"Bad Bentheim, Hilgenstiege sp.25","Beverwijk, emplacement",129,205
+"Bad Bentheim, Hilgenstiege sp.25","Blerick, emplacement en werkplaats",108,163
+"Bad Bentheim, Hilgenstiege sp.25","Born, emplacement",139,213
+"Bad Bentheim, Hilgenstiege sp.25","Botlek, emplacement",149,233
+"Bad Bentheim, Hilgenstiege sp.25",Bottrop,67,98
+"Bad Bentheim, Hilgenstiege sp.25","Coevorden, euroterminal",51,55
+"Bad Bentheim, Hilgenstiege sp.25",Deventer goed. empl.,54,79
+"Bad Bentheim, Hilgenstiege sp.25","Deventer, goederenemplacement",55,79
+"Bad Bentheim, Hilgenstiege sp.25","Dordrecht, dok",139,212
+"Bad Bentheim, Hilgenstiege sp.25","Dortmund Obereving, emplacement",90,125
+"Bad Bentheim, Hilgenstiege sp.25",Duisburg Ruhrorthafen,76,110
+"Bad Bentheim, Hilgenstiege sp.25","Duisburg, Hochfeld Süd Vorbahnhof",80,121
+"Bad Bentheim, Hilgenstiege sp.25","Eindhoven, emplacement",126,196
+"Bad Bentheim, Hilgenstiege sp.25","Eindhoven, emplacement Acht",127,199
+"Bad Bentheim, Hilgenstiege sp.25",Eltville Ost,228,353
+"Bad Bentheim, Hilgenstiege sp.25","Emmerich, station",82,114
+"Bad Bentheim, Hilgenstiege sp.25",Euromax,172,268
+"Bad Bentheim, Hilgenstiege sp.25","Europoort, emplacement",154,245
+"Bad Bentheim, Hilgenstiege sp.25","Gekkengraaf, emplacement",111,166
+"Bad Bentheim, Hilgenstiege sp.25",Germersheim,279,442
+"Bad Bentheim, Hilgenstiege sp.25",Goes,190,297
+"Bad Bentheim, Hilgenstiege sp.25","Hengelo, emplacement",29,32
+"Bad Bentheim, Hilgenstiege sp.25","Herzogenrath, station",147,225
+"Bad Bentheim, Hilgenstiege sp.25",Holland Cargo Terminal,125,196
+"Bad Bentheim, Hilgenstiege sp.25","Houtrakpolder, emplacement",121,192
+"Bad Bentheim, Hilgenstiege sp.25","IJsselmonde, emplacement",139,216
+"Bad Bentheim, Hilgenstiege sp.25","Kaldenkirchen, station",107,158
+"Bad Bentheim, Hilgenstiege sp.25","Kijfhoek, emplacement",137,218
+"Bad Bentheim, Hilgenstiege sp.25","Köln Eifeltor, emplacement",125,188
+"Bad Bentheim, Hilgenstiege sp.25",Koole Vondelingenweg,149,230
+"Bad Bentheim, Hilgenstiege sp.25","Krefeld Linn, emplacement",94,133
+"Bad Bentheim, Hilgenstiege sp.25","Lage Zwaluwe, emplacement",144,225
+"Bad Bentheim, Hilgenstiege sp.25","Leusden, PON",87,137
+"Bad Bentheim, Hilgenstiege sp.25",Ludwigshafen-Oggersheim,259,408
+"Bad Bentheim, Hilgenstiege sp.25","Maasvlakte, emplacement",165,259
+"Bad Bentheim, Hilgenstiege sp.25",Magdeburg Hbf,213,348
+"Bad Bentheim, Hilgenstiege sp.25","Marl-Sinsen, emplacement",68,90
+"Bad Bentheim, Hilgenstiege sp.25",Matrans Rotterdam Terminal,158,231
+"Bad Bentheim, Hilgenstiege sp.25","Moerdijk, emplacement",149,229
+"Bad Bentheim, Hilgenstiege sp.25",Moers,85,121
+"Bad Bentheim, Hilgenstiege sp.25","Neuss, guterbahnhof",101,147
+"Bad Bentheim, Hilgenstiege sp.25","Nijmegen, emplacement",98,138
+"Bad Bentheim, Hilgenstiege sp.25",NWB terminal,123,192
+"Bad Bentheim, Hilgenstiege sp.25",OBA,122,190
+"Bad Bentheim, Hilgenstiege sp.25","Oberhausen West, emplacement",68,107
+"Bad Bentheim, Hilgenstiege sp.25","Oldenzaal, emplacement",20,22
+"Bad Bentheim, Hilgenstiege sp.25","Onnen, emplacement noordingang",94,142
+"Bad Bentheim, Hilgenstiege sp.25","Onnen, emplacement zuidingang",90,138
+"Bad Bentheim, Hilgenstiege sp.25",Opladen,104,160
+"Bad Bentheim, Hilgenstiege sp.25","Oss, terminal OOC",105,158
+"Bad Bentheim, Hilgenstiege sp.25","Pernis, emplacement",148,230
+"Bad Bentheim, Hilgenstiege sp.25",Rheine,25,30
+"Bad Bentheim, Hilgenstiege sp.25","Rheinhausen, emplacement",88,123
+"Bad Bentheim, Hilgenstiege sp.25","Roosendaal, emplacement",157,245
+"Bad Bentheim, Hilgenstiege sp.25","Sittard, emplacement",146,219
+"Bad Bentheim, Hilgenstiege sp.25",Sloehaven empl.,195,309
+"Bad Bentheim, Hilgenstiege sp.25",Steinweg Amsterdam,122,192
+"Bad Bentheim, Hilgenstiege sp.25",Stroe,73,114
+"Bad Bentheim, Hilgenstiege sp.25","Tilburg, industrie",130,197
+"Bad Bentheim, Hilgenstiege sp.25","Uitgeest, emplacement",132,203
+"Bad Bentheim, Hilgenstiege sp.25","Valburg, emplacement CUP",88,138
+"Bad Bentheim, Hilgenstiege sp.25","Venlo, emplacement",108,159
+"Bad Bentheim, Hilgenstiege sp.25","Viersen, guterbahnhof",110,164
+"Bad Bentheim, Hilgenstiege sp.25","Vlissingen Sloe, emplacement",195,309
+"Bad Bentheim, Hilgenstiege sp.25",Vopak-Sloe,196,309
+"Bad Bentheim, Hilgenstiege sp.25","Waalhaven, emplacement",144,226
+"Bad Bentheim, Hilgenstiege sp.25","Waalhaven, kantoor RFO",147,227
+"Bad Bentheim, Hilgenstiege sp.25","Westhaven, emplacement",120,189
+"Bad Bentheim, Hilgenstiege sp.25",Zevenaar grens,83,125
+"Bad Bentheim, Hilgenstiege sp.25","Zutphen, emplacement",60,86
+"Beverwijk, emplacement","Blerick, emplacement en werkplaats",128,194
+"Beverwijk, emplacement","Born, emplacement",134,210
+"Beverwijk, emplacement","Botlek, emplacement",63,92
+"Beverwijk, emplacement",Bottrop,141,218
+"Beverwijk, emplacement","Coevorden, euroterminal",130,193
+"Beverwijk, emplacement",Deventer goed. empl.,87,133
+"Beverwijk, emplacement","Deventer, goederenemplacement",88,133
+"Beverwijk, emplacement","Dordrecht, dok",70,105
+"Beverwijk, emplacement","Dortmund Obereving, emplacement",166,262
+"Beverwijk, emplacement",Duisburg Ruhrorthafen,140,221
+"Beverwijk, emplacement","Duisburg, Hochfeld Süd Vorbahnhof",144,232
+"Beverwijk, emplacement","Eindhoven, emplacement",96,146
+"Beverwijk, emplacement","Eindhoven, emplacement Acht",93,143
+"Beverwijk, emplacement",Eltville Ost,293,463
+"Beverwijk, emplacement","Emmerich, station",102,154
+"Beverwijk, emplacement",Euromax,86,127
+"Beverwijk, emplacement","Europoort, emplacement",69,104
+"Beverwijk, emplacement","Gekkengraaf, emplacement",126,196
+"Beverwijk, emplacement",Germersheim,339,536
+"Beverwijk, emplacement",Goes,121,185
+"Beverwijk, emplacement","Hengelo, emplacement",116,178
+"Beverwijk, emplacement","Herzogenrath, station",159,240
+"Beverwijk, emplacement",Holland Cargo Terminal,17,16
+"Beverwijk, emplacement","Houtrakpolder, emplacement",17,17
+"Beverwijk, emplacement","IJsselmonde, emplacement",65,95
+"Beverwijk, emplacement","Kaldenkirchen, station",133,203
+"Beverwijk, emplacement","Kijfhoek, emplacement",67,101
+"Beverwijk, emplacement","Köln Eifeltor, emplacement",189,298
+"Beverwijk, emplacement",Koole Vondelingenweg,63,90
+"Beverwijk, emplacement","Krefeld Linn, emplacement",154,232
+"Beverwijk, emplacement","Lage Zwaluwe, emplacement",78,118
+"Beverwijk, emplacement","Leusden, PON",55,83
+"Beverwijk, emplacement",Ludwigshafen-Oggersheim,319,501
+"Beverwijk, emplacement","Maasvlakte, emplacement",79,118
+"Beverwijk, emplacement",Magdeburg Hbf,334,546
+"Beverwijk, emplacement","Marl-Sinsen, emplacement",153,246
+"Beverwijk, emplacement",Matrans Rotterdam Terminal,72,92
+"Beverwijk, emplacement","Moerdijk, emplacement",83,122
+"Beverwijk, emplacement",Moers,143,220
+"Beverwijk, emplacement","Neuss, guterbahnhof",161,248
+"Beverwijk, emplacement","Nijmegen, emplacement",97,138
+"Beverwijk, emplacement",NWB terminal,21,24
+"Beverwijk, emplacement",OBA,24,27
+"Beverwijk, emplacement","Oberhausen West, emplacement",133,217
+"Beverwijk, emplacement","Oldenzaal, emplacement",121,187
+"Beverwijk, emplacement","Onnen, emplacement noordingang",135,213
+"Beverwijk, emplacement","Onnen, emplacement zuidingang",136,217
+"Beverwijk, emplacement",Opladen,168,270
+"Beverwijk, emplacement","Oss, terminal OOC",88,131
+"Beverwijk, emplacement","Pernis, emplacement",62,89
+"Beverwijk, emplacement",Rheine,146,227
+"Beverwijk, emplacement","Rheinhausen, emplacement",150,233
+"Beverwijk, emplacement","Roosendaal, emplacement",92,138
+"Beverwijk, emplacement","Sittard, emplacement",140,216
+"Beverwijk, emplacement",Sloehaven empl.,125,196
+"Beverwijk, emplacement",Steinweg Amsterdam,20,24
+"Beverwijk, emplacement",Stroe,63,97
+"Beverwijk, emplacement","Tilburg, industrie",91,134
+"Beverwijk, emplacement","Uitgeest, emplacement",10,12
+"Beverwijk, emplacement","Valburg, emplacement CUP",87,134
+"Beverwijk, emplacement","Venlo, emplacement",131,196
+"Beverwijk, emplacement","Viersen, guterbahnhof",150,221
+"Beverwijk, emplacement","Vlissingen Sloe, emplacement",126,196
+"Beverwijk, emplacement",Vopak-Sloe,126,196
+"Beverwijk, emplacement","Waalhaven, emplacement",58,87
+"Beverwijk, emplacement","Waalhaven, kantoor RFO",62,89
+"Beverwijk, emplacement","Westhaven, emplacement",23,27
+"Beverwijk, emplacement",Zevenaar grens,92,137
+"Beverwijk, emplacement","Zutphen, emplacement",95,137
+"Blerick, emplacement en werkplaats","Born, emplacement",38,54
+"Blerick, emplacement en werkplaats","Botlek, emplacement",117,177
+"Blerick, emplacement en werkplaats",Bottrop,59,74
+"Blerick, emplacement en werkplaats","Coevorden, euroterminal",144,213
+"Blerick, emplacement en werkplaats",Deventer goed. empl.,89,133
+"Blerick, emplacement en werkplaats","Deventer, goederenemplacement",90,133
+"Blerick, emplacement en werkplaats","Dordrecht, dok",97,146
+"Blerick, emplacement en werkplaats","Dortmund Obereving, emplacement",86,110
+"Blerick, emplacement en werkplaats",Duisburg Ruhrorthafen,43,56
+"Blerick, emplacement en werkplaats","Duisburg, Hochfeld Süd Vorbahnhof",45,61
+"Blerick, emplacement en werkplaats","Eindhoven, emplacement",43,54
+"Blerick, emplacement en werkplaats","Eindhoven, emplacement Acht",48,64
+"Blerick, emplacement en werkplaats",Eltville Ost,183,280
+"Blerick, emplacement en werkplaats","Emmerich, station",69,82
+"Blerick, emplacement en werkplaats",Euromax,140,212
+"Blerick, emplacement en werkplaats","Europoort, emplacement",123,188
+"Blerick, emplacement en werkplaats","Gekkengraaf, emplacement",12,8
+"Blerick, emplacement en werkplaats",Germersheim,218,346
+"Blerick, emplacement en werkplaats",Goes,126,192
+"Blerick, emplacement en werkplaats","Hengelo, emplacement",118,178
+"Blerick, emplacement en werkplaats","Herzogenrath, station",64,85
+"Blerick, emplacement en werkplaats",Holland Cargo Terminal,126,188
+"Blerick, emplacement en werkplaats","Houtrakpolder, emplacement",122,184
+"Blerick, emplacement en werkplaats","IJsselmonde, emplacement",110,162
+"Blerick, emplacement en werkplaats","Kaldenkirchen, station",12,13
+"Blerick, emplacement en werkplaats","Kijfhoek, emplacement",97,148
+"Blerick, emplacement en werkplaats","Köln Eifeltor, emplacement",70,101
+"Blerick, emplacement en werkplaats",Koole Vondelingenweg,117,173
+"Blerick, emplacement en werkplaats","Krefeld Linn, emplacement",45,53
+"Blerick, emplacement en werkplaats","Lage Zwaluwe, emplacement",89,133
+"Blerick, emplacement en werkplaats","Leusden, PON",88,127
+"Blerick, emplacement en werkplaats",Ludwigshafen-Oggersheim,199,312
+"Blerick, emplacement en werkplaats","Maasvlakte, emplacement",134,202
+"Blerick, emplacement en werkplaats",Magdeburg Hbf,280,458
+"Blerick, emplacement en werkplaats","Marl-Sinsen, emplacement",73,104
+"Blerick, emplacement en werkplaats",Matrans Rotterdam Terminal,124,171
+"Blerick, emplacement en werkplaats","Moerdijk, emplacement",96,140
+"Blerick, emplacement en werkplaats",Moers,35,46
+"Blerick, emplacement en werkplaats","Neuss, guterbahnhof",44,60
+"Blerick, emplacement en werkplaats","Nijmegen, emplacement",51,66
+"Blerick, emplacement en werkplaats",NWB terminal,123,179
+"Blerick, emplacement en werkplaats",OBA,122,179
+"Blerick, emplacement en werkplaats","Oberhausen West, emplacement",44,59
+"Blerick, emplacement en werkplaats","Oldenzaal, emplacement",123,170
+"Blerick, emplacement en werkplaats","Onnen, emplacement noordingang",165,256
+"Blerick, emplacement en werkplaats","Onnen, emplacement zuidingang",160,252
+"Blerick, emplacement en werkplaats",Opladen,70,100
+"Blerick, emplacement en werkplaats","Oss, terminal OOC",60,81
+"Blerick, emplacement en werkplaats","Pernis, emplacement",116,173
+"Blerick, emplacement en werkplaats",Rheine,121,180
+"Blerick, emplacement en werkplaats","Rheinhausen, emplacement",41,54
+"Blerick, emplacement en werkplaats","Roosendaal, emplacement",99,146
+"Blerick, emplacement en werkplaats","Sittard, emplacement",45,60
+"Blerick, emplacement en werkplaats",Sloehaven empl.,130,204
+"Blerick, emplacement en werkplaats",Steinweg Amsterdam,125,187
+"Blerick, emplacement en werkplaats",Stroe,84,115
+"Blerick, emplacement en werkplaats","Tilburg, industrie",62,88
+"Blerick, emplacement en werkplaats","Uitgeest, emplacement",132,202
+"Blerick, emplacement en werkplaats","Valburg, emplacement CUP",56,82
+"Blerick, emplacement en werkplaats","Venlo, emplacement",7,4
+"Blerick, emplacement en werkplaats","Viersen, guterbahnhof",30,32
+"Blerick, emplacement en werkplaats","Vlissingen Sloe, emplacement",131,204
+"Blerick, emplacement en werkplaats",Vopak-Sloe,131,203
+"Blerick, emplacement en werkplaats","Waalhaven, emplacement",110,166
+"Blerick, emplacement en werkplaats","Waalhaven, kantoor RFO",113,167
+"Blerick, emplacement en werkplaats","Westhaven, emplacement",121,179
+"Blerick, emplacement en werkplaats",Zevenaar grens,78,112
+"Blerick, emplacement en werkplaats","Zutphen, emplacement",92,116
+"Born, emplacement","Botlek, emplacement",121,186
+"Born, emplacement",Bottrop,89,123
+"Born, emplacement","Coevorden, euroterminal",174,262
+"Born, emplacement",Deventer goed. empl.,119,182
+"Born, emplacement","Deventer, goederenemplacement",120,182
+"Born, emplacement","Dordrecht, dok",101,155
+"Born, emplacement","Dortmund Obereving, emplacement",108,152
+"Born, emplacement",Duisburg Ruhrorthafen,73,105
+"Born, emplacement","Duisburg, Hochfeld Süd Vorbahnhof",67,101
+"Born, emplacement","Eindhoven, emplacement",47,63
+"Born, emplacement","Eindhoven, emplacement Acht",52,73
+"Born, emplacement",Eltville Ost,185,284
+"Born, emplacement","Emmerich, station",98,131
+"Born, emplacement",Euromax,144,221
+"Born, emplacement","Europoort, emplacement",127,198
+"Born, emplacement","Gekkengraaf, emplacement",42,60
+"Born, emplacement",Germersheim,220,350
+"Born, emplacement",Goes,115,177
+"Born, emplacement","Hengelo, emplacement",148,227
+"Born, emplacement","Herzogenrath, station",32,33
+"Born, emplacement",Holland Cargo Terminal,131,203
+"Born, emplacement","Houtrakpolder, emplacement",127,200
+"Born, emplacement","IJsselmonde, emplacement",113,171
+"Born, emplacement","Kaldenkirchen, station",40,56
+"Born, emplacement","Kijfhoek, emplacement",101,157
+"Born, emplacement","Köln Eifeltor, emplacement",71,107
+"Born, emplacement",Koole Vondelingenweg,121,183
+"Born, emplacement","Krefeld Linn, emplacement",64,84
+"Born, emplacement","Lage Zwaluwe, emplacement",93,142
+"Born, emplacement","Leusden, PON",110,172
+"Born, emplacement",Ludwigshafen-Oggersheim,201,316
+"Born, emplacement","Maasvlakte, emplacement",138,212
+"Born, emplacement",Magdeburg Hbf,306,499
+"Born, emplacement","Marl-Sinsen, emplacement",103,153
+"Born, emplacement",Matrans Rotterdam Terminal,128,180
+"Born, emplacement","Moerdijk, emplacement",100,149
+"Born, emplacement",Moers,66,96
+"Born, emplacement","Neuss, guterbahnhof",54,74
+"Born, emplacement","Nijmegen, emplacement",81,115
+"Born, emplacement",NWB terminal,128,195
+"Born, emplacement",OBA,127,195
+"Born, emplacement","Oberhausen West, emplacement",74,109
+"Born, emplacement","Oldenzaal, emplacement",153,219
+"Born, emplacement","Onnen, emplacement noordingang",194,305
+"Born, emplacement","Onnen, emplacement zuidingang",190,301
+"Born, emplacement",Opladen,77,112
+"Born, emplacement","Oss, terminal OOC",79,117
+"Born, emplacement","Pernis, emplacement",120,182
+"Born, emplacement",Rheine,151,229
+"Born, emplacement","Rheinhausen, emplacement",64,92
+"Born, emplacement","Roosendaal, emplacement",103,155
+"Born, emplacement","Sittard, emplacement",11,7
+"Born, emplacement",Sloehaven empl.,119,189
+"Born, emplacement",Steinweg Amsterdam,129,202
+"Born, emplacement",Stroe,114,164
+"Born, emplacement","Tilburg, industrie",65,97
+"Born, emplacement","Uitgeest, emplacement",137,217
+"Born, emplacement","Valburg, emplacement CUP",86,131
+"Born, emplacement","Venlo, emplacement",38,50
+"Born, emplacement","Viersen, guterbahnhof",44,62
+"Born, emplacement","Vlissingen Sloe, emplacement",119,189
+"Born, emplacement",Vopak-Sloe,120,188
+"Born, emplacement","Waalhaven, emplacement",114,176
+"Born, emplacement","Waalhaven, kantoor RFO",117,177
+"Born, emplacement","Westhaven, emplacement",126,194
+"Born, emplacement",Zevenaar grens,108,162
+"Born, emplacement","Zutphen, emplacement",122,165
+"Botlek, emplacement",Bottrop,148,228
+"Botlek, emplacement","Coevorden, euroterminal",149,221
+"Botlek, emplacement",Deventer goed. empl.,107,161
+"Botlek, emplacement","Deventer, goederenemplacement",108,161
+"Botlek, emplacement","Dordrecht, dok",26,34
+"Botlek, emplacement","Dortmund Obereving, emplacement",173,272
+"Botlek, emplacement",Duisburg Ruhrorthafen,140,213
+"Botlek, emplacement","Duisburg, Hochfeld Süd Vorbahnhof",145,222
+"Botlek, emplacement","Eindhoven, emplacement",86,127
+"Botlek, emplacement","Eindhoven, emplacement Acht",80,120
+"Botlek, emplacement",Eltville Ost,292,453
+"Botlek, emplacement","Emmerich, station",109,164
+"Botlek, emplacement",Euromax,30,37
+"Botlek, emplacement","Europoort, emplacement",12,9
+"Botlek, emplacement","Gekkengraaf, emplacement",113,172
+"Botlek, emplacement",Germersheim,327,519
+"Botlek, emplacement",Goes,71,83
+"Botlek, emplacement","Hengelo, emplacement",136,206
+"Botlek, emplacement","Herzogenrath, station",146,217
+"Botlek, emplacement",Holland Cargo Terminal,59,84
+"Botlek, emplacement","Houtrakpolder, emplacement",54,81
+"Botlek, emplacement","IJsselmonde, emplacement",19,20
+"Botlek, emplacement","Kaldenkirchen, station",122,186
+"Botlek, emplacement","Kijfhoek, emplacement",23,31
+"Botlek, emplacement","Köln Eifeltor, emplacement",180,277
+"Botlek, emplacement",Koole Vondelingenweg,10,8
+"Botlek, emplacement","Krefeld Linn, emplacement",144,214
+"Botlek, emplacement","Lage Zwaluwe, emplacement",34,48
+"Botlek, emplacement","Leusden, PON",67,100
+"Botlek, emplacement",Ludwigshafen-Oggersheim,308,485
+"Botlek, emplacement","Maasvlakte, emplacement",24,28
+"Botlek, emplacement",Magdeburg Hbf,354,574
+"Botlek, emplacement","Marl-Sinsen, emplacement",161,256
+"Botlek, emplacement",Matrans Rotterdam Terminal,27,17
+"Botlek, emplacement","Moerdijk, emplacement",39,52
+"Botlek, emplacement",Moers,133,202
+"Botlek, emplacement","Neuss, guterbahnhof",151,231
+"Botlek, emplacement","Nijmegen, emplacement",87,121
+"Botlek, emplacement",NWB terminal,58,83
+"Botlek, emplacement",OBA,61,86
+"Botlek, emplacement","Oberhausen West, emplacement",137,214
+"Botlek, emplacement","Oldenzaal, emplacement",141,215
+"Botlek, emplacement","Onnen, emplacement noordingang",168,265
+"Botlek, emplacement","Onnen, emplacement zuidingang",166,260
+"Botlek, emplacement",Opladen,173,264
+"Botlek, emplacement","Oss, terminal OOC",78,114
+"Botlek, emplacement","Pernis, emplacement",12,9
+"Botlek, emplacement",Rheine,165,255
+"Botlek, emplacement","Rheinhausen, emplacement",140,215
+"Botlek, emplacement","Roosendaal, emplacement",48,68
+"Botlek, emplacement","Sittard, emplacement",127,193
+"Botlek, emplacement",Sloehaven empl.,79,97
+"Botlek, emplacement",Steinweg Amsterdam,57,83
+"Botlek, emplacement",Stroe,83,125
+"Botlek, emplacement","Tilburg, industrie",63,91
+"Botlek, emplacement","Uitgeest, emplacement",65,99
+"Botlek, emplacement","Valburg, emplacement CUP",77,117
+"Botlek, emplacement","Venlo, emplacement",120,179
+"Botlek, emplacement","Viersen, guterbahnhof",139,205
+"Botlek, emplacement","Vlissingen Sloe, emplacement",79,97
+"Botlek, emplacement",Vopak-Sloe,80,97
+"Botlek, emplacement","Waalhaven, emplacement",13,13
+"Botlek, emplacement","Waalhaven, kantoor RFO",16,15
+"Botlek, emplacement","Westhaven, emplacement",60,85
+"Botlek, emplacement",Zevenaar grens,99,147
+"Botlek, emplacement","Zutphen, emplacement",112,159
+Bottrop,"Coevorden, euroterminal",114,182
+Bottrop,Deventer goed. empl.,91,134
+Bottrop,"Deventer, goederenemplacement",92,134
+Bottrop,"Dordrecht, dok",136,198
+Bottrop,"Dortmund Obereving, emplacement",41,48
+Bottrop,Duisburg Ruhrorthafen,22,20
+Bottrop,"Duisburg, Hochfeld Süd Vorbahnhof",28,29
+Bottrop,"Eindhoven, emplacement",90,118
+Bottrop,"Eindhoven, emplacement Acht",95,128
+Bottrop,Eltville Ost,176,260
+Bottrop,"Emmerich, station",51,69
+Bottrop,Euromax,171,263
+Bottrop,"Europoort, emplacement",154,240
+Bottrop,"Gekkengraaf, emplacement",59,74
+Bottrop,Germersheim,227,350
+Bottrop,Goes,173,256
+Bottrop,"Hengelo, emplacement",79,109
+Bottrop,"Herzogenrath, station",95,133
+Bottrop,Holland Cargo Terminal,138,211
+Bottrop,"Houtrakpolder, emplacement",133,207
+Bottrop,"IJsselmonde, emplacement",139,211
+Bottrop,"Kaldenkirchen, station",55,66
+Bottrop,"Kijfhoek, emplacement",134,204
+Bottrop,"Köln Eifeltor, emplacement",73,96
+Bottrop,Koole Vondelingenweg,148,225
+Bottrop,"Krefeld Linn, emplacement",42,41
+Bottrop,"Lage Zwaluwe, emplacement",133,200
+Bottrop,"Leusden, PON",99,143
+Bottrop,Ludwigshafen-Oggersheim,207,316
+Bottrop,"Maasvlakte, emplacement",165,254
+Bottrop,Magdeburg Hbf,235,386
+Bottrop,"Marl-Sinsen, emplacement",28,32
+Bottrop,Matrans Rotterdam Terminal,155,217
+Bottrop,"Moerdijk, emplacement",140,207
+Bottrop,Moers,33,29
+Bottrop,"Neuss, guterbahnhof",49,54
+Bottrop,"Nijmegen, emplacement",83,114
+Bottrop,NWB terminal,135,207
+Bottrop,OBA,134,205
+Bottrop,"Oberhausen West, emplacement",16,14
+Bottrop,"Oldenzaal, emplacement",82,102
+Bottrop,"Onnen, emplacement noordingang",149,229
+Bottrop,"Onnen, emplacement zuidingang",144,225
+Bottrop,Opladen,52,67
+Bottrop,"Oss, terminal OOC",93,129
+Bottrop,"Pernis, emplacement",148,225
+Bottrop,Rheine,80,112
+Bottrop,"Rheinhausen, emplacement",37,31
+Bottrop,"Roosendaal, emplacement",146,210
+Bottrop,"Sittard, emplacement",94,127
+Bottrop,Sloehaven empl.,177,268
+Bottrop,Steinweg Amsterdam,135,207
+Bottrop,Stroe,95,131
+Bottrop,"Tilburg, industrie",108,152
+Bottrop,"Uitgeest, emplacement",145,227
+Bottrop,"Valburg, emplacement CUP",78,111
+Bottrop,"Venlo, emplacement",56,66
+Bottrop,"Viersen, guterbahnhof",58,71
+Bottrop,"Vlissingen Sloe, emplacement",177,268
+Bottrop,Vopak-Sloe,178,268
+Bottrop,"Waalhaven, emplacement",141,213
+Bottrop,"Waalhaven, kantoor RFO",144,214
+Bottrop,"Westhaven, emplacement",132,204
+Bottrop,Zevenaar grens,61,85
+Bottrop,"Zutphen, emplacement",86,119
+"Coevorden, euroterminal",Deventer goed. empl.,63,71
+"Coevorden, euroterminal","Deventer, goederenemplacement",63,71
+"Coevorden, euroterminal","Dordrecht, dok",138,199
+"Coevorden, euroterminal","Dortmund Obereving, emplacement",134,194
+"Coevorden, euroterminal",Duisburg Ruhrorthafen,120,180
+"Coevorden, euroterminal","Duisburg, Hochfeld Süd Vorbahnhof",124,191
+"Coevorden, euroterminal","Eindhoven, emplacement",137,202
+"Coevorden, euroterminal","Eindhoven, emplacement Acht",138,206
+"Coevorden, euroterminal",Eltville Ost,272,422
+"Coevorden, euroterminal","Emmerich, station",105,148
+"Coevorden, euroterminal",Euromax,171,255
+"Coevorden, euroterminal","Europoort, emplacement",154,232
+"Coevorden, euroterminal","Gekkengraaf, emplacement",141,209
+"Coevorden, euroterminal",Germersheim,323,512
+"Coevorden, euroterminal",Goes,190,284
+"Coevorden, euroterminal","Hengelo, emplacement",54,67
+"Coevorden, euroterminal","Herzogenrath, station",191,295
+"Coevorden, euroterminal",Holland Cargo Terminal,126,183
+"Coevorden, euroterminal","Houtrakpolder, emplacement",121,180
+"Coevorden, euroterminal","IJsselmonde, emplacement",139,203
+"Coevorden, euroterminal","Kaldenkirchen, station",146,220
+"Coevorden, euroterminal","Kijfhoek, emplacement",137,205
+"Coevorden, euroterminal","Köln Eifeltor, emplacement",169,257
+"Coevorden, euroterminal",Koole Vondelingenweg,149,217
+"Coevorden, euroterminal","Krefeld Linn, emplacement",139,203
+"Coevorden, euroterminal","Lage Zwaluwe, emplacement",143,213
+"Coevorden, euroterminal","Leusden, PON",87,124
+"Coevorden, euroterminal",Ludwigshafen-Oggersheim,304,478
+"Coevorden, euroterminal","Maasvlakte, emplacement",165,246
+"Coevorden, euroterminal",Magdeburg Hbf,253,403
+"Coevorden, euroterminal","Marl-Sinsen, emplacement",113,160
+"Coevorden, euroterminal",Matrans Rotterdam Terminal,158,218
+"Coevorden, euroterminal","Moerdijk, emplacement",148,216
+"Coevorden, euroterminal",Moers,129,191
+"Coevorden, euroterminal","Neuss, guterbahnhof",145,216
+"Coevorden, euroterminal","Nijmegen, emplacement",109,145
+"Coevorden, euroterminal",NWB terminal,123,180
+"Coevorden, euroterminal",OBA,122,177
+"Coevorden, euroterminal","Oberhausen West, emplacement",113,176
+"Coevorden, euroterminal","Oldenzaal, emplacement",50,51
+"Coevorden, euroterminal","Onnen, emplacement noordingang",55,71
+"Coevorden, euroterminal","Onnen, emplacement zuidingang",51,68
+"Coevorden, euroterminal",Opladen,148,229
+"Coevorden, euroterminal","Oss, terminal OOC",116,164
+"Coevorden, euroterminal","Pernis, emplacement",148,217
+"Coevorden, euroterminal",Rheine,65,85
+"Coevorden, euroterminal","Rheinhausen, emplacement",132,192
+"Coevorden, euroterminal","Roosendaal, emplacement",157,232
+"Coevorden, euroterminal","Sittard, emplacement",178,267
+"Coevorden, euroterminal",Sloehaven empl.,195,296
+"Coevorden, euroterminal",Steinweg Amsterdam,122,180
+"Coevorden, euroterminal",Stroe,84,105
+"Coevorden, euroterminal","Tilburg, industrie",141,204
+"Coevorden, euroterminal","Uitgeest, emplacement",132,190
+"Coevorden, euroterminal","Valburg, emplacement CUP",100,145
+"Coevorden, euroterminal","Venlo, emplacement",144,212
+"Coevorden, euroterminal","Viersen, guterbahnhof",154,233
+"Coevorden, euroterminal","Vlissingen Sloe, emplacement",195,296
+"Coevorden, euroterminal",Vopak-Sloe,196,296
+"Coevorden, euroterminal","Waalhaven, emplacement",143,214
+"Coevorden, euroterminal","Waalhaven, kantoor RFO",146,215
+"Coevorden, euroterminal","Westhaven, emplacement",120,176
+"Coevorden, euroterminal",Zevenaar grens,95,131
+"Coevorden, euroterminal","Zutphen, emplacement",76,96
+Deventer goed. empl.,"Deventer, goederenemplacement",1,0
+Deventer goed. empl.,"Dordrecht, dok",98,140
+Deventer goed. empl.,"Dortmund Obereving, emplacement",116,179
+Deventer goed. empl.,Duisburg Ruhrorthafen,91,137
+Deventer goed. empl.,"Duisburg, Hochfeld Süd Vorbahnhof",95,148
+Deventer goed. empl.,"Eindhoven, emplacement",85,124
+Deventer goed. empl.,"Eindhoven, emplacement Acht",86,128
+Deventer goed. empl.,Eltville Ost,243,379
+Deventer goed. empl.,"Emmerich, station",52,70
+Deventer goed. empl.,Euromax,131,197
+Deventer goed. empl.,"Europoort, emplacement",114,173
+Deventer goed. empl.,"Gekkengraaf, emplacement",89,131
+Deventer goed. empl.,Germersheim,294,469
+Deventer goed. empl.,Goes,149,226
+Deventer goed. empl.,"Hengelo, emplacement",40,50
+Deventer goed. empl.,"Herzogenrath, station",146,213
+Deventer goed. empl.,Holland Cargo Terminal,84,124
+Deventer goed. empl.,"Houtrakpolder, emplacement",80,121
+Deventer goed. empl.,"IJsselmonde, emplacement",99,144
+Deventer goed. empl.,"Kaldenkirchen, station",94,142
+Deventer goed. empl.,"Kijfhoek, emplacement",96,146
+Deventer goed. empl.,"Köln Eifeltor, emplacement",140,214
+Deventer goed. empl.,Koole Vondelingenweg,108,159
+Deventer goed. empl.,"Krefeld Linn, emplacement",110,160
+Deventer goed. empl.,"Lage Zwaluwe, emplacement",103,154
+Deventer goed. empl.,"Leusden, PON",47,66
+Deventer goed. empl.,Ludwigshafen-Oggersheim,275,434
+Deventer goed. empl.,"Maasvlakte, emplacement",125,187
+Deventer goed. empl.,Magdeburg Hbf,258,417
+Deventer goed. empl.,"Marl-Sinsen, emplacement",104,162
+Deventer goed. empl.,Matrans Rotterdam Terminal,117,159
+Deventer goed. empl.,"Moerdijk, emplacement",108,158
+Deventer goed. empl.,Moers,100,147
+Deventer goed. empl.,"Neuss, guterbahnhof",116,173
+Deventer goed. empl.,"Nijmegen, emplacement",57,67
+Deventer goed. empl.,NWB terminal,82,121
+Deventer goed. empl.,OBA,81,119
+Deventer goed. empl.,"Oberhausen West, emplacement",84,133
+Deventer goed. empl.,"Oldenzaal, emplacement",45,59
+Deventer goed. empl.,"Onnen, emplacement noordingang",92,119
+Deventer goed. empl.,"Onnen, emplacement zuidingang",88,115
+Deventer goed. empl.,Opladen,119,186
+Deventer goed. empl.,"Oss, terminal OOC",64,86
+Deventer goed. empl.,"Pernis, emplacement",107,158
+Deventer goed. empl.,Rheine,70,99
+Deventer goed. empl.,"Rheinhausen, emplacement",103,149
+Deventer goed. empl.,"Roosendaal, emplacement",117,174
+Deventer goed. empl.,"Sittard, emplacement",126,189
+Deventer goed. empl.,Sloehaven empl.,154,238
+Deventer goed. empl.,Steinweg Amsterdam,81,121
+Deventer goed. empl.,Stroe,32,42
+Deventer goed. empl.,"Tilburg, industrie",89,126
+Deventer goed. empl.,"Uitgeest, emplacement",91,131
+Deventer goed. empl.,"Valburg, emplacement CUP",47,67
+Deventer goed. empl.,"Venlo, emplacement",92,135
+Deventer goed. empl.,"Viersen, guterbahnhof",112,160
+Deventer goed. empl.,"Vlissingen Sloe, emplacement",154,238
+Deventer goed. empl.,Vopak-Sloe,155,237
+Deventer goed. empl.,"Waalhaven, emplacement",103,155
+Deventer goed. empl.,"Waalhaven, kantoor RFO",106,156
+Deventer goed. empl.,"Westhaven, emplacement",79,117
+Deventer goed. empl.,Zevenaar grens,42,53
+Deventer goed. empl.,"Zutphen, emplacement",19,14
+"Deventer, goederenemplacement","Dordrecht, dok",98,140
+"Deventer, goederenemplacement","Dortmund Obereving, emplacement",117,179
+"Deventer, goederenemplacement",Duisburg Ruhrorthafen,91,137
+"Deventer, goederenemplacement","Duisburg, Hochfeld Süd Vorbahnhof",96,148
+"Deventer, goederenemplacement","Eindhoven, emplacement",86,125
+"Deventer, goederenemplacement","Eindhoven, emplacement Acht",86,128
+"Deventer, goederenemplacement",Eltville Ost,244,379
+"Deventer, goederenemplacement","Emmerich, station",53,71
+"Deventer, goederenemplacement",Euromax,131,197
+"Deventer, goederenemplacement","Europoort, emplacement",114,173
+"Deventer, goederenemplacement","Gekkengraaf, emplacement",89,132
+"Deventer, goederenemplacement",Germersheim,294,469
+"Deventer, goederenemplacement",Goes,150,226
+"Deventer, goederenemplacement","Hengelo, emplacement",40,50
+"Deventer, goederenemplacement","Herzogenrath, station",146,213
+"Deventer, goederenemplacement",Holland Cargo Terminal,85,124
+"Deventer, goederenemplacement","Houtrakpolder, emplacement",80,121
+"Deventer, goederenemplacement","IJsselmonde, emplacement",99,145
+"Deventer, goederenemplacement","Kaldenkirchen, station",94,142
+"Deventer, goederenemplacement","Kijfhoek, emplacement",97,147
+"Deventer, goederenemplacement","Köln Eifeltor, emplacement",140,215
+"Deventer, goederenemplacement",Koole Vondelingenweg,108,159
+"Deventer, goederenemplacement","Krefeld Linn, emplacement",110,160
+"Deventer, goederenemplacement","Lage Zwaluwe, emplacement",103,154
+"Deventer, goederenemplacement","Leusden, PON",47,66
+"Deventer, goederenemplacement",Ludwigshafen-Oggersheim,275,435
+"Deventer, goederenemplacement","Maasvlakte, emplacement",125,187
+"Deventer, goederenemplacement",Magdeburg Hbf,258,418
+"Deventer, goederenemplacement","Marl-Sinsen, emplacement",104,162
+"Deventer, goederenemplacement",Matrans Rotterdam Terminal,117,160
+"Deventer, goederenemplacement","Moerdijk, emplacement",108,158
+"Deventer, goederenemplacement",Moers,101,148
+"Deventer, goederenemplacement","Neuss, guterbahnhof",117,174
+"Deventer, goederenemplacement","Nijmegen, emplacement",57,67
+"Deventer, goederenemplacement",NWB terminal,82,121
+"Deventer, goederenemplacement",OBA,81,119
+"Deventer, goederenemplacement","Oberhausen West, emplacement",84,133
+"Deventer, goederenemplacement","Oldenzaal, emplacement",45,59
+"Deventer, goederenemplacement","Onnen, emplacement noordingang",92,119
+"Deventer, goederenemplacement","Onnen, emplacement zuidingang",88,115
+"Deventer, goederenemplacement",Opladen,120,186
+"Deventer, goederenemplacement","Oss, terminal OOC",64,86
+"Deventer, goederenemplacement","Pernis, emplacement",108,158
+"Deventer, goederenemplacement",Rheine,70,99
+"Deventer, goederenemplacement","Rheinhausen, emplacement",104,149
+"Deventer, goederenemplacement","Roosendaal, emplacement",117,174
+"Deventer, goederenemplacement","Sittard, emplacement",126,189
+"Deventer, goederenemplacement",Sloehaven empl.,154,238
+"Deventer, goederenemplacement",Steinweg Amsterdam,82,121
+"Deventer, goederenemplacement",Stroe,32,43
+"Deventer, goederenemplacement","Tilburg, industrie",89,126
+"Deventer, goederenemplacement","Uitgeest, emplacement",91,131
+"Deventer, goederenemplacement","Valburg, emplacement CUP",48,67
+"Deventer, goederenemplacement","Venlo, emplacement",93,135
+"Deventer, goederenemplacement","Viersen, guterbahnhof",112,161
+"Deventer, goederenemplacement","Vlissingen Sloe, emplacement",155,238
+"Deventer, goederenemplacement",Vopak-Sloe,156,238
+"Deventer, goederenemplacement","Waalhaven, emplacement",103,155
+"Deventer, goederenemplacement","Waalhaven, kantoor RFO",106,156
+"Deventer, goederenemplacement","Westhaven, emplacement",79,118
+"Deventer, goederenemplacement",Zevenaar grens,43,54
+"Deventer, goederenemplacement","Zutphen, emplacement",19,15
+"Dordrecht, dok","Dortmund Obereving, emplacement",162,256
+"Dordrecht, dok",Duisburg Ruhrorthafen,129,194
+"Dordrecht, dok","Duisburg, Hochfeld Süd Vorbahnhof",131,199
+"Dordrecht, dok","Eindhoven, emplacement",67,96
+"Dordrecht, dok","Eindhoven, emplacement Acht",61,89
+"Dordrecht, dok",Eltville Ost,272,422
+"Dordrecht, dok","Emmerich, station",98,148
+"Dordrecht, dok",Euromax,48,68
+"Dordrecht, dok","Europoort, emplacement",30,44
+"Dordrecht, dok","Gekkengraaf, emplacement",94,142
+"Dordrecht, dok",Germersheim,308,488
+"Dordrecht, dok",Goes,61,89
+"Dordrecht, dok","Hengelo, emplacement",127,194
+"Dordrecht, dok","Herzogenrath, station",127,186
+"Dordrecht, dok",Holland Cargo Terminal,66,96
+"Dordrecht, dok","Houtrakpolder, emplacement",61,93
+"Dordrecht, dok","IJsselmonde, emplacement",17,18
+"Dordrecht, dok","Kaldenkirchen, station",102,155
+"Dordrecht, dok","Kijfhoek, emplacement",4,4
+"Dordrecht, dok","Köln Eifeltor, emplacement",160,243
+"Dordrecht, dok",Koole Vondelingenweg,24,29
+"Dordrecht, dok","Krefeld Linn, emplacement",131,191
+"Dordrecht, dok","Lage Zwaluwe, emplacement",15,17
+"Dordrecht, dok","Leusden, PON",58,87
+"Dordrecht, dok",Ludwigshafen-Oggersheim,289,454
+"Dordrecht, dok","Maasvlakte, emplacement",41,58
+"Dordrecht, dok",Magdeburg Hbf,344,561
+"Dordrecht, dok","Marl-Sinsen, emplacement",149,240
+"Dordrecht, dok",Matrans Rotterdam Terminal,32,27
+"Dordrecht, dok","Moerdijk, emplacement",19,21
+"Dordrecht, dok",Moers,121,184
+"Dordrecht, dok","Neuss, guterbahnhof",134,199
+"Dordrecht, dok","Nijmegen, emplacement",76,105
+"Dordrecht, dok",NWB terminal,65,95
+"Dordrecht, dok",OBA,68,98
+"Dordrecht, dok","Oberhausen West, emplacement",126,198
+"Dordrecht, dok","Oldenzaal, emplacement",132,202
+"Dordrecht, dok","Onnen, emplacement noordingang",161,251
+"Dordrecht, dok","Onnen, emplacement zuidingang",157,248
+"Dordrecht, dok",Opladen,159,241
+"Dordrecht, dok","Oss, terminal OOC",65,93
+"Dordrecht, dok","Pernis, emplacement",24,29
+"Dordrecht, dok",Rheine,156,243
+"Dordrecht, dok","Rheinhausen, emplacement",127,192
+"Dordrecht, dok","Roosendaal, emplacement",28,37
+"Dordrecht, dok","Sittard, emplacement",107,162
+"Dordrecht, dok",Sloehaven empl.,66,101
+"Dordrecht, dok",Steinweg Amsterdam,64,95
+"Dordrecht, dok",Stroe,74,113
+"Dordrecht, dok","Tilburg, industrie",43,61
+"Dordrecht, dok","Uitgeest, emplacement",72,111
+"Dordrecht, dok","Valburg, emplacement CUP",66,101
+"Dordrecht, dok","Venlo, emplacement",100,148
+"Dordrecht, dok","Viersen, guterbahnhof",120,174
+"Dordrecht, dok","Vlissingen Sloe, emplacement",66,101
+"Dordrecht, dok",Vopak-Sloe,67,101
+"Dordrecht, dok","Waalhaven, emplacement",17,22
+"Dordrecht, dok","Waalhaven, kantoor RFO",20,23
+"Dordrecht, dok","Westhaven, emplacement",67,97
+"Dordrecht, dok",Zevenaar grens,88,131
+"Dordrecht, dok","Zutphen, emplacement",101,143
+"Dortmund Obereving, emplacement",Duisburg Ruhrorthafen,50,61
+"Dortmund Obereving, emplacement","Duisburg, Hochfeld Süd Vorbahnhof",53,69
+"Dortmund Obereving, emplacement","Eindhoven, emplacement",117,156
+"Dortmund Obereving, emplacement","Eindhoven, emplacement Acht",122,166
+"Dortmund Obereving, emplacement",Eltville Ost,186,275
+"Dortmund Obereving, emplacement","Emmerich, station",75,112
+"Dortmund Obereving, emplacement",Euromax,196,307
+"Dortmund Obereving, emplacement","Europoort, emplacement",178,283
+"Dortmund Obereving, emplacement","Gekkengraaf, emplacement",85,112
+"Dortmund Obereving, emplacement",Germersheim,235,344
+"Dortmund Obereving, emplacement",Goes,199,294
+"Dortmund Obereving, emplacement","Hengelo, emplacement",99,137
+"Dortmund Obereving, emplacement","Herzogenrath, station",113,157
+"Dortmund Obereving, emplacement",Holland Cargo Terminal,162,254
+"Dortmund Obereving, emplacement","Houtrakpolder, emplacement",158,251
+"Dortmund Obereving, emplacement","IJsselmonde, emplacement",163,254
+"Dortmund Obereving, emplacement","Kaldenkirchen, station",81,104
+"Dortmund Obereving, emplacement","Kijfhoek, emplacement",159,248
+"Dortmund Obereving, emplacement","Köln Eifeltor, emplacement",82,110
+"Dortmund Obereving, emplacement",Koole Vondelingenweg,173,269
+"Dortmund Obereving, emplacement","Krefeld Linn, emplacement",63,73
+"Dortmund Obereving, emplacement","Lage Zwaluwe, emplacement",162,235
+"Dortmund Obereving, emplacement","Leusden, PON",124,187
+"Dortmund Obereving, emplacement",Ludwigshafen-Oggersheim,217,330
+"Dortmund Obereving, emplacement","Maasvlakte, emplacement",189,297
+"Dortmund Obereving, emplacement",Magdeburg Hbf,212,349
+"Dortmund Obereving, emplacement","Marl-Sinsen, emplacement",32,40
+"Dortmund Obereving, emplacement",Matrans Rotterdam Terminal,180,261
+"Dortmund Obereving, emplacement","Moerdijk, emplacement",169,242
+"Dortmund Obereving, emplacement",Moers,60,69
+"Dortmund Obereving, emplacement","Neuss, guterbahnhof",67,79
+"Dortmund Obereving, emplacement","Nijmegen, emplacement",110,158
+"Dortmund Obereving, emplacement",NWB terminal,160,251
+"Dortmund Obereving, emplacement",OBA,159,248
+"Dortmund Obereving, emplacement","Oberhausen West, emplacement",43,61
+"Dortmund Obereving, emplacement","Oldenzaal, emplacement",102,130
+"Dortmund Obereving, emplacement","Onnen, emplacement noordingang",170,257
+"Dortmund Obereving, emplacement","Onnen, emplacement zuidingang",166,253
+"Dortmund Obereving, emplacement",Opladen,65,87
+"Dortmund Obereving, emplacement","Oss, terminal OOC",120,171
+"Dortmund Obereving, emplacement","Pernis, emplacement",172,268
+"Dortmund Obereving, emplacement",Rheine,82,107
+"Dortmund Obereving, emplacement","Rheinhausen, emplacement",63,68
+"Dortmund Obereving, emplacement","Roosendaal, emplacement",173,248
+"Dortmund Obereving, emplacement","Sittard, emplacement",115,162
+"Dortmund Obereving, emplacement",Sloehaven empl.,204,306
+"Dortmund Obereving, emplacement",Steinweg Amsterdam,159,251
+"Dortmund Obereving, emplacement",Stroe,120,174
+"Dortmund Obereving, emplacement","Tilburg, industrie",135,190
+"Dortmund Obereving, emplacement","Uitgeest, emplacement",170,271
+"Dortmund Obereving, emplacement","Valburg, emplacement CUP",103,155
+"Dortmund Obereving, emplacement","Venlo, emplacement",83,104
+"Dortmund Obereving, emplacement","Viersen, guterbahnhof",76,96
+"Dortmund Obereving, emplacement","Vlissingen Sloe, emplacement",204,306
+"Dortmund Obereving, emplacement",Vopak-Sloe,205,305
+"Dortmund Obereving, emplacement","Waalhaven, emplacement",166,256
+"Dortmund Obereving, emplacement","Waalhaven, kantoor RFO",169,257
+"Dortmund Obereving, emplacement","Westhaven, emplacement",157,247
+"Dortmund Obereving, emplacement",Zevenaar grens,85,129
+"Dortmund Obereving, emplacement","Zutphen, emplacement",111,162
+Duisburg Ruhrorthafen,"Duisburg, Hochfeld Süd Vorbahnhof",12,13
+Duisburg Ruhrorthafen,"Eindhoven, emplacement",75,102
+Duisburg Ruhrorthafen,"Eindhoven, emplacement Acht",81,112
+Duisburg Ruhrorthafen,Eltville Ost,165,248
+Duisburg Ruhrorthafen,"Emmerich, station",50,70
+Duisburg Ruhrorthafen,Euromax,162,248
+Duisburg Ruhrorthafen,"Europoort, emplacement",145,224
+Duisburg Ruhrorthafen,"Gekkengraaf, emplacement",44,58
+Duisburg Ruhrorthafen,Germersheim,215,337
+Duisburg Ruhrorthafen,Goes,158,240
+Duisburg Ruhrorthafen,"Hengelo, emplacement",86,122
+Duisburg Ruhrorthafen,"Herzogenrath, station",81,113
+Duisburg Ruhrorthafen,Holland Cargo Terminal,137,212
+Duisburg Ruhrorthafen,"Houtrakpolder, emplacement",132,209
+Duisburg Ruhrorthafen,"IJsselmonde, emplacement",132,198
+Duisburg Ruhrorthafen,"Kaldenkirchen, station",40,50
+Duisburg Ruhrorthafen,"Kijfhoek, emplacement",126,194
+Duisburg Ruhrorthafen,"Köln Eifeltor, emplacement",61,83
+Duisburg Ruhrorthafen,Koole Vondelingenweg,139,209
+Duisburg Ruhrorthafen,"Krefeld Linn, emplacement",26,25
+Duisburg Ruhrorthafen,"Lage Zwaluwe, emplacement",121,181
+Duisburg Ruhrorthafen,"Leusden, PON",98,144
+Duisburg Ruhrorthafen,Ludwigshafen-Oggersheim,196,303
+Duisburg Ruhrorthafen,"Maasvlakte, emplacement",156,238
+Duisburg Ruhrorthafen,Magdeburg Hbf,246,404
+Duisburg Ruhrorthafen,"Marl-Sinsen, emplacement",39,50
+Duisburg Ruhrorthafen,Matrans Rotterdam Terminal,146,207
+Duisburg Ruhrorthafen,"Moerdijk, emplacement",128,188
+Duisburg Ruhrorthafen,Moers,19,15
+Duisburg Ruhrorthafen,"Neuss, guterbahnhof",34,38
+Duisburg Ruhrorthafen,"Nijmegen, emplacement",72,102
+Duisburg Ruhrorthafen,NWB terminal,134,209
+Duisburg Ruhrorthafen,OBA,133,206
+Duisburg Ruhrorthafen,"Oberhausen West, emplacement",9,5
+Duisburg Ruhrorthafen,"Oldenzaal, emplacement",89,115
+Duisburg Ruhrorthafen,"Onnen, emplacement noordingang",156,242
+Duisburg Ruhrorthafen,"Onnen, emplacement zuidingang",151,239
+Duisburg Ruhrorthafen,Opladen,40,55
+Duisburg Ruhrorthafen,"Oss, terminal OOC",81,117
+Duisburg Ruhrorthafen,"Pernis, emplacement",139,209
+Duisburg Ruhrorthafen,Rheine,87,125
+Duisburg Ruhrorthafen,"Rheinhausen, emplacement",21,14
+Duisburg Ruhrorthafen,"Roosendaal, emplacement",132,194
+Duisburg Ruhrorthafen,"Sittard, emplacement",79,111
+Duisburg Ruhrorthafen,Sloehaven empl.,163,252
+Duisburg Ruhrorthafen,Steinweg Amsterdam,134,209
+Duisburg Ruhrorthafen,Stroe,94,132
+Duisburg Ruhrorthafen,"Tilburg, industrie",94,136
+Duisburg Ruhrorthafen,"Uitgeest, emplacement",144,228
+Duisburg Ruhrorthafen,"Valburg, emplacement CUP",77,113
+Duisburg Ruhrorthafen,"Venlo, emplacement",41,50
+Duisburg Ruhrorthafen,"Viersen, guterbahnhof",44,53
+Duisburg Ruhrorthafen,"Vlissingen Sloe, emplacement",163,252
+Duisburg Ruhrorthafen,Vopak-Sloe,164,252
+Duisburg Ruhrorthafen,"Waalhaven, emplacement",132,202
+Duisburg Ruhrorthafen,"Waalhaven, kantoor RFO",135,203
+Duisburg Ruhrorthafen,"Westhaven, emplacement",131,205
+Duisburg Ruhrorthafen,Zevenaar grens,60,87
+Duisburg Ruhrorthafen,"Zutphen, emplacement",86,120
+"Duisburg, Hochfeld Süd Vorbahnhof","Eindhoven, emplacement",74,103
+"Duisburg, Hochfeld Süd Vorbahnhof","Eindhoven, emplacement Acht",79,113
+"Duisburg, Hochfeld Süd Vorbahnhof",Eltville Ost,162,242
+"Duisburg, Hochfeld Süd Vorbahnhof","Emmerich, station",51,79
+"Duisburg, Hochfeld Süd Vorbahnhof",Euromax,164,253
+"Duisburg, Hochfeld Süd Vorbahnhof","Europoort, emplacement",147,230
+"Duisburg, Hochfeld Süd Vorbahnhof","Gekkengraaf, emplacement",42,59
+"Duisburg, Hochfeld Süd Vorbahnhof",Germersheim,213,332
+"Duisburg, Hochfeld Süd Vorbahnhof",Goes,156,241
+"Duisburg, Hochfeld Süd Vorbahnhof","Hengelo, emplacement",87,131
+"Duisburg, Hochfeld Süd Vorbahnhof","Herzogenrath, station",77,104
+"Duisburg, Hochfeld Süd Vorbahnhof",Holland Cargo Terminal,138,221
+"Duisburg, Hochfeld Süd Vorbahnhof","Houtrakpolder, emplacement",133,217
+"Duisburg, Hochfeld Süd Vorbahnhof","IJsselmonde, emplacement",133,204
+"Duisburg, Hochfeld Süd Vorbahnhof","Kaldenkirchen, station",38,51
+"Duisburg, Hochfeld Süd Vorbahnhof","Kijfhoek, emplacement",127,197
+"Duisburg, Hochfeld Süd Vorbahnhof","Köln Eifeltor, emplacement",59,77
+"Duisburg, Hochfeld Süd Vorbahnhof",Koole Vondelingenweg,141,215
+"Duisburg, Hochfeld Süd Vorbahnhof","Krefeld Linn, emplacement",23,18
+"Duisburg, Hochfeld Süd Vorbahnhof","Lage Zwaluwe, emplacement",119,182
+"Duisburg, Hochfeld Süd Vorbahnhof","Leusden, PON",99,153
+"Duisburg, Hochfeld Süd Vorbahnhof",Ludwigshafen-Oggersheim,193,297
+"Duisburg, Hochfeld Süd Vorbahnhof","Maasvlakte, emplacement",158,244
+"Duisburg, Hochfeld Süd Vorbahnhof",Magdeburg Hbf,247,412
+"Duisburg, Hochfeld Süd Vorbahnhof","Marl-Sinsen, emplacement",40,58
+"Duisburg, Hochfeld Süd Vorbahnhof",Matrans Rotterdam Terminal,148,212
+"Duisburg, Hochfeld Süd Vorbahnhof","Moerdijk, emplacement",126,189
+"Duisburg, Hochfeld Süd Vorbahnhof",Moers,17,16
+"Duisburg, Hochfeld Süd Vorbahnhof","Neuss, guterbahnhof",31,31
+"Duisburg, Hochfeld Süd Vorbahnhof","Nijmegen, emplacement",73,108
+"Duisburg, Hochfeld Süd Vorbahnhof",NWB terminal,135,217
+"Duisburg, Hochfeld Süd Vorbahnhof",OBA,134,215
+"Duisburg, Hochfeld Süd Vorbahnhof","Oberhausen West, emplacement",11,14
+"Duisburg, Hochfeld Süd Vorbahnhof","Oldenzaal, emplacement",90,124
+"Duisburg, Hochfeld Süd Vorbahnhof","Onnen, emplacement noordingang",157,251
+"Duisburg, Hochfeld Süd Vorbahnhof","Onnen, emplacement zuidingang",152,247
+"Duisburg, Hochfeld Süd Vorbahnhof",Opladen,38,49
+"Duisburg, Hochfeld Süd Vorbahnhof","Oss, terminal OOC",83,123
+"Duisburg, Hochfeld Süd Vorbahnhof","Pernis, emplacement",140,214
+"Duisburg, Hochfeld Süd Vorbahnhof",Rheine,88,134
+"Duisburg, Hochfeld Süd Vorbahnhof","Rheinhausen, emplacement",17,11
+"Duisburg, Hochfeld Süd Vorbahnhof","Roosendaal, emplacement",130,195
+"Duisburg, Hochfeld Süd Vorbahnhof","Sittard, emplacement",78,112
+"Duisburg, Hochfeld Süd Vorbahnhof",Sloehaven empl.,161,253
+"Duisburg, Hochfeld Süd Vorbahnhof",Steinweg Amsterdam,135,217
+"Duisburg, Hochfeld Süd Vorbahnhof",Stroe,95,141
+"Duisburg, Hochfeld Süd Vorbahnhof","Tilburg, industrie",92,137
+"Duisburg, Hochfeld Süd Vorbahnhof","Uitgeest, emplacement",145,237
+"Duisburg, Hochfeld Süd Vorbahnhof","Valburg, emplacement CUP",78,124
+"Duisburg, Hochfeld Süd Vorbahnhof","Venlo, emplacement",40,51
+"Duisburg, Hochfeld Süd Vorbahnhof","Viersen, guterbahnhof",41,44
+"Duisburg, Hochfeld Süd Vorbahnhof","Vlissingen Sloe, emplacement",161,253
+"Duisburg, Hochfeld Süd Vorbahnhof",Vopak-Sloe,162,253
+"Duisburg, Hochfeld Süd Vorbahnhof","Waalhaven, emplacement",134,208
+"Duisburg, Hochfeld Süd Vorbahnhof","Waalhaven, kantoor RFO",137,209
+"Duisburg, Hochfeld Süd Vorbahnhof","Westhaven, emplacement",132,214
+"Duisburg, Hochfeld Süd Vorbahnhof",Zevenaar grens,61,95
+"Duisburg, Hochfeld Süd Vorbahnhof","Zutphen, emplacement",87,129
+"Eindhoven, emplacement","Eindhoven, emplacement Acht",11,6
+"Eindhoven, emplacement",Eltville Ost,218,330
+"Eindhoven, emplacement","Emmerich, station",82,120
+"Eindhoven, emplacement",Euromax,109,163
+"Eindhoven, emplacement","Europoort, emplacement",92,140
+"Eindhoven, emplacement","Gekkengraaf, emplacement",40,49
+"Eindhoven, emplacement",Germersheim,254,396
+"Eindhoven, emplacement",Goes,97,143
+"Eindhoven, emplacement","Hengelo, emplacement",113,169
+"Eindhoven, emplacement","Herzogenrath, station",73,94
+"Eindhoven, emplacement",Holland Cargo Terminal,93,140
+"Eindhoven, emplacement","Houtrakpolder, emplacement",89,136
+"Eindhoven, emplacement","IJsselmonde, emplacement",78,114
+"Eindhoven, emplacement","Kaldenkirchen, station",48,63
+"Eindhoven, emplacement","Kijfhoek, emplacement",66,98
+"Eindhoven, emplacement","Köln Eifeltor, emplacement",106,151
+"Eindhoven, emplacement",Koole Vondelingenweg,86,125
+"Eindhoven, emplacement","Krefeld Linn, emplacement",77,99
+"Eindhoven, emplacement","Lage Zwaluwe, emplacement",58,83
+"Eindhoven, emplacement","Leusden, PON",72,108
+"Eindhoven, emplacement",Ludwigshafen-Oggersheim,235,362
+"Eindhoven, emplacement","Maasvlakte, emplacement",103,154
+"Eindhoven, emplacement",Magdeburg Hbf,312,504
+"Eindhoven, emplacement","Marl-Sinsen, emplacement",105,150
+"Eindhoven, emplacement",Matrans Rotterdam Terminal,93,122
+"Eindhoven, emplacement","Moerdijk, emplacement",65,90
+"Eindhoven, emplacement",Moers,67,92
+"Eindhoven, emplacement","Neuss, guterbahnhof",80,110
+"Eindhoven, emplacement","Nijmegen, emplacement",52,66
+"Eindhoven, emplacement",NWB terminal,90,131
+"Eindhoven, emplacement",OBA,89,131
+"Eindhoven, emplacement","Oberhausen West, emplacement",76,105
+"Eindhoven, emplacement","Oldenzaal, emplacement",118,178
+"Eindhoven, emplacement","Onnen, emplacement noordingang",159,247
+"Eindhoven, emplacement","Onnen, emplacement zuidingang",155,243
+"Eindhoven, emplacement",Opladen,105,149
+"Eindhoven, emplacement","Oss, terminal OOC",37,47
+"Eindhoven, emplacement","Pernis, emplacement",85,124
+"Eindhoven, emplacement",Rheine,142,218
+"Eindhoven, emplacement","Rheinhausen, emplacement",73,100
+"Eindhoven, emplacement","Roosendaal, emplacement",68,96
+"Eindhoven, emplacement","Sittard, emplacement",54,70
+"Eindhoven, emplacement",Sloehaven empl.,101,154
+"Eindhoven, emplacement",Steinweg Amsterdam,92,139
+"Eindhoven, emplacement",Stroe,79,106
+"Eindhoven, emplacement","Tilburg, industrie",30,38
+"Eindhoven, emplacement","Uitgeest, emplacement",99,154
+"Eindhoven, emplacement","Valburg, emplacement CUP",50,73
+"Eindhoven, emplacement","Venlo, emplacement",46,56
+"Eindhoven, emplacement","Viersen, guterbahnhof",66,82
+"Eindhoven, emplacement","Vlissingen Sloe, emplacement",102,154
+"Eindhoven, emplacement",Vopak-Sloe,102,154
+"Eindhoven, emplacement","Waalhaven, emplacement",79,118
+"Eindhoven, emplacement","Waalhaven, kantoor RFO",82,119
+"Eindhoven, emplacement","Westhaven, emplacement",88,131
+"Eindhoven, emplacement",Zevenaar grens,72,103
+"Eindhoven, emplacement","Zutphen, emplacement",86,115
+"Eindhoven, emplacement Acht",Eltville Ost,222,339
+"Eindhoven, emplacement Acht","Emmerich, station",84,124
+"Eindhoven, emplacement Acht",Euromax,104,155
+"Eindhoven, emplacement Acht","Europoort, emplacement",87,132
+"Eindhoven, emplacement Acht","Gekkengraaf, emplacement",44,59
+"Eindhoven, emplacement Acht",Germersheim,258,406
+"Eindhoven, emplacement Acht",Goes,92,136
+"Eindhoven, emplacement Acht","Hengelo, emplacement",115,173
+"Eindhoven, emplacement Acht","Herzogenrath, station",77,104
+"Eindhoven, emplacement Acht",Holland Cargo Terminal,92,134
+"Eindhoven, emplacement Acht","Houtrakpolder, emplacement",88,131
+"Eindhoven, emplacement Acht","IJsselmonde, emplacement",73,105
+"Eindhoven, emplacement Acht","Kaldenkirchen, station",52,73
+"Eindhoven, emplacement Acht","Kijfhoek, emplacement",61,91
+"Eindhoven, emplacement Acht","Köln Eifeltor, emplacement",110,161
+"Eindhoven, emplacement Acht",Koole Vondelingenweg,81,117
+"Eindhoven, emplacement Acht","Krefeld Linn, emplacement",81,109
+"Eindhoven, emplacement Acht","Lage Zwaluwe, emplacement",53,76
+"Eindhoven, emplacement Acht","Leusden, PON",71,102
+"Eindhoven, emplacement Acht",Ludwigshafen-Oggersheim,239,371
+"Eindhoven, emplacement Acht","Maasvlakte, emplacement",98,146
+"Eindhoven, emplacement Acht",Magdeburg Hbf,316,513
+"Eindhoven, emplacement Acht","Marl-Sinsen, emplacement",109,159
+"Eindhoven, emplacement Acht",Matrans Rotterdam Terminal,88,114
+"Eindhoven, emplacement Acht","Moerdijk, emplacement",60,83
+"Eindhoven, emplacement Acht",Moers,71,102
+"Eindhoven, emplacement Acht","Neuss, guterbahnhof",84,119
+"Eindhoven, emplacement Acht","Nijmegen, emplacement",54,70
+"Eindhoven, emplacement Acht",NWB terminal,89,125
+"Eindhoven, emplacement Acht",OBA,88,126
+"Eindhoven, emplacement Acht","Oberhausen West, emplacement",80,115
+"Eindhoven, emplacement Acht","Oldenzaal, emplacement",120,181
+"Eindhoven, emplacement Acht","Onnen, emplacement noordingang",161,250
+"Eindhoven, emplacement Acht","Onnen, emplacement zuidingang",157,247
+"Eindhoven, emplacement Acht",Opladen,109,158
+"Eindhoven, emplacement Acht","Oss, terminal OOC",39,51
+"Eindhoven, emplacement Acht","Pernis, emplacement",80,116
+"Eindhoven, emplacement Acht",Rheine,144,222
+"Eindhoven, emplacement Acht","Rheinhausen, emplacement",77,110
+"Eindhoven, emplacement Acht","Roosendaal, emplacement",63,89
+"Eindhoven, emplacement Acht","Sittard, emplacement",58,80
+"Eindhoven, emplacement Acht",Sloehaven empl.,96,147
+"Eindhoven, emplacement Acht",Steinweg Amsterdam,90,133
+"Eindhoven, emplacement Acht",Stroe,81,110
+"Eindhoven, emplacement Acht","Tilburg, industrie",25,31
+"Eindhoven, emplacement Acht","Uitgeest, emplacement",98,148
+"Eindhoven, emplacement Acht","Valburg, emplacement CUP",52,77
+"Eindhoven, emplacement Acht","Venlo, emplacement",50,65
+"Eindhoven, emplacement Acht","Viersen, guterbahnhof",70,91
+"Eindhoven, emplacement Acht","Vlissingen Sloe, emplacement",97,147
+"Eindhoven, emplacement Acht",Vopak-Sloe,97,147
+"Eindhoven, emplacement Acht","Waalhaven, emplacement",74,110
+"Eindhoven, emplacement Acht","Waalhaven, kantoor RFO",77,111
+"Eindhoven, emplacement Acht","Westhaven, emplacement",87,125
+"Eindhoven, emplacement Acht",Zevenaar grens,74,107
+"Eindhoven, emplacement Acht","Zutphen, emplacement",88,119
+Eltville Ost,"Emmerich, station",202,312
+Eltville Ost,Euromax,319,489
+Eltville Ost,"Europoort, emplacement",301,466
+Eltville Ost,"Gekkengraaf, emplacement",189,289
+Eltville Ost,Germersheim,90,129
+Eltville Ost,Goes,283,442
+Eltville Ost,"Hengelo, emplacement",237,365
+Eltville Ost,"Herzogenrath, station",169,253
+Eltville Ost,Holland Cargo Terminal,289,454
+Eltville Ost,"Houtrakpolder, emplacement",284,451
+Eltville Ost,"IJsselmonde, emplacement",288,440
+Eltville Ost,"Kaldenkirchen, station",177,272
+Eltville Ost,"Kijfhoek, emplacement",274,426
+Eltville Ost,"Köln Eifeltor, emplacement",133,193
+Eltville Ost,Koole Vondelingenweg,295,451
+Eltville Ost,"Krefeld Linn, emplacement",169,247
+Eltville Ost,"Lage Zwaluwe, emplacement",266,411
+Eltville Ost,"Leusden, PON",250,387
+Eltville Ost,Ludwigshafen-Oggersheim,70,95
+Eltville Ost,"Maasvlakte, emplacement",312,480
+Eltville Ost,Magdeburg Hbf,297,462
+Eltville Ost,"Marl-Sinsen, emplacement",186,281
+Eltville Ost,Matrans Rotterdam Terminal,302,448
+Eltville Ost,"Moerdijk, emplacement",273,418
+Eltville Ost,Moers,172,255
+Eltville Ost,"Neuss, guterbahnhof",160,230
+Eltville Ost,"Nijmegen, emplacement",228,344
+Eltville Ost,NWB terminal,286,451
+Eltville Ost,OBA,285,448
+Eltville Ost,"Oberhausen West, emplacement",162,247
+Eltville Ost,"Oldenzaal, emplacement",241,358
+Eltville Ost,"Onnen, emplacement noordingang",307,484
+Eltville Ost,"Onnen, emplacement zuidingang",303,481
+Eltville Ost,Opladen,133,197
+Eltville Ost,"Oss, terminal OOC",237,359
+Eltville Ost,"Pernis, emplacement",295,450
+Eltville Ost,Rheine,239,368
+Eltville Ost,"Rheinhausen, emplacement",173,247
+Eltville Ost,"Roosendaal, emplacement",277,424
+Eltville Ost,"Sittard, emplacement",187,281
+Eltville Ost,Sloehaven empl.,288,454
+Eltville Ost,Steinweg Amsterdam,286,451
+Eltville Ost,Stroe,246,374
+Eltville Ost,"Tilburg, industrie",239,366
+Eltville Ost,"Uitgeest, emplacement",296,471
+Eltville Ost,"Valburg, emplacement CUP",229,355
+Eltville Ost,"Venlo, emplacement",184,277
+Eltville Ost,"Viersen, guterbahnhof",173,249
+Eltville Ost,"Vlissingen Sloe, emplacement",288,454
+Eltville Ost,Vopak-Sloe,289,453
+Eltville Ost,"Waalhaven, emplacement",288,444
+Eltville Ost,"Waalhaven, kantoor RFO",291,445
+Eltville Ost,"Westhaven, emplacement",283,447
+Eltville Ost,Zevenaar grens,212,329
+Eltville Ost,"Zutphen, emplacement",237,362
+"Emmerich, station",Euromax,136,199
+"Emmerich, station","Europoort, emplacement",118,176
+"Emmerich, station","Gekkengraaf, emplacement",70,80
+"Emmerich, station",Germersheim,256,403
+"Emmerich, station",Goes,152,220
+"Emmerich, station","Hengelo, emplacement",76,83
+"Emmerich, station","Herzogenrath, station",119,164
+"Emmerich, station",Holland Cargo Terminal,102,147
+"Emmerich, station","Houtrakpolder, emplacement",98,144
+"Emmerich, station","IJsselmonde, emplacement",103,147
+"Emmerich, station","Kaldenkirchen, station",75,91
+"Emmerich, station","Kijfhoek, emplacement",99,140
+"Emmerich, station","Köln Eifeltor, emplacement",102,149
+"Emmerich, station",Koole Vondelingenweg,113,162
+"Emmerich, station","Krefeld Linn, emplacement",72,95
+"Emmerich, station","Lage Zwaluwe, emplacement",105,153
+"Emmerich, station","Leusden, PON",64,79
+"Emmerich, station",Ludwigshafen-Oggersheim,237,369
+"Emmerich, station","Maasvlakte, emplacement",129,190
+"Emmerich, station",Magdeburg Hbf,273,451
+"Emmerich, station","Marl-Sinsen, emplacement",66,97
+"Emmerich, station",Matrans Rotterdam Terminal,120,153
+"Emmerich, station","Moerdijk, emplacement",111,152
+"Emmerich, station",Moers,60,70
+"Emmerich, station","Neuss, guterbahnhof",78,108
+"Emmerich, station","Nijmegen, emplacement",50,51
+"Emmerich, station",NWB terminal,100,144
+"Emmerich, station",OBA,99,141
+"Emmerich, station","Oberhausen West, emplacement",46,68
+"Emmerich, station","Oldenzaal, emplacement",85,100
+"Emmerich, station","Onnen, emplacement noordingang",131,193
+"Emmerich, station","Onnen, emplacement zuidingang",127,190
+"Emmerich, station",Opladen,81,121
+"Emmerich, station","Oss, terminal OOC",65,82
+"Emmerich, station","Pernis, emplacement",112,161
+"Emmerich, station",Rheine,96,129
+"Emmerich, station","Rheinhausen, emplacement",66,84
+"Emmerich, station","Roosendaal, emplacement",120,168
+"Emmerich, station","Sittard, emplacement",108,138
+"Emmerich, station",Sloehaven empl.,157,232
+"Emmerich, station",Steinweg Amsterdam,99,144
+"Emmerich, station",Stroe,60,67
+"Emmerich, station","Tilburg, industrie",90,122
+"Emmerich, station","Uitgeest, emplacement",110,163
+"Emmerich, station","Valburg, emplacement CUP",43,48
+"Emmerich, station","Venlo, emplacement",74,83
+"Emmerich, station","Viersen, guterbahnhof",83,104
+"Emmerich, station","Vlissingen Sloe, emplacement",157,232
+"Emmerich, station",Vopak-Sloe,158,231
+"Emmerich, station","Waalhaven, emplacement",106,149
+"Emmerich, station","Waalhaven, kantoor RFO",109,150
+"Emmerich, station","Westhaven, emplacement",97,140
+"Emmerich, station",Zevenaar grens,25,22
+"Emmerich, station","Zutphen, emplacement",51,55
+Euromax,"Europoort, emplacement",23,28
+Euromax,"Gekkengraaf, emplacement",137,207
+Euromax,Germersheim,351,554
+Euromax,Goes,83,96
+Euromax,"Hengelo, emplacement",160,241
+Euromax,"Herzogenrath, station",170,252
+Euromax,Holland Cargo Terminal,83,119
+Euromax,"Houtrakpolder, emplacement",78,116
+Euromax,"IJsselmonde, emplacement",44,56
+Euromax,"Kaldenkirchen, station",146,221
+Euromax,"Kijfhoek, emplacement",47,66
+Euromax,"Köln Eifeltor, emplacement",204,312
+Euromax,Koole Vondelingenweg,34,43
+Euromax,"Krefeld Linn, emplacement",168,249
+Euromax,"Lage Zwaluwe, emplacement",58,83
+Euromax,"Leusden, PON",91,135
+Euromax,Ludwigshafen-Oggersheim,332,520
+Euromax,"Maasvlakte, emplacement",18,16
+Euromax,Magdeburg Hbf,378,609
+Euromax,"Marl-Sinsen, emplacement",185,291
+Euromax,Matrans Rotterdam Terminal,51,53
+Euromax,"Moerdijk, emplacement",63,87
+Euromax,Moers,157,237
+Euromax,"Neuss, guterbahnhof",175,266
+Euromax,"Nijmegen, emplacement",111,156
+Euromax,NWB terminal,82,119
+Euromax,OBA,85,121
+Euromax,"Oberhausen West, emplacement",161,249
+Euromax,"Oldenzaal, emplacement",165,250
+Euromax,"Onnen, emplacement noordingang",192,300
+Euromax,"Onnen, emplacement zuidingang",190,295
+Euromax,Opladen,197,299
+Euromax,"Oss, terminal OOC",102,149
+Euromax,"Pernis, emplacement",36,44
+Euromax,Rheine,189,291
+Euromax,"Rheinhausen, emplacement",164,250
+Euromax,"Roosendaal, emplacement",72,103
+Euromax,"Sittard, emplacement",151,228
+Euromax,Sloehaven empl.,91,110
+Euromax,Steinweg Amsterdam,81,119
+Euromax,Stroe,107,160
+Euromax,"Tilburg, industrie",87,127
+Euromax,"Uitgeest, emplacement",89,134
+Euromax,"Valburg, emplacement CUP",101,152
+Euromax,"Venlo, emplacement",144,214
+Euromax,"Viersen, guterbahnhof",163,240
+Euromax,"Vlissingen Sloe, emplacement",91,110
+Euromax,Vopak-Sloe,92,110
+Euromax,"Waalhaven, emplacement",37,48
+Euromax,"Waalhaven, kantoor RFO",40,50
+Euromax,"Westhaven, emplacement",84,121
+Euromax,Zevenaar grens,123,182
+Euromax,"Zutphen, emplacement",136,194
+"Europoort, emplacement","Gekkengraaf, emplacement",119,183
+"Europoort, emplacement",Germersheim,333,530
+"Europoort, emplacement",Goes,65,77
+"Europoort, emplacement","Hengelo, emplacement",141,217
+"Europoort, emplacement","Herzogenrath, station",152,228
+"Europoort, emplacement",Holland Cargo Terminal,65,95
+"Europoort, emplacement","Houtrakpolder, emplacement",60,92
+"Europoort, emplacement","IJsselmonde, emplacement",25,32
+"Europoort, emplacement","Kaldenkirchen, station",127,197
+"Europoort, emplacement","Kijfhoek, emplacement",28,42
+"Europoort, emplacement","Köln Eifeltor, emplacement",186,288
+"Europoort, emplacement",Koole Vondelingenweg,16,19
+"Europoort, emplacement","Krefeld Linn, emplacement",150,225
+"Europoort, emplacement","Lage Zwaluwe, emplacement",40,59
+"Europoort, emplacement","Leusden, PON",73,111
+"Europoort, emplacement",Ludwigshafen-Oggersheim,314,496
+"Europoort, emplacement","Maasvlakte, emplacement",17,19
+"Europoort, emplacement",Magdeburg Hbf,359,585
+"Europoort, emplacement","Marl-Sinsen, emplacement",166,267
+"Europoort, emplacement",Matrans Rotterdam Terminal,33,28
+"Europoort, emplacement","Moerdijk, emplacement",45,63
+"Europoort, emplacement",Moers,139,213
+"Europoort, emplacement","Neuss, guterbahnhof",157,242
+"Europoort, emplacement","Nijmegen, emplacement",93,132
+"Europoort, emplacement",NWB terminal,64,94
+"Europoort, emplacement",OBA,67,97
+"Europoort, emplacement","Oberhausen West, emplacement",143,225
+"Europoort, emplacement","Oldenzaal, emplacement",146,226
+"Europoort, emplacement","Onnen, emplacement noordingang",174,276
+"Europoort, emplacement","Onnen, emplacement zuidingang",172,271
+"Europoort, emplacement",Opladen,179,275
+"Europoort, emplacement","Oss, terminal OOC",84,125
+"Europoort, emplacement","Pernis, emplacement",18,20
+"Europoort, emplacement",Rheine,171,266
+"Europoort, emplacement","Rheinhausen, emplacement",146,226
+"Europoort, emplacement","Roosendaal, emplacement",54,79
+"Europoort, emplacement","Sittard, emplacement",133,204
+"Europoort, emplacement",Sloehaven empl.,72,90
+"Europoort, emplacement",Steinweg Amsterdam,63,94
+"Europoort, emplacement",Stroe,89,136
+"Europoort, emplacement","Tilburg, industrie",68,102
+"Europoort, emplacement","Uitgeest, emplacement",71,110
+"Europoort, emplacement","Valburg, emplacement CUP",83,128
+"Europoort, emplacement","Venlo, emplacement",126,190
+"Europoort, emplacement","Viersen, guterbahnhof",145,216
+"Europoort, emplacement","Vlissingen Sloe, emplacement",73,90
+"Europoort, emplacement",Vopak-Sloe,74,90
+"Europoort, emplacement","Waalhaven, emplacement",18,24
+"Europoort, emplacement","Waalhaven, kantoor RFO",22,26
+"Europoort, emplacement","Westhaven, emplacement",66,96
+"Europoort, emplacement",Zevenaar grens,105,158
+"Europoort, emplacement","Zutphen, emplacement",118,170
+"Gekkengraaf, emplacement",Germersheim,222,352
+"Gekkengraaf, emplacement",Goes,123,188
+"Gekkengraaf, emplacement","Hengelo, emplacement",116,176
+"Gekkengraaf, emplacement","Herzogenrath, station",68,90
+"Gekkengraaf, emplacement",Holland Cargo Terminal,124,190
+"Gekkengraaf, emplacement","Houtrakpolder, emplacement",119,186
+"Gekkengraaf, emplacement","IJsselmonde, emplacement",106,158
+"Gekkengraaf, emplacement","Kaldenkirchen, station",16,19
+"Gekkengraaf, emplacement","Kijfhoek, emplacement",94,143
+"Gekkengraaf, emplacement","Köln Eifeltor, emplacement",74,107
+"Gekkengraaf, emplacement",Koole Vondelingenweg,114,169
+"Gekkengraaf, emplacement","Krefeld Linn, emplacement",45,55
+"Gekkengraaf, emplacement","Lage Zwaluwe, emplacement",86,129
+"Gekkengraaf, emplacement","Leusden, PON",86,125
+"Gekkengraaf, emplacement",Ludwigshafen-Oggersheim,202,317
+"Gekkengraaf, emplacement","Maasvlakte, emplacement",131,198
+"Gekkengraaf, emplacement",Magdeburg Hbf,280,459
+"Gekkengraaf, emplacement","Marl-Sinsen, emplacement",73,105
+"Gekkengraaf, emplacement",Matrans Rotterdam Terminal,121,166
+"Gekkengraaf, emplacement","Moerdijk, emplacement",92,136
+"Gekkengraaf, emplacement",Moers,35,48
+"Gekkengraaf, emplacement","Neuss, guterbahnhof",48,65
+"Gekkengraaf, emplacement","Nijmegen, emplacement",49,64
+"Gekkengraaf, emplacement",NWB terminal,120,181
+"Gekkengraaf, emplacement",OBA,120,181
+"Gekkengraaf, emplacement","Oberhausen West, emplacement",44,61
+"Gekkengraaf, emplacement","Oldenzaal, emplacement",121,185
+"Gekkengraaf, emplacement","Onnen, emplacement noordingang",163,254
+"Gekkengraaf, emplacement","Onnen, emplacement zuidingang",159,250
+"Gekkengraaf, emplacement",Opladen,73,104
+"Gekkengraaf, emplacement","Oss, terminal OOC",59,79
+"Gekkengraaf, emplacement","Pernis, emplacement",113,168
+"Gekkengraaf, emplacement",Rheine,121,181
+"Gekkengraaf, emplacement","Rheinhausen, emplacement",41,56
+"Gekkengraaf, emplacement","Roosendaal, emplacement",96,141
+"Gekkengraaf, emplacement","Sittard, emplacement",48,66
+"Gekkengraaf, emplacement",Sloehaven empl.,127,200
+"Gekkengraaf, emplacement",Steinweg Amsterdam,122,189
+"Gekkengraaf, emplacement",Stroe,82,113
+"Gekkengraaf, emplacement","Tilburg, industrie",58,84
+"Gekkengraaf, emplacement","Uitgeest, emplacement",130,204
+"Gekkengraaf, emplacement","Valburg, emplacement CUP",54,80
+"Gekkengraaf, emplacement","Venlo, emplacement",14,9
+"Gekkengraaf, emplacement","Viersen, guterbahnhof",34,37
+"Gekkengraaf, emplacement","Vlissingen Sloe, emplacement",127,200
+"Gekkengraaf, emplacement",Vopak-Sloe,128,199
+"Gekkengraaf, emplacement","Waalhaven, emplacement",107,162
+"Gekkengraaf, emplacement","Waalhaven, kantoor RFO",110,163
+"Gekkengraaf, emplacement","Westhaven, emplacement",119,181
+"Gekkengraaf, emplacement",Zevenaar grens,76,110
+"Gekkengraaf, emplacement","Zutphen, emplacement",90,114
+Germersheim,Goes,317,506
+Germersheim,"Hengelo, emplacement",286,463
+Germersheim,"Herzogenrath, station",203,317
+Germersheim,Holland Cargo Terminal,337,530
+Germersheim,"Houtrakpolder, emplacement",332,527
+Germersheim,"IJsselmonde, emplacement",321,504
+Germersheim,"Kaldenkirchen, station",211,336
+Germersheim,"Kijfhoek, emplacement",308,490
+Germersheim,"Köln Eifeltor, emplacement",173,267
+Germersheim,Koole Vondelingenweg,329,515
+Germersheim,"Krefeld Linn, emplacement",213,327
+Germersheim,"Lage Zwaluwe, emplacement",300,475
+Germersheim,"Leusden, PON",299,485
+Germersheim,Ludwigshafen-Oggersheim,30,39
+Germersheim,"Maasvlakte, emplacement",346,544
+Germersheim,Magdeburg Hbf,334,541
+Germersheim,"Marl-Sinsen, emplacement",235,379
+Germersheim,Matrans Rotterdam Terminal,336,512
+Germersheim,"Moerdijk, emplacement",307,482
+Germersheim,Moers,218,342
+Germersheim,"Neuss, guterbahnhof",198,308
+Germersheim,"Nijmegen, emplacement",261,408
+Germersheim,NWB terminal,333,521
+Germersheim,OBA,333,522
+Germersheim,"Oberhausen West, emplacement",210,345
+Germersheim,"Oldenzaal, emplacement",290,456
+Germersheim,"Onnen, emplacement noordingang",356,582
+Germersheim,"Onnen, emplacement zuidingang",352,579
+Germersheim,Opladen,182,295
+Germersheim,"Oss, terminal OOC",271,423
+Germersheim,"Pernis, emplacement",328,514
+Germersheim,Rheine,288,466
+Germersheim,"Rheinhausen, emplacement",213,334
+Germersheim,"Roosendaal, emplacement",310,488
+Germersheim,"Sittard, emplacement",221,345
+Germersheim,Sloehaven empl.,321,518
+Germersheim,Steinweg Amsterdam,335,529
+Germersheim,Stroe,295,472
+Germersheim,"Tilburg, industrie",272,430
+Germersheim,"Uitgeest, emplacement",343,544
+Germersheim,"Valburg, emplacement CUP",266,424
+Germersheim,"Venlo, emplacement",218,341
+Germersheim,"Viersen, guterbahnhof",206,323
+Germersheim,"Vlissingen Sloe, emplacement",322,518
+Germersheim,Vopak-Sloe,322,517
+Germersheim,"Waalhaven, emplacement",322,508
+Germersheim,"Waalhaven, kantoor RFO",325,509
+Germersheim,"Westhaven, emplacement",332,521
+Germersheim,Zevenaar grens,260,427
+Germersheim,"Zutphen, emplacement",286,460
+Goes,"Hengelo, emplacement",179,273
+Goes,"Herzogenrath, station",130,198
+Goes,Holland Cargo Terminal,117,179
+Goes,"Houtrakpolder, emplacement",113,175
+Goes,"IJsselmonde, emplacement",66,97
+Goes,"Kaldenkirchen, station",131,204
+Goes,"Kijfhoek, emplacement",60,92
+Goes,"Köln Eifeltor, emplacement",167,265
+Goes,Koole Vondelingenweg,74,108
+Goes,"Krefeld Linn, emplacement",160,240
+Goes,"Lage Zwaluwe, emplacement",55,82
+Goes,"Leusden, PON",111,166
+Goes,Ludwigshafen-Oggersheim,297,476
+Goes,"Maasvlakte, emplacement",77,87
+Goes,Magdeburg Hbf,394,645
+Goes,"Marl-Sinsen, emplacement",187,291
+Goes,Matrans Rotterdam Terminal,81,105
+Goes,"Moerdijk, emplacement",53,76
+Goes,Moers,150,233
+Goes,"Neuss, guterbahnhof",162,248
+Goes,"Nijmegen, emplacement",120,176
+Goes,NWB terminal,116,178
+Goes,OBA,119,181
+Goes,"Oberhausen West, emplacement",158,246
+Goes,"Oldenzaal, emplacement",184,281
+Goes,"Onnen, emplacement noordingang",213,330
+Goes,"Onnen, emplacement zuidingang",209,327
+Goes,Opladen,176,279
+Goes,"Oss, terminal OOC",105,158
+Goes,"Pernis, emplacement",74,107
+Goes,Rheine,209,322
+Goes,"Rheinhausen, emplacement",156,241
+Goes,"Roosendaal, emplacement",42,56
+Goes,"Sittard, emplacement",113,176
+Goes,Sloehaven empl.,15,17
+Goes,Steinweg Amsterdam,115,178
+Goes,Stroe,126,192
+Goes,"Tilburg, industrie",77,115
+Goes,"Uitgeest, emplacement",124,193
+Goes,"Valburg, emplacement CUP",118,180
+Goes,"Venlo, emplacement",129,197
+Goes,"Viersen, guterbahnhof",148,223
+Goes,"Vlissingen Sloe, emplacement",15,17
+Goes,Vopak-Sloe,16,17
+Goes,"Waalhaven, emplacement",67,101
+Goes,"Waalhaven, kantoor RFO",70,102
+Goes,"Westhaven, emplacement",118,180
+Goes,Zevenaar grens,141,210
+Goes,"Zutphen, emplacement",154,222
+"Hengelo, emplacement","Herzogenrath, station",157,239
+"Hengelo, emplacement",Holland Cargo Terminal,112,167
+"Hengelo, emplacement","Houtrakpolder, emplacement",108,164
+"Hengelo, emplacement","IJsselmonde, emplacement",126,187
+"Hengelo, emplacement","Kaldenkirchen, station",117,172
+"Hengelo, emplacement","Kijfhoek, emplacement",124,189
+"Hengelo, emplacement","Köln Eifeltor, emplacement",135,201
+"Hengelo, emplacement",Koole Vondelingenweg,136,201
+"Hengelo, emplacement","Krefeld Linn, emplacement",105,147
+"Hengelo, emplacement","Lage Zwaluwe, emplacement",130,197
+"Hengelo, emplacement","Leusden, PON",74,109
+"Hengelo, emplacement",Ludwigshafen-Oggersheim,270,421
+"Hengelo, emplacement","Maasvlakte, emplacement",152,230
+"Hengelo, emplacement",Magdeburg Hbf,233,372
+"Hengelo, emplacement","Marl-Sinsen, emplacement",79,104
+"Hengelo, emplacement",Matrans Rotterdam Terminal,145,202
+"Hengelo, emplacement","Moerdijk, emplacement",135,200
+"Hengelo, emplacement",Moers,95,134
+"Hengelo, emplacement","Neuss, guterbahnhof",111,160
+"Hengelo, emplacement","Nijmegen, emplacement",84,110
+"Hengelo, emplacement",NWB terminal,110,164
+"Hengelo, emplacement",OBA,108,161
+"Hengelo, emplacement","Oberhausen West, emplacement",79,120
+"Hengelo, emplacement","Oldenzaal, emplacement",20,13
+"Hengelo, emplacement","Onnen, emplacement noordingang",97,131
+"Hengelo, emplacement","Onnen, emplacement zuidingang",92,127
+"Hengelo, emplacement",Opladen,114,173
+"Hengelo, emplacement","Oss, terminal OOC",91,129
+"Hengelo, emplacement","Pernis, emplacement",135,201
+"Hengelo, emplacement",Rheine,45,53
+"Hengelo, emplacement","Rheinhausen, emplacement",98,136
+"Hengelo, emplacement","Roosendaal, emplacement",144,216
+"Hengelo, emplacement","Sittard, emplacement",154,232
+"Hengelo, emplacement",Sloehaven empl.,182,280
+"Hengelo, emplacement",Steinweg Amsterdam,109,164
+"Hengelo, emplacement",Stroe,60,85
+"Hengelo, emplacement","Tilburg, industrie",117,169
+"Hengelo, emplacement","Uitgeest, emplacement",119,174
+"Hengelo, emplacement","Valburg, emplacement CUP",75,110
+"Hengelo, emplacement","Venlo, emplacement",118,172
+"Hengelo, emplacement","Viersen, guterbahnhof",120,177
+"Hengelo, emplacement","Vlissingen Sloe, emplacement",182,280
+"Hengelo, emplacement",Vopak-Sloe,183,280
+"Hengelo, emplacement","Waalhaven, emplacement",131,198
+"Hengelo, emplacement","Waalhaven, kantoor RFO",133,199
+"Hengelo, emplacement","Westhaven, emplacement",107,160
+"Hengelo, emplacement",Zevenaar grens,68,86
+"Hengelo, emplacement","Zutphen, emplacement",47,57
+"Herzogenrath, station",Holland Cargo Terminal,160,241
+"Herzogenrath, station","Houtrakpolder, emplacement",156,237
+"Herzogenrath, station","IJsselmonde, emplacement",143,209
+"Herzogenrath, station","Kaldenkirchen, station",61,88
+"Herzogenrath, station","Kijfhoek, emplacement",130,194
+"Herzogenrath, station","Köln Eifeltor, emplacement",55,73
+"Herzogenrath, station",Koole Vondelingenweg,150,220
+"Herzogenrath, station","Krefeld Linn, emplacement",68,88
+"Herzogenrath, station","Lage Zwaluwe, emplacement",122,180
+"Herzogenrath, station","Leusden, PON",139,209
+"Herzogenrath, station",Ludwigshafen-Oggersheim,185,284
+"Herzogenrath, station","Maasvlakte, emplacement",167,249
+"Herzogenrath, station",Magdeburg Hbf,306,495
+"Herzogenrath, station","Marl-Sinsen, emplacement",109,163
+"Herzogenrath, station",Matrans Rotterdam Terminal,157,218
+"Herzogenrath, station","Moerdijk, emplacement",129,187
+"Herzogenrath, station",Moers,73,104
+"Herzogenrath, station","Neuss, guterbahnhof",55,71
+"Herzogenrath, station","Nijmegen, emplacement",110,152
+"Herzogenrath, station",NWB terminal,157,232
+"Herzogenrath, station",OBA,156,232
+"Herzogenrath, station","Oberhausen West, emplacement",79,118
+"Herzogenrath, station","Oldenzaal, emplacement",159,229
+"Herzogenrath, station","Onnen, emplacement noordingang",224,342
+"Herzogenrath, station","Onnen, emplacement zuidingang",220,339
+"Herzogenrath, station",Opladen,65,87
+"Herzogenrath, station","Oss, terminal OOC",108,154
+"Herzogenrath, station","Pernis, emplacement",149,219
+"Herzogenrath, station",Rheine,157,239
+"Herzogenrath, station","Rheinhausen, emplacement",69,96
+"Herzogenrath, station","Roosendaal, emplacement",127,186
+"Herzogenrath, station","Sittard, emplacement",31,31
+"Herzogenrath, station",Sloehaven empl.,136,207
+"Herzogenrath, station",Steinweg Amsterdam,159,240
+"Herzogenrath, station",Stroe,143,202
+"Herzogenrath, station","Tilburg, industrie",95,135
+"Herzogenrath, station","Uitgeest, emplacement",166,255
+"Herzogenrath, station","Valburg, emplacement CUP",115,169
+"Herzogenrath, station","Venlo, emplacement",68,88
+"Herzogenrath, station","Viersen, guterbahnhof",57,75
+"Herzogenrath, station","Vlissingen Sloe, emplacement",137,207
+"Herzogenrath, station",Vopak-Sloe,137,207
+"Herzogenrath, station","Waalhaven, emplacement",143,213
+"Herzogenrath, station","Waalhaven, kantoor RFO",146,214
+"Herzogenrath, station","Westhaven, emplacement",155,232
+"Herzogenrath, station",Zevenaar grens,130,200
+"Herzogenrath, station","Zutphen, emplacement",151,203
+Holland Cargo Terminal,"Houtrakpolder, emplacement",5,4
+Holland Cargo Terminal,"IJsselmonde, emplacement",62,88
+Holland Cargo Terminal,"Kaldenkirchen, station",130,196
+Holland Cargo Terminal,"Kijfhoek, emplacement",64,94
+Holland Cargo Terminal,"Köln Eifeltor, emplacement",186,291
+Holland Cargo Terminal,Koole Vondelingenweg,60,83
+Holland Cargo Terminal,"Krefeld Linn, emplacement",152,225
+Holland Cargo Terminal,"Lage Zwaluwe, emplacement",75,111
+Holland Cargo Terminal,"Leusden, PON",49,72
+Holland Cargo Terminal,Ludwigshafen-Oggersheim,317,495
+Holland Cargo Terminal,"Maasvlakte, emplacement",77,111
+Holland Cargo Terminal,Magdeburg Hbf,328,535
+Holland Cargo Terminal,"Marl-Sinsen, emplacement",149,238
+Holland Cargo Terminal,Matrans Rotterdam Terminal,70,85
+Holland Cargo Terminal,"Moerdijk, emplacement",80,115
+Holland Cargo Terminal,Moers,141,213
+Holland Cargo Terminal,"Neuss, guterbahnhof",159,242
+Holland Cargo Terminal,"Nijmegen, emplacement",95,132
+Holland Cargo Terminal,NWB terminal,11,7
+Holland Cargo Terminal,OBA,14,10
+Holland Cargo Terminal,"Oberhausen West, emplacement",129,209
+Holland Cargo Terminal,"Oldenzaal, emplacement",115,176
+Holland Cargo Terminal,"Onnen, emplacement noordingang",129,202
+Holland Cargo Terminal,"Onnen, emplacement zuidingang",130,206
+Holland Cargo Terminal,Opladen,165,262
+Holland Cargo Terminal,"Oss, terminal OOC",86,125
+Holland Cargo Terminal,"Pernis, emplacement",60,82
+Holland Cargo Terminal,Rheine,140,216
+Holland Cargo Terminal,"Rheinhausen, emplacement",148,226
+Holland Cargo Terminal,"Roosendaal, emplacement",89,131
+Holland Cargo Terminal,"Sittard, emplacement",138,210
+Holland Cargo Terminal,Sloehaven empl.,122,190
+Holland Cargo Terminal,Steinweg Amsterdam,10,7
+Holland Cargo Terminal,Stroe,58,86
+Holland Cargo Terminal,"Tilburg, industrie",89,127
+Holland Cargo Terminal,"Uitgeest, emplacement",22,27
+Holland Cargo Terminal,"Valburg, emplacement CUP",84,128
+Holland Cargo Terminal,"Venlo, emplacement",129,189
+Holland Cargo Terminal,"Viersen, guterbahnhof",148,215
+Holland Cargo Terminal,"Vlissingen Sloe, emplacement",123,190
+Holland Cargo Terminal,Vopak-Sloe,124,189
+Holland Cargo Terminal,"Waalhaven, emplacement",55,80
+Holland Cargo Terminal,"Waalhaven, kantoor RFO",59,83
+Holland Cargo Terminal,"Westhaven, emplacement",13,9
+Holland Cargo Terminal,Zevenaar grens,88,129
+Holland Cargo Terminal,"Zutphen, emplacement",89,126
+"Houtrakpolder, emplacement","IJsselmonde, emplacement",58,85
+"Houtrakpolder, emplacement","Kaldenkirchen, station",126,193
+"Houtrakpolder, emplacement","Kijfhoek, emplacement",60,91
+"Houtrakpolder, emplacement","Köln Eifeltor, emplacement",181,287
+"Houtrakpolder, emplacement",Koole Vondelingenweg,56,79
+"Houtrakpolder, emplacement","Krefeld Linn, emplacement",148,222
+"Houtrakpolder, emplacement","Lage Zwaluwe, emplacement",71,108
+"Houtrakpolder, emplacement","Leusden, PON",45,68
+"Houtrakpolder, emplacement",Ludwigshafen-Oggersheim,312,492
+"Houtrakpolder, emplacement","Maasvlakte, emplacement",72,108
+"Houtrakpolder, emplacement",Magdeburg Hbf,324,531
+"Houtrakpolder, emplacement","Marl-Sinsen, emplacement",145,235
+"Houtrakpolder, emplacement",Matrans Rotterdam Terminal,65,82
+"Houtrakpolder, emplacement","Moerdijk, emplacement",76,112
+"Houtrakpolder, emplacement",Moers,136,210
+"Houtrakpolder, emplacement","Neuss, guterbahnhof",154,238
+"Houtrakpolder, emplacement","Nijmegen, emplacement",90,128
+"Houtrakpolder, emplacement",NWB terminal,7,4
+"Houtrakpolder, emplacement",OBA,10,7
+"Houtrakpolder, emplacement","Oberhausen West, emplacement",125,206
+"Houtrakpolder, emplacement","Oldenzaal, emplacement",111,172
+"Houtrakpolder, emplacement","Onnen, emplacement noordingang",125,198
+"Houtrakpolder, emplacement","Onnen, emplacement zuidingang",126,203
+"Houtrakpolder, emplacement",Opladen,160,259
+"Houtrakpolder, emplacement","Oss, terminal OOC",81,122
+"Houtrakpolder, emplacement","Pernis, emplacement",55,79
+"Houtrakpolder, emplacement",Rheine,136,213
+"Houtrakpolder, emplacement","Rheinhausen, emplacement",143,223
+"Houtrakpolder, emplacement","Roosendaal, emplacement",85,128
+"Houtrakpolder, emplacement","Sittard, emplacement",133,206
+"Houtrakpolder, emplacement",Sloehaven empl.,118,186
+"Houtrakpolder, emplacement",Steinweg Amsterdam,6,4
+"Houtrakpolder, emplacement",Stroe,53,83
+"Houtrakpolder, emplacement","Tilburg, industrie",84,124
+"Houtrakpolder, emplacement","Uitgeest, emplacement",22,31
+"Houtrakpolder, emplacement","Valburg, emplacement CUP",80,124
+"Houtrakpolder, emplacement","Venlo, emplacement",124,186
+"Houtrakpolder, emplacement","Viersen, guterbahnhof",144,211
+"Houtrakpolder, emplacement","Vlissingen Sloe, emplacement",118,186
+"Houtrakpolder, emplacement",Vopak-Sloe,119,186
+"Houtrakpolder, emplacement","Waalhaven, emplacement",51,77
+"Houtrakpolder, emplacement","Waalhaven, kantoor RFO",55,79
+"Houtrakpolder, emplacement","Westhaven, emplacement",9,6
+"Houtrakpolder, emplacement",Zevenaar grens,84,126
+"Houtrakpolder, emplacement","Zutphen, emplacement",85,122
+"IJsselmonde, emplacement","Kaldenkirchen, station",113,169
+"IJsselmonde, emplacement","Kijfhoek, emplacement",14,14
+"IJsselmonde, emplacement","Köln Eifeltor, emplacement",171,260
+"IJsselmonde, emplacement",Koole Vondelingenweg,20,18
+"IJsselmonde, emplacement","Krefeld Linn, emplacement",136,197
+"IJsselmonde, emplacement","Lage Zwaluwe, emplacement",25,31
+"IJsselmonde, emplacement","Leusden, PON",58,83
+"IJsselmonde, emplacement",Ludwigshafen-Oggersheim,299,468
+"IJsselmonde, emplacement","Maasvlakte, emplacement",37,47
+"IJsselmonde, emplacement",Magdeburg Hbf,344,557
+"IJsselmonde, emplacement","Marl-Sinsen, emplacement",151,239
+"IJsselmonde, emplacement",Matrans Rotterdam Terminal,27,15
+"IJsselmonde, emplacement","Moerdijk, emplacement",30,35
+"IJsselmonde, emplacement",Moers,124,185
+"IJsselmonde, emplacement","Neuss, guterbahnhof",142,214
+"IJsselmonde, emplacement","Nijmegen, emplacement",78,104
+"IJsselmonde, emplacement",NWB terminal,62,88
+"IJsselmonde, emplacement",OBA,65,91
+"IJsselmonde, emplacement","Oberhausen West, emplacement",129,197
+"IJsselmonde, emplacement","Oldenzaal, emplacement",132,198
+"IJsselmonde, emplacement","Onnen, emplacement noordingang",161,247
+"IJsselmonde, emplacement","Onnen, emplacement zuidingang",157,243
+"IJsselmonde, emplacement",Opladen,164,247
+"IJsselmonde, emplacement","Oss, terminal OOC",70,97
+"IJsselmonde, emplacement","Pernis, emplacement",20,17
+"IJsselmonde, emplacement",Rheine,156,239
+"IJsselmonde, emplacement","Rheinhausen, emplacement",131,198
+"IJsselmonde, emplacement","Roosendaal, emplacement",39,51
+"IJsselmonde, emplacement","Sittard, emplacement",118,176
+"IJsselmonde, emplacement",Sloehaven empl.,72,107
+"IJsselmonde, emplacement",Steinweg Amsterdam,61,88
+"IJsselmonde, emplacement",Stroe,74,108
+"IJsselmonde, emplacement","Tilburg, industrie",54,75
+"IJsselmonde, emplacement","Uitgeest, emplacement",70,103
+"IJsselmonde, emplacement","Valburg, emplacement CUP",68,100
+"IJsselmonde, emplacement","Venlo, emplacement",111,162
+"IJsselmonde, emplacement","Viersen, guterbahnhof",131,188
+"IJsselmonde, emplacement","Vlissingen Sloe, emplacement",72,107
+"IJsselmonde, emplacement",Vopak-Sloe,73,107
+"IJsselmonde, emplacement","Waalhaven, emplacement",14,7
+"IJsselmonde, emplacement","Waalhaven, kantoor RFO",14,7
+"IJsselmonde, emplacement","Westhaven, emplacement",64,90
+"IJsselmonde, emplacement",Zevenaar grens,90,130
+"IJsselmonde, emplacement","Zutphen, emplacement",104,142
+"Kaldenkirchen, station","Kijfhoek, emplacement",101,156
+"Kaldenkirchen, station","Köln Eifeltor, emplacement",62,90
+"Kaldenkirchen, station",Koole Vondelingenweg,122,181
+"Kaldenkirchen, station","Krefeld Linn, emplacement",42,47
+"Kaldenkirchen, station","Lage Zwaluwe, emplacement",93,141
+"Kaldenkirchen, station","Leusden, PON",92,136
+"Kaldenkirchen, station",Ludwigshafen-Oggersheim,191,301
+"Kaldenkirchen, station","Maasvlakte, emplacement",139,210
+"Kaldenkirchen, station",Magdeburg Hbf,277,452
+"Kaldenkirchen, station","Marl-Sinsen, emplacement",70,98
+"Kaldenkirchen, station",Matrans Rotterdam Terminal,129,178
+"Kaldenkirchen, station","Moerdijk, emplacement",100,148
+"Kaldenkirchen, station",Moers,32,40
+"Kaldenkirchen, station","Neuss, guterbahnhof",36,49
+"Kaldenkirchen, station","Nijmegen, emplacement",54,74
+"Kaldenkirchen, station",NWB terminal,126,187
+"Kaldenkirchen, station",OBA,126,188
+"Kaldenkirchen, station","Oberhausen West, emplacement",41,53
+"Kaldenkirchen, station","Oldenzaal, emplacement",120,164
+"Kaldenkirchen, station","Onnen, emplacement noordingang",168,264
+"Kaldenkirchen, station","Onnen, emplacement zuidingang",164,260
+"Kaldenkirchen, station",Opladen,61,88
+"Kaldenkirchen, station","Oss, terminal OOC",64,89
+"Kaldenkirchen, station","Pernis, emplacement",121,180
+"Kaldenkirchen, station",Rheine,118,174
+"Kaldenkirchen, station","Rheinhausen, emplacement",38,48
+"Kaldenkirchen, station","Roosendaal, emplacement",103,154
+"Kaldenkirchen, station","Sittard, emplacement",46,62
+"Kaldenkirchen, station",Sloehaven empl.,134,212
+"Kaldenkirchen, station",Steinweg Amsterdam,128,195
+"Kaldenkirchen, station",Stroe,88,123
+"Kaldenkirchen, station","Tilburg, industrie",65,96
+"Kaldenkirchen, station","Uitgeest, emplacement",136,210
+"Kaldenkirchen, station","Valburg, emplacement CUP",59,90
+"Kaldenkirchen, station","Venlo, emplacement",11,6
+"Kaldenkirchen, station","Viersen, guterbahnhof",22,21
+"Kaldenkirchen, station","Vlissingen Sloe, emplacement",134,212
+"Kaldenkirchen, station",Vopak-Sloe,135,212
+"Kaldenkirchen, station","Waalhaven, emplacement",115,174
+"Kaldenkirchen, station","Waalhaven, kantoor RFO",118,175
+"Kaldenkirchen, station","Westhaven, emplacement",125,187
+"Kaldenkirchen, station",Zevenaar grens,81,121
+"Kaldenkirchen, station","Zutphen, emplacement",96,124
+"Kijfhoek, emplacement","Köln Eifeltor, emplacement",159,245
+"Kijfhoek, emplacement",Koole Vondelingenweg,22,27
+"Kijfhoek, emplacement","Krefeld Linn, emplacement",131,193
+"Kijfhoek, emplacement","Lage Zwaluwe, emplacement",14,19
+"Kijfhoek, emplacement","Leusden, PON",56,85
+"Kijfhoek, emplacement",Ludwigshafen-Oggersheim,288,456
+"Kijfhoek, emplacement","Maasvlakte, emplacement",39,56
+"Kijfhoek, emplacement",Magdeburg Hbf,342,559
+"Kijfhoek, emplacement","Marl-Sinsen, emplacement",147,237
+"Kijfhoek, emplacement",Matrans Rotterdam Terminal,29,24
+"Kijfhoek, emplacement","Moerdijk, emplacement",19,22
+"Kijfhoek, emplacement",Moers,120,184
+"Kijfhoek, emplacement","Neuss, guterbahnhof",133,201
+"Kijfhoek, emplacement","Nijmegen, emplacement",74,102
+"Kijfhoek, emplacement",NWB terminal,62,93
+"Kijfhoek, emplacement",OBA,66,96
+"Kijfhoek, emplacement","Oberhausen West, emplacement",124,195
+"Kijfhoek, emplacement","Oldenzaal, emplacement",129,200
+"Kijfhoek, emplacement","Onnen, emplacement noordingang",159,249
+"Kijfhoek, emplacement","Onnen, emplacement zuidingang",155,245
+"Kijfhoek, emplacement",Opladen,159,243
+"Kijfhoek, emplacement","Oss, terminal OOC",65,94
+"Kijfhoek, emplacement","Pernis, emplacement",22,26
+"Kijfhoek, emplacement",Rheine,154,241
+"Kijfhoek, emplacement","Rheinhausen, emplacement",127,194
+"Kijfhoek, emplacement","Roosendaal, emplacement",28,38
+"Kijfhoek, emplacement","Sittard, emplacement",107,163
+"Kijfhoek, emplacement",Sloehaven empl.,65,102
+"Kijfhoek, emplacement",Steinweg Amsterdam,62,93
+"Kijfhoek, emplacement",Stroe,72,110
+"Kijfhoek, emplacement","Tilburg, industrie",43,62
+"Kijfhoek, emplacement","Uitgeest, emplacement",70,108
+"Kijfhoek, emplacement","Valburg, emplacement CUP",63,98
+"Kijfhoek, emplacement","Venlo, emplacement",100,150
+"Kijfhoek, emplacement","Viersen, guterbahnhof",120,176
+"Kijfhoek, emplacement","Vlissingen Sloe, emplacement",66,102
+"Kijfhoek, emplacement",Vopak-Sloe,67,102
+"Kijfhoek, emplacement","Waalhaven, emplacement",15,20
+"Kijfhoek, emplacement","Waalhaven, kantoor RFO",18,21
+"Kijfhoek, emplacement","Westhaven, emplacement",65,95
+"Kijfhoek, emplacement",Zevenaar grens,86,129
+"Kijfhoek, emplacement","Zutphen, emplacement",99,140
+"Köln Eifeltor, emplacement",Koole Vondelingenweg,178,273
+"Köln Eifeltor, emplacement","Krefeld Linn, emplacement",55,68
+"Köln Eifeltor, emplacement","Lage Zwaluwe, emplacement",151,231
+"Köln Eifeltor, emplacement","Leusden, PON",143,221
+"Köln Eifeltor, emplacement",Ludwigshafen-Oggersheim,153,233
+"Köln Eifeltor, emplacement","Maasvlakte, emplacement",196,302
+"Köln Eifeltor, emplacement",Magdeburg Hbf,272,446
+"Köln Eifeltor, emplacement","Marl-Sinsen, emplacement",79,115
+"Köln Eifeltor, emplacement",Matrans Rotterdam Terminal,186,270
+"Köln Eifeltor, emplacement","Moerdijk, emplacement",157,239
+"Köln Eifeltor, emplacement",Moers,60,84
+"Köln Eifeltor, emplacement","Neuss, guterbahnhof",40,50
+"Köln Eifeltor, emplacement","Nijmegen, emplacement",111,166
+"Köln Eifeltor, emplacement",NWB terminal,180,286
+"Köln Eifeltor, emplacement",OBA,179,283
+"Köln Eifeltor, emplacement","Oberhausen West, emplacement",55,82
+"Köln Eifeltor, emplacement","Oldenzaal, emplacement",134,192
+"Köln Eifeltor, emplacement","Onnen, emplacement noordingang",201,319
+"Köln Eifeltor, emplacement","Onnen, emplacement zuidingang",197,315
+"Köln Eifeltor, emplacement",Opladen,27,32
+"Köln Eifeltor, emplacement","Oss, terminal OOC",121,181
+"Köln Eifeltor, emplacement","Pernis, emplacement",178,272
+"Köln Eifeltor, emplacement",Rheine,132,202
+"Köln Eifeltor, emplacement","Rheinhausen, emplacement",55,76
+"Köln Eifeltor, emplacement","Roosendaal, emplacement",162,253
+"Köln Eifeltor, emplacement","Sittard, emplacement",70,101
+"Köln Eifeltor, emplacement",Sloehaven empl.,171,274
+"Köln Eifeltor, emplacement",Steinweg Amsterdam,179,285
+"Köln Eifeltor, emplacement",Stroe,139,209
+"Köln Eifeltor, emplacement","Tilburg, industrie",123,186
+"Köln Eifeltor, emplacement","Uitgeest, emplacement",189,305
+"Köln Eifeltor, emplacement","Valburg, emplacement CUP",116,182
+"Köln Eifeltor, emplacement","Venlo, emplacement",69,98
+"Köln Eifeltor, emplacement","Viersen, guterbahnhof",52,72
+"Köln Eifeltor, emplacement","Vlissingen Sloe, emplacement",171,274
+"Köln Eifeltor, emplacement",Vopak-Sloe,172,274
+"Köln Eifeltor, emplacement","Waalhaven, emplacement",172,266
+"Köln Eifeltor, emplacement","Waalhaven, kantoor RFO",174,267
+"Köln Eifeltor, emplacement","Westhaven, emplacement",177,282
+"Köln Eifeltor, emplacement",Zevenaar grens,105,164
+"Köln Eifeltor, emplacement","Zutphen, emplacement",131,197
+Koole Vondelingenweg,"Krefeld Linn, emplacement",143,211
+Koole Vondelingenweg,"Lage Zwaluwe, emplacement",32,44
+Koole Vondelingenweg,"Leusden, PON",66,96
+Koole Vondelingenweg,Ludwigshafen-Oggersheim,306,481
+Koole Vondelingenweg,"Maasvlakte, emplacement",30,36
+Koole Vondelingenweg,Magdeburg Hbf,352,570
+Koole Vondelingenweg,"Marl-Sinsen, emplacement",158,252
+Koole Vondelingenweg,Matrans Rotterdam Terminal,25,14
+Koole Vondelingenweg,"Moerdijk, emplacement",37,48
+Koole Vondelingenweg,Moers,131,199
+Koole Vondelingenweg,"Neuss, guterbahnhof",149,227
+Koole Vondelingenweg,"Nijmegen, emplacement",85,117
+Koole Vondelingenweg,NWB terminal,56,80
+Koole Vondelingenweg,OBA,59,83
+Koole Vondelingenweg,"Oberhausen West, emplacement",136,210
+Koole Vondelingenweg,"Oldenzaal, emplacement",139,211
+Koole Vondelingenweg,"Onnen, emplacement noordingang",167,261
+Koole Vondelingenweg,"Onnen, emplacement zuidingang",164,257
+Koole Vondelingenweg,Opladen,171,261
+Koole Vondelingenweg,"Oss, terminal OOC",77,111
+Koole Vondelingenweg,"Pernis, emplacement",9,3
+Koole Vondelingenweg,Rheine,164,252
+Koole Vondelingenweg,"Rheinhausen, emplacement",138,212
+Koole Vondelingenweg,"Roosendaal, emplacement",46,64
+Koole Vondelingenweg,"Sittard, emplacement",125,189
+Koole Vondelingenweg,Sloehaven empl.,78,119
+Koole Vondelingenweg,Steinweg Amsterdam,55,80
+Koole Vondelingenweg,Stroe,81,122
+Koole Vondelingenweg,"Tilburg, industrie",61,88
+Koole Vondelingenweg,"Uitgeest, emplacement",64,96
+Koole Vondelingenweg,"Valburg, emplacement CUP",75,113
+Koole Vondelingenweg,"Venlo, emplacement",118,175
+Koole Vondelingenweg,"Viersen, guterbahnhof",138,201
+Koole Vondelingenweg,"Vlissingen Sloe, emplacement",78,119
+Koole Vondelingenweg,Vopak-Sloe,79,118
+Koole Vondelingenweg,"Waalhaven, emplacement",11,10
+Koole Vondelingenweg,"Waalhaven, kantoor RFO",14,12
+Koole Vondelingenweg,"Westhaven, emplacement",58,82
+Koole Vondelingenweg,Zevenaar grens,97,144
+Koole Vondelingenweg,"Zutphen, emplacement",111,155
+"Krefeld Linn, emplacement","Lage Zwaluwe, emplacement",122,178
+"Krefeld Linn, emplacement","Leusden, PON",114,166
+"Krefeld Linn, emplacement",Ludwigshafen-Oggersheim,193,295
+"Krefeld Linn, emplacement","Maasvlakte, emplacement",161,240
+"Krefeld Linn, emplacement",Magdeburg Hbf,266,426
+"Krefeld Linn, emplacement","Marl-Sinsen, emplacement",59,75
+"Krefeld Linn, emplacement",Matrans Rotterdam Terminal,151,209
+"Krefeld Linn, emplacement","Moerdijk, emplacement",129,186
+"Krefeld Linn, emplacement",Moers,25,22
+"Krefeld Linn, emplacement","Neuss, guterbahnhof",27,23
+"Krefeld Linn, emplacement","Nijmegen, emplacement",76,104
+"Krefeld Linn, emplacement",NWB terminal,148,218
+"Krefeld Linn, emplacement",OBA,147,218
+"Krefeld Linn, emplacement","Oberhausen West, emplacement",30,30
+"Krefeld Linn, emplacement","Oldenzaal, emplacement",110,140
+"Krefeld Linn, emplacement","Onnen, emplacement noordingang",176,267
+"Krefeld Linn, emplacement","Onnen, emplacement zuidingang",172,264
+"Krefeld Linn, emplacement",Opladen,47,56
+"Krefeld Linn, emplacement","Oss, terminal OOC",86,119
+"Krefeld Linn, emplacement","Pernis, emplacement",143,210
+"Krefeld Linn, emplacement",Rheine,108,150
+"Krefeld Linn, emplacement","Rheinhausen, emplacement",20,14
+"Krefeld Linn, emplacement","Roosendaal, emplacement",132,191
+"Krefeld Linn, emplacement","Sittard, emplacement",69,95
+"Krefeld Linn, emplacement",Sloehaven empl.,163,249
+"Krefeld Linn, emplacement",Steinweg Amsterdam,150,225
+"Krefeld Linn, emplacement",Stroe,110,153
+"Krefeld Linn, emplacement","Tilburg, industrie",94,134
+"Krefeld Linn, emplacement","Uitgeest, emplacement",157,240
+"Krefeld Linn, emplacement","Valburg, emplacement CUP",81,121
+"Krefeld Linn, emplacement","Venlo, emplacement",42,48
+"Krefeld Linn, emplacement","Viersen, guterbahnhof",31,29
+"Krefeld Linn, emplacement","Vlissingen Sloe, emplacement",164,249
+"Krefeld Linn, emplacement",Vopak-Sloe,164,249
+"Krefeld Linn, emplacement","Waalhaven, emplacement",137,204
+"Krefeld Linn, emplacement","Waalhaven, kantoor RFO",139,205
+"Krefeld Linn, emplacement","Westhaven, emplacement",146,217
+"Krefeld Linn, emplacement",Zevenaar grens,80,112
+"Krefeld Linn, emplacement","Zutphen, emplacement",106,145
+"Lage Zwaluwe, emplacement","Leusden, PON",62,92
+"Lage Zwaluwe, emplacement",Ludwigshafen-Oggersheim,279,441
+"Lage Zwaluwe, emplacement","Maasvlakte, emplacement",51,73
+"Lage Zwaluwe, emplacement",Magdeburg Hbf,348,566
+"Lage Zwaluwe, emplacement","Marl-Sinsen, emplacement",150,229
+"Lage Zwaluwe, emplacement",Matrans Rotterdam Terminal,41,42
+"Lage Zwaluwe, emplacement","Moerdijk, emplacement",13,10
+"Lage Zwaluwe, emplacement",Moers,112,171
+"Lage Zwaluwe, emplacement","Neuss, guterbahnhof",124,186
+"Lage Zwaluwe, emplacement","Nijmegen, emplacement",70,98
+"Lage Zwaluwe, emplacement",NWB terminal,74,110
+"Lage Zwaluwe, emplacement",OBA,77,113
+"Lage Zwaluwe, emplacement","Oberhausen West, emplacement",121,184
+"Lage Zwaluwe, emplacement","Oldenzaal, emplacement",135,207
+"Lage Zwaluwe, emplacement","Onnen, emplacement noordingang",164,256
+"Lage Zwaluwe, emplacement","Onnen, emplacement zuidingang",160,252
+"Lage Zwaluwe, emplacement",Opladen,150,228
+"Lage Zwaluwe, emplacement","Oss, terminal OOC",56,79
+"Lage Zwaluwe, emplacement","Pernis, emplacement",33,43
+"Lage Zwaluwe, emplacement",Rheine,160,248
+"Lage Zwaluwe, emplacement","Rheinhausen, emplacement",118,179
+"Lage Zwaluwe, emplacement","Roosendaal, emplacement",22,27
+"Lage Zwaluwe, emplacement","Sittard, emplacement",98,148
+"Lage Zwaluwe, emplacement",Sloehaven empl.,59,91
+"Lage Zwaluwe, emplacement",Steinweg Amsterdam,74,110
+"Lage Zwaluwe, emplacement",Stroe,77,117
+"Lage Zwaluwe, emplacement","Tilburg, industrie",34,47
+"Lage Zwaluwe, emplacement","Uitgeest, emplacement",82,126
+"Lage Zwaluwe, emplacement","Valburg, emplacement CUP",69,105
+"Lage Zwaluwe, emplacement","Venlo, emplacement",91,135
+"Lage Zwaluwe, emplacement","Viersen, guterbahnhof",111,161
+"Lage Zwaluwe, emplacement","Vlissingen Sloe, emplacement",59,91
+"Lage Zwaluwe, emplacement",Vopak-Sloe,60,91
+"Lage Zwaluwe, emplacement","Waalhaven, emplacement",27,37
+"Lage Zwaluwe, emplacement","Waalhaven, kantoor RFO",30,38
+"Lage Zwaluwe, emplacement","Westhaven, emplacement",76,112
+"Lage Zwaluwe, emplacement",Zevenaar grens,91,135
+"Lage Zwaluwe, emplacement","Zutphen, emplacement",104,147
+"Leusden, PON",Ludwigshafen-Oggersheim,280,435
+"Leusden, PON","Maasvlakte, emplacement",86,126
+"Leusden, PON",Magdeburg Hbf,294,478
+"Leusden, PON","Marl-Sinsen, emplacement",112,171
+"Leusden, PON",Matrans Rotterdam Terminal,79,98
+"Leusden, PON","Moerdijk, emplacement",69,96
+"Leusden, PON",Moers,104,154
+"Leusden, PON","Neuss, guterbahnhof",122,182
+"Leusden, PON","Nijmegen, emplacement",57,72
+"Leusden, PON",NWB terminal,49,68
+"Leusden, PON",OBA,48,66
+"Leusden, PON","Oberhausen West, emplacement",92,142
+"Leusden, PON","Oldenzaal, emplacement",81,119
+"Leusden, PON","Onnen, emplacement noordingang",110,167
+"Leusden, PON","Onnen, emplacement zuidingang",106,164
+"Leusden, PON",Opladen,127,195
+"Leusden, PON","Oss, terminal OOC",63,81
+"Leusden, PON","Pernis, emplacement",69,97
+"Leusden, PON",Rheine,105,159
+"Leusden, PON","Rheinhausen, emplacement",111,166
+"Leusden, PON","Roosendaal, emplacement",78,112
+"Leusden, PON","Sittard, emplacement",117,178
+"Leusden, PON",Sloehaven empl.,116,176
+"Leusden, PON",Steinweg Amsterdam,48,68
+"Leusden, PON",Stroe,23,29
+"Leusden, PON","Tilburg, industrie",68,98
+"Leusden, PON","Uitgeest, emplacement",58,79
+"Leusden, PON","Valburg, emplacement CUP",47,62
+"Leusden, PON","Venlo, emplacement",92,129
+"Leusden, PON","Viersen, guterbahnhof",111,155
+"Leusden, PON","Vlissingen Sloe, emplacement",116,176
+"Leusden, PON",Vopak-Sloe,117,176
+"Leusden, PON","Waalhaven, emplacement",64,94
+"Leusden, PON","Waalhaven, kantoor RFO",67,95
+"Leusden, PON","Westhaven, emplacement",46,65
+"Leusden, PON",Zevenaar grens,50,62
+"Leusden, PON","Zutphen, emplacement",54,69
+Ludwigshafen-Oggersheim,"Maasvlakte, emplacement",327,512
+Ludwigshafen-Oggersheim,Magdeburg Hbf,316,507
+Ludwigshafen-Oggersheim,"Marl-Sinsen, emplacement",216,345
+Ludwigshafen-Oggersheim,Matrans Rotterdam Terminal,317,480
+Ludwigshafen-Oggersheim,"Moerdijk, emplacement",288,450
+Ludwigshafen-Oggersheim,Moers,199,310
+Ludwigshafen-Oggersheim,"Neuss, guterbahnhof",179,276
+Ludwigshafen-Oggersheim,"Nijmegen, emplacement",242,376
+Ludwigshafen-Oggersheim,NWB terminal,314,489
+Ludwigshafen-Oggersheim,OBA,314,490
+Ludwigshafen-Oggersheim,"Oberhausen West, emplacement",192,311
+Ludwigshafen-Oggersheim,"Oldenzaal, emplacement",271,422
+Ludwigshafen-Oggersheim,"Onnen, emplacement noordingang",338,548
+Ludwigshafen-Oggersheim,"Onnen, emplacement zuidingang",334,545
+Ludwigshafen-Oggersheim,Opladen,164,261
+Ludwigshafen-Oggersheim,"Oss, terminal OOC",252,391
+Ludwigshafen-Oggersheim,"Pernis, emplacement",309,482
+Ludwigshafen-Oggersheim,Rheine,269,432
+Ludwigshafen-Oggersheim,"Rheinhausen, emplacement",194,303
+Ludwigshafen-Oggersheim,"Roosendaal, emplacement",291,456
+Ludwigshafen-Oggersheim,"Sittard, emplacement",202,313
+Ludwigshafen-Oggersheim,Sloehaven empl.,302,486
+Ludwigshafen-Oggersheim,Steinweg Amsterdam,316,497
+Ludwigshafen-Oggersheim,Stroe,276,425
+Ludwigshafen-Oggersheim,"Tilburg, industrie",253,398
+Ludwigshafen-Oggersheim,"Uitgeest, emplacement",324,512
+Ludwigshafen-Oggersheim,"Valburg, emplacement CUP",247,392
+Ludwigshafen-Oggersheim,"Venlo, emplacement",199,309
+Ludwigshafen-Oggersheim,"Viersen, guterbahnhof",187,291
+Ludwigshafen-Oggersheim,"Vlissingen Sloe, emplacement",303,486
+Ludwigshafen-Oggersheim,Vopak-Sloe,304,485
+Ludwigshafen-Oggersheim,"Waalhaven, emplacement",303,476
+Ludwigshafen-Oggersheim,"Waalhaven, kantoor RFO",306,477
+Ludwigshafen-Oggersheim,"Westhaven, emplacement",313,489
+Ludwigshafen-Oggersheim,Zevenaar grens,242,393
+Ludwigshafen-Oggersheim,"Zutphen, emplacement",268,426
+"Maasvlakte, emplacement",Magdeburg Hbf,371,600
+"Maasvlakte, emplacement","Marl-Sinsen, emplacement",178,282
+"Maasvlakte, emplacement",Matrans Rotterdam Terminal,45,43
+"Maasvlakte, emplacement","Moerdijk, emplacement",57,78
+"Maasvlakte, emplacement",Moers,151,228
+"Maasvlakte, emplacement","Neuss, guterbahnhof",169,257
+"Maasvlakte, emplacement","Nijmegen, emplacement",105,147
+"Maasvlakte, emplacement",NWB terminal,76,109
+"Maasvlakte, emplacement",OBA,79,112
+"Maasvlakte, emplacement","Oberhausen West, emplacement",155,240
+"Maasvlakte, emplacement","Oldenzaal, emplacement",158,241
+"Maasvlakte, emplacement","Onnen, emplacement noordingang",186,291
+"Maasvlakte, emplacement","Onnen, emplacement zuidingang",184,286
+"Maasvlakte, emplacement",Opladen,190,290
+"Maasvlakte, emplacement","Oss, terminal OOC",96,140
+"Maasvlakte, emplacement","Pernis, emplacement",30,35
+"Maasvlakte, emplacement",Rheine,183,281
+"Maasvlakte, emplacement","Rheinhausen, emplacement",158,241
+"Maasvlakte, emplacement","Roosendaal, emplacement",66,94
+"Maasvlakte, emplacement","Sittard, emplacement",145,219
+"Maasvlakte, emplacement",Sloehaven empl.,85,101
+"Maasvlakte, emplacement",Steinweg Amsterdam,75,109
+"Maasvlakte, emplacement",Stroe,101,151
+"Maasvlakte, emplacement","Tilburg, industrie",80,117
+"Maasvlakte, emplacement","Uitgeest, emplacement",83,125
+"Maasvlakte, emplacement","Valburg, emplacement CUP",95,143
+"Maasvlakte, emplacement","Venlo, emplacement",138,205
+"Maasvlakte, emplacement","Viersen, guterbahnhof",157,231
+"Maasvlakte, emplacement","Vlissingen Sloe, emplacement",85,101
+"Maasvlakte, emplacement",Vopak-Sloe,86,101
+"Maasvlakte, emplacement","Waalhaven, emplacement",30,39
+"Maasvlakte, emplacement","Waalhaven, kantoor RFO",34,41
+"Maasvlakte, emplacement","Westhaven, emplacement",78,111
+"Maasvlakte, emplacement",Zevenaar grens,117,173
+"Maasvlakte, emplacement","Zutphen, emplacement",130,185
+Magdeburg Hbf,"Marl-Sinsen, emplacement",226,378
+Magdeburg Hbf,Matrans Rotterdam Terminal,359,570
+Magdeburg Hbf,"Moerdijk, emplacement",350,568
+Magdeburg Hbf,Moers,253,413
+Magdeburg Hbf,"Neuss, guterbahnhof",264,424
+Magdeburg Hbf,"Nijmegen, emplacement",299,478
+Magdeburg Hbf,NWB terminal,324,531
+Magdeburg Hbf,OBA,323,529
+Magdeburg Hbf,"Oberhausen West, emplacement",237,399
+Magdeburg Hbf,"Oldenzaal, emplacement",222,361
+Magdeburg Hbf,"Onnen, emplacement noordingang",261,421
+Magdeburg Hbf,"Onnen, emplacement zuidingang",266,425
+Magdeburg Hbf,Opladen,254,421
+Magdeburg Hbf,"Oss, terminal OOC",306,497
+Magdeburg Hbf,"Pernis, emplacement",350,569
+Magdeburg Hbf,Rheine,199,323
+Magdeburg Hbf,"Rheinhausen, emplacement",256,415
+Magdeburg Hbf,"Roosendaal, emplacement",359,584
+Magdeburg Hbf,"Sittard, emplacement",307,500
+Magdeburg Hbf,Sloehaven empl.,397,653
+Magdeburg Hbf,Steinweg Amsterdam,324,531
+Magdeburg Hbf,Stroe,274,453
+Magdeburg Hbf,"Tilburg, industrie",329,537
+Magdeburg Hbf,"Uitgeest, emplacement",333,542
+Magdeburg Hbf,"Valburg, emplacement CUP",290,478
+Magdeburg Hbf,"Venlo, emplacement",276,451
+Magdeburg Hbf,"Viersen, guterbahnhof",276,448
+Magdeburg Hbf,"Vlissingen Sloe, emplacement",398,653
+Magdeburg Hbf,Vopak-Sloe,399,653
+Magdeburg Hbf,"Waalhaven, emplacement",345,565
+Magdeburg Hbf,"Waalhaven, kantoor RFO",348,566
+Magdeburg Hbf,"Westhaven, emplacement",321,528
+Magdeburg Hbf,Zevenaar grens,279,467
+Magdeburg Hbf,"Zutphen, emplacement",262,425
+"Marl-Sinsen, emplacement",Matrans Rotterdam Terminal,169,246
+"Marl-Sinsen, emplacement","Moerdijk, emplacement",155,239
+"Marl-Sinsen, emplacement",Moers,48,61
+"Marl-Sinsen, emplacement","Neuss, guterbahnhof",64,86
+"Marl-Sinsen, emplacement","Nijmegen, emplacement",98,143
+"Marl-Sinsen, emplacement",NWB terminal,149,236
+"Marl-Sinsen, emplacement",OBA,147,234
+"Marl-Sinsen, emplacement","Oberhausen West, emplacement",32,46
+"Marl-Sinsen, emplacement","Oldenzaal, emplacement",83,96
+"Marl-Sinsen, emplacement","Onnen, emplacement noordingang",150,223
+"Marl-Sinsen, emplacement","Onnen, emplacement zuidingang",146,219
+"Marl-Sinsen, emplacement",Opladen,64,92
+"Marl-Sinsen, emplacement","Oss, terminal OOC",109,161
+"Marl-Sinsen, emplacement","Pernis, emplacement",161,253
+"Marl-Sinsen, emplacement",Rheine,76,102
+"Marl-Sinsen, emplacement","Rheinhausen, emplacement",52,62
+"Marl-Sinsen, emplacement","Roosendaal, emplacement",162,242
+"Marl-Sinsen, emplacement","Sittard, emplacement",109,159
+"Marl-Sinsen, emplacement",Sloehaven empl.,193,300
+"Marl-Sinsen, emplacement",Steinweg Amsterdam,148,236
+"Marl-Sinsen, emplacement",Stroe,108,159
+"Marl-Sinsen, emplacement","Tilburg, industrie",124,184
+"Marl-Sinsen, emplacement","Uitgeest, emplacement",158,256
+"Marl-Sinsen, emplacement","Valburg, emplacement CUP",92,140
+"Marl-Sinsen, emplacement","Venlo, emplacement",71,98
+"Marl-Sinsen, emplacement","Viersen, guterbahnhof",73,103
+"Marl-Sinsen, emplacement","Vlissingen Sloe, emplacement",193,300
+"Marl-Sinsen, emplacement",Vopak-Sloe,194,300
+"Marl-Sinsen, emplacement","Waalhaven, emplacement",155,241
+"Marl-Sinsen, emplacement","Waalhaven, kantoor RFO",157,242
+"Marl-Sinsen, emplacement","Westhaven, emplacement",146,232
+"Marl-Sinsen, emplacement",Zevenaar grens,74,114
+"Marl-Sinsen, emplacement","Zutphen, emplacement",100,147
+Matrans Rotterdam Terminal,"Moerdijk, emplacement",46,46
+Matrans Rotterdam Terminal,Moers,141,196
+Matrans Rotterdam Terminal,"Neuss, guterbahnhof",159,225
+Matrans Rotterdam Terminal,"Nijmegen, emplacement",94,115
+Matrans Rotterdam Terminal,NWB terminal,69,84
+Matrans Rotterdam Terminal,OBA,73,87
+Matrans Rotterdam Terminal,"Oberhausen West, emplacement",145,208
+Matrans Rotterdam Terminal,"Oldenzaal, emplacement",150,212
+Matrans Rotterdam Terminal,"Onnen, emplacement noordingang",180,261
+Matrans Rotterdam Terminal,"Onnen, emplacement zuidingang",176,258
+Matrans Rotterdam Terminal,Opladen,180,258
+Matrans Rotterdam Terminal,"Oss, terminal OOC",86,108
+Matrans Rotterdam Terminal,"Pernis, emplacement",28,15
+Matrans Rotterdam Terminal,Rheine,175,253
+Matrans Rotterdam Terminal,"Rheinhausen, emplacement",148,209
+Matrans Rotterdam Terminal,"Roosendaal, emplacement",55,62
+Matrans Rotterdam Terminal,"Sittard, emplacement",134,187
+Matrans Rotterdam Terminal,Sloehaven empl.,87,116
+Matrans Rotterdam Terminal,Steinweg Amsterdam,69,84
+Matrans Rotterdam Terminal,Stroe,93,123
+Matrans Rotterdam Terminal,"Tilburg, industrie",70,86
+Matrans Rotterdam Terminal,"Uitgeest, emplacement",77,100
+Matrans Rotterdam Terminal,"Valburg, emplacement CUP",84,111
+Matrans Rotterdam Terminal,"Venlo, emplacement",127,173
+Matrans Rotterdam Terminal,"Viersen, guterbahnhof",147,199
+Matrans Rotterdam Terminal,"Vlissingen Sloe, emplacement",87,116
+Matrans Rotterdam Terminal,Vopak-Sloe,88,116
+Matrans Rotterdam Terminal,"Waalhaven, emplacement",17,6
+Matrans Rotterdam Terminal,"Waalhaven, kantoor RFO",21,8
+Matrans Rotterdam Terminal,"Westhaven, emplacement",72,86
+Matrans Rotterdam Terminal,Zevenaar grens,107,141
+Matrans Rotterdam Terminal,"Zutphen, emplacement",120,153
+"Moerdijk, emplacement",Moers,119,179
+"Moerdijk, emplacement","Neuss, guterbahnhof",131,193
+"Moerdijk, emplacement","Nijmegen, emplacement",77,106
+"Moerdijk, emplacement",NWB terminal,77,113
+"Moerdijk, emplacement",OBA,80,115
+"Moerdijk, emplacement","Oberhausen West, emplacement",127,192
+"Moerdijk, emplacement","Oldenzaal, emplacement",141,210
+"Moerdijk, emplacement","Onnen, emplacement noordingang",170,259
+"Moerdijk, emplacement","Onnen, emplacement zuidingang",166,256
+"Moerdijk, emplacement",Opladen,156,235
+"Moerdijk, emplacement","Oss, terminal OOC",62,87
+"Moerdijk, emplacement","Pernis, emplacement",36,46
+"Moerdijk, emplacement",Rheine,166,251
+"Moerdijk, emplacement","Rheinhausen, emplacement",125,186
+"Moerdijk, emplacement","Roosendaal, emplacement",20,22
+"Moerdijk, emplacement","Sittard, emplacement",105,156
+"Moerdijk, emplacement",Sloehaven empl.,58,86
+"Moerdijk, emplacement",Steinweg Amsterdam,77,113
+"Moerdijk, emplacement",Stroe,83,121
+"Moerdijk, emplacement","Tilburg, industrie",41,55
+"Moerdijk, emplacement","Uitgeest, emplacement",85,128
+"Moerdijk, emplacement","Valburg, emplacement CUP",75,109
+"Moerdijk, emplacement","Venlo, emplacement",98,142
+"Moerdijk, emplacement","Viersen, guterbahnhof",117,168
+"Moerdijk, emplacement","Vlissingen Sloe, emplacement",58,86
+"Moerdijk, emplacement",Vopak-Sloe,59,86
+"Moerdijk, emplacement","Waalhaven, emplacement",30,40
+"Moerdijk, emplacement","Waalhaven, kantoor RFO",33,41
+"Moerdijk, emplacement","Westhaven, emplacement",79,115
+"Moerdijk, emplacement",Zevenaar grens,97,139
+"Moerdijk, emplacement","Zutphen, emplacement",111,151
+Moers,"Neuss, guterbahnhof",33,38
+Moers,"Nijmegen, emplacement",67,92
+Moers,NWB terminal,139,206
+Moers,OBA,139,206
+Moers,"Oberhausen West, emplacement",19,18
+Moers,"Oldenzaal, emplacement",98,126
+Moers,"Onnen, emplacement noordingang",164,253
+Moers,"Onnen, emplacement zuidingang",160,249
+Moers,Opladen,48,62
+Moers,"Oss, terminal OOC",77,107
+Moers,"Pernis, emplacement",134,198
+Moers,Rheine,96,136
+Moers,"Rheinhausen, emplacement",18,10
+Moers,"Roosendaal, emplacement",125,185
+Moers,"Sittard, emplacement",72,102
+Moers,Sloehaven empl.,156,243
+Moers,Steinweg Amsterdam,141,213
+Moers,Stroe,101,141
+Moers,"Tilburg, industrie",87,127
+Moers,"Uitgeest, emplacement",149,228
+Moers,"Valburg, emplacement CUP",72,109
+Moers,"Venlo, emplacement",35,41
+Moers,"Viersen, guterbahnhof",38,44
+Moers,"Vlissingen Sloe, emplacement",156,243
+Moers,Vopak-Sloe,157,243
+Moers,"Waalhaven, emplacement",128,192
+Moers,"Waalhaven, kantoor RFO",131,193
+Moers,"Westhaven, emplacement",138,205
+Moers,Zevenaar grens,69,97
+Moers,"Zutphen, emplacement",94,131
+"Neuss, guterbahnhof","Nijmegen, emplacement",85,121
+"Neuss, guterbahnhof",NWB terminal,157,235
+"Neuss, guterbahnhof",OBA,156,235
+"Neuss, guterbahnhof","Oberhausen West, emplacement",36,41
+"Neuss, guterbahnhof","Oldenzaal, emplacement",115,151
+"Neuss, guterbahnhof","Onnen, emplacement noordingang",181,278
+"Neuss, guterbahnhof","Onnen, emplacement zuidingang",177,275
+"Neuss, guterbahnhof",Opladen,37,38
+"Neuss, guterbahnhof","Oss, terminal OOC",94,136
+"Neuss, guterbahnhof","Pernis, emplacement",152,228
+"Neuss, guterbahnhof",Rheine,113,162
+"Neuss, guterbahnhof","Rheinhausen, emplacement",29,31
+"Neuss, guterbahnhof","Roosendaal, emplacement",136,201
+"Neuss, guterbahnhof","Sittard, emplacement",57,76
+"Neuss, guterbahnhof",Sloehaven empl.,167,260
+"Neuss, guterbahnhof",Steinweg Amsterdam,159,242
+"Neuss, guterbahnhof",Stroe,118,170
+"Neuss, guterbahnhof","Tilburg, industrie",98,144
+"Neuss, guterbahnhof","Uitgeest, emplacement",166,258
+"Neuss, guterbahnhof","Valburg, emplacement CUP",90,138
+"Neuss, guterbahnhof","Venlo, emplacement",43,55
+"Neuss, guterbahnhof","Viersen, guterbahnhof",26,27
+"Neuss, guterbahnhof","Vlissingen Sloe, emplacement",167,260
+"Neuss, guterbahnhof",Vopak-Sloe,168,259
+"Neuss, guterbahnhof","Waalhaven, emplacement",145,221
+"Neuss, guterbahnhof","Waalhaven, kantoor RFO",148,222
+"Neuss, guterbahnhof","Westhaven, emplacement",155,234
+"Neuss, guterbahnhof",Zevenaar grens,86,123
+"Neuss, guterbahnhof","Zutphen, emplacement",111,156
+"Nijmegen, emplacement",NWB terminal,92,124
+"Nijmegen, emplacement",OBA,91,124
+"Nijmegen, emplacement","Oberhausen West, emplacement",70,102
+"Nijmegen, emplacement","Oldenzaal, emplacement",90,120
+"Nijmegen, emplacement","Onnen, emplacement noordingang",132,189
+"Nijmegen, emplacement","Onnen, emplacement zuidingang",128,185
+"Nijmegen, emplacement",Opladen,105,153
+"Nijmegen, emplacement","Oss, terminal OOC",31,27
+"Nijmegen, emplacement","Pernis, emplacement",86,117
+"Nijmegen, emplacement",Rheine,115,161
+"Nijmegen, emplacement","Rheinhausen, emplacement",72,104
+"Nijmegen, emplacement","Roosendaal, emplacement",87,121
+"Nijmegen, emplacement","Sittard, emplacement",87,121
+"Nijmegen, emplacement",Sloehaven empl.,124,184
+"Nijmegen, emplacement",Steinweg Amsterdam,93,132
+"Nijmegen, emplacement",Stroe,53,59
+"Nijmegen, emplacement","Tilburg, industrie",56,67
+"Nijmegen, emplacement","Uitgeest, emplacement",101,147
+"Nijmegen, emplacement","Valburg, emplacement CUP",19,13
+"Nijmegen, emplacement","Venlo, emplacement",53,67
+"Nijmegen, emplacement","Viersen, guterbahnhof",72,93
+"Nijmegen, emplacement","Vlissingen Sloe, emplacement",124,184
+"Nijmegen, emplacement",Vopak-Sloe,125,184
+"Nijmegen, emplacement","Waalhaven, emplacement",80,110
+"Nijmegen, emplacement","Waalhaven, kantoor RFO",83,111
+"Nijmegen, emplacement","Westhaven, emplacement",90,123
+"Nijmegen, emplacement",Zevenaar grens,38,34
+"Nijmegen, emplacement","Zutphen, emplacement",51,51
+NWB terminal,OBA,7,4
+NWB terminal,"Oberhausen West, emplacement",126,203
+NWB terminal,"Oldenzaal, emplacement",112,170
+NWB terminal,"Onnen, emplacement noordingang",126,196
+NWB terminal,"Onnen, emplacement zuidingang",127,200
+NWB terminal,Opladen,161,256
+NWB terminal,"Oss, terminal OOC",81,116
+NWB terminal,"Pernis, emplacement",62,83
+NWB terminal,Rheine,136,210
+NWB terminal,"Rheinhausen, emplacement",144,217
+NWB terminal,"Roosendaal, emplacement",91,132
+NWB terminal,"Sittard, emplacement",133,201
+NWB terminal,Sloehaven empl.,124,191
+NWB terminal,Steinweg Amsterdam,14,7
+NWB terminal,Stroe,54,80
+NWB terminal,"Tilburg, industrie",84,118
+NWB terminal,"Uitgeest, emplacement",26,26
+NWB terminal,"Valburg, emplacement CUP",80,119
+NWB terminal,"Venlo, emplacement",125,180
+NWB terminal,"Viersen, guterbahnhof",144,206
+NWB terminal,"Vlissingen Sloe, emplacement",125,191
+NWB terminal,Vopak-Sloe,126,190
+NWB terminal,"Waalhaven, emplacement",57,81
+NWB terminal,"Waalhaven, kantoor RFO",61,83
+NWB terminal,"Westhaven, emplacement",6,3
+NWB terminal,Zevenaar grens,85,123
+NWB terminal,"Zutphen, emplacement",85,120
+OBA,"Oberhausen West, emplacement",126,204
+OBA,"Oldenzaal, emplacement",112,170
+OBA,"Onnen, emplacement noordingang",126,196
+OBA,"Onnen, emplacement zuidingang",127,201
+OBA,Opladen,162,257
+OBA,"Oss, terminal OOC",82,117
+OBA,"Pernis, emplacement",62,84
+OBA,Rheine,137,211
+OBA,"Rheinhausen, emplacement",144,218
+OBA,"Roosendaal, emplacement",92,133
+OBA,"Sittard, emplacement",134,202
+OBA,Sloehaven empl.,125,191
+OBA,Steinweg Amsterdam,14,8
+OBA,Stroe,55,81
+OBA,"Tilburg, industrie",85,119
+OBA,"Uitgeest, emplacement",26,26
+OBA,"Valburg, emplacement CUP",81,120
+OBA,"Venlo, emplacement",125,181
+OBA,"Viersen, guterbahnhof",144,207
+OBA,"Vlissingen Sloe, emplacement",125,191
+OBA,Vopak-Sloe,126,191
+OBA,"Waalhaven, emplacement",58,82
+OBA,"Waalhaven, kantoor RFO",61,84
+OBA,"Westhaven, emplacement",2,1
+OBA,Zevenaar grens,85,124
+OBA,"Zutphen, emplacement",86,120
+"Oberhausen West, emplacement","Oldenzaal, emplacement",82,112
+"Oberhausen West, emplacement","Onnen, emplacement noordingang",149,239
+"Oberhausen West, emplacement","Onnen, emplacement zuidingang",145,235
+"Oberhausen West, emplacement",Opladen,38,54
+"Oberhausen West, emplacement","Oss, terminal OOC",80,118
+"Oberhausen West, emplacement","Pernis, emplacement",138,210
+"Oberhausen West, emplacement",Rheine,80,122
+"Oberhausen West, emplacement","Rheinhausen, emplacement",22,17
+"Oberhausen West, emplacement","Roosendaal, emplacement",132,197
+"Oberhausen West, emplacement","Sittard, emplacement",80,114
+"Oberhausen West, emplacement",Sloehaven empl.,163,255
+"Oberhausen West, emplacement",Steinweg Amsterdam,127,205
+"Oberhausen West, emplacement",Stroe,87,129
+"Oberhausen West, emplacement","Tilburg, industrie",94,139
+"Oberhausen West, emplacement","Uitgeest, emplacement",137,225
+"Oberhausen West, emplacement","Valburg, emplacement CUP",70,110
+"Oberhausen West, emplacement","Venlo, emplacement",42,53
+"Oberhausen West, emplacement","Viersen, guterbahnhof",44,58
+"Oberhausen West, emplacement","Vlissingen Sloe, emplacement",163,255
+"Oberhausen West, emplacement",Vopak-Sloe,164,255
+"Oberhausen West, emplacement","Waalhaven, emplacement",131,203
+"Oberhausen West, emplacement","Waalhaven, kantoor RFO",134,204
+"Oberhausen West, emplacement","Westhaven, emplacement",125,202
+"Oberhausen West, emplacement",Zevenaar grens,53,83
+"Oberhausen West, emplacement","Zutphen, emplacement",79,117
+"Oldenzaal, emplacement","Onnen, emplacement noordingang",100,141
+"Oldenzaal, emplacement","Onnen, emplacement zuidingang",96,138
+"Oldenzaal, emplacement",Opladen,118,166
+"Oldenzaal, emplacement","Oss, terminal OOC",95,139
+"Oldenzaal, emplacement","Pernis, emplacement",139,211
+"Oldenzaal, emplacement",Rheine,35,43
+"Oldenzaal, emplacement","Rheinhausen, emplacement",102,129
+"Oldenzaal, emplacement","Roosendaal, emplacement",148,227
+"Oldenzaal, emplacement","Sittard, emplacement",158,242
+"Oldenzaal, emplacement",Sloehaven empl.,186,291
+"Oldenzaal, emplacement",Steinweg Amsterdam,113,174
+"Oldenzaal, emplacement",Stroe,63,96
+"Oldenzaal, emplacement","Tilburg, industrie",121,179
+"Oldenzaal, emplacement","Uitgeest, emplacement",122,185
+"Oldenzaal, emplacement","Valburg, emplacement CUP",79,120
+"Oldenzaal, emplacement","Venlo, emplacement",122,165
+"Oldenzaal, emplacement","Viersen, guterbahnhof",124,170
+"Oldenzaal, emplacement","Vlissingen Sloe, emplacement",186,291
+"Oldenzaal, emplacement",Vopak-Sloe,187,291
+"Oldenzaal, emplacement","Waalhaven, emplacement",134,208
+"Oldenzaal, emplacement","Waalhaven, kantoor RFO",137,209
+"Oldenzaal, emplacement","Westhaven, emplacement",110,171
+"Oldenzaal, emplacement",Zevenaar grens,74,107
+"Oldenzaal, emplacement","Zutphen, emplacement",51,68
+"Onnen, emplacement noordingang","Onnen, emplacement zuidingang",7,4
+"Onnen, emplacement noordingang",Opladen,182,291
+"Onnen, emplacement noordingang","Oss, terminal OOC",137,207
+"Onnen, emplacement noordingang","Pernis, emplacement",169,260
+"Onnen, emplacement noordingang",Rheine,99,146
+"Onnen, emplacement noordingang","Rheinhausen, emplacement",166,254
+"Onnen, emplacement noordingang","Roosendaal, emplacement",178,276
+"Onnen, emplacement noordingang","Sittard, emplacement",199,310
+"Onnen, emplacement noordingang",Sloehaven empl.,216,340
+"Onnen, emplacement noordingang",Steinweg Amsterdam,128,200
+"Onnen, emplacement noordingang",Stroe,105,148
+"Onnen, emplacement noordingang","Tilburg, industrie",162,247
+"Onnen, emplacement noordingang","Uitgeest, emplacement",130,190
+"Onnen, emplacement noordingang","Valburg, emplacement CUP",121,188
+"Onnen, emplacement noordingang","Venlo, emplacement",166,256
+"Onnen, emplacement noordingang","Viersen, guterbahnhof",185,282
+"Onnen, emplacement noordingang","Vlissingen Sloe, emplacement",216,340
+"Onnen, emplacement noordingang",Vopak-Sloe,217,339
+"Onnen, emplacement noordingang","Waalhaven, emplacement",165,257
+"Onnen, emplacement noordingang","Waalhaven, kantoor RFO",168,258
+"Onnen, emplacement noordingang","Westhaven, emplacement",126,197
+"Onnen, emplacement noordingang",Zevenaar grens,116,175
+"Onnen, emplacement noordingang","Zutphen, emplacement",106,131
+"Onnen, emplacement zuidingang",Opladen,178,287
+"Onnen, emplacement zuidingang","Oss, terminal OOC",134,204
+"Onnen, emplacement zuidingang","Pernis, emplacement",166,257
+"Onnen, emplacement zuidingang",Rheine,95,143
+"Onnen, emplacement zuidingang","Rheinhausen, emplacement",163,250
+"Onnen, emplacement zuidingang","Roosendaal, emplacement",175,272
+"Onnen, emplacement zuidingang","Sittard, emplacement",196,307
+"Onnen, emplacement zuidingang",Sloehaven empl.,212,336
+"Onnen, emplacement zuidingang",Steinweg Amsterdam,130,205
+"Onnen, emplacement zuidingang",Stroe,101,145
+"Onnen, emplacement zuidingang","Tilburg, industrie",159,244
+"Onnen, emplacement zuidingang","Uitgeest, emplacement",132,194
+"Onnen, emplacement zuidingang","Valburg, emplacement CUP",117,185
+"Onnen, emplacement zuidingang","Venlo, emplacement",162,252
+"Onnen, emplacement zuidingang","Viersen, guterbahnhof",181,278
+"Onnen, emplacement zuidingang","Vlissingen Sloe, emplacement",212,336
+"Onnen, emplacement zuidingang",Vopak-Sloe,213,336
+"Onnen, emplacement zuidingang","Waalhaven, emplacement",161,254
+"Onnen, emplacement zuidingang","Waalhaven, kantoor RFO",164,255
+"Onnen, emplacement zuidingang","Westhaven, emplacement",127,201
+"Onnen, emplacement zuidingang",Zevenaar grens,112,171
+"Onnen, emplacement zuidingang","Zutphen, emplacement",102,128
+Opladen,"Oss, terminal OOC",115,171
+Opladen,"Pernis, emplacement",173,263
+Opladen,Rheine,116,175
+Opladen,"Rheinhausen, emplacement",50,55
+Opladen,"Roosendaal, emplacement",162,241
+Opladen,"Sittard, emplacement",79,114
+Opladen,Sloehaven empl.,184,289
+Opladen,Steinweg Amsterdam,162,258
+Opladen,Stroe,122,182
+Opladen,"Tilburg, industrie",124,183
+Opladen,"Uitgeest, emplacement",172,278
+Opladen,"Valburg, emplacement CUP",106,163
+Opladen,"Venlo, emplacement",69,94
+Opladen,"Viersen, guterbahnhof",51,67
+Opladen,"Vlissingen Sloe, emplacement",184,289
+Opladen,Vopak-Sloe,185,289
+Opladen,"Waalhaven, emplacement",166,256
+Opladen,"Waalhaven, kantoor RFO",169,257
+Opladen,"Westhaven, emplacement",160,255
+Opladen,Zevenaar grens,88,136
+Opladen,"Zutphen, emplacement",114,170
+"Oss, terminal OOC","Pernis, emplacement",78,110
+"Oss, terminal OOC",Rheine,120,179
+"Oss, terminal OOC","Rheinhausen, emplacement",81,119
+"Oss, terminal OOC","Roosendaal, emplacement",72,104
+"Oss, terminal OOC","Sittard, emplacement",85,124
+"Oss, terminal OOC",Sloehaven empl.,109,166
+"Oss, terminal OOC",Steinweg Amsterdam,84,125
+"Oss, terminal OOC",Stroe,57,67
+"Oss, terminal OOC","Tilburg, industrie",42,49
+"Oss, terminal OOC","Uitgeest, emplacement",92,140
+"Oss, terminal OOC","Valburg, emplacement CUP",28,34
+"Oss, terminal OOC","Venlo, emplacement",62,82
+"Oss, terminal OOC","Viersen, guterbahnhof",81,108
+"Oss, terminal OOC","Vlissingen Sloe, emplacement",109,166
+"Oss, terminal OOC",Vopak-Sloe,110,166
+"Oss, terminal OOC","Waalhaven, emplacement",71,104
+"Oss, terminal OOC","Waalhaven, kantoor RFO",74,105
+"Oss, terminal OOC","Westhaven, emplacement",81,117
+"Oss, terminal OOC",Zevenaar grens,50,64
+"Oss, terminal OOC","Zutphen, emplacement",64,76
+"Pernis, emplacement",Rheine,161,249
+"Pernis, emplacement","Rheinhausen, emplacement",136,209
+"Pernis, emplacement","Roosendaal, emplacement",43,61
+"Pernis, emplacement","Sittard, emplacement",122,186
+"Pernis, emplacement",Sloehaven empl.,75,116
+"Pernis, emplacement",Steinweg Amsterdam,53,77
+"Pernis, emplacement",Stroe,78,119
+"Pernis, emplacement","Tilburg, industrie",58,85
+"Pernis, emplacement","Uitgeest, emplacement",61,93
+"Pernis, emplacement","Valburg, emplacement CUP",72,111
+"Pernis, emplacement","Venlo, emplacement",115,173
+"Pernis, emplacement","Viersen, guterbahnhof",135,199
+"Pernis, emplacement","Vlissingen Sloe, emplacement",75,116
+"Pernis, emplacement",Vopak-Sloe,76,116
+"Pernis, emplacement","Waalhaven, emplacement",8,7
+"Pernis, emplacement","Waalhaven, kantoor RFO",12,9
+"Pernis, emplacement","Westhaven, emplacement",55,79
+"Pernis, emplacement",Zevenaar grens,94,141
+"Pernis, emplacement","Zutphen, emplacement",108,153
+Rheine,"Rheinhausen, emplacement",99,143
+Rheine,"Roosendaal, emplacement",173,266
+Rheine,"Sittard, emplacement",157,240
+Rheine,Sloehaven empl.,210,330
+Rheine,Steinweg Amsterdam,138,213
+Rheine,Stroe,88,134
+Rheine,"Tilburg, industrie",146,218
+Rheine,"Uitgeest, emplacement",147,223
+Rheine,"Valburg, emplacement CUP",104,159
+Rheine,"Venlo, emplacement",119,179
+Rheine,"Viersen, guterbahnhof",121,184
+Rheine,"Vlissingen Sloe, emplacement",211,330
+Rheine,Vopak-Sloe,212,329
+Rheine,"Waalhaven, emplacement",159,247
+Rheine,"Waalhaven, kantoor RFO",162,248
+Rheine,"Westhaven, emplacement",135,210
+Rheine,Zevenaar grens,99,146
+Rheine,"Zutphen, emplacement",76,107
+"Rheinhausen, emplacement","Roosendaal, emplacement",130,192
+"Rheinhausen, emplacement","Sittard, emplacement",70,101
+"Rheinhausen, emplacement",Sloehaven empl.,161,250
+"Rheinhausen, emplacement",Steinweg Amsterdam,146,222
+"Rheinhausen, emplacement",Stroe,106,145
+"Rheinhausen, emplacement","Tilburg, industrie",92,134
+"Rheinhausen, emplacement","Uitgeest, emplacement",155,241
+"Rheinhausen, emplacement","Valburg, emplacement CUP",79,121
+"Rheinhausen, emplacement","Venlo, emplacement",40,49
+"Rheinhausen, emplacement","Viersen, guterbahnhof",32,36
+"Rheinhausen, emplacement","Vlissingen Sloe, emplacement",161,250
+"Rheinhausen, emplacement",Vopak-Sloe,162,250
+"Rheinhausen, emplacement","Waalhaven, emplacement",134,205
+"Rheinhausen, emplacement","Waalhaven, kantoor RFO",137,206
+"Rheinhausen, emplacement","Westhaven, emplacement",144,218
+"Rheinhausen, emplacement",Zevenaar grens,72,100
+"Rheinhausen, emplacement","Zutphen, emplacement",98,133
+"Roosendaal, emplacement","Sittard, emplacement",108,161
+"Roosendaal, emplacement",Sloehaven empl.,45,66
+"Roosendaal, emplacement",Steinweg Amsterdam,87,130
+"Roosendaal, emplacement",Stroe,94,138
+"Roosendaal, emplacement","Tilburg, industrie",46,65
+"Roosendaal, emplacement","Uitgeest, emplacement",96,145
+"Roosendaal, emplacement","Valburg, emplacement CUP",86,126
+"Roosendaal, emplacement","Venlo, emplacement",101,147
+"Roosendaal, emplacement","Viersen, guterbahnhof",120,173
+"Roosendaal, emplacement","Vlissingen Sloe, emplacement",46,66
+"Roosendaal, emplacement",Vopak-Sloe,46,66
+"Roosendaal, emplacement","Waalhaven, emplacement",41,57
+"Roosendaal, emplacement","Waalhaven, kantoor RFO",43,58
+"Roosendaal, emplacement","Westhaven, emplacement",90,132
+"Roosendaal, emplacement",Zevenaar grens,108,156
+"Roosendaal, emplacement","Zutphen, emplacement",121,168
+"Sittard, emplacement",Sloehaven empl.,120,186
+"Sittard, emplacement",Steinweg Amsterdam,136,208
+"Sittard, emplacement",Stroe,121,170
+"Sittard, emplacement","Tilburg, industrie",72,103
+"Sittard, emplacement","Uitgeest, emplacement",144,223
+"Sittard, emplacement","Valburg, emplacement CUP",92,137
+"Sittard, emplacement","Venlo, emplacement",45,56
+"Sittard, emplacement","Viersen, guterbahnhof",50,67
+"Sittard, emplacement","Vlissingen Sloe, emplacement",120,186
+"Sittard, emplacement",Vopak-Sloe,121,186
+"Sittard, emplacement","Waalhaven, emplacement",120,181
+"Sittard, emplacement","Waalhaven, kantoor RFO",123,182
+"Sittard, emplacement","Westhaven, emplacement",133,200
+"Sittard, emplacement",Zevenaar grens,114,167
+"Sittard, emplacement","Zutphen, emplacement",129,171
+Sloehaven empl.,Steinweg Amsterdam,121,189
+Sloehaven empl.,Stroe,132,203
+Sloehaven empl.,"Tilburg, industrie",82,126
+Sloehaven empl.,"Uitgeest, emplacement",129,204
+Sloehaven empl.,"Valburg, emplacement CUP",123,191
+Sloehaven empl.,"Venlo, emplacement",134,207
+Sloehaven empl.,"Viersen, guterbahnhof",154,233
+Sloehaven empl.,"Vlissingen Sloe, emplacement",2,1
+Sloehaven empl.,Vopak-Sloe,5,3
+Sloehaven empl.,"Waalhaven, emplacement",73,112
+Sloehaven empl.,"Waalhaven, kantoor RFO",76,113
+Sloehaven empl.,"Westhaven, emplacement",124,191
+Sloehaven empl.,Zevenaar grens,146,221
+Sloehaven empl.,"Zutphen, emplacement",159,233
+Steinweg Amsterdam,Stroe,55,83
+Steinweg Amsterdam,"Tilburg, industrie",86,120
+Steinweg Amsterdam,"Uitgeest, emplacement",25,34
+Steinweg Amsterdam,"Valburg, emplacement CUP",82,121
+Steinweg Amsterdam,"Venlo, emplacement",126,182
+Steinweg Amsterdam,"Viersen, guterbahnhof",145,208
+Steinweg Amsterdam,"Vlissingen Sloe, emplacement",121,189
+Steinweg Amsterdam,Vopak-Sloe,122,188
+Steinweg Amsterdam,"Waalhaven, emplacement",54,79
+Steinweg Amsterdam,"Waalhaven, kantoor RFO",58,82
+Steinweg Amsterdam,"Westhaven, emplacement",8,5
+Steinweg Amsterdam,Zevenaar grens,86,126
+Steinweg Amsterdam,"Zutphen, emplacement",86,123
+Stroe,"Tilburg, industrie",81,122
+Stroe,"Uitgeest, emplacement",65,94
+Stroe,"Valburg, emplacement CUP",43,49
+Stroe,"Venlo, emplacement",88,117
+Stroe,"Viersen, guterbahnhof",107,143
+Stroe,"Vlissingen Sloe, emplacement",129,200
+Stroe,Vopak-Sloe,130,200
+Stroe,"Waalhaven, emplacement",77,118
+Stroe,"Waalhaven, kantoor RFO",80,119
+Stroe,"Westhaven, emplacement",53,80
+Stroe,Zevenaar grens,45,63
+Stroe,"Zutphen, emplacement",37,44
+"Tilburg, industrie","Uitgeest, emplacement",94,141
+"Tilburg, industrie","Valburg, emplacement CUP",54,74
+"Tilburg, industrie","Venlo, emplacement",64,90
+"Tilburg, industrie","Viersen, guterbahnhof",84,116
+"Tilburg, industrie","Vlissingen Sloe, emplacement",81,125
+"Tilburg, industrie",Vopak-Sloe,82,125
+"Tilburg, industrie","Waalhaven, emplacement",56,81
+"Tilburg, industrie","Waalhaven, kantoor RFO",59,82
+"Tilburg, industrie","Westhaven, emplacement",83,118
+"Tilburg, industrie",Zevenaar grens,76,104
+"Tilburg, industrie","Zutphen, emplacement",90,116
+"Uitgeest, emplacement","Valburg, emplacement CUP",92,141
+"Uitgeest, emplacement","Venlo, emplacement",136,202
+"Uitgeest, emplacement","Viersen, guterbahnhof",155,228
+"Uitgeest, emplacement","Vlissingen Sloe, emplacement",130,203
+"Uitgeest, emplacement",Vopak-Sloe,131,203
+"Uitgeest, emplacement","Waalhaven, emplacement",63,94
+"Uitgeest, emplacement","Waalhaven, kantoor RFO",67,96
+"Uitgeest, emplacement","Westhaven, emplacement",24,25
+"Uitgeest, emplacement",Zevenaar grens,95,136
+"Uitgeest, emplacement","Zutphen, emplacement",96,133
+"Valburg, emplacement CUP","Venlo, emplacement",58,82
+"Valburg, emplacement CUP","Viersen, guterbahnhof",77,108
+"Valburg, emplacement CUP","Vlissingen Sloe, emplacement",122,189
+"Valburg, emplacement CUP",Vopak-Sloe,123,189
+"Valburg, emplacement CUP","Waalhaven, emplacement",71,107
+"Valburg, emplacement CUP","Waalhaven, kantoor RFO",74,108
+"Valburg, emplacement CUP","Westhaven, emplacement",81,119
+"Valburg, emplacement CUP",Zevenaar grens,29,29
+"Valburg, emplacement CUP","Zutphen, emplacement",42,46
+"Venlo, emplacement","Viersen, guterbahnhof",28,28
+"Venlo, emplacement","Vlissingen Sloe, emplacement",134,206
+"Venlo, emplacement",Vopak-Sloe,135,205
+"Venlo, emplacement","Waalhaven, emplacement",113,168
+"Venlo, emplacement","Waalhaven, kantoor RFO",116,169
+"Venlo, emplacement","Westhaven, emplacement",124,181
+"Venlo, emplacement",Zevenaar grens,81,114
+"Venlo, emplacement","Zutphen, emplacement",95,118
+"Viersen, guterbahnhof","Vlissingen Sloe, emplacement",154,232
+"Viersen, guterbahnhof",Vopak-Sloe,154,231
+"Viersen, guterbahnhof","Waalhaven, emplacement",134,194
+"Viersen, guterbahnhof","Waalhaven, kantoor RFO",137,195
+"Viersen, guterbahnhof","Westhaven, emplacement",144,207
+"Viersen, guterbahnhof",Zevenaar grens,92,139
+"Viersen, guterbahnhof","Zutphen, emplacement",115,144
+"Vlissingen Sloe, emplacement",Vopak-Sloe,5,3
+"Vlissingen Sloe, emplacement","Waalhaven, emplacement",73,113
+"Vlissingen Sloe, emplacement","Waalhaven, kantoor RFO",76,114
+"Vlissingen Sloe, emplacement","Westhaven, emplacement",124,192
+"Vlissingen Sloe, emplacement",Zevenaar grens,147,222
+"Vlissingen Sloe, emplacement","Zutphen, emplacement",160,234
+Vopak-Sloe,"Waalhaven, emplacement",74,112
+Vopak-Sloe,"Waalhaven, kantoor RFO",76,113
+Vopak-Sloe,"Westhaven, emplacement",124,190
+Vopak-Sloe,Zevenaar grens,147,221
+Vopak-Sloe,"Zutphen, emplacement",160,232
+"Waalhaven, emplacement","Waalhaven, kantoor RFO",5,3
+"Waalhaven, emplacement","Westhaven, emplacement",57,82
+"Waalhaven, emplacement",Zevenaar grens,92,137
+"Waalhaven, emplacement","Zutphen, emplacement",105,148
+"Waalhaven, kantoor RFO","Westhaven, emplacement",60,84
+"Waalhaven, kantoor RFO",Zevenaar grens,94,137
+"Waalhaven, kantoor RFO","Zutphen, emplacement",108,149
+"Westhaven, emplacement",Zevenaar grens,84,122
+"Westhaven, emplacement","Zutphen, emplacement",85,119
+Zevenaar grens,"Zutphen, emplacement",37,35

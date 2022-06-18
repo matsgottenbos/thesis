@@ -24,6 +24,7 @@ namespace Thesis {
         public const bool DebugRunInspector = false;
         public const bool DebugRunJsonExporter = false;
         public const bool DebugRunDelaysExporter = false;
+        public const bool DebugRunTravelTimeProcesssor = false;
 
         // File structure
         public static readonly string ProjectFolder = (Environment.Is64BitProcess ? Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName : Directory.GetParent(Environment.CurrentDirectory).Parent.FullName) + @"\"; // Path to the project root folder

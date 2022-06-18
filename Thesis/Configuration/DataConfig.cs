@@ -46,9 +46,6 @@ namespace Thesis {
 
         // TODO: move?
         public const int ExcelInternalDriverContractTime = 40 * 60;
-        public const int ExcelExternalDriverTypeCount = 5;
-        public const int ExcelExternalDriverMinCountPerType = 5;
-        public const int ExcelExternalDriverMaxCountPerType = 20;
 
 
         /* Generator */

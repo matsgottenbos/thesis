@@ -189,7 +189,7 @@ namespace Thesis {
                 SaInfo paretoPoint = paretoFront[i];
                 paretoPoint.ProcessDriverPaths();
                 TotalCostCalculator.ProcessAssignmentCost(paretoPoint);
-                JsonHelper.ExportSolutionJson(outputSubfolderPath, paretoPoint);
+                JsonAssignmentHelper.ExportAssignmentInfoJson(outputSubfolderPath, paretoPoint);
             }
         }
 

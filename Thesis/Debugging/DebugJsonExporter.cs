@@ -25,7 +25,7 @@ namespace Thesis {
 
         void ExportAssignment(string assignmentStr) {
             SaInfo info = ParseHelper.ParseAssignmentString(assignmentStr, instance);
-            JsonHelper.ExportSolutionJson(outputSubfolderPath, info);
+            JsonAssignmentHelper.ExportAssignmentInfoJson(outputSubfolderPath, info);
         }
     }
 }

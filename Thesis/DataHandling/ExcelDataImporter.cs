@@ -12,16 +12,14 @@ namespace Thesis {
     static class ExcelDataImporter {
         public static Instance Import(XorShiftRandom rand) {
             // Import Excel sheet
-            FileStream fileStream = new FileStream(Path.Combine(AppConfig.DataFolder, "data.xlsx"), FileMode.Open, FileAccess.Read);
-            XSSFWorkbook excelBook = new XSSFWorkbook(fileStream);
-            fileStream.Close();
+            XSSFWorkbook excelBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.DataFolder, "data.xlsx"));
 
-            DataTable dutiesTable = new DataTable("DutyActivities", excelBook);
-            DataTable employeesTable = new DataTable("Employees", excelBook);
-            DataTable routeKnowledgeTable = new DataTable("RouteKnowledge", excelBook);
+            ExcelSheet dutiesSheet = new ExcelSheet("DutyActivities", excelBook);
+            ExcelSheet employeesSheet = new ExcelSheet("Employees", excelBook);
+            ExcelSheet routeKnowledgeSheet = new ExcelSheet("RouteKnowledge", excelBook);
 
             // Parse trips and station codes
-            (Trip[] rawTrips, string[] stationCodes, int timeframeLength) = ParseRawTripsAndStationCodes(dutiesTable, DataConfig.ExcelPlanningStartDate, DataConfig.ExcelPlanningNextDate);
+            (Trip[] rawTrips, string[] stationCodes, int timeframeLength) = ParseRawTripsAndStationCodes(dutiesSheet, DataConfig.ExcelPlanningStartDate, DataConfig.ExcelPlanningNextDate);
             int stationCount = stationCodes.Length;
 
             // Estimate or generate train travel times, and generate car travel times
@@ -29,8 +27,8 @@ namespace Thesis {
             int[,] carTravelTimes = DataGenerator.GenerateCarTravelTimes(stationCount, trainTravelTimes, rand);
 
             // Parse internal driver names and track proficiencies
-            (string[] internalDriverNames, bool[] internalDriverIsInternational) = ParseInternalDriverNamesAndInternationalStatus(employeesTable);
-            //bool[][,] internalDriverTrackProficiencies = ParseInternalDriverTrackProficiencies(routeKnowledgeTable, internalDriverNames, stationCodes);
+            (string[] internalDriverNames, bool[] internalDriverIsInternational) = ParseInternalDriverNamesAndInternationalStatus(employeesSheet);
+            //bool[][,] internalDriverTrackProficiencies = ParseInternalDriverTrackProficiencies(routeKnowledgeSheet, internalDriverNames, stationCodes);
             int internalDriverCount = internalDriverNames.Length;
 
             // Generate remaining driver data; TODO: use real data
@@ -45,39 +43,39 @@ namespace Thesis {
             return new Instance(rand, rawTrips, stationCodes, carTravelTimes, internalDriverNames, internalDriversHomeTravelTimes, internalDriverTrackProficiencies, internalDriversContractTimes, internalDriverIsInternational, externalDriversHomeTravelTimes);
         }
 
-        static (Trip[], string[], int) ParseRawTripsAndStationCodes(DataTable dutiesTable, DateTime planningStartDate, DateTime planningNextDate) {
+        static (Trip[], string[], int) ParseRawTripsAndStationCodes(ExcelSheet dutiesSheet, DateTime planningStartDate, DateTime planningNextDate) {
             List<Trip> rawTripList = new List<Trip>();
             List<string> stationNameList = new List<string>();
             int timeframeLength = 0;
-            dutiesTable.ForEachRow(dutyRow => {
+            dutiesSheet.ForEachRow(dutyRow => {
                 // Skip if non-included order owner
-                string orderOwner = dutyRow.GetCell(dutiesTable.GetColumnIndex("RailwayUndertaking"))?.StringCellValue;
+                string orderOwner = dutyRow.GetCell(dutiesSheet.GetColumnIndex("RailwayUndertaking"))?.StringCellValue;
                 if (orderOwner == null || !DataConfig.ExcelIncludedRailwayUndertakings.Contains(orderOwner)) return;
 
                 // Get duty, activity and project name name
-                string dutyName = dutyRow.GetCell(dutiesTable.GetColumnIndex("DutyNo"))?.StringCellValue ?? "";
-                string activityName = dutyRow.GetCell(dutiesTable.GetColumnIndex("ActivityDescriptionEN"))?.StringCellValue ?? "";
-                string dutyId = dutyRow.GetCell(dutiesTable.GetColumnIndex("DutyID"))?.StringCellValue ?? "";
-                string projectName = dutyRow.GetCell(dutiesTable.GetColumnIndex("Project"))?.StringCellValue ?? "";
+                string dutyName = dutyRow.GetCell(dutiesSheet.GetColumnIndex("DutyNo"))?.StringCellValue ?? "";
+                string activityName = dutyRow.GetCell(dutiesSheet.GetColumnIndex("ActivityDescriptionEN"))?.StringCellValue ?? "";
+                string dutyId = dutyRow.GetCell(dutiesSheet.GetColumnIndex("DutyID"))?.StringCellValue ?? "";
+                string projectName = dutyRow.GetCell(dutiesSheet.GetColumnIndex("Project"))?.StringCellValue ?? "";
 
                 // Filter to configured activity descriptions
                 if (!ParseHelper.DataStringInList(activityName, DataConfig.ExcelIncludedActivityDescriptions)) return;
 
                 // Get start and end stations
-                string startStationName = dutyRow.GetCell(dutiesTable.GetColumnIndex("OriginLocationName"))?.StringCellValue ?? "";
+                string startStationName = dutyRow.GetCell(dutiesSheet.GetColumnIndex("OriginLocationName"))?.StringCellValue ?? "";
                 if (startStationName == "") return; // Skip row if start location is empty
 
                 int startStationIndex = GetOrAddCodeIndex(startStationName, stationNameList);
-                string endStationName = dutyRow.GetCell(dutiesTable.GetColumnIndex("DestinationLocationName"))?.StringCellValue ?? "";
+                string endStationName = dutyRow.GetCell(dutiesSheet.GetColumnIndex("DestinationLocationName"))?.StringCellValue ?? "";
                 if (endStationName == "") return; // Skip row if end location is empty
 
                 int endStationIndex = GetOrAddCodeIndex(endStationName, stationNameList);
 
                 // Get start and end time
-                DateTime? startTimeRaw = dutyRow.GetCell(dutiesTable.GetColumnIndex("PlannedStart"))?.DateCellValue;
+                DateTime? startTimeRaw = dutyRow.GetCell(dutiesSheet.GetColumnIndex("PlannedStart"))?.DateCellValue;
                 if (startTimeRaw == null || startTimeRaw < planningStartDate || startTimeRaw > planningNextDate) return; // Skip trips outside planning timeframe
                 int startTime = (int)Math.Round((startTimeRaw - planningStartDate).Value.TotalMinutes);
-                DateTime? endTimeRaw = dutyRow.GetCell(dutiesTable.GetColumnIndex("PlannedEnd"))?.DateCellValue;
+                DateTime? endTimeRaw = dutyRow.GetCell(dutiesSheet.GetColumnIndex("PlannedEnd"))?.DateCellValue;
                 if (endTimeRaw == null) return; // Skip row if required values are empty
                 int endTime = (int)Math.Round((endTimeRaw - planningStartDate).Value.TotalMinutes);
                 int duration = endTime - startTime;
@@ -125,16 +123,16 @@ namespace Thesis {
             return trainTravelTimes;
         }
 
-        static (string[], bool[]) ParseInternalDriverNamesAndInternationalStatus(DataTable employeesTable) {
+        static (string[], bool[]) ParseInternalDriverNamesAndInternationalStatus(ExcelSheet employeesSheet) {
             List<string> internalDriverNames = new List<string>();
             List<bool> internalDriverIsInternational = new List<bool>();
-            employeesTable.ForEachRow(employeeRow => {
+            employeesSheet.ForEachRow(employeeRow => {
                 // Only include configures companies
-                string driverCompany = employeeRow.GetCell(employeesTable.GetColumnIndex("PrimaryCompany")).StringCellValue;
+                string driverCompany = employeeRow.GetCell(employeesSheet.GetColumnIndex("PrimaryCompany")).StringCellValue;
                 if (!ParseHelper.DataStringInList(driverCompany, DataConfig.ExcelIncludedRailwayUndertakings)) return;
 
                 // Only include configures job titles
-                string driverJobTitle = employeeRow.GetCell(employeesTable.GetColumnIndex("PrimaryJobTitle")).StringCellValue;
+                string driverJobTitle = employeeRow.GetCell(employeesSheet.GetColumnIndex("PrimaryJobTitle")).StringCellValue;
                 bool isInternationalDriver;
                 if (ParseHelper.DataStringInList(driverJobTitle, DataConfig.ExcelIncludedJobTitlesNational)) {
                     // National driver
@@ -147,14 +145,14 @@ namespace Thesis {
                     return;
                 }
 
-                string driverName = employeeRow.GetCell(employeesTable.GetColumnIndex("FullName")).StringCellValue;
+                string driverName = employeeRow.GetCell(employeesSheet.GetColumnIndex("FullName")).StringCellValue;
                 internalDriverNames.Add(driverName);
                 internalDriverIsInternational.Add(isInternationalDriver);
             });
             return (internalDriverNames.ToArray(), internalDriverIsInternational.ToArray());
         }
 
-        static bool[][,] ParseInternalDriverTrackProficiencies(DataTable routeKnowledgeTable, string[] internalDriverNames, string[] stationNames) {
+        static bool[][,] ParseInternalDriverTrackProficiencies(ExcelSheet routeKnowledgeTable, string[] internalDriverNames, string[] stationNames) {
             bool[][,] internalDriverProficiencies = new bool[internalDriverNames.Length][,];
             for (int driverIndex = 0; driverIndex < internalDriverNames.Length; driverIndex++) {
                 internalDriverProficiencies[driverIndex] = new bool[stationNames.Length, stationNames.Length];
@@ -194,37 +192,6 @@ namespace Thesis {
             // New code
             codes.Add(code);
             return codes.Count - 1;
-        }
-    }
-
-    class DataTable {
-        readonly ISheet sheet;
-        readonly Dictionary<string, int> columnNamesToIndices;
-
-        public DataTable(string sheetName, XSSFWorkbook excelBook) {
-            sheet = excelBook.GetSheet(sheetName);
-            if (sheet == null) throw new Exception($"Unknown sheet `{sheetName}`");
-
-            // Parse column headers
-            IRow headerRow = sheet.GetRow(0);
-            columnNamesToIndices = new Dictionary<string, int>();
-            for (int colIndex = 0; colIndex < headerRow.LastCellNum; colIndex++) {
-                string headerName = headerRow.GetCell(colIndex).StringCellValue;
-                columnNamesToIndices.Add(headerName, colIndex);
-            }
-        }
-
-        public int GetColumnIndex(string columnName) {
-            return columnNamesToIndices[columnName];
-        }
-
-        public void ForEachRow(Action<IRow> rowFunc) {
-            for (int rowIndex = 1; rowIndex <= sheet.LastRowNum; rowIndex++) {
-                IRow row = sheet.GetRow(rowIndex);
-                if (row == null) continue; // Skip empty rows
-
-                rowFunc(row);
-            }
         }
     }
 }

@@ -32,6 +32,9 @@ namespace Thesis {
             } else if (AppConfig.DebugRunDelaysExporter) {
                 Console.WriteLine("Running debug delays exporter");
                 DebugDelaysExporter.Run();
+            } else if (AppConfig.DebugRunTravelTimeProcesssor) {
+                Console.WriteLine("Running debug travel time exporter");
+                TravelInfoHandler.DetermineAndExportTravelInfo();
             } else {
                 // Simulated annealing
                 SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance);
