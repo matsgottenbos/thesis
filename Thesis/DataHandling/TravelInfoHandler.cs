@@ -11,20 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    class StationInfo {
-        public string Name, Address;
-        public int Index;
-
-        public StationInfo(string name, string address, int index) {
-            Name = name;
-            Address = address;
-            Index = index;
-        }
-    }
-
     static class TravelInfoHandler {
         // TODO: move to config
-        const string googleMapsApiKey = "AIzaSyAnnCoTq3j55VQeQsTjxryHh4VYHyinoaA";
         static readonly string csvFilePath = System.IO.Path.Combine(AppConfig.DataFolder, "travelInfo.csv");
 
         public static void DetermineAndExportTravelInfo() {
@@ -34,14 +22,25 @@ namespace Thesis {
 
             List<StationInfo> stations = new List<StationInfo>();
             stationAddressesSheet.ForEachRow(stationAddressRow => {
-                string stationName = ParseHelper.CleanDataString(stationAddressRow.GetCell(stationAddressesSheet.GetColumnIndex("Station"))?.StringCellValue);
-                string address = ParseHelper.CleanDataString(stationAddressRow.GetCell(stationAddressesSheet.GetColumnIndex("Address"))?.StringCellValue);
+                string stationName = stationAddressesSheet.GetStringValue(stationAddressRow, "Station");
+                string address = stationAddressesSheet.GetStringValue(stationAddressRow, "Address");
                 stations.Add(new StationInfo(stationName, address, stations.Count));
             });
 
-            (int?[,] importedTravelTimes, int?[,] importedTravelDistances, List<string> importedStationNames) = ImportTravelInfo(stations);
-            List<StationInfo> missingStations = stations.Copy();
-            missingStations.RemoveAll(station => importedStationNames.Contains(station.Name));
+            (int?[,] importedTravelTimes, int?[,] importedTravelDistances, List<StationInfo> missingStations) = ImportPartialTravelInfo(stations);
+
+            if (missingStations.Count == 0) {
+                Console.WriteLine("Travel info already contains all stations");
+                return;
+            } else {
+                Console.WriteLine("Missing {0} stations in travel info", missingStations.Count);
+                Console.WriteLine("Type `Y` and hit enter to confirm requesting these stations from the Google Maps API. Type anything else to exit.");
+                string consoleLine = Console.ReadLine();
+                if (consoleLine != "Y") {
+                    Console.WriteLine("Unexpected input, exiting");
+                    return;
+                }
+            }
 
             // Add missing info through the Google Maps API
             bool isSuccess = AddMissingTravelInfoFromMaps(missingStations, stations, importedTravelTimes, importedTravelDistances);
@@ -58,38 +57,83 @@ namespace Thesis {
             csvWriter.WriteRecords(travelInfoCsv);
         }
 
-        static (int?[,], int?[,], List<string>) ImportTravelInfo(List<StationInfo> stations) {
-            using StreamReader streamReader = new StreamReader(csvFilePath);
-            using CsvReader csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
-            List<TravelInfoCsv> travelInfoCsv = csvReader.GetRecords<TravelInfoCsv>().ToList();
+        /** Returns 2D arrays of nullable travel times and distances for all given stations, filled in with imported data. Also returns missing station names in the imported data.  */
+        static (int?[,], int?[,], List<StationInfo>) ImportPartialTravelInfo(List<StationInfo> allStations) {
+            (int[,] importedTravelTimes, int[,] importedTravelDistances, string[] importedStationNames) = ImportTravelInfo();
 
-            int?[,] importedTravelTimes = new int?[stations.Count, stations.Count];
-            int?[,] importedTravelDistances = new int?[stations.Count, stations.Count];
-            List<string> importedStationNames = new List<string>();
+            // Get objects of imported stations
+            List<StationInfo> importedStations = new List<StationInfo>();
+            for (int importedStationIndex = 0; importedStationIndex < importedStationNames.Length; importedStationIndex++) {
+                int allStationsIndex = allStations.FindIndex(station => station.Name == importedStationNames[importedStationIndex]);
+                if (allStationsIndex != -1) {
+                    importedStations.Add(allStations[allStationsIndex]);
+                }
+            }
+
+            // Create partial arrays
+            int?[,] partialTravelTimes = new int?[allStations.Count, allStations.Count];
+            int?[,] partialTravelDistances = new int?[allStations.Count, allStations.Count];
+            for (int importedStation1Index = 0; importedStation1Index < importedStations.Count; importedStation1Index++) {
+                StationInfo importedStation1 = importedStations[importedStation1Index];
+                for (int importedStation2Index = 0; importedStation2Index < importedStations.Count; importedStation2Index++) {
+                    StationInfo importedStation2 = importedStations[importedStation2Index];
+
+                    partialTravelTimes[importedStation1.Index, importedStation2.Index] = importedTravelTimes[importedStation1Index, importedStation2Index];
+                    partialTravelDistances[importedStation1.Index, importedStation2.Index] = importedTravelDistances[importedStation1Index, importedStation2Index];
+                }
+            }
+
+            // Get list of missing stations
+            List<StationInfo> missingStations = new List<StationInfo>(allStations);
+            missingStations.RemoveAll(station => importedStations.Contains(station));
+
+            return (partialTravelTimes, partialTravelDistances, missingStations);
+        }
+
+        public static (int[,], int[,], string[]) ImportTravelInfo() {
+            List<TravelInfoCsv> travelInfoCsv;
+            if (File.Exists(csvFilePath)) {
+                using StreamReader streamReader = new StreamReader(csvFilePath);
+                using CsvReader csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
+                travelInfoCsv = csvReader.GetRecords<TravelInfoCsv>().ToList();
+            } else {
+                Console.WriteLine("File `data/travelInfo.csv` not found");
+                travelInfoCsv = new List<TravelInfoCsv>();
+            }
+
+            // Get station names
+            List<string> stationNames = new List<string>();
+            for (int travelInfoIndex = 0; travelInfoIndex < travelInfoCsv.Count; travelInfoIndex++) {
+                TravelInfoCsv travelInfo = travelInfoCsv[travelInfoIndex];
+                if (!stationNames.Contains(travelInfo.station1Name)) stationNames.Add(travelInfo.station1Name);
+                if (!stationNames.Contains(travelInfo.station2Name)) stationNames.Add(travelInfo.station2Name);
+            }
+
+            // Create travel time objects
+            int[,] travelTimes = new int[stationNames.Count, stationNames.Count];
+            int[,] travelDistances = new int[stationNames.Count, stationNames.Count];
 
             // Set time and distance to self to 0
-            for (int stationIndex = 0; stationIndex < stations.Count; stationIndex++) {
-                importedTravelTimes[stationIndex, stationIndex] = 0;
-                importedTravelDistances[stationIndex, stationIndex] = 0;
+            for (int stationIndex = 0; stationIndex < stationNames.Count; stationIndex++) {
+                travelTimes[stationIndex, stationIndex] = 0;
+                travelDistances[stationIndex, stationIndex] = 0;
             }
 
             // Set imported times and distances; also store which station names appear in imported travel info
             for (int travelInfoIndex = 0; travelInfoIndex < travelInfoCsv.Count; travelInfoIndex++) {
                 TravelInfoCsv travelInfo = travelInfoCsv[travelInfoIndex];
-                if (!importedStationNames.Contains(travelInfo.station1Name)) importedStationNames.Add(travelInfo.station1Name);
-                if (!importedStationNames.Contains(travelInfo.station2Name)) importedStationNames.Add(travelInfo.station2Name);
 
-                int station1Index = stations.Find(station => station.Name == travelInfo.station1Name).Index;
-                int station2Index = stations.Find(station => station.Name == travelInfo.station2Name).Index;
+                int station1Index = stationNames.IndexOf(travelInfo.station1Name);
+                int station2Index = stationNames.IndexOf(travelInfo.station2Name);
                 if (station1Index == -1 || station2Index == -1) continue;
 
-                importedTravelTimes[station1Index, station2Index] = travelInfo.travelTimeMinutes;
-                importedTravelTimes[station2Index, station1Index] = travelInfo.travelTimeMinutes;
-                importedTravelDistances[station1Index, station2Index] = travelInfo.travelDistanceKilometers;
-                importedTravelDistances[station2Index, station1Index] = travelInfo.travelDistanceKilometers;
+                travelTimes[station1Index, station2Index] = travelInfo.travelTimeMinutes;
+                travelTimes[station2Index, station1Index] = travelInfo.travelTimeMinutes;
+                travelDistances[station1Index, station2Index] = travelInfo.travelDistanceKilometers;
+                travelDistances[station2Index, station1Index] = travelInfo.travelDistanceKilometers;
             }
 
-            return (importedTravelTimes, importedTravelDistances, importedStationNames);
+            return (travelTimes, travelDistances, stationNames.ToArray());
         }
 
         static bool AddMissingTravelInfoFromMaps(List<StationInfo> originStations, List<StationInfo> destinationStations, int?[,] importedTravelTimes, int?[,] importedTravelDistances) {
@@ -98,21 +142,18 @@ namespace Thesis {
             }
 
             // Set API key
-            GoogleSigned.AssignAllServices(new GoogleSigned(googleMapsApiKey));
+            GoogleSigned.AssignAllServices(new GoogleSigned(DataConfig.GoogleMapsApiKey));
 
-            // TODO: split requests (max 25 origins, max 25 destinations, max 100 elements)
-
-            int maxDestinationGroupSize = 25;
-
+            // API limits per request: max 25 origins, max 25 destinations, max 100 elements
             // Perform separate calls for each origin
             for (int originIndex = 0; originIndex < originStations.Count; originIndex++) {
-                int destinationGroupCount = (int)Math.Ceiling((float)destinationStations.Count / maxDestinationGroupSize);
+                int destinationGroupCount = (int)Math.Ceiling((float)destinationStations.Count / DataConfig.GoogleMapsMaxDestinationCountPerRequest);
                 List<StationInfo> requestOriginStations = originStations.GetRange(originIndex, 1);
 
                 // Split destinations into groups if needed to avoid exceeding request size limits
                 for (int destinationGroupIndex = 0; destinationGroupIndex < destinationGroupCount; destinationGroupIndex++) {
-                    int requestDestinationsFirstIndex = destinationGroupIndex * maxDestinationGroupSize;
-                    int requestDestinationsNextIndex = Math.Min((destinationGroupIndex + 1) * maxDestinationGroupSize, destinationStations.Count);
+                    int requestDestinationsFirstIndex = destinationGroupIndex * DataConfig.GoogleMapsMaxDestinationCountPerRequest;
+                    int requestDestinationsNextIndex = Math.Min((destinationGroupIndex + 1) * DataConfig.GoogleMapsMaxDestinationCountPerRequest, destinationStations.Count);
                     int requestDestinationCount = requestDestinationsNextIndex - requestDestinationsFirstIndex;
 
                     List<StationInfo> requestDestinationStations = destinationStations.GetRange(requestDestinationsFirstIndex, requestDestinationCount);
@@ -194,6 +235,17 @@ namespace Thesis {
             }
 
             return travelInfoCsv;
+        }
+    }
+
+    class StationInfo {
+        public string Name, Address;
+        public int Index;
+
+        public StationInfo(string name, string address, int index) {
+            Name = name;
+            Address = address;
+            Index = index;
         }
     }
 

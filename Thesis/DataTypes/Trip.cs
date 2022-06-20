@@ -7,19 +7,21 @@ using System.Threading.Tasks;
 namespace Thesis {
     class Trip {
         public int Index;
-        public readonly int StartStationIndex, EndStationIndex, StartTime, EndTime, Duration;
+        public readonly int StartStationAddressIndex, EndStationAddressIndex, StartTime, EndTime, Duration;
         public int? SharedRouteIndex;
-        public readonly string DutyName, ActivityName, DutyId, ProjectName;
+        public readonly string DutyName, ActivityName, DutyId, ProjectName, StartStationName, EndStationName;
         public readonly List<Trip> Successors;
 
-        public Trip(string dutyName, string activityName, string dutyId, string projectName, int startStationIndex, int endStationIndex, int startTime, int endTime, int duration) {
+        public Trip(string dutyName, string activityName, string dutyId, string projectName, string startStationName, string endStationName, int startStationAddressIndex, int endStationAddressIndex, int startTime, int endTime, int duration) {
             Index = -1;
             DutyName = dutyName;
             ProjectName = projectName;
+            StartStationName = startStationName;
+            EndStationName = endStationName;
             ActivityName = activityName;
             DutyId = dutyId;
-            StartStationIndex = startStationIndex;
-            EndStationIndex = endStationIndex;
+            StartStationAddressIndex = startStationAddressIndex;
+            EndStationAddressIndex = endStationAddressIndex;
             Successors = new List<Trip>();
             StartTime = startTime;
             EndTime = endTime;

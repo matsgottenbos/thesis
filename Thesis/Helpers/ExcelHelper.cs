@@ -34,7 +34,7 @@ namespace Thesis {
             }
         }
 
-        public int GetColumnIndex(string columnName) {
+        int GetColumnIndex(string columnName) {
             return columnNamesToIndices[columnName];
         }
 
@@ -45,6 +45,16 @@ namespace Thesis {
 
                 rowFunc(row);
             }
+        }
+
+        public string GetStringValue(IRow row, string columnName) {
+            string stringValue = row.GetCell(GetColumnIndex(columnName))?.StringCellValue;
+            if (stringValue == null || stringValue == "") return null;
+            return ParseHelper.CleanDataString(stringValue);
+        }
+
+        public DateTime? GetDateValue(IRow row, string columnName) {
+            return row.GetCell(GetColumnIndex(columnName))?.DateCellValue;
         }
     }
 }

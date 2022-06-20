@@ -31,6 +31,10 @@ class VisualiseDriverApp {
             const endTimeStr = Helper.parseTime(item.endTime);
             const durationStr = Helper.parseTimeDiff(item.startTime, item.endTime);
 
+            // Deal with legacy property names
+            const startStationName = item.startStationName || item.startStationCode;
+            const endStationName = item.endStationName || item.endStationCode;
+
             if (item.type === 'trip') {
                 shiftHtmlParts.push(`
                     <div class="row pathItem ${item.type}">
@@ -39,8 +43,8 @@ class VisualiseDriverApp {
                         <span class="cell duration">${durationStr}</span>
                         <span class="cell duty">${item.dutyName}</span>
                         <span class="cell activity">${item.activityName}</span>
-                        <span class="cell fromLocation">${item.startStationCode}</span>
-                        <span class="cell toLocation">${item.endStationCode}</span>
+                        <span class="cell fromLocation">${startStationName}</span>
+                        <span class="cell toLocation">${endStationName}</span>
                     </div>
                 `);
             } else {

@@ -12,7 +12,7 @@ namespace Thesis {
         public readonly int UniqueSharedRouteCount;
         readonly int[,] expectedCarTravelTimes;
         public readonly Trip[] Trips;
-        public readonly string[] StationCodes;
+        public readonly string[] StationNames;
         readonly ShiftInfo[,] shiftInfos;
         readonly float[,] tripSuccessionRobustness;
         readonly bool[,] tripSuccession, tripsAreSameShift;
@@ -20,11 +20,11 @@ namespace Thesis {
         public readonly ExternalDriver[][] ExternalDriversByType;
         public readonly Driver[] AllDrivers;
 
-        public Instance(XorShiftRandom rand, Trip[] rawTrips, string[] stationCodes, int[,] plannedCarTravelTimes, string[] internalDriverNames, int[][] internalDriversHomeTravelTimes, bool[][,] internalDriversTrackProficiencies, int[] internalDriverContractTimes, bool[] internalDriverIsInternational, int[][] externalDriverHomeTravelTimes) {
+        public Instance(XorShiftRandom rand, Trip[] rawTrips, string[] stationNames, int[,] plannedCarTravelTimes, string[] internalDriverNames, int[][] internalDriversHomeTravelTimes, bool[][,] internalDriversTrackProficiencies, int[] internalDriverContractTimes, bool[] internalDriverIsInternational, int[][] externalDriverHomeTravelTimes) {
             Rand = rand;
             expectedCarTravelTimes = GetExpectedCarTravelTimes(plannedCarTravelTimes);
             (Trips, tripSuccession, tripSuccessionRobustness, tripsAreSameShift, timeframeLength, UniqueSharedRouteCount) = PrepareTrips(rawTrips, expectedCarTravelTimes);
-            StationCodes = stationCodes;
+            StationNames = stationNames;
             shiftInfos = GetShiftInfos(Trips, timeframeLength);
             InternalDrivers = CreateInternalDrivers(internalDriverNames, internalDriversHomeTravelTimes, internalDriversTrackProficiencies, internalDriverContractTimes, internalDriverIsInternational);
             ExternalDriversByType = CreateExternalDrivers(externalDriverHomeTravelTimes, InternalDrivers.Length);
@@ -73,7 +73,7 @@ namespace Thesis {
                 for (int trip2Index = trip1Index; trip2Index < trips.Length; trip2Index++) {
                     Trip trip1 = trips[trip1Index];
                     Trip trip2 = trips[trip2Index];
-                    int travelTimeBetween = expectedCarTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex];
+                    int travelTimeBetween = expectedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex];
 
                     if (trip1.EndTime + travelTimeBetween <= trip2.StartTime) {
                         trip1.AddSuccessor(trip2);
@@ -116,7 +116,7 @@ namespace Thesis {
             List<(int, int, int)> routeCounts = new List<(int, int, int)>();
             for (int tripIndex = 0; tripIndex < trips.Length; tripIndex++) {
                 Trip trip = trips[tripIndex];
-                if (trip.StartStationIndex == trip.EndStationIndex) continue;
+                if (trip.StartStationAddressIndex == trip.EndStationAddressIndex) continue;
                 (int lowStationIndex, int highStationIndex) = GetLowHighStationIndices(trip);
 
                 bool isExistingRoute = routeCounts.Any(route => route.Item1 == lowStationIndex && route.Item2 == highStationIndex);
@@ -124,7 +124,7 @@ namespace Thesis {
                     int routeIndex = routeCounts.FindIndex(route => route.Item1 == lowStationIndex && route.Item2 == highStationIndex);
                     routeCounts[routeIndex] = (routeCounts[routeIndex].Item1, routeCounts[routeIndex].Item2, routeCounts[routeIndex].Item3 + 1);
                 } else {
-                    routeCounts.Add((trip.StartStationIndex, trip.EndStationIndex, 1));
+                    routeCounts.Add((trip.StartStationAddressIndex, trip.EndStationAddressIndex, 1));
                 }
             }
 
@@ -175,12 +175,12 @@ namespace Thesis {
 
         static (int, int) GetLowHighStationIndices(Trip trip) {
             int lowStationIndex, highStationIndex;
-            if (trip.StartStationIndex < trip.EndStationIndex) {
-                lowStationIndex = trip.StartStationIndex;
-                highStationIndex = trip.EndStationIndex;
+            if (trip.StartStationAddressIndex < trip.EndStationAddressIndex) {
+                lowStationIndex = trip.StartStationAddressIndex;
+                highStationIndex = trip.EndStationAddressIndex;
             } else {
-                lowStationIndex = trip.EndStationIndex;
-                highStationIndex = trip.StartStationIndex;
+                lowStationIndex = trip.EndStationAddressIndex;
+                highStationIndex = trip.StartStationAddressIndex;
             }
             return (lowStationIndex, highStationIndex);
         }
@@ -391,15 +391,15 @@ namespace Thesis {
         }
 
         public int CarTravelTime(Trip trip1, Trip trip2) {
-            return expectedCarTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex];
+            return expectedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex];
         }
 
         public int TravelTimeViaHotel(Trip trip1, Trip trip2) {
-            return expectedCarTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex] + RulesConfig.HotelExtraTravelTime;
+            return expectedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime;
         }
 
         public int HalfTravelTimeViaHotel(Trip trip1, Trip trip2) {
-            return (expectedCarTravelTimes[trip1.EndStationIndex, trip2.StartStationIndex] + RulesConfig.HotelExtraTravelTime) / 2;
+            return (expectedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime) / 2;
         }
 
         public int RestTimeWithTravelTime(Trip trip1, Trip trip2, int travelTime) {

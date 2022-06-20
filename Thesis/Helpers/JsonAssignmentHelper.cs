@@ -81,8 +81,8 @@ namespace Thesis {
                 ["endTime"] = trip.EndTime,
                 ["dutyName"] = trip.DutyName,
                 ["activityName"] = trip.ActivityName,
-                ["startStationCode"] = info.Instance.StationCodes[trip.StartStationIndex],
-                ["endStationCode"] = info.Instance.StationCodes[trip.EndStationIndex]
+                ["startStationName"] = info.Instance.StationNames[trip.StartStationAddressIndex],
+                ["endStationName"] = info.Instance.StationNames[trip.EndStationAddressIndex]
             };
             fullDriverPathJArray.Add(tripPathItem);
         }

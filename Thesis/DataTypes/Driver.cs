@@ -50,7 +50,7 @@ namespace Thesis {
         /* Travelling */
 
         public int HomeTravelTimeToStart(Trip trip) {
-            return homeTravelTimes[trip.StartStationIndex];
+            return homeTravelTimes[trip.StartStationAddressIndex];
         }
 
         int GetPaidTravelTime(int travelTime) {

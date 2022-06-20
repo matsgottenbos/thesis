@@ -55,5 +55,10 @@ namespace Thesis {
         public const float GenMaxCarTravelTimeFactor = 0.8f;
         public const int GenMaxHomeTravelTime = 2 * 60;
         public const float GenTrackProficiencyProb = 0.7f;
+
+
+        /* Google Maps */
+        public const string GoogleMapsApiKey = "AIzaSyAnnCoTq3j55VQeQsTjxryHh4VYHyinoaA";
+        public const int GoogleMapsMaxDestinationCountPerRequest = 25;
     }
 }
