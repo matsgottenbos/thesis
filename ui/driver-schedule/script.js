@@ -32,19 +32,20 @@ class VisualiseDriverApp {
             const durationStr = Helper.parseTimeDiff(item.startTime, item.endTime);
 
             // Deal with legacy property names
-            const startStationName = item.startStationName || item.startStationCode;
-            const endStationName = item.endStationName || item.endStationCode;
+            const startStationNameStr = item.startStationName || item.startStationCode;
+            const endStationNameStr = item.endStationName || item.endStationCode;
 
             if (item.type === 'trip') {
                 shiftHtmlParts.push(`
                     <div class="row pathItem ${item.type}">
+                        <span class="cell id">${item.tripIndex}</span>
                         <span class="cell startTime">${startTimeStr}</span>
                         <span class="cell endTime">${endTimeStr}</span>
                         <span class="cell duration">${durationStr}</span>
                         <span class="cell duty">${item.dutyName}</span>
                         <span class="cell activity">${item.activityName}</span>
-                        <span class="cell fromLocation">${startStationName}</span>
-                        <span class="cell toLocation">${endStationName}</span>
+                        <span class="cell fromLocation">${startStationNameStr}</span>
+                        <span class="cell toLocation">${endStationNameStr}</span>
                     </div>
                 `);
             } else {
@@ -60,6 +61,7 @@ class VisualiseDriverApp {
 
                 shiftHtmlParts.push(`
                     <div class="row pathItem ${item.type}">
+                        <span class="cell id"></span>
                         <span class="cell startTime">${startTimeStr}</span>
                         <span class="cell endTime">${endTimeStr}</span>
                         <span class="cell duration">${durationStr}</span>
@@ -69,33 +71,26 @@ class VisualiseDriverApp {
             }
 
             if (item.type === 'rest' || item.type === 'hotel') {
-                shiftsHtmlParts.push(`
-                    <div class="shift">
-                        <div class="shiftHeader">Shift ${shiftsHtmlParts.length + 1}: ${currentShiftDateStr}</div>
-                        <div class="row shiftPathHeader">
-                            <span class="cell startTime">Start time</span>
-                            <span class="cell endTime">End time</span>
-                            <span class="cell duration">Duration</span>
-                            <span class="cell duty">Duty</span>
-                            <span class="cell activity">Activity</span>
-                            <span class="cell fromLocation">From location</span>
-                            <span class="cell toLocation">To location</span>
-                        </div>
-                        <div class="shiftPath">${shiftHtmlParts.join('')}</div>
-                    </div>
-                `);
-
+                shiftsHtmlParts.push(this.getShiftHeader(shiftsHtmlParts.length, shiftHtmlParts, currentShiftDateStr));
                 shiftHtmlParts = [];
                 currentShiftDateStr = null;
             }
         });
 
-        shiftsHtmlParts.push(`
+        shiftsHtmlParts.push(this.getShiftHeader(shiftsHtmlParts.length, shiftHtmlParts, currentShiftDateStr));
+
+        $('.driverPath').html(shiftsHtmlParts.join(''));
+    }
+
+    getShiftHeader(shiftIndex, shiftHtmlParts, currentShiftDateStr) {
+        return (`
             <div class="shift">
-                <div class="shiftHeader">Shift ${shiftsHtmlParts.length + 1}: ${currentShiftDateStr}</div>
+                <div class="shiftHeader">Shift ${shiftIndex + 1}: ${currentShiftDateStr}</div>
                 <div class="row shiftPathHeader">
+                    <span class="cell id">Trip ID</span>
                     <span class="cell startTime">Start time</span>
                     <span class="cell endTime">End time</span>
+                    <span class="cell duration">Duration</span>
                     <span class="cell duty">Duty</span>
                     <span class="cell activity">Activity</span>
                     <span class="cell fromLocation">From location</span>
@@ -104,8 +99,6 @@ class VisualiseDriverApp {
                 <div class="shiftPath">${shiftHtmlParts.join('')}</div>
             </div>
         `);
-
-        $('.driverPath').html(shiftsHtmlParts.join(''));
     }
 }
 

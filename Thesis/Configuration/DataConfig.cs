@@ -44,7 +44,8 @@ namespace Thesis {
         public static readonly string[] ExcelIncludedJobTitlesNational = new string[] { "Machinist VB nationaal", "Rangeerder" }; // TODO: rangeerders wel of niet meenemen?
         public static readonly string[] ExcelIncludedJobTitlesInternational = new string[] { "Machinist VB Internationaal NL-D" };
 
-        // TODO: move?
+
+        // TODO: set per driver
         public const int ExcelInternalDriverContractTime = 40 * 60;
 
 

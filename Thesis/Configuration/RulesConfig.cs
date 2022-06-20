@@ -51,8 +51,8 @@ namespace Thesis {
 
         // Robustness
         public const float RobustnessCostFactorSameDuty = 0f; // Added cost for each expected conflict due to delays, if the conflict is between trips of the same duty
-        public const float RobustnessCostFactorSameProject = 500f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties but of the same project
-        public const float RobustnessCostFactorDifferentProject = 1000f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties and projects
+        public const float RobustnessCostFactorSameProject = 1000f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties but of the same project
+        public const float RobustnessCostFactorDifferentProject = 2000f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties and projects
         public const float TripDelayProbability = 0.275f; // Chance that a trip has a delay
         public static readonly Func<int, double> TripMeanDelayFunc = (int plannedDuration) => plannedDuration * plannedDuration / 5561 + 0.123 * plannedDuration + 37.38; // Trip mean delay by planned duration: p^2/5571 + 0.123p + 37.38
         public static readonly Func<double, double> TripDelayGammaDistributionAlphaFunc = (double meanDelay) => meanDelay * meanDelay / 3879; // Alpha parameter of trip delay gamma distribution, by mean delay: p^2/3879

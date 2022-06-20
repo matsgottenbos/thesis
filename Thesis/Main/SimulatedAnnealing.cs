@@ -206,7 +206,7 @@ namespace Thesis {
             }
         }
 
-        static double GetAdjustedCost(double cost, double satisfaction, float satisfactionFactor) {
+        public static double GetAdjustedCost(double cost, double satisfaction, float satisfactionFactor) {
             return cost * (1 + (1 - satisfaction) * satisfactionFactor);
         }
 
@@ -229,7 +229,7 @@ namespace Thesis {
             double logCost = info.TotalInfo.Stats.RawCost + info.TotalInfo.Stats.Robustness;
 
             // Log basic info
-            Console.WriteLine("# {0,4}    Last.impr: {1,4}    Speed: {2,6}    Cycle: {3,3}    Cost: {4,6} ({5,2}%)    Raw: {6,6}    Temp: {7,4}    Sat.f: {8,4}   Penalty: {9,-33}    {10}{11}", ParseHelper.LargeNumToString(info.IterationNum), lastImprovementIterationStr, speedStr, info.CycleNum, ParseHelper.LargeNumToString(logCost, "0.0"), ParseHelper.ToString(info.TotalInfo.Stats.SatisfactionScore.Value * 100, "0"), ParseHelper.LargeNumToString(info.TotalInfo.Stats.RawCost, "0.0"), ParseHelper.ToString(info.Temperature, "0"), ParseHelper.ToString(info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(info.TotalInfo), paretoFrontStr, hasImprovementStr);
+            Console.WriteLine("# {0,4}    Last.impr: {1,4}    Speed: {2,6}    Cycle: {3,2}    Cost: {4,6} ({5,2}%)    Raw: {6,6}    Temp: {7,5}    Sat.f: {8,4}   Penalty: {9,-33}    {10}{11}", ParseHelper.LargeNumToString(info.IterationNum), lastImprovementIterationStr, speedStr, info.CycleNum, ParseHelper.LargeNumToString(logCost, "0.0"), ParseHelper.ToString(info.TotalInfo.Stats.SatisfactionScore.Value * 100, "0"), ParseHelper.LargeNumToString(info.TotalInfo.Stats.RawCost, "0.0"), ParseHelper.LargeNumToString(info.Temperature, "0.0"), ParseHelper.ToString(info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(info.TotalInfo), paretoFrontStr, hasImprovementStr);
 
             if (AppConfig.DebugSaLogAdditionalInfo) {
                 Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriverInfos.Select(driverInfo => driverInfo.WorkedTime).ToArray()));

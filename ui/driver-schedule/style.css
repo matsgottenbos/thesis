@@ -38,14 +38,14 @@ body {
     padding: 0.75rem 0;
 }
 
+.cell.id {
+    width: 5%;
+}
 .cell.startTime, .cell.endTime, .cell.duration {
-    width: 10%;
+    width: calc(25% / 3);
 }
-.duty, .activity {
-    width: 20%;
-}
-.fromLocation, .toLocation {
-    width: 12.5%;
+.duty, .activity, .fromLocation, .toLocation {
+    width: calc(70% / 4);
 }
 
 .pathItem {
