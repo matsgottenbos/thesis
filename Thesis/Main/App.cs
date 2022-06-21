@@ -8,6 +8,45 @@ using System.Threading.Tasks;
 namespace Thesis {
     class App {
         public App() {
+            Run();
+
+            Console.WriteLine("\n*** Program finished ***");
+            Console.ReadLine();
+        }
+
+        void Run() {
+            // Special app modes without data
+            if (AppConfig.DebugRunDelaysExporter) {
+                Console.WriteLine("Running debug delays exporter");
+                DebugDelaysExporter.Run();
+                return;
+            }
+            if (AppConfig.DebugRunTravelTimeProcesssor) {
+                Console.WriteLine("Running debug travel time exporter");
+                TravelInfoExporter.DetermineAndExportAllTravelInfos();
+                return;
+            }
+
+            Instance instance = GetInstance();
+
+            // Special app modes with data
+            if (AppConfig.DebugRunInspector) {
+                Console.WriteLine("Running debug inspector");
+                new DebugInspector(instance);
+                return;
+            }
+            if (AppConfig.DebugRunJsonExporter) {
+                Console.WriteLine("Running debug JSON exporter");
+                new DebugJsonExporter(instance);
+                return;
+            }
+
+            // Simulated annealing
+            SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance);
+            simulatedAnnealing.Run();
+        }
+
+        Instance GetInstance() {
             XorShiftRandom rand = AppConfig.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
 
             Instance instance;
@@ -22,27 +61,7 @@ namespace Thesis {
                     throw new NotImplementedException();
                     break;
             }
-
-            if (AppConfig.DebugRunInspector) {
-                Console.WriteLine("Running debug inspector");
-                new DebugInspector(instance);
-            } else if (AppConfig.DebugRunJsonExporter) {
-                Console.WriteLine("Running debug JSON exporter");
-                new DebugJsonExporter(instance);
-            } else if (AppConfig.DebugRunDelaysExporter) {
-                Console.WriteLine("Running debug delays exporter");
-                DebugDelaysExporter.Run();
-            } else if (AppConfig.DebugRunTravelTimeProcesssor) {
-                Console.WriteLine("Running debug travel time exporter");
-                TravelInfoHandler.DetermineAndExportTravelInfo();
-            } else {
-                // Simulated annealing
-                SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance);
-                simulatedAnnealing.Run();
-            }
-
-            Console.WriteLine("Program finished");
-            Console.ReadLine();
+            return instance;
         }
     }
 }

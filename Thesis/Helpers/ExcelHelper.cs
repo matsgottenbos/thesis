@@ -53,6 +53,18 @@ namespace Thesis {
             return ParseHelper.CleanDataString(stringValue);
         }
 
+        public int? GetIntValue(IRow row, string columnName) {
+            ICell cell = row.GetCell(GetColumnIndex(columnName));
+            if (cell == null) return null;
+            return (int)Math.Round(row.GetCell(GetColumnIndex(columnName)).NumericCellValue);
+        }
+
+        public bool? GetBoolValue(IRow row, string columnName) {
+            ICell cell = row.GetCell(GetColumnIndex(columnName));
+            if (cell == null) return null;
+            return row.GetCell(GetColumnIndex(columnName)).BooleanCellValue;
+        }
+
         public DateTime? GetDateValue(IRow row, string columnName) {
             return row.GetCell(GetColumnIndex(columnName))?.DateCellValue;
         }

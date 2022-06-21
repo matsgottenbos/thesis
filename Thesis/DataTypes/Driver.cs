@@ -72,7 +72,7 @@ namespace Thesis {
         readonly string InternalDriverName;
         public readonly bool[,] TrackProficiencies;
 
-        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, int[] oneWayTravelTimes, bool[,] trackProficiencies, int contractTime, SalarySettings salaryInfo) : base(allDriversIndex, oneWayTravelTimes, salaryInfo) {
+        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, int[] homeTravelTimes, bool[,] trackProficiencies, int contractTime, SalarySettings salaryInfo) : base(allDriversIndex, homeTravelTimes, salaryInfo) {
             InternalIndex = internalIndex;
             InternalDriverName = internalDriverName;
             TrackProficiencies = trackProficiencies;
@@ -95,10 +95,12 @@ namespace Thesis {
 
     class ExternalDriver : Driver {
         public readonly int ExternalDriverTypeIndex, IndexInType;
+        readonly int[] homeTravelDistances;
 
-        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, int[] oneWayTravelTimes, SalarySettings salaryInfo) : base(allDriversIndex, oneWayTravelTimes, salaryInfo) {
+        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, int[] homeTravelTimes, int[] homeTravelDistances, SalarySettings salaryInfo) : base(allDriversIndex, homeTravelTimes, salaryInfo) {
             ExternalDriverTypeIndex = externalDriverTypeIndex;
             IndexInType = indexInType;
+            this.homeTravelDistances = homeTravelDistances;
         }
 
         public override string GetId() {

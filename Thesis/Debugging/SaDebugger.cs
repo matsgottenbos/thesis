@@ -169,13 +169,13 @@ namespace Thesis {
             externalDriverTypeInfo.DebugLog(isDiff, shouldLogZeros);
         }
 
-        static void LogExternalDriverInfo(ExternalDriver externalDriver) {
-            ExternalDriverTypeSettings externalDriverTypeSettings = DataConfig.ExternalDriverTypes[externalDriver.ExternalDriverTypeIndex];
+        void LogExternalDriverInfo(ExternalDriver externalDriver) {
+            ExternalDriverType externalDriverType = info.Instance.ExternalDriverTypes[externalDriver.ExternalDriverTypeIndex];
             Console.WriteLine("\n* External driver type *");
-            Console.WriteLine("Company name: {0}", externalDriverTypeSettings.CompanyName);
-            Console.WriteLine("Is international: {0}", externalDriverTypeSettings.IsInternational);
-            Console.WriteLine("Min shift count: {0}", externalDriverTypeSettings.MinShiftCount);
-            Console.WriteLine("Max shift count: {0}", externalDriverTypeSettings.MaxShiftCount);
+            Console.WriteLine("Company name: {0}", externalDriverType.CompanyName);
+            Console.WriteLine("Is international: {0}", externalDriverType.IsInternational);
+            Console.WriteLine("Min shift count: {0}", externalDriverType.MinShiftCount);
+            Console.WriteLine("Max shift count: {0}", externalDriverType.MaxShiftCount);
         }
 
         public static string ParseValuePairs(List<(int, int)> valuePairs) {

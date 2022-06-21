@@ -1,6 +1,8 @@
 ﻿using MathNet.Numerics.Distributions;
+using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,17 +19,20 @@ namespace Thesis {
         readonly float[,] tripSuccessionRobustness;
         readonly bool[,] tripSuccession, tripsAreSameShift;
         public readonly InternalDriver[] InternalDrivers;
+        public readonly ExternalDriverType[] ExternalDriverTypes;
         public readonly ExternalDriver[][] ExternalDriversByType;
         public readonly Driver[] AllDrivers;
 
-        public Instance(XorShiftRandom rand, Trip[] rawTrips, string[] stationNames, int[,] plannedCarTravelTimes, string[] internalDriverNames, int[][] internalDriversHomeTravelTimes, bool[][,] internalDriversTrackProficiencies, int[] internalDriverContractTimes, bool[] internalDriverIsInternational, int[][] externalDriverHomeTravelTimes) {
+        public Instance(XorShiftRandom rand, RawTrip[] rawTrips) {
+            XSSFWorkbook addressesBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "stationAddresses.xlsx"));
+            XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "settings.xlsx"));
+
             Rand = rand;
-            expectedCarTravelTimes = GetExpectedCarTravelTimes(plannedCarTravelTimes);
-            (Trips, tripSuccession, tripSuccessionRobustness, tripsAreSameShift, timeframeLength, UniqueSharedRouteCount) = PrepareTrips(rawTrips, expectedCarTravelTimes);
-            StationNames = stationNames;
+            (StationNames, expectedCarTravelTimes) = GetStationNamesAndExpectedCarTravelTimes();
+            (Trips, tripSuccession, tripSuccessionRobustness, tripsAreSameShift, timeframeLength, UniqueSharedRouteCount) = ProcessRawTrips(addressesBook, rawTrips, StationNames, expectedCarTravelTimes);
             shiftInfos = GetShiftInfos(Trips, timeframeLength);
-            InternalDrivers = CreateInternalDrivers(internalDriverNames, internalDriversHomeTravelTimes, internalDriversTrackProficiencies, internalDriverContractTimes, internalDriverIsInternational);
-            ExternalDriversByType = CreateExternalDrivers(externalDriverHomeTravelTimes, InternalDrivers.Length);
+            InternalDrivers = CreateInternalDrivers(settingsBook, rand);
+            (ExternalDriverTypes, ExternalDriversByType) = CreateExternalDrivers(settingsBook, InternalDrivers.Length, rand);
 
             // Create all drivers array
             List<Driver> allDriversList = new List<Driver>();
@@ -43,7 +48,9 @@ namespace Thesis {
             }
         }
 
-        int[,] GetExpectedCarTravelTimes(int[,] plannedCarTravelTimes) {
+        static (string[], int[,]) GetStationNamesAndExpectedCarTravelTimes() {
+            (int[,] plannedCarTravelTimes, _, string[] stationNames) = TravelInfoImporter.ImportFullyConnectedTravelInfo(Path.Combine(AppConfig.IntermediateFolder, "stationTravelInfo.csv"));
+
             int stationCount = plannedCarTravelTimes.GetLength(0);
             int[,] expectedCarTravelTimes = new int[stationCount, stationCount];
             for (int location1Index = 0; location1Index < stationCount; location1Index++) {
@@ -56,16 +63,32 @@ namespace Thesis {
                     }
                 }
             }
-            return expectedCarTravelTimes;
+            return (stationNames, expectedCarTravelTimes);
         }
 
-        (Trip[], bool[,], float[,], bool[,], int, int) PrepareTrips(Trip[] rawTrips, int[,] expectedCarTravelTimes) {
-            // Sort trips by start time
-            Trip[] trips = rawTrips.OrderBy(trip => trip.StartTime).ToArray();
+        (Trip[], bool[,], float[,], bool[,], int, int) ProcessRawTrips(XSSFWorkbook addressesBook, RawTrip[] rawTrips, string[] stationNames, int[,] expectedCarTravelTimes) {
+            if (rawTrips.Length == 0) {
+                throw new Exception("No trips found in timeframe");
+            }
 
-            // Add trip indices
+            // Sort trips by start time
+            rawTrips = rawTrips.OrderBy(trip => trip.StartTime).ToArray();
+
+            // Get dictionary mapping station names in data to their index in the address list
+            Dictionary<string, int> stationDataNameToAddressIndex = GetStationDataNameToAddressIndexDict(addressesBook, stationNames);
+
+            // Create trip objects
+            Trip[] trips = new Trip[rawTrips.Length];
             for (int tripIndex = 0; tripIndex < trips.Length; tripIndex++) {
-                trips[tripIndex].SetIndex(tripIndex);
+                RawTrip rawTrip = rawTrips[tripIndex];
+
+                // Get index of start and end station addresses
+                if (!stationDataNameToAddressIndex.ContainsKey(rawTrip.StartStationName)) throw new Exception(string.Format("Unknown station `{0}`", rawTrip.StartStationName));
+                int startStationAddressIndex = stationDataNameToAddressIndex[rawTrip.StartStationName];
+                if (!stationDataNameToAddressIndex.ContainsKey(rawTrip.EndStationName)) throw new Exception(string.Format("Unknown station `{0}`", rawTrip.EndStationName));
+                int endStationAddressIndex = stationDataNameToAddressIndex[rawTrip.EndStationName];
+
+                trips[tripIndex] = new Trip(rawTrip, tripIndex, startStationAddressIndex, endStationAddressIndex);
             }
 
             // Generate precedence constraints
@@ -144,6 +167,24 @@ namespace Thesis {
             return (trips, tripSuccession, tripSuccessionRobustness, tripsAreSameShift, timeframeLength, uniqueSharedRouteCount);
         }
 
+        /** Get a dictionary that converts from station name in data to station index in address list */
+        static Dictionary<string, int> GetStationDataNameToAddressIndexDict(XSSFWorkbook addressesBook, string[] stationNames) {
+            ExcelSheet linkingStationNamesSheet = new ExcelSheet("Linking station names", addressesBook);
+
+            Dictionary<string, int> stationDataNameToAddressIndex = new Dictionary<string, int>();
+            linkingStationNamesSheet.ForEachRow(linkingStationNamesRow => {
+                string dataStationName = linkingStationNamesSheet.GetStringValue(linkingStationNamesRow, "Station name in data");
+                string addressStationName = linkingStationNamesSheet.GetStringValue(linkingStationNamesRow, "Station name in address list");
+
+                int addressStationIndex = Array.IndexOf(stationNames, addressStationName);
+                if (addressStationIndex == -1) {
+                    throw new Exception();
+                }
+                stationDataNameToAddressIndex.Add(dataStationName, addressStationIndex);
+            });
+            return stationDataNameToAddressIndex;
+        }
+
         static float GetSuccessionRobustness(Trip trip1, Trip trip2, int plannedDuration, int waitingTime) {
             double conflictProb = GetConflictProbability(plannedDuration, waitingTime);
 
@@ -185,40 +226,123 @@ namespace Thesis {
             return (lowStationIndex, highStationIndex);
         }
 
-        static InternalDriver[] CreateInternalDrivers(string[] internalDriverNames, int[][] internalDriversHomeTravelTimes, bool[][,] internalDriversTrackProficiencies, int[] internalDriverContractTimes, bool[] internalDriverIsInternational) {
-            InternalDriver[] internalDrivers = new InternalDriver[internalDriverNames.Length];
-            for (int internalDriverIndex = 0; internalDriverIndex < internalDriverNames.Length; internalDriverIndex++) {
-                string driverName = internalDriverNames[internalDriverIndex];
-                int[] homeTravelTimes = internalDriversHomeTravelTimes[internalDriverIndex];
-                bool[,] trackProficiencies = internalDriversTrackProficiencies[internalDriverIndex];
-                int contractTime = internalDriverContractTimes[internalDriverIndex];
-                bool isInternational = internalDriverIsInternational[internalDriverIndex];
+        static InternalDriver[] CreateInternalDrivers(XSSFWorkbook settingsBook, XorShiftRandom rand) {
+            ExcelSheet internalDriverSettingsSheet = new ExcelSheet("Internal drivers", settingsBook);
 
-                SalarySettings salaryInfo = isInternational ? SalaryConfig.InternalInternationalSalaryInfo : SalaryConfig.InternalNationalSalaryInfo;
+            (int[][] internalDriversHomeTravelTimes, _, string[] travelInfoInternalDriverNames, _) = TravelInfoImporter.ImportBipartiteTravelInfo(Path.Combine(AppConfig.IntermediateFolder, "internalTravelInfo.csv"));
 
-                internalDrivers[internalDriverIndex] = new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, homeTravelTimes, trackProficiencies, contractTime, salaryInfo);
-            }
-            return internalDrivers;
+            List<InternalDriver> internalDrivers = new List<InternalDriver>();
+            internalDriverSettingsSheet.ForEachRow(internalDriverSettingsRow => {
+                string driverName = internalDriverSettingsSheet.GetStringValue(internalDriverSettingsRow, "Internal driver name");
+                int? contractTime = internalDriverSettingsSheet.GetIntValue(internalDriverSettingsRow, "Hours per week");
+                bool? isInternationalDriver = internalDriverSettingsSheet.GetBoolValue(internalDriverSettingsRow, "Is international?");
+                if (driverName == null || !contractTime.HasValue || !isInternationalDriver.HasValue) return;
+
+                int travelInfoInternalDriverIndex = Array.IndexOf(travelInfoInternalDriverNames, driverName);
+                if (travelInfoInternalDriverIndex == -1) {
+                    throw new Exception(string.Format("Could not find internal driver `{0}` in internal travel info", driverName));
+                }
+                int[] homeTravelTimes = internalDriversHomeTravelTimes[travelInfoInternalDriverIndex];
+
+                // Temp: generate track proficiencies
+                bool[,] trackProficiencies = DataGenerator.GenerateInternalDriverTrackProficiencies(homeTravelTimes.Length, rand);
+
+                SalarySettings salaryInfo = isInternationalDriver.Value ? SalaryConfig.InternalInternationalSalaryInfo : SalaryConfig.InternalNationalSalaryInfo;
+
+                int internalDriverIndex = internalDrivers.Count;
+                internalDrivers.Add(new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, homeTravelTimes, trackProficiencies, contractTime.Value, salaryInfo));
+            });
+            return internalDrivers.ToArray();
         }
 
-        static ExternalDriver[][] CreateExternalDrivers(int[][] externalDriversHomeTravelTimes, int indexOffset) {
-            ExternalDriver[][] externalDriversByType = new ExternalDriver[DataConfig.ExternalDriverTypes.Length][];
-            int allDriverIndex = indexOffset;
-            for (int externalDriverTypeIndex = 0; externalDriverTypeIndex < DataConfig.ExternalDriverTypes.Length; externalDriverTypeIndex++) {
-                ExternalDriverTypeSettings externalCompanyInfo = DataConfig.ExternalDriverTypes[externalDriverTypeIndex];
-                int[] homeTravelTimes = externalDriversHomeTravelTimes[externalDriverTypeIndex];
-                SalarySettings salaryInfo = externalCompanyInfo.IsInternational ? SalaryConfig.ExternalInternationalSalaryInfo : SalaryConfig.ExternalNationalSalaryInfo;
+        // TODO: use this when route knowledge data is available
+        static bool[][,] ParseInternalDriverTrackProficiencies(ExcelSheet routeKnowledgeTable, string[] internalDriverNames, string[] stationNames) {
+            bool[][,] internalDriverProficiencies = new bool[internalDriverNames.Length][,];
+            for (int driverIndex = 0; driverIndex < internalDriverNames.Length; driverIndex++) {
+                internalDriverProficiencies[driverIndex] = new bool[stationNames.Length, stationNames.Length];
 
-                ExternalDriver[] currentTypeDrivers = new ExternalDriver[externalCompanyInfo.MaxShiftCount];
-                for (int indexInType = 0; indexInType < externalCompanyInfo.MaxShiftCount; indexInType++) {
-                    ExternalDriver newExternalDriver = new ExternalDriver(allDriverIndex, externalDriverTypeIndex, indexInType, homeTravelTimes, salaryInfo);
-                    currentTypeDrivers[indexInType] = newExternalDriver;
-                    allDriverIndex++;
+                // Everyone is proficient when staying in the same location
+                for (int stationIndex = 0; stationIndex < stationNames.Length; stationIndex++) {
+                    internalDriverProficiencies[driverIndex][stationIndex, stationIndex] = true;
+                }
+            }
+
+            routeKnowledgeTable.ForEachRow(routeKnowledgeRow => {
+                // Get station indices
+                string station1Name = routeKnowledgeTable.GetStringValue(routeKnowledgeRow, "OriginLocationName");
+                int station1Index = Array.IndexOf(stationNames, station1Name);
+                string station2Name = routeKnowledgeTable.GetStringValue(routeKnowledgeRow, "DestinationLocationName");
+                int station2Index = Array.IndexOf(stationNames, station2Name);
+                if (station1Index == -1 || station2Index == -1) return;
+
+                // Get driver index
+                string driverName = routeKnowledgeTable.GetStringValue(routeKnowledgeRow, "EmployeeName");
+                int driverIndex = Array.IndexOf(internalDriverNames, driverName);
+                if (driverIndex == -1) return;
+
+                internalDriverProficiencies[driverIndex][station1Index, station2Index] = true;
+                internalDriverProficiencies[driverIndex][station2Index, station1Index] = true;
+            });
+
+            return internalDriverProficiencies;
+        }
+
+        static (ExternalDriverType[], ExternalDriver[][]) CreateExternalDrivers(XSSFWorkbook settingsBook, int internalDriverCount, XorShiftRandom rand) {
+            ExcelSheet externalDriverSettingsSheet = new ExcelSheet("External driver companies", settingsBook);
+
+            (int[][] externalDriversHomeTravelTimes, int[][] externalDriversHomeTravelDistances, string[] travelInfoExternalCompanyNames, _) = TravelInfoImporter.ImportBipartiteTravelInfo(Path.Combine(AppConfig.IntermediateFolder, "externalTravelInfo.csv"));
+
+            List<ExternalDriverType> externalDriverTypes = new List<ExternalDriverType>();
+            List<ExternalDriver[]> externalDriversByType = new List<ExternalDriver[]>();
+            int allDriverIndex = internalDriverCount;
+            int externalDriverTypeIndex = 0;
+            externalDriverSettingsSheet.ForEachRow(externalDriverSettingsRow => {
+                string companyName = externalDriverSettingsSheet.GetStringValue(externalDriverSettingsRow, "External company name");
+                int? nationalMinShiftCount = externalDriverSettingsSheet.GetIntValue(externalDriverSettingsRow, "National min shift count");
+                int? nationalMaxShiftCount = externalDriverSettingsSheet.GetIntValue(externalDriverSettingsRow, "National max shift count");
+                int? internationalMinShiftCount = externalDriverSettingsSheet.GetIntValue(externalDriverSettingsRow, "International min shift count");
+                int? internationalMaxShiftCount = externalDriverSettingsSheet.GetIntValue(externalDriverSettingsRow, "International max shift count");
+                if (companyName == null || !nationalMinShiftCount.HasValue || !nationalMaxShiftCount.HasValue || !internationalMinShiftCount.HasValue || !internationalMaxShiftCount.HasValue) return;
+
+                int travelInfoExternalCompanyIndex = Array.IndexOf(travelInfoExternalCompanyNames, companyName);
+                if (travelInfoExternalCompanyIndex == -1) {
+                    throw new Exception(string.Format("Could not find external company `{0}` in external travel info", companyName));
+                }
+                int[] homeTravelTimes = externalDriversHomeTravelTimes[travelInfoExternalCompanyIndex];
+                int[] homeTravelDistances = externalDriversHomeTravelDistances[travelInfoExternalCompanyIndex];
+
+                // National drivers
+                if (nationalMaxShiftCount.Value > 0) {
+                    string typeName = string.Format("{0} national", companyName);
+                    externalDriverTypes.Add(new ExternalDriverType(typeName, false, nationalMinShiftCount.Value, nationalMaxShiftCount.Value));
+
+                    ExternalDriver[] currentTypeNationalDrivers = new ExternalDriver[nationalMaxShiftCount.Value];
+                    for (int indexInType = 0; indexInType < nationalMaxShiftCount; indexInType++) {
+                        ExternalDriver newExternalDriver = new ExternalDriver(allDriverIndex, externalDriverTypeIndex, indexInType, homeTravelTimes, homeTravelDistances, SalaryConfig.ExternalNationalSalaryInfo);
+                        currentTypeNationalDrivers[indexInType] = newExternalDriver;
+                        allDriverIndex++;
+                    }
+                    externalDriversByType.Add(currentTypeNationalDrivers);
+                    externalDriverTypeIndex++;
                 }
 
-                externalDriversByType[externalDriverTypeIndex] = currentTypeDrivers;
-            }
-            return externalDriversByType;
+                // International drivers
+                if (internationalMaxShiftCount.Value > 0) {
+                    string typeName = string.Format("{0} international", companyName);
+                    externalDriverTypes.Add(new ExternalDriverType(typeName, true, internationalMinShiftCount.Value, internationalMaxShiftCount.Value));
+
+                    ExternalDriver[] currentTypeInternationalDrivers = new ExternalDriver[internationalMaxShiftCount.Value];
+                    for (int indexInType = 0; indexInType < internationalMaxShiftCount; indexInType++) {
+                        ExternalDriver newExternalDriver = new ExternalDriver(allDriverIndex, externalDriverTypeIndex, indexInType, homeTravelTimes, homeTravelDistances, SalaryConfig.ExternalInternationalSalaryInfo);
+                        currentTypeInternationalDrivers[indexInType] = newExternalDriver;
+                        allDriverIndex++;
+                    }
+                    externalDriversByType.Add(currentTypeInternationalDrivers);
+                    externalDriverTypeIndex++;
+                }
+
+            });
+            return (externalDriverTypes.ToArray(), externalDriversByType.ToArray());
         }
 
         /** Preprocess shift driving times, night fractions and weekend fractions */

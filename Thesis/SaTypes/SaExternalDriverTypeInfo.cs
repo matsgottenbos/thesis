@@ -11,8 +11,8 @@ namespace Thesis {
 
         /* Adding violations */
 
-        public void AddPotentialShiftCountViolation(int shiftCount, ExternalDriverTypeSettings externalDriverTypeSettings) {
-            ExternalShiftCountViolationAmount += Math.Max(0, externalDriverTypeSettings.MinShiftCount - shiftCount) + Math.Max(0, shiftCount - externalDriverTypeSettings.MaxShiftCount);
+        public void AddPotentialShiftCountViolation(int shiftCount, ExternalDriverType externalDriverType) {
+            ExternalShiftCountViolationAmount += Math.Max(0, externalDriverType.MinShiftCount - shiftCount) + Math.Max(0, shiftCount - externalDriverType.MaxShiftCount);
             Penalty = ExternalShiftCountViolationAmount * SaConfig.ExternalShiftCountPenaltyPerShift;
             Cost = Penalty;
         }

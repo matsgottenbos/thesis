@@ -50,13 +50,13 @@ namespace Thesis {
             }
             #endif
 
-            ExternalDriverTypeSettings externalDriverTypeSettings = DataConfig.ExternalDriverTypes[externalDriver.ExternalDriverTypeIndex];
+            ExternalDriverType externalDriverType = info.Instance.ExternalDriverTypes[externalDriver.ExternalDriverTypeIndex];
 
             int newShiftCount = oldExternalDriverTypeInfo.ExternalShiftCount + driverInfoDiff.ShiftCount;
             SaExternalDriverTypeInfo newExternalDriverTypeInfo = new SaExternalDriverTypeInfo() {
                 ExternalShiftCount = newShiftCount,
             };
-            newExternalDriverTypeInfo.AddPotentialShiftCountViolation(newShiftCount, externalDriverTypeSettings);
+            newExternalDriverTypeInfo.AddPotentialShiftCountViolation(newShiftCount, externalDriverType);
 
             SaExternalDriverTypeInfo externalDriverTypeInfoDiff = newExternalDriverTypeInfo - oldExternalDriverTypeInfo;
 

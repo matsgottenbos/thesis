@@ -20,7 +20,7 @@ namespace Thesis {
         public const bool DebugUseSeededSa = true;
         public const bool DebugCheckAndLogOperations = false;
         public const bool DebugSaLogCurrentSolution = false;
-        public const bool DebugSaLogAdditionalInfo = false;
+        public const bool DebugSaLogAdditionalInfo = true;
         public const bool DebugRunInspector = false;
         public const bool DebugRunJsonExporter = false;
         public const bool DebugRunDelaysExporter = false;
@@ -29,7 +29,8 @@ namespace Thesis {
         // File structure
         public static readonly string ProjectFolder = (Environment.Is64BitProcess ? Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName : Directory.GetParent(Environment.CurrentDirectory).Parent.FullName) + @"\"; // Path to the project root folder
         public static readonly string SolutionFolder = ProjectFolder + @"\..\"; // Path to the solution root folder
-        public static readonly string DataFolder = Path.Combine(SolutionFolder, @"data\");
+        public static readonly string InputFolder = Path.Combine(SolutionFolder, @"input\");
+        public static readonly string IntermediateFolder = Path.Combine(SolutionFolder, @"intermediate\");
         public static readonly string OutputFolder = Path.Combine(SolutionFolder, @"output\");
     }
 }

@@ -98,19 +98,6 @@ namespace Thesis {
         }
     }
 
-    class ExternalDriverTypeSettings {
-        public readonly string CompanyName;
-        public readonly bool IsInternational;
-        public readonly int MinShiftCount, MaxShiftCount;
-
-        public ExternalDriverTypeSettings(string companyName, bool isInternational, int minShiftCount, int maxShiftCount) {
-            CompanyName = companyName;
-            IsInternational = isInternational;
-            MinShiftCount = minShiftCount;
-            MaxShiftCount = maxShiftCount;
-        }
-    }
-
     class TimePart {
         public readonly int StartTime;
         public readonly bool IsSelected;

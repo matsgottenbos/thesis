@@ -9,18 +9,6 @@ namespace Thesis {
         public static readonly DateTime ExcelPlanningStartDate = new DateTime(2022, 5, 23);
         public static readonly DateTime ExcelPlanningNextDate = ExcelPlanningStartDate.AddDays(7);
 
-        /* External company settings */
-        public static readonly ExternalDriverTypeSettings[] ExternalDriverTypes = new ExternalDriverTypeSettings[] {
-            new ExternalDriverTypeSettings("Machinext national", false, 8, 15),
-            new ExternalDriverTypeSettings("Machinext international", true, 3, 4),
-            new ExternalDriverTypeSettings("Aeterno national", false, 7, 12),
-            new ExternalDriverTypeSettings("Aeterno international", true, 4, 7),
-            new ExternalDriverTypeSettings("Spoorlutions national", false, 10, 18),
-            new ExternalDriverTypeSettings("Logisticle national", false, 4, 6),
-            new ExternalDriverTypeSettings("Logisticle international", true, 4, 6),
-            // TODO: add Railflex and MOB?
-        };
-
 
         /* Excel importer */
         public static readonly string[] ExcelIncludedRailwayUndertakings = new string[] { "Rail Force One" };

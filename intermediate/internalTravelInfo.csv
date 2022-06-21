@@ -1,0 +1,1761 @@
+location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
+"Bos, Joel",Acht,71,106
+"Bos, Joel","Almelo, emplacement",71,102
+"Bos, Joel","Amersfoort, emplacement sp.12",28,29
+"Bos, Joel","Amersfoort, remise Strukton",28,34
+"Bos, Joel",Amsterdam Centraal,56,76
+"Bos, Joel",Amsterdam Westhaven,55,80
+"Bos, Joel",Amsterdam Westhaven West,56,83
+"Bos, Joel","Arnhem, goederenemplacement",33,42
+"Bos, Joel","Bad Bentheim, empl. / staalfabriek",86,132
+"Bos, Joel","Bad Bentheim, Hilgenstiege sp.25",85,132
+"Bos, Joel","Beverwijk, emplacement",64,97
+"Bos, Joel","Blerick, emplacement en werkplaats",75,113
+"Bos, Joel","Born, emplacement",104,162
+"Bos, Joel","Botlek, emplacement",78,118
+"Bos, Joel",Bottrop,85,128
+"Bos, Joel","Coevorden, euroterminal",97,139
+"Bos, Joel",Deventer goed. empl.,44,61
+"Bos, Joel","Deventer, goederenemplacement",45,61
+"Bos, Joel","Dordrecht, dok",70,106
+"Bos, Joel","Dortmund Obereving, emplacement",110,172
+"Bos, Joel",Duisburg Ruhrorthafen,84,130
+"Bos, Joel","Duisburg, Hochfeld Süd Vorbahnhof",85,138
+"Bos, Joel","Eindhoven, emplacement",69,104
+"Bos, Joel","Eindhoven, emplacement Acht",71,107
+"Bos, Joel",Eltville Ost,236,372
+"Bos, Joel","Emmerich, station",50,65
+"Bos, Joel",Euromax,102,153
+"Bos, Joel","Europoort, emplacement",84,129
+"Bos, Joel","Gekkengraaf, emplacement",73,111
+"Bos, Joel",Germersheim,285,470
+"Bos, Joel",Goes,123,185
+"Bos, Joel","Hengelo, emplacement",72,104
+"Bos, Joel","Herzogenrath, station",134,199
+"Bos, Joel",Holland Cargo Terminal,59,86
+"Bos, Joel","Houtrakpolder, emplacement",54,83
+"Bos, Joel","IJsselmonde, emplacement",69,101
+"Bos, Joel","Kaldenkirchen, station",78,121
+"Bos, Joel","Kijfhoek, emplacement",68,103
+"Bos, Joel","Köln Eifeltor, emplacement",130,207
+"Bos, Joel",Koole Vondelingenweg,76,114
+"Bos, Joel","Krefeld Linn, emplacement",100,151
+"Bos, Joel","Lage Zwaluwe, emplacement",73,110
+"Bos, Joel","Leusden, PON",26,19
+"Bos, Joel",Ludwigshafen-Oggersheim,266,423
+"Bos, Joel","Maasvlakte, emplacement",96,144
+"Bos, Joel",Magdeburg Hbf,287,472
+"Bos, Joel","Marl-Sinsen, emplacement",99,157
+"Bos, Joel",Matrans Rotterdam Terminal,88,116
+"Bos, Joel","Moerdijk, emplacement",79,114
+"Bos, Joel",Moers,91,139
+"Bos, Joel","Neuss, guterbahnhof",109,168
+"Bos, Joel","Nijmegen, emplacement",43,57
+"Bos, Joel",NWB terminal,55,80
+"Bos, Joel",OBA,56,81
+"Bos, Joel","Oberhausen West, emplacement",78,126
+"Bos, Joel","Oldenzaal, emplacement",76,114
+"Bos, Joel","Onnen, emplacement noordingang",118,183
+"Bos, Joel","Onnen, emplacement zuidingang",115,179
+"Bos, Joel",Opladen,113,179
+"Bos, Joel","Oss, terminal OOC",47,64
+"Bos, Joel","Pernis, emplacement",74,111
+"Bos, Joel",Rheine,101,153
+"Bos, Joel","Rheinhausen, emplacement",97,143
+"Bos, Joel","Roosendaal, emplacement",90,131
+"Bos, Joel","Sittard, emplacement",111,167
+"Bos, Joel",Sloehaven empl.,129,196
+"Bos, Joel",Steinweg Amsterdam,56,83
+"Bos, Joel",Stroe,19,15
+"Bos, Joel","Tilburg, industrie",73,105
+"Bos, Joel","Uitgeest, emplacement",66,93
+"Bos, Joel","Valburg, emplacement CUP",33,47
+"Bos, Joel","Venlo, emplacement",78,115
+"Bos, Joel","Viersen, guterbahnhof",97,141
+"Bos, Joel","Vlissingen Sloe, emplacement",129,197
+"Bos, Joel",Vopak-Sloe,130,196
+"Bos, Joel","Waalhaven, emplacement",73,112
+"Bos, Joel","Waalhaven, kantoor RFO",75,112
+"Bos, Joel","Westhaven, emplacement",54,80
+"Bos, Joel",Zevenaar grens,35,48
+"Bos, Joel","Zutphen, emplacement",49,62
+"Broere, Sam",Acht,60,84
+"Broere, Sam","Almelo, emplacement",90,128
+"Broere, Sam","Amersfoort, emplacement sp.12",29,27
+"Broere, Sam","Amersfoort, remise Strukton",27,24
+"Broere, Sam",Amsterdam Centraal,46,54
+"Broere, Sam",Amsterdam Westhaven,41,52
+"Broere, Sam",Amsterdam Westhaven West,43,53
+"Broere, Sam","Arnhem, goederenemplacement",52,70
+"Broere, Sam","Bad Bentheim, empl. / staalfabriek",104,158
+"Broere, Sam","Bad Bentheim, Hilgenstiege sp.25",104,158
+"Broere, Sam","Beverwijk, emplacement",48,67
+"Broere, Sam","Blerick, emplacement en werkplaats",94,141
+"Broere, Sam","Born, emplacement",100,151
+"Broere, Sam","Botlek, emplacement",56,76
+"Broere, Sam",Bottrop,105,156
+"Broere, Sam","Coevorden, euroterminal",103,145
+"Broere, Sam",Deventer goed. empl.,63,87
+"Broere, Sam","Deventer, goederenemplacement",63,87
+"Broere, Sam","Dordrecht, dok",49,67
+"Broere, Sam","Dortmund Obereving, emplacement",129,200
+"Broere, Sam",Duisburg Ruhrorthafen,104,158
+"Broere, Sam","Duisburg, Hochfeld Süd Vorbahnhof",105,166
+"Broere, Sam","Eindhoven, emplacement",62,88
+"Broere, Sam","Eindhoven, emplacement Acht",61,82
+"Broere, Sam",Eltville Ost,256,400
+"Broere, Sam","Emmerich, station",69,93
+"Broere, Sam",Euromax,80,112
+"Broere, Sam","Europoort, emplacement",61,87
+"Broere, Sam","Gekkengraaf, emplacement",92,139
+"Broere, Sam",Germersheim,304,498
+"Broere, Sam",Goes,102,147
+"Broere, Sam","Hengelo, emplacement",90,130
+"Broere, Sam","Herzogenrath, station",129,189
+"Broere, Sam",Holland Cargo Terminal,46,60
+"Broere, Sam","Houtrakpolder, emplacement",42,57
+"Broere, Sam","IJsselmonde, emplacement",46,60
+"Broere, Sam","Kaldenkirchen, station",98,149
+"Broere, Sam","Kijfhoek, emplacement",47,65
+"Broere, Sam","Köln Eifeltor, emplacement",149,235
+"Broere, Sam",Koole Vondelingenweg,54,73
+"Broere, Sam","Krefeld Linn, emplacement",119,179
+"Broere, Sam","Lage Zwaluwe, emplacement",52,72
+"Broere, Sam","Leusden, PON",24,25
+"Broere, Sam",Ludwigshafen-Oggersheim,286,451
+"Broere, Sam","Maasvlakte, emplacement",73,102
+"Broere, Sam",Magdeburg Hbf,305,497
+"Broere, Sam","Marl-Sinsen, emplacement",118,185
+"Broere, Sam",Matrans Rotterdam Terminal,65,75
+"Broere, Sam","Moerdijk, emplacement",58,75
+"Broere, Sam",Moers,111,167
+"Broere, Sam","Neuss, guterbahnhof",128,196
+"Broere, Sam","Nijmegen, emplacement",63,85
+"Broere, Sam",NWB terminal,42,52
+"Broere, Sam",OBA,42,52
+"Broere, Sam","Oberhausen West, emplacement",97,154
+"Broere, Sam","Oldenzaal, emplacement",94,140
+"Broere, Sam","Onnen, emplacement noordingang",125,189
+"Broere, Sam","Onnen, emplacement zuidingang",121,185
+"Broere, Sam",Opladen,132,208
+"Broere, Sam","Oss, terminal OOC",55,74
+"Broere, Sam","Pernis, emplacement",51,70
+"Broere, Sam",Rheine,119,179
+"Broere, Sam","Rheinhausen, emplacement",116,171
+"Broere, Sam","Roosendaal, emplacement",69,92
+"Broere, Sam","Sittard, emplacement",107,157
+"Broere, Sam",Sloehaven empl.,108,158
+"Broere, Sam",Steinweg Amsterdam,43,54
+"Broere, Sam",Stroe,37,49
+"Broere, Sam","Tilburg, industrie",57,75
+"Broere, Sam","Uitgeest, emplacement",53,74
+"Broere, Sam","Valburg, emplacement CUP",53,75
+"Broere, Sam","Venlo, emplacement",97,143
+"Broere, Sam","Viersen, guterbahnhof",117,169
+"Broere, Sam","Vlissingen Sloe, emplacement",108,159
+"Broere, Sam",Vopak-Sloe,109,157
+"Broere, Sam","Waalhaven, emplacement",50,71
+"Broere, Sam","Waalhaven, kantoor RFO",53,71
+"Broere, Sam","Westhaven, emplacement",40,51
+"Broere, Sam",Zevenaar grens,55,76
+"Broere, Sam","Zutphen, emplacement",67,88
+"de Kleijn, T.",Acht,69,99
+"de Kleijn, T.","Almelo, emplacement",124,189
+"de Kleijn, T.","Amersfoort, emplacement sp.12",64,87
+"de Kleijn, T.","Amersfoort, remise Strukton",62,85
+"de Kleijn, T.",Amsterdam Centraal,70,92
+"de Kleijn, T.",Amsterdam Westhaven,64,90
+"de Kleijn, T.",Amsterdam Westhaven West,61,88
+"de Kleijn, T.","Arnhem, goederenemplacement",77,110
+"de Kleijn, T.","Bad Bentheim, empl. / staalfabriek",139,218
+"de Kleijn, T.","Bad Bentheim, Hilgenstiege sp.25",139,219
+"de Kleijn, T.","Beverwijk, emplacement",66,96
+"de Kleijn, T.","Blerick, emplacement en werkplaats",108,158
+"de Kleijn, T.","Born, emplacement",110,168
+"de Kleijn, T.","Botlek, emplacement",22,26
+"de Kleijn, T.",Bottrop,138,214
+"de Kleijn, T.","Coevorden, euroterminal",138,206
+"de Kleijn, T.",Deventer goed. empl.,98,147
+"de Kleijn, T.","Deventer, goederenemplacement",98,147
+"de Kleijn, T.","Dordrecht, dok",14,15
+"de Kleijn, T.","Dortmund Obereving, emplacement",163,257
+"de Kleijn, T.",Duisburg Ruhrorthafen,129,195
+"de Kleijn, T.","Duisburg, Hochfeld Süd Vorbahnhof",130,201
+"de Kleijn, T.","Eindhoven, emplacement",75,111
+"de Kleijn, T.","Eindhoven, emplacement Acht",70,102
+"de Kleijn, T.",Eltville Ost,285,437
+"de Kleijn, T.","Emmerich, station",103,150
+"de Kleijn, T.",Euromax,46,61
+"de Kleijn, T.","Europoort, emplacement",28,37
+"de Kleijn, T.","Gekkengraaf, emplacement",103,155
+"de Kleijn, T.",Germersheim,318,501
+"de Kleijn, T.",Goes,70,102
+"de Kleijn, T.","Hengelo, emplacement",125,190
+"de Kleijn, T.","Herzogenrath, station",140,206
+"de Kleijn, T.",Holland Cargo Terminal,63,89
+"de Kleijn, T.","Houtrakpolder, emplacement",59,86
+"de Kleijn, T.","IJsselmonde, emplacement",12,6
+"de Kleijn, T.","Kaldenkirchen, station",111,167
+"de Kleijn, T.","Kijfhoek, emplacement",12,13
+"de Kleijn, T.","Köln Eifeltor, emplacement",168,259
+"de Kleijn, T.",Koole Vondelingenweg,20,22
+"de Kleijn, T.","Krefeld Linn, emplacement",133,197
+"de Kleijn, T.","Lage Zwaluwe, emplacement",23,30
+"de Kleijn, T.","Leusden, PON",59,86
+"de Kleijn, T.",Ludwigshafen-Oggersheim,299,469
+"de Kleijn, T.","Maasvlakte, emplacement",40,52
+"de Kleijn, T.",Magdeburg Hbf,340,558
+"de Kleijn, T.","Marl-Sinsen, emplacement",151,242
+"de Kleijn, T.",Matrans Rotterdam Terminal,29,20
+"de Kleijn, T.","Moerdijk, emplacement",26,33
+"de Kleijn, T.",Moers,124,185
+"de Kleijn, T.","Neuss, guterbahnhof",142,214
+"de Kleijn, T.","Nijmegen, emplacement",76,103
+"de Kleijn, T.",NWB terminal,65,90
+"de Kleijn, T.",OBA,65,91
+"de Kleijn, T.","Oberhausen West, emplacement",127,196
+"de Kleijn, T.","Oldenzaal, emplacement",129,200
+"de Kleijn, T.","Onnen, emplacement noordingang",160,249
+"de Kleijn, T.","Onnen, emplacement zuidingang",156,246
+"de Kleijn, T.",Opladen,163,249
+"de Kleijn, T.","Oss, terminal OOC",68,97
+"de Kleijn, T.","Pernis, emplacement",17,19
+"de Kleijn, T.",Rheine,154,239
+"de Kleijn, T.","Rheinhausen, emplacement",130,198
+"de Kleijn, T.","Roosendaal, emplacement",37,50
+"de Kleijn, T.","Sittard, emplacement",117,174
+"de Kleijn, T.",Sloehaven empl.,75,113
+"de Kleijn, T.",Steinweg Amsterdam,61,88
+"de Kleijn, T.",Stroe,72,110
+"de Kleijn, T.","Tilburg, industrie",53,74
+"de Kleijn, T.","Uitgeest, emplacement",71,103
+"de Kleijn, T.","Valburg, emplacement CUP",67,99
+"de Kleijn, T.","Venlo, emplacement",111,160
+"de Kleijn, T.","Viersen, guterbahnhof",130,186
+"de Kleijn, T.","Vlissingen Sloe, emplacement",76,114
+"de Kleijn, T.",Vopak-Sloe,76,113
+"de Kleijn, T.","Waalhaven, emplacement",15,15
+"de Kleijn, T.","Waalhaven, kantoor RFO",17,16
+"de Kleijn, T.","Westhaven, emplacement",63,89
+"de Kleijn, T.",Zevenaar grens,88,134
+"de Kleijn, T.","Zutphen, emplacement",101,142
+"de Koning, Mark",Acht,54,77
+"de Koning, Mark","Almelo, emplacement",68,96
+"de Koning, Mark","Amersfoort, emplacement sp.12",44,47
+"de Koning, Mark","Amersfoort, remise Strukton",46,44
+"de Koning, Mark",Amsterdam Centraal,73,94
+"de Koning, Mark",Amsterdam Westhaven,72,98
+"de Koning, Mark",Amsterdam Westhaven West,73,101
+"de Koning, Mark","Arnhem, goederenemplacement",24,14
+"de Koning, Mark","Bad Bentheim, empl. / staalfabriek",82,125
+"de Koning, Mark","Bad Bentheim, Hilgenstiege sp.25",82,126
+"de Koning, Mark","Beverwijk, emplacement",79,112
+"de Koning, Mark","Blerick, emplacement en werkplaats",58,84
+"de Koning, Mark","Born, emplacement",88,133
+"de Koning, Mark","Botlek, emplacement",79,118
+"de Koning, Mark",Bottrop,77,114
+"de Koning, Mark","Coevorden, euroterminal",97,136
+"de Koning, Mark",Deventer goed. empl.,41,54
+"de Koning, Mark","Deventer, goederenemplacement",42,54
+"de Koning, Mark","Dordrecht, dok",68,103
+"de Koning, Mark","Dortmund Obereving, emplacement",102,157
+"de Koning, Mark",Duisburg Ruhrorthafen,77,115
+"de Koning, Mark","Duisburg, Hochfeld Süd Vorbahnhof",78,124
+"de Koning, Mark","Eindhoven, emplacement",52,75
+"de Koning, Mark","Eindhoven, emplacement Acht",54,78
+"de Koning, Mark",Eltville Ost,228,357
+"de Koning, Mark","Emmerich, station",42,50
+"de Koning, Mark",Euromax,103,154
+"de Koning, Mark","Europoort, emplacement",85,129
+"de Koning, Mark","Gekkengraaf, emplacement",56,82
+"de Koning, Mark",Germersheim,268,426
+"de Koning, Mark",Goes,122,182
+"de Koning, Mark","Hengelo, emplacement",69,97
+"de Koning, Mark","Herzogenrath, station",117,170
+"de Koning, Mark",Holland Cargo Terminal,76,104
+"de Koning, Mark","Houtrakpolder, emplacement",71,101
+"de Koning, Mark","IJsselmonde, emplacement",71,102
+"de Koning, Mark","Kaldenkirchen, station",61,92
+"de Koning, Mark","Kijfhoek, emplacement",66,100
+"de Koning, Mark","Köln Eifeltor, emplacement",118,184
+"de Koning, Mark",Koole Vondelingenweg,78,115
+"de Koning, Mark","Krefeld Linn, emplacement",83,122
+"de Koning, Mark","Lage Zwaluwe, emplacement",71,107
+"de Koning, Mark","Leusden, PON",38,37
+"de Koning, Mark",Ludwigshafen-Oggersheim,249,394
+"de Koning, Mark","Maasvlakte, emplacement",97,144
+"de Koning, Mark",Magdeburg Hbf,284,465
+"de Koning, Mark","Marl-Sinsen, emplacement",91,142
+"de Koning, Mark",Matrans Rotterdam Terminal,87,113
+"de Koning, Mark","Moerdijk, emplacement",77,111
+"de Koning, Mark",Moers,74,110
+"de Koning, Mark","Neuss, guterbahnhof",92,139
+"de Koning, Mark","Nijmegen, emplacement",27,28
+"de Koning, Mark",NWB terminal,72,98
+"de Koning, Mark",OBA,73,99
+"de Koning, Mark","Oberhausen West, emplacement",70,112
+"de Koning, Mark","Oldenzaal, emplacement",73,108
+"de Koning, Mark","Onnen, emplacement noordingang",118,176
+"de Koning, Mark","Onnen, emplacement zuidingang",114,173
+"de Koning, Mark",Opladen,105,165
+"de Koning, Mark","Oss, terminal OOC",30,36
+"de Koning, Mark","Pernis, emplacement",75,112
+"de Koning, Mark",Rheine,98,146
+"de Koning, Mark","Rheinhausen, emplacement",81,123
+"de Koning, Mark","Roosendaal, emplacement",88,128
+"de Koning, Mark","Sittard, emplacement",94,138
+"de Koning, Mark",Sloehaven empl.,127,193
+"de Koning, Mark",Steinweg Amsterdam,73,101
+"de Koning, Mark",Stroe,36,42
+"de Koning, Mark","Tilburg, industrie",56,76
+"de Koning, Mark","Uitgeest, emplacement",82,111
+"de Koning, Mark","Valburg, emplacement CUP",17,18
+"de Koning, Mark","Venlo, emplacement",61,86
+"de Koning, Mark","Viersen, guterbahnhof",80,112
+"de Koning, Mark","Vlissingen Sloe, emplacement",128,194
+"de Koning, Mark",Vopak-Sloe,128,193
+"de Koning, Mark","Waalhaven, emplacement",72,108
+"de Koning, Mark","Waalhaven, kantoor RFO",74,109
+"de Koning, Mark","Westhaven, emplacement",71,96
+"de Koning, Mark",Zevenaar grens,28,34
+"de Koning, Mark","Zutphen, emplacement",42,50
+"Dijkema, Stefan",Acht,82,118
+"Dijkema, Stefan","Almelo, emplacement",72,100
+"Dijkema, Stefan","Amersfoort, emplacement sp.12",23,17
+"Dijkema, Stefan","Amersfoort, remise Strukton",24,22
+"Dijkema, Stefan",Amsterdam Centraal,52,64
+"Dijkema, Stefan",Amsterdam Westhaven,51,68
+"Dijkema, Stefan",Amsterdam Westhaven West,52,71
+"Dijkema, Stefan","Arnhem, goederenemplacement",45,58
+"Dijkema, Stefan","Bad Bentheim, empl. / staalfabriek",87,130
+"Dijkema, Stefan","Bad Bentheim, Hilgenstiege sp.25",86,130
+"Dijkema, Stefan","Beverwijk, emplacement",61,85
+"Dijkema, Stefan","Blerick, emplacement en werkplaats",87,129
+"Dijkema, Stefan","Born, emplacement",117,178
+"Dijkema, Stefan","Botlek, emplacement",80,113
+"Dijkema, Stefan",Bottrop,98,144
+"Dijkema, Stefan","Coevorden, euroterminal",85,114
+"Dijkema, Stefan",Deventer goed. empl.,45,58
+"Dijkema, Stefan","Deventer, goederenemplacement",46,59
+"Dijkema, Stefan","Dordrecht, dok",71,101
+"Dijkema, Stefan","Dortmund Obereving, emplacement",123,188
+"Dijkema, Stefan",Duisburg Ruhrorthafen,97,146
+"Dijkema, Stefan","Duisburg, Hochfeld Süd Vorbahnhof",98,154
+"Dijkema, Stefan","Eindhoven, emplacement",82,120
+"Dijkema, Stefan","Eindhoven, emplacement Acht",83,116
+"Dijkema, Stefan",Eltville Ost,249,388
+"Dijkema, Stefan","Emmerich, station",63,81
+"Dijkema, Stefan",Euromax,104,148
+"Dijkema, Stefan","Europoort, emplacement",86,124
+"Dijkema, Stefan","Gekkengraaf, emplacement",86,127
+"Dijkema, Stefan",Germersheim,298,486
+"Dijkema, Stefan",Goes,124,180
+"Dijkema, Stefan","Hengelo, emplacement",73,101
+"Dijkema, Stefan","Herzogenrath, station",146,215
+"Dijkema, Stefan",Holland Cargo Terminal,55,74
+"Dijkema, Stefan","Houtrakpolder, emplacement",51,71
+"Dijkema, Stefan","IJsselmonde, emplacement",71,96
+"Dijkema, Stefan","Kaldenkirchen, station",91,137
+"Dijkema, Stefan","Kijfhoek, emplacement",69,98
+"Dijkema, Stefan","Köln Eifeltor, emplacement",142,223
+"Dijkema, Stefan",Koole Vondelingenweg,78,109
+"Dijkema, Stefan","Krefeld Linn, emplacement",113,167
+"Dijkema, Stefan","Lage Zwaluwe, emplacement",74,105
+"Dijkema, Stefan","Leusden, PON",20,17
+"Dijkema, Stefan",Ludwigshafen-Oggersheim,279,439
+"Dijkema, Stefan","Maasvlakte, emplacement",98,139
+"Dijkema, Stefan",Magdeburg Hbf,288,469
+"Dijkema, Stefan","Marl-Sinsen, emplacement",111,173
+"Dijkema, Stefan",Matrans Rotterdam Terminal,89,111
+"Dijkema, Stefan","Moerdijk, emplacement",80,109
+"Dijkema, Stefan",Moers,104,155
+"Dijkema, Stefan","Neuss, guterbahnhof",121,184
+"Dijkema, Stefan","Nijmegen, emplacement",56,73
+"Dijkema, Stefan",NWB terminal,51,68
+"Dijkema, Stefan",OBA,52,69
+"Dijkema, Stefan","Oberhausen West, emplacement",90,142
+"Dijkema, Stefan","Oldenzaal, emplacement",77,112
+"Dijkema, Stefan","Onnen, emplacement noordingang",106,157
+"Dijkema, Stefan","Onnen, emplacement zuidingang",103,154
+"Dijkema, Stefan",Opladen,125,195
+"Dijkema, Stefan","Oss, terminal OOC",60,80
+"Dijkema, Stefan","Pernis, emplacement",75,107
+"Dijkema, Stefan",Rheine,102,151
+"Dijkema, Stefan","Rheinhausen, emplacement",109,159
+"Dijkema, Stefan","Roosendaal, emplacement",91,126
+"Dijkema, Stefan","Sittard, emplacement",124,183
+"Dijkema, Stefan",Sloehaven empl.,130,191
+"Dijkema, Stefan",Steinweg Amsterdam,52,71
+"Dijkema, Stefan",Stroe,19,16
+"Dijkema, Stefan","Tilburg, industrie",79,108
+"Dijkema, Stefan","Uitgeest, emplacement",62,81
+"Dijkema, Stefan","Valburg, emplacement CUP",46,63
+"Dijkema, Stefan","Venlo, emplacement",91,131
+"Dijkema, Stefan","Viersen, guterbahnhof",110,157
+"Dijkema, Stefan","Vlissingen Sloe, emplacement",130,192
+"Dijkema, Stefan",Vopak-Sloe,131,191
+"Dijkema, Stefan","Waalhaven, emplacement",75,106
+"Dijkema, Stefan","Waalhaven, kantoor RFO",77,107
+"Dijkema, Stefan","Westhaven, emplacement",51,68
+"Dijkema, Stefan",Zevenaar grens,48,64
+"Dijkema, Stefan","Zutphen, emplacement",50,59
+"Hagens, Rien",Acht,54,77
+"Hagens, Rien","Almelo, emplacement",68,96
+"Hagens, Rien","Amersfoort, emplacement sp.12",44,47
+"Hagens, Rien","Amersfoort, remise Strukton",46,44
+"Hagens, Rien",Amsterdam Centraal,73,94
+"Hagens, Rien",Amsterdam Westhaven,72,98
+"Hagens, Rien",Amsterdam Westhaven West,73,101
+"Hagens, Rien","Arnhem, goederenemplacement",24,14
+"Hagens, Rien","Bad Bentheim, empl. / staalfabriek",82,125
+"Hagens, Rien","Bad Bentheim, Hilgenstiege sp.25",82,126
+"Hagens, Rien","Beverwijk, emplacement",79,112
+"Hagens, Rien","Blerick, emplacement en werkplaats",58,84
+"Hagens, Rien","Born, emplacement",88,133
+"Hagens, Rien","Botlek, emplacement",79,118
+"Hagens, Rien",Bottrop,77,114
+"Hagens, Rien","Coevorden, euroterminal",97,136
+"Hagens, Rien",Deventer goed. empl.,41,54
+"Hagens, Rien","Deventer, goederenemplacement",42,54
+"Hagens, Rien","Dordrecht, dok",68,103
+"Hagens, Rien","Dortmund Obereving, emplacement",102,157
+"Hagens, Rien",Duisburg Ruhrorthafen,77,115
+"Hagens, Rien","Duisburg, Hochfeld Süd Vorbahnhof",78,124
+"Hagens, Rien","Eindhoven, emplacement",52,75
+"Hagens, Rien","Eindhoven, emplacement Acht",54,78
+"Hagens, Rien",Eltville Ost,228,357
+"Hagens, Rien","Emmerich, station",42,50
+"Hagens, Rien",Euromax,103,154
+"Hagens, Rien","Europoort, emplacement",85,129
+"Hagens, Rien","Gekkengraaf, emplacement",56,82
+"Hagens, Rien",Germersheim,268,426
+"Hagens, Rien",Goes,122,182
+"Hagens, Rien","Hengelo, emplacement",69,97
+"Hagens, Rien","Herzogenrath, station",117,170
+"Hagens, Rien",Holland Cargo Terminal,76,104
+"Hagens, Rien","Houtrakpolder, emplacement",71,101
+"Hagens, Rien","IJsselmonde, emplacement",71,102
+"Hagens, Rien","Kaldenkirchen, station",61,92
+"Hagens, Rien","Kijfhoek, emplacement",66,100
+"Hagens, Rien","Köln Eifeltor, emplacement",118,184
+"Hagens, Rien",Koole Vondelingenweg,78,115
+"Hagens, Rien","Krefeld Linn, emplacement",83,122
+"Hagens, Rien","Lage Zwaluwe, emplacement",71,107
+"Hagens, Rien","Leusden, PON",38,37
+"Hagens, Rien",Ludwigshafen-Oggersheim,249,394
+"Hagens, Rien","Maasvlakte, emplacement",97,144
+"Hagens, Rien",Magdeburg Hbf,284,465
+"Hagens, Rien","Marl-Sinsen, emplacement",91,142
+"Hagens, Rien",Matrans Rotterdam Terminal,87,113
+"Hagens, Rien","Moerdijk, emplacement",77,111
+"Hagens, Rien",Moers,74,110
+"Hagens, Rien","Neuss, guterbahnhof",92,139
+"Hagens, Rien","Nijmegen, emplacement",27,28
+"Hagens, Rien",NWB terminal,72,98
+"Hagens, Rien",OBA,73,99
+"Hagens, Rien","Oberhausen West, emplacement",70,112
+"Hagens, Rien","Oldenzaal, emplacement",73,108
+"Hagens, Rien","Onnen, emplacement noordingang",118,176
+"Hagens, Rien","Onnen, emplacement zuidingang",114,173
+"Hagens, Rien",Opladen,105,165
+"Hagens, Rien","Oss, terminal OOC",30,36
+"Hagens, Rien","Pernis, emplacement",75,112
+"Hagens, Rien",Rheine,98,146
+"Hagens, Rien","Rheinhausen, emplacement",81,123
+"Hagens, Rien","Roosendaal, emplacement",88,128
+"Hagens, Rien","Sittard, emplacement",94,138
+"Hagens, Rien",Sloehaven empl.,127,193
+"Hagens, Rien",Steinweg Amsterdam,73,101
+"Hagens, Rien",Stroe,36,42
+"Hagens, Rien","Tilburg, industrie",56,76
+"Hagens, Rien","Uitgeest, emplacement",82,111
+"Hagens, Rien","Valburg, emplacement CUP",17,18
+"Hagens, Rien","Venlo, emplacement",61,86
+"Hagens, Rien","Viersen, guterbahnhof",80,112
+"Hagens, Rien","Vlissingen Sloe, emplacement",128,194
+"Hagens, Rien",Vopak-Sloe,128,193
+"Hagens, Rien","Waalhaven, emplacement",72,108
+"Hagens, Rien","Waalhaven, kantoor RFO",74,109
+"Hagens, Rien","Westhaven, emplacement",71,96
+"Hagens, Rien",Zevenaar grens,28,34
+"Hagens, Rien","Zutphen, emplacement",42,50
+"Jonker, R.M.J.",Acht,109,167
+"Jonker, R.M.J.","Almelo, emplacement",18,14
+"Jonker, R.M.J.","Amersfoort, emplacement sp.12",74,105
+"Jonker, R.M.J.","Amersfoort, remise Strukton",75,110
+"Jonker, R.M.J.",Amsterdam Centraal,103,152
+"Jonker, R.M.J.",Amsterdam Westhaven,101,156
+"Jonker, R.M.J.",Amsterdam Westhaven West,102,159
+"Jonker, R.M.J.","Arnhem, goederenemplacement",62,88
+"Jonker, R.M.J.","Bad Bentheim, empl. / staalfabriek",28,35
+"Jonker, R.M.J.","Bad Bentheim, Hilgenstiege sp.25",27,35
+"Jonker, R.M.J.","Beverwijk, emplacement",111,173
+"Jonker, R.M.J.","Blerick, emplacement en werkplaats",113,173
+"Jonker, R.M.J.","Born, emplacement",143,222
+"Jonker, R.M.J.","Botlek, emplacement",131,201
+"Jonker, R.M.J.",Bottrop,86,106
+"Jonker, R.M.J.","Coevorden, euroterminal",49,62
+"Jonker, R.M.J.",Deventer goed. empl.,35,45
+"Jonker, R.M.J.","Deventer, goederenemplacement",36,45
+"Jonker, R.M.J.","Dordrecht, dok",122,189
+"Jonker, R.M.J.","Dortmund Obereving, emplacement",109,147
+"Jonker, R.M.J.",Duisburg Ruhrorthafen,93,119
+"Jonker, R.M.J.","Duisburg, Hochfeld Süd Vorbahnhof",94,128
+"Jonker, R.M.J.","Eindhoven, emplacement",108,164
+"Jonker, R.M.J.","Eindhoven, emplacement Acht",110,168
+"Jonker, R.M.J.",Eltville Ost,245,361
+"Jonker, R.M.J.","Emmerich, station",77,88
+"Jonker, R.M.J.",Euromax,155,236
+"Jonker, R.M.J.","Europoort, emplacement",137,212
+"Jonker, R.M.J.","Gekkengraaf, emplacement",111,171
+"Jonker, R.M.J.",Germersheim,294,460
+"Jonker, R.M.J.",Goes,175,269
+"Jonker, R.M.J.","Hengelo, emplacement",13,6
+"Jonker, R.M.J.","Herzogenrath, station",163,232
+"Jonker, R.M.J.",Holland Cargo Terminal,105,162
+"Jonker, R.M.J.","Houtrakpolder, emplacement",101,159
+"Jonker, R.M.J.","IJsselmonde, emplacement",122,184
+"Jonker, R.M.J.","Kaldenkirchen, station",117,181
+"Jonker, R.M.J.","Kijfhoek, emplacement",120,186
+"Jonker, R.M.J.","Köln Eifeltor, emplacement",138,196
+"Jonker, R.M.J.",Koole Vondelingenweg,129,198
+"Jonker, R.M.J.","Krefeld Linn, emplacement",114,144
+"Jonker, R.M.J.","Lage Zwaluwe, emplacement",125,193
+"Jonker, R.M.J.","Leusden, PON",71,105
+"Jonker, R.M.J.",Ludwigshafen-Oggersheim,275,425
+"Jonker, R.M.J.","Maasvlakte, emplacement",149,227
+"Jonker, R.M.J.",Magdeburg Hbf,229,374
+"Jonker, R.M.J.","Marl-Sinsen, emplacement",87,100
+"Jonker, R.M.J.",Matrans Rotterdam Terminal,140,199
+"Jonker, R.M.J.","Moerdijk, emplacement",131,197
+"Jonker, R.M.J.",Moers,102,130
+"Jonker, R.M.J.","Neuss, guterbahnhof",119,155
+"Jonker, R.M.J.","Nijmegen, emplacement",80,106
+"Jonker, R.M.J.",NWB terminal,102,156
+"Jonker, R.M.J.",OBA,102,157
+"Jonker, R.M.J.","Oberhausen West, emplacement",86,116
+"Jonker, R.M.J.","Oldenzaal, emplacement",18,17
+"Jonker, R.M.J.","Onnen, emplacement noordingang",89,126
+"Jonker, R.M.J.","Onnen, emplacement zuidingang",85,122
+"Jonker, R.M.J.",Opladen,121,169
+"Jonker, R.M.J.","Oss, terminal OOC",86,125
+"Jonker, R.M.J.","Pernis, emplacement",126,195
+"Jonker, R.M.J.",Rheine,43,56
+"Jonker, R.M.J.","Rheinhausen, emplacement",105,132
+"Jonker, R.M.J.","Roosendaal, emplacement",142,214
+"Jonker, R.M.J.","Sittard, emplacement",150,228
+"Jonker, R.M.J.",Sloehaven empl.,181,279
+"Jonker, R.M.J.",Steinweg Amsterdam,103,159
+"Jonker, R.M.J.",Stroe,53,80
+"Jonker, R.M.J.","Tilburg, industrie",111,165
+"Jonker, R.M.J.","Uitgeest, emplacement",112,169
+"Jonker, R.M.J.","Valburg, emplacement CUP",71,102
+"Jonker, R.M.J.","Venlo, emplacement",116,175
+"Jonker, R.M.J.","Viersen, guterbahnhof",125,172
+"Jonker, R.M.J.","Vlissingen Sloe, emplacement",181,280
+"Jonker, R.M.J.",Vopak-Sloe,182,279
+"Jonker, R.M.J.","Waalhaven, emplacement",126,194
+"Jonker, R.M.J.","Waalhaven, kantoor RFO",128,195
+"Jonker, R.M.J.","Westhaven, emplacement",101,156
+"Jonker, R.M.J.",Zevenaar grens,65,94
+"Jonker, R.M.J.","Zutphen, emplacement",42,54
+"Okhuijsen, A.T.T.",Acht,60,84
+"Okhuijsen, A.T.T.","Almelo, emplacement",68,93
+"Okhuijsen, A.T.T.","Amersfoort, emplacement sp.12",56,70
+"Okhuijsen, A.T.T.","Amersfoort, remise Strukton",57,68
+"Okhuijsen, A.T.T.",Amsterdam Centraal,84,117
+"Okhuijsen, A.T.T.",Amsterdam Westhaven,83,122
+"Okhuijsen, A.T.T.",Amsterdam Westhaven West,84,124
+"Okhuijsen, A.T.T.","Arnhem, goederenemplacement",10,5
+"Okhuijsen, A.T.T.","Bad Bentheim, empl. / staalfabriek",82,123
+"Okhuijsen, A.T.T.","Bad Bentheim, Hilgenstiege sp.25",82,123
+"Okhuijsen, A.T.T.","Beverwijk, emplacement",90,135
+"Okhuijsen, A.T.T.","Blerick, emplacement en werkplaats",65,82
+"Okhuijsen, A.T.T.","Born, emplacement",94,132
+"Okhuijsen, A.T.T.","Botlek, emplacement",85,125
+"Okhuijsen, A.T.T.",Bottrop,69,99
+"Okhuijsen, A.T.T.","Coevorden, euroterminal",97,133
+"Okhuijsen, A.T.T.",Deventer goed. empl.,41,52
+"Okhuijsen, A.T.T.","Deventer, goederenemplacement",41,52
+"Okhuijsen, A.T.T.","Dordrecht, dok",74,109
+"Okhuijsen, A.T.T.","Dortmund Obereving, emplacement",94,142
+"Okhuijsen, A.T.T.",Duisburg Ruhrorthafen,68,100
+"Okhuijsen, A.T.T.","Duisburg, Hochfeld Süd Vorbahnhof",69,109
+"Okhuijsen, A.T.T.","Eindhoven, emplacement",58,81
+"Okhuijsen, A.T.T.","Eindhoven, emplacement Acht",60,85
+"Okhuijsen, A.T.T.",Eltville Ost,220,342
+"Okhuijsen, A.T.T.","Emmerich, station",34,35
+"Okhuijsen, A.T.T.",Euromax,109,160
+"Okhuijsen, A.T.T.","Europoort, emplacement",91,136
+"Okhuijsen, A.T.T.","Gekkengraaf, emplacement",63,81
+"Okhuijsen, A.T.T.",Germersheim,269,441
+"Okhuijsen, A.T.T.",Goes,127,189
+"Okhuijsen, A.T.T.","Hengelo, emplacement",69,94
+"Okhuijsen, A.T.T.","Herzogenrath, station",124,169
+"Okhuijsen, A.T.T.",Holland Cargo Terminal,87,128
+"Okhuijsen, A.T.T.","Houtrakpolder, emplacement",82,124
+"Okhuijsen, A.T.T.","IJsselmonde, emplacement",76,108
+"Okhuijsen, A.T.T.","Kaldenkirchen, station",68,91
+"Okhuijsen, A.T.T.","Kijfhoek, emplacement",71,107
+"Okhuijsen, A.T.T.","Köln Eifeltor, emplacement",114,177
+"Okhuijsen, A.T.T.",Koole Vondelingenweg,83,122
+"Okhuijsen, A.T.T.","Krefeld Linn, emplacement",86,108
+"Okhuijsen, A.T.T.","Lage Zwaluwe, emplacement",77,113
+"Okhuijsen, A.T.T.","Leusden, PON",49,60
+"Okhuijsen, A.T.T.",Ludwigshafen-Oggersheim,250,406
+"Okhuijsen, A.T.T.","Maasvlakte, emplacement",103,151
+"Okhuijsen, A.T.T.",Magdeburg Hbf,283,462
+"Okhuijsen, A.T.T.","Marl-Sinsen, emplacement",83,128
+"Okhuijsen, A.T.T.",Matrans Rotterdam Terminal,92,119
+"Okhuijsen, A.T.T.","Moerdijk, emplacement",83,117
+"Okhuijsen, A.T.T.",Moers,77,111
+"Okhuijsen, A.T.T.","Neuss, guterbahnhof",94,136
+"Okhuijsen, A.T.T.","Nijmegen, emplacement",23,17
+"Okhuijsen, A.T.T.",NWB terminal,83,122
+"Okhuijsen, A.T.T.",OBA,84,122
+"Okhuijsen, A.T.T.","Oberhausen West, emplacement",62,97
+"Okhuijsen, A.T.T.","Oldenzaal, emplacement",73,105
+"Okhuijsen, A.T.T.","Onnen, emplacement noordingang",118,174
+"Okhuijsen, A.T.T.","Onnen, emplacement zuidingang",114,170
+"Okhuijsen, A.T.T.",Opladen,97,150
+"Okhuijsen, A.T.T.","Oss, terminal OOC",36,42
+"Okhuijsen, A.T.T.","Pernis, emplacement",80,119
+"Okhuijsen, A.T.T.",Rheine,98,144
+"Okhuijsen, A.T.T.","Rheinhausen, emplacement",81,113
+"Okhuijsen, A.T.T.","Roosendaal, emplacement",94,135
+"Okhuijsen, A.T.T.","Sittard, emplacement",101,137
+"Okhuijsen, A.T.T.",Sloehaven empl.,133,200
+"Okhuijsen, A.T.T.",Steinweg Amsterdam,84,125
+"Okhuijsen, A.T.T.",Stroe,43,35
+"Okhuijsen, A.T.T.","Tilburg, industrie",62,82
+"Okhuijsen, A.T.T.","Uitgeest, emplacement",94,135
+"Okhuijsen, A.T.T.","Valburg, emplacement CUP",14,13
+"Okhuijsen, A.T.T.","Venlo, emplacement",68,84
+"Okhuijsen, A.T.T.","Viersen, guterbahnhof",87,110
+"Okhuijsen, A.T.T.","Vlissingen Sloe, emplacement",133,201
+"Okhuijsen, A.T.T.",Vopak-Sloe,134,200
+"Okhuijsen, A.T.T.","Waalhaven, emplacement",78,115
+"Okhuijsen, A.T.T.","Waalhaven, kantoor RFO",80,116
+"Okhuijsen, A.T.T.","Westhaven, emplacement",82,120
+"Okhuijsen, A.T.T.",Zevenaar grens,20,19
+"Okhuijsen, A.T.T.","Zutphen, emplacement",33,35
+"Ritsma, Niels",Acht,105,161
+"Ritsma, Niels","Almelo, emplacement",65,81
+"Ritsma, Niels","Amersfoort, emplacement sp.12",58,79
+"Ritsma, Niels","Amersfoort, remise Strukton",59,84
+"Ritsma, Niels",Amsterdam Centraal,71,94
+"Ritsma, Niels",Amsterdam Westhaven,70,98
+"Ritsma, Niels",Amsterdam Westhaven West,71,101
+"Ritsma, Niels","Arnhem, goederenemplacement",58,81
+"Ritsma, Niels","Bad Bentheim, empl. / staalfabriek",88,112
+"Ritsma, Niels","Bad Bentheim, Hilgenstiege sp.25",87,113
+"Ritsma, Niels","Beverwijk, emplacement",80,115
+"Ritsma, Niels","Blerick, emplacement en werkplaats",109,167
+"Ritsma, Niels","Born, emplacement",139,216
+"Ritsma, Niels","Botlek, emplacement",113,167
+"Ritsma, Niels",Bottrop,111,168
+"Ritsma, Niels","Coevorden, euroterminal",59,75
+"Ritsma, Niels",Deventer goed. empl.,45,53
+"Ritsma, Niels","Deventer, goederenemplacement",45,53
+"Ritsma, Niels","Dordrecht, dok",104,149
+"Ritsma, Niels","Dortmund Obereving, emplacement",136,212
+"Ritsma, Niels",Duisburg Ruhrorthafen,110,169
+"Ritsma, Niels","Duisburg, Hochfeld Süd Vorbahnhof",111,178
+"Ritsma, Niels","Eindhoven, emplacement",104,158
+"Ritsma, Niels","Eindhoven, emplacement Acht",106,162
+"Ritsma, Niels",Eltville Ost,262,412
+"Ritsma, Niels","Emmerich, station",76,104
+"Ritsma, Niels",Euromax,137,203
+"Ritsma, Niels","Europoort, emplacement",119,178
+"Ritsma, Niels","Gekkengraaf, emplacement",107,165
+"Ritsma, Niels",Germersheim,311,510
+"Ritsma, Niels",Goes,158,229
+"Ritsma, Niels","Hengelo, emplacement",74,84
+"Ritsma, Niels","Herzogenrath, station",168,254
+"Ritsma, Niels",Holland Cargo Terminal,74,104
+"Ritsma, Niels","Houtrakpolder, emplacement",70,101
+"Ritsma, Niels","IJsselmonde, emplacement",104,145
+"Ritsma, Niels","Kaldenkirchen, station",113,175
+"Ritsma, Niels","Kijfhoek, emplacement",102,147
+"Ritsma, Niels","Köln Eifeltor, emplacement",155,246
+"Ritsma, Niels",Koole Vondelingenweg,111,164
+"Ritsma, Niels","Krefeld Linn, emplacement",131,194
+"Ritsma, Niels","Lage Zwaluwe, emplacement",108,154
+"Ritsma, Niels","Leusden, PON",55,79
+"Ritsma, Niels",Ludwigshafen-Oggersheim,292,476
+"Ritsma, Niels","Maasvlakte, emplacement",131,193
+"Ritsma, Niels",Magdeburg Hbf,289,452
+"Ritsma, Niels","Marl-Sinsen, emplacement",124,197
+"Ritsma, Niels",Matrans Rotterdam Terminal,123,159
+"Ritsma, Niels","Moerdijk, emplacement",114,157
+"Ritsma, Niels",Moers,119,180
+"Ritsma, Niels","Neuss, guterbahnhof",136,205
+"Ritsma, Niels","Nijmegen, emplacement",77,100
+"Ritsma, Niels",NWB terminal,70,98
+"Ritsma, Niels",OBA,71,99
+"Ritsma, Niels","Oberhausen West, emplacement",103,166
+"Ritsma, Niels","Oldenzaal, emplacement",78,95
+"Ritsma, Niels","Onnen, emplacement noordingang",80,119
+"Ritsma, Niels","Onnen, emplacement zuidingang",77,115
+"Ritsma, Niels",Opladen,138,219
+"Ritsma, Niels","Oss, terminal OOC",82,119
+"Ritsma, Niels","Pernis, emplacement",108,161
+"Ritsma, Niels",Rheine,103,133
+"Ritsma, Niels","Rheinhausen, emplacement",122,183
+"Ritsma, Niels","Roosendaal, emplacement",124,175
+"Ritsma, Niels","Sittard, emplacement",146,222
+"Ritsma, Niels",Sloehaven empl.,163,240
+"Ritsma, Niels",Steinweg Amsterdam,71,101
+"Ritsma, Niels",Stroe,50,74
+"Ritsma, Niels","Tilburg, industrie",108,159
+"Ritsma, Niels","Uitgeest, emplacement",81,111
+"Ritsma, Niels","Valburg, emplacement CUP",67,96
+"Ritsma, Niels","Venlo, emplacement",113,169
+"Ritsma, Niels","Viersen, guterbahnhof",132,195
+"Ritsma, Niels","Vlissingen Sloe, emplacement",164,241
+"Ritsma, Niels",Vopak-Sloe,164,240
+"Ritsma, Niels","Waalhaven, emplacement",108,155
+"Ritsma, Niels","Waalhaven, kantoor RFO",111,155
+"Ritsma, Niels","Westhaven, emplacement",70,98
+"Ritsma, Niels",Zevenaar grens,61,88
+"Ritsma, Niels","Zutphen, emplacement",52,65
+"Sabelis, Tim",Acht,96,147
+"Sabelis, Tim","Almelo, emplacement",118,171
+"Sabelis, Tim","Amersfoort, emplacement sp.12",59,72
+"Sabelis, Tim","Amersfoort, remise Strukton",58,72
+"Sabelis, Tim",Amsterdam Centraal,32,27
+"Sabelis, Tim",Amsterdam Westhaven,26,25
+"Sabelis, Tim",Amsterdam Westhaven West,24,30
+"Sabelis, Tim","Arnhem, goederenemplacement",92,137
+"Sabelis, Tim","Bad Bentheim, empl. / staalfabriek",133,201
+"Sabelis, Tim","Bad Bentheim, Hilgenstiege sp.25",132,201
+"Sabelis, Tim","Beverwijk, emplacement",10,9
+"Sabelis, Tim","Blerick, emplacement en werkplaats",132,199
+"Sabelis, Tim","Born, emplacement",137,214
+"Sabelis, Tim","Botlek, emplacement",65,96
+"Sabelis, Tim",Bottrop,145,224
+"Sabelis, Tim","Coevorden, euroterminal",133,189
+"Sabelis, Tim",Deventer goed. empl.,92,130
+"Sabelis, Tim","Deventer, goederenemplacement",92,130
+"Sabelis, Tim","Dordrecht, dok",72,108
+"Sabelis, Tim","Dortmund Obereving, emplacement",169,267
+"Sabelis, Tim",Duisburg Ruhrorthafen,144,225
+"Sabelis, Tim","Duisburg, Hochfeld Süd Vorbahnhof",145,234
+"Sabelis, Tim","Eindhoven, emplacement",99,151
+"Sabelis, Tim","Eindhoven, emplacement Acht",98,145
+"Sabelis, Tim",Eltville Ost,296,467
+"Sabelis, Tim","Emmerich, station",109,160
+"Sabelis, Tim",Euromax,89,131
+"Sabelis, Tim","Europoort, emplacement",71,107
+"Sabelis, Tim","Gekkengraaf, emplacement",130,201
+"Sabelis, Tim",Germersheim,343,541
+"Sabelis, Tim",Goes,125,191
+"Sabelis, Tim","Hengelo, emplacement",119,172
+"Sabelis, Tim","Herzogenrath, station",166,252
+"Sabelis, Tim",Holland Cargo Terminal,22,23
+"Sabelis, Tim","Houtrakpolder, emplacement",22,28
+"Sabelis, Tim","IJsselmonde, emplacement",69,100
+"Sabelis, Tim","Kaldenkirchen, station",136,207
+"Sabelis, Tim","Kijfhoek, emplacement",70,105
+"Sabelis, Tim","Köln Eifeltor, emplacement",189,302
+"Sabelis, Tim",Koole Vondelingenweg,63,92
+"Sabelis, Tim","Krefeld Linn, emplacement",157,237
+"Sabelis, Tim","Lage Zwaluwe, emplacement",82,122
+"Sabelis, Tim","Leusden, PON",59,77
+"Sabelis, Tim",Ludwigshafen-Oggersheim,324,509
+"Sabelis, Tim","Maasvlakte, emplacement",83,122
+"Sabelis, Tim",Magdeburg Hbf,334,540
+"Sabelis, Tim","Marl-Sinsen, emplacement",158,252
+"Sabelis, Tim",Matrans Rotterdam Terminal,77,96
+"Sabelis, Tim","Moerdijk, emplacement",85,125
+"Sabelis, Tim",Moers,148,225
+"Sabelis, Tim","Neuss, guterbahnhof",166,254
+"Sabelis, Tim","Nijmegen, emplacement",101,143
+"Sabelis, Tim",NWB terminal,26,24
+"Sabelis, Tim",OBA,27,25
+"Sabelis, Tim","Oberhausen West, emplacement",137,222
+"Sabelis, Tim","Oldenzaal, emplacement",123,183
+"Sabelis, Tim","Onnen, emplacement noordingang",135,194
+"Sabelis, Tim","Onnen, emplacement zuidingang",136,199
+"Sabelis, Tim",Opladen,172,275
+"Sabelis, Tim","Oss, terminal OOC",92,137
+"Sabelis, Tim","Pernis, emplacement",61,89
+"Sabelis, Tim",Rheine,148,222
+"Sabelis, Tim","Rheinhausen, emplacement",155,238
+"Sabelis, Tim","Roosendaal, emplacement",95,142
+"Sabelis, Tim","Sittard, emplacement",143,220
+"Sabelis, Tim",Sloehaven empl.,130,202
+"Sabelis, Tim",Steinweg Amsterdam,25,31
+"Sabelis, Tim",Stroe,66,92
+"Sabelis, Tim","Tilburg, industrie",94,138
+"Sabelis, Tim","Uitgeest, emplacement",8,4
+"Sabelis, Tim","Valburg, emplacement CUP",92,139
+"Sabelis, Tim","Venlo, emplacement",135,201
+"Sabelis, Tim","Viersen, guterbahnhof",155,227
+"Sabelis, Tim","Vlissingen Sloe, emplacement",131,203
+"Sabelis, Tim",Vopak-Sloe,131,201
+"Sabelis, Tim","Waalhaven, emplacement",62,92
+"Sabelis, Tim","Waalhaven, kantoor RFO",66,94
+"Sabelis, Tim","Westhaven, emplacement",26,24
+"Sabelis, Tim",Zevenaar grens,95,144
+"Sabelis, Tim","Zutphen, emplacement",96,131
+"Schneider, Harry",Acht,93,132
+"Schneider, Harry","Almelo, emplacement",127,193
+"Schneider, Harry","Amersfoort, emplacement sp.12",66,82
+"Schneider, Harry","Amersfoort, remise Strukton",64,79
+"Schneider, Harry",Amsterdam Centraal,44,53
+"Schneider, Harry",Amsterdam Westhaven,39,51
+"Schneider, Harry",Amsterdam Westhaven West,36,49
+"Schneider, Harry","Arnhem, goederenemplacement",88,122
+"Schneider, Harry","Bad Bentheim, empl. / staalfabriek",142,223
+"Schneider, Harry","Bad Bentheim, Hilgenstiege sp.25",141,223
+"Schneider, Harry","Beverwijk, emplacement",40,57
+"Schneider, Harry","Blerick, emplacement en werkplaats",128,184
+"Schneider, Harry","Born, emplacement",133,199
+"Schneider, Harry","Botlek, emplacement",39,43
+"Schneider, Harry",Bottrop,140,208
+"Schneider, Harry","Coevorden, euroterminal",141,200
+"Schneider, Harry",Deventer goed. empl.,101,151
+"Schneider, Harry","Deventer, goederenemplacement",101,152
+"Schneider, Harry","Dordrecht, dok",46,55
+"Schneider, Harry","Dortmund Obereving, emplacement",165,252
+"Schneider, Harry",Duisburg Ruhrorthafen,139,210
+"Schneider, Harry","Duisburg, Hochfeld Süd Vorbahnhof",140,218
+"Schneider, Harry","Eindhoven, emplacement",95,136
+"Schneider, Harry","Eindhoven, emplacement Acht",94,130
+"Schneider, Harry",Eltville Ost,291,452
+"Schneider, Harry","Emmerich, station",105,145
+"Schneider, Harry",Euromax,63,78
+"Schneider, Harry","Europoort, emplacement",45,54
+"Schneider, Harry","Gekkengraaf, emplacement",126,186
+"Schneider, Harry",Germersheim,339,526
+"Schneider, Harry",Goes,98,138
+"Schneider, Harry","Hengelo, emplacement",128,194
+"Schneider, Harry","Herzogenrath, station",162,237
+"Schneider, Harry",Holland Cargo Terminal,38,50
+"Schneider, Harry","Houtrakpolder, emplacement",33,47
+"Schneider, Harry","IJsselmonde, emplacement",43,47
+"Schneider, Harry","Kaldenkirchen, station",132,192
+"Schneider, Harry","Kijfhoek, emplacement",44,52
+"Schneider, Harry","Köln Eifeltor, emplacement",185,286
+"Schneider, Harry",Koole Vondelingenweg,37,40
+"Schneider, Harry","Krefeld Linn, emplacement",153,222
+"Schneider, Harry","Lage Zwaluwe, emplacement",55,69
+"Schneider, Harry","Leusden, PON",62,80
+"Schneider, Harry",Ludwigshafen-Oggersheim,320,494
+"Schneider, Harry","Maasvlakte, emplacement",57,69
+"Schneider, Harry",Magdeburg Hbf,343,562
+"Schneider, Harry","Marl-Sinsen, emplacement",154,237
+"Schneider, Harry",Matrans Rotterdam Terminal,51,44
+"Schneider, Harry","Moerdijk, emplacement",58,72
+"Schneider, Harry",Moers,145,210
+"Schneider, Harry","Neuss, guterbahnhof",162,239
+"Schneider, Harry","Nijmegen, emplacement",97,128
+"Schneider, Harry",NWB terminal,39,51
+"Schneider, Harry",OBA,40,52
+"Schneider, Harry","Oberhausen West, emplacement",133,206
+"Schneider, Harry","Oldenzaal, emplacement",132,205
+"Schneider, Harry","Onnen, emplacement noordingang",148,231
+"Schneider, Harry","Onnen, emplacement zuidingang",149,235
+"Schneider, Harry",Opladen,168,259
+"Schneider, Harry","Oss, terminal OOC",88,122
+"Schneider, Harry","Pernis, emplacement",34,37
+"Schneider, Harry",Rheine,157,244
+"Schneider, Harry","Rheinhausen, emplacement",152,223
+"Schneider, Harry","Roosendaal, emplacement",69,89
+"Schneider, Harry","Sittard, emplacement",140,205
+"Schneider, Harry",Sloehaven empl.,104,149
+"Schneider, Harry",Steinweg Amsterdam,36,49
+"Schneider, Harry",Stroe,75,114
+"Schneider, Harry","Tilburg, industrie",85,114
+"Schneider, Harry","Uitgeest, emplacement",45,64
+"Schneider, Harry","Valburg, emplacement CUP",88,124
+"Schneider, Harry","Venlo, emplacement",131,186
+"Schneider, Harry","Viersen, guterbahnhof",151,212
+"Schneider, Harry","Vlissingen Sloe, emplacement",104,150
+"Schneider, Harry",Vopak-Sloe,105,149
+"Schneider, Harry","Waalhaven, emplacement",36,39
+"Schneider, Harry","Waalhaven, kantoor RFO",39,41
+"Schneider, Harry","Westhaven, emplacement",38,50
+"Schneider, Harry",Zevenaar grens,91,128
+"Schneider, Harry","Zutphen, emplacement",105,153
+"Suk, Dustin",Acht,105,161
+"Suk, Dustin","Almelo, emplacement",126,185
+"Suk, Dustin","Amersfoort, emplacement sp.12",67,86
+"Suk, Dustin","Amersfoort, remise Strukton",66,85
+"Suk, Dustin",Amsterdam Centraal,40,41
+"Suk, Dustin",Amsterdam Westhaven,34,38
+"Suk, Dustin",Amsterdam Westhaven West,33,44
+"Suk, Dustin","Arnhem, goederenemplacement",101,151
+"Suk, Dustin","Bad Bentheim, empl. / staalfabriek",141,215
+"Suk, Dustin","Bad Bentheim, Hilgenstiege sp.25",140,215
+"Suk, Dustin","Beverwijk, emplacement",19,22
+"Suk, Dustin","Blerick, emplacement en werkplaats",141,212
+"Suk, Dustin","Born, emplacement",145,228
+"Suk, Dustin","Botlek, emplacement",74,109
+"Suk, Dustin",Bottrop,153,237
+"Suk, Dustin","Coevorden, euroterminal",141,202
+"Suk, Dustin",Deventer goed. empl.,100,143
+"Suk, Dustin","Deventer, goederenemplacement",100,144
+"Suk, Dustin","Dordrecht, dok",81,121
+"Suk, Dustin","Dortmund Obereving, emplacement",178,281
+"Suk, Dustin",Duisburg Ruhrorthafen,152,239
+"Suk, Dustin","Duisburg, Hochfeld Süd Vorbahnhof",154,247
+"Suk, Dustin","Eindhoven, emplacement",108,164
+"Suk, Dustin","Eindhoven, emplacement Acht",106,159
+"Suk, Dustin",Eltville Ost,304,481
+"Suk, Dustin","Emmerich, station",118,174
+"Suk, Dustin",Euromax,98,144
+"Suk, Dustin","Europoort, emplacement",80,120
+"Suk, Dustin","Gekkengraaf, emplacement",138,214
+"Suk, Dustin",Germersheim,351,554
+"Suk, Dustin",Goes,133,204
+"Suk, Dustin","Hengelo, emplacement",127,186
+"Suk, Dustin","Herzogenrath, station",175,265
+"Suk, Dustin",Holland Cargo Terminal,31,37
+"Suk, Dustin","Houtrakpolder, emplacement",31,42
+"Suk, Dustin","IJsselmonde, emplacement",78,114
+"Suk, Dustin","Kaldenkirchen, station",144,220
+"Suk, Dustin","Kijfhoek, emplacement",79,119
+"Suk, Dustin","Köln Eifeltor, emplacement",198,316
+"Suk, Dustin",Koole Vondelingenweg,72,106
+"Suk, Dustin","Krefeld Linn, emplacement",166,251
+"Suk, Dustin","Lage Zwaluwe, emplacement",90,136
+"Suk, Dustin","Leusden, PON",67,91
+"Suk, Dustin",Ludwigshafen-Oggersheim,332,522
+"Suk, Dustin","Maasvlakte, emplacement",92,135
+"Suk, Dustin",Magdeburg Hbf,342,554
+"Suk, Dustin","Marl-Sinsen, emplacement",167,266
+"Suk, Dustin",Matrans Rotterdam Terminal,86,110
+"Suk, Dustin","Moerdijk, emplacement",93,138
+"Suk, Dustin",Moers,157,239
+"Suk, Dustin","Neuss, guterbahnhof",175,268
+"Suk, Dustin","Nijmegen, emplacement",109,157
+"Suk, Dustin",NWB terminal,34,38
+"Suk, Dustin",OBA,35,39
+"Suk, Dustin","Oberhausen West, emplacement",146,235
+"Suk, Dustin","Oldenzaal, emplacement",131,197
+"Suk, Dustin","Onnen, emplacement noordingang",129,183
+"Suk, Dustin","Onnen, emplacement zuidingang",130,188
+"Suk, Dustin",Opladen,181,288
+"Suk, Dustin","Oss, terminal OOC",100,150
+"Suk, Dustin","Pernis, emplacement",69,103
+"Suk, Dustin",Rheine,156,236
+"Suk, Dustin","Rheinhausen, emplacement",163,252
+"Suk, Dustin","Roosendaal, emplacement",104,156
+"Suk, Dustin","Sittard, emplacement",152,233
+"Suk, Dustin",Sloehaven empl.,139,215
+"Suk, Dustin",Steinweg Amsterdam,33,44
+"Suk, Dustin",Stroe,74,106
+"Suk, Dustin","Tilburg, industrie",102,151
+"Suk, Dustin","Uitgeest, emplacement",13,13
+"Suk, Dustin","Valburg, emplacement CUP",100,153
+"Suk, Dustin","Venlo, emplacement",144,214
+"Suk, Dustin","Viersen, guterbahnhof",163,240
+"Suk, Dustin","Vlissingen Sloe, emplacement",139,216
+"Suk, Dustin",Vopak-Sloe,140,215
+"Suk, Dustin","Waalhaven, emplacement",71,105
+"Suk, Dustin","Waalhaven, kantoor RFO",74,108
+"Suk, Dustin","Westhaven, emplacement",34,38
+"Suk, Dustin",Zevenaar grens,104,157
+"Suk, Dustin","Zutphen, emplacement",104,145
+"Suk, Boyd",Acht,105,161
+"Suk, Boyd","Almelo, emplacement",126,185
+"Suk, Boyd","Amersfoort, emplacement sp.12",67,86
+"Suk, Boyd","Amersfoort, remise Strukton",66,85
+"Suk, Boyd",Amsterdam Centraal,40,41
+"Suk, Boyd",Amsterdam Westhaven,34,38
+"Suk, Boyd",Amsterdam Westhaven West,33,44
+"Suk, Boyd","Arnhem, goederenemplacement",101,151
+"Suk, Boyd","Bad Bentheim, empl. / staalfabriek",141,215
+"Suk, Boyd","Bad Bentheim, Hilgenstiege sp.25",140,215
+"Suk, Boyd","Beverwijk, emplacement",19,22
+"Suk, Boyd","Blerick, emplacement en werkplaats",141,212
+"Suk, Boyd","Born, emplacement",145,228
+"Suk, Boyd","Botlek, emplacement",74,109
+"Suk, Boyd",Bottrop,153,237
+"Suk, Boyd","Coevorden, euroterminal",141,202
+"Suk, Boyd",Deventer goed. empl.,100,143
+"Suk, Boyd","Deventer, goederenemplacement",100,144
+"Suk, Boyd","Dordrecht, dok",81,121
+"Suk, Boyd","Dortmund Obereving, emplacement",178,281
+"Suk, Boyd",Duisburg Ruhrorthafen,152,239
+"Suk, Boyd","Duisburg, Hochfeld Süd Vorbahnhof",154,247
+"Suk, Boyd","Eindhoven, emplacement",108,164
+"Suk, Boyd","Eindhoven, emplacement Acht",106,159
+"Suk, Boyd",Eltville Ost,304,481
+"Suk, Boyd","Emmerich, station",118,174
+"Suk, Boyd",Euromax,98,144
+"Suk, Boyd","Europoort, emplacement",80,120
+"Suk, Boyd","Gekkengraaf, emplacement",138,214
+"Suk, Boyd",Germersheim,351,554
+"Suk, Boyd",Goes,133,204
+"Suk, Boyd","Hengelo, emplacement",127,186
+"Suk, Boyd","Herzogenrath, station",175,265
+"Suk, Boyd",Holland Cargo Terminal,31,37
+"Suk, Boyd","Houtrakpolder, emplacement",31,42
+"Suk, Boyd","IJsselmonde, emplacement",78,114
+"Suk, Boyd","Kaldenkirchen, station",144,220
+"Suk, Boyd","Kijfhoek, emplacement",79,119
+"Suk, Boyd","Köln Eifeltor, emplacement",198,316
+"Suk, Boyd",Koole Vondelingenweg,72,106
+"Suk, Boyd","Krefeld Linn, emplacement",166,251
+"Suk, Boyd","Lage Zwaluwe, emplacement",90,136
+"Suk, Boyd","Leusden, PON",67,91
+"Suk, Boyd",Ludwigshafen-Oggersheim,332,522
+"Suk, Boyd","Maasvlakte, emplacement",92,135
+"Suk, Boyd",Magdeburg Hbf,342,554
+"Suk, Boyd","Marl-Sinsen, emplacement",167,266
+"Suk, Boyd",Matrans Rotterdam Terminal,86,110
+"Suk, Boyd","Moerdijk, emplacement",93,138
+"Suk, Boyd",Moers,157,239
+"Suk, Boyd","Neuss, guterbahnhof",175,268
+"Suk, Boyd","Nijmegen, emplacement",109,157
+"Suk, Boyd",NWB terminal,34,38
+"Suk, Boyd",OBA,35,39
+"Suk, Boyd","Oberhausen West, emplacement",146,235
+"Suk, Boyd","Oldenzaal, emplacement",131,197
+"Suk, Boyd","Onnen, emplacement noordingang",129,183
+"Suk, Boyd","Onnen, emplacement zuidingang",130,188
+"Suk, Boyd",Opladen,181,288
+"Suk, Boyd","Oss, terminal OOC",100,150
+"Suk, Boyd","Pernis, emplacement",69,103
+"Suk, Boyd",Rheine,156,236
+"Suk, Boyd","Rheinhausen, emplacement",163,252
+"Suk, Boyd","Roosendaal, emplacement",104,156
+"Suk, Boyd","Sittard, emplacement",152,233
+"Suk, Boyd",Sloehaven empl.,139,215
+"Suk, Boyd",Steinweg Amsterdam,33,44
+"Suk, Boyd",Stroe,74,106
+"Suk, Boyd","Tilburg, industrie",102,151
+"Suk, Boyd","Uitgeest, emplacement",13,13
+"Suk, Boyd","Valburg, emplacement CUP",100,153
+"Suk, Boyd","Venlo, emplacement",144,214
+"Suk, Boyd","Viersen, guterbahnhof",163,240
+"Suk, Boyd","Vlissingen Sloe, emplacement",139,216
+"Suk, Boyd",Vopak-Sloe,140,215
+"Suk, Boyd","Waalhaven, emplacement",71,105
+"Suk, Boyd","Waalhaven, kantoor RFO",74,108
+"Suk, Boyd","Westhaven, emplacement",34,38
+"Suk, Boyd",Zevenaar grens,104,157
+"Suk, Boyd","Zutphen, emplacement",104,145
+"ten Boden, Robin",Acht,78,108
+"ten Boden, Robin","Almelo, emplacement",82,107
+"ten Boden, Robin","Amersfoort, emplacement sp.12",0,0
+"ten Boden, Robin","Amersfoort, remise Strukton",5,2
+"ten Boden, Robin",Amsterdam Centraal,49,56
+"ten Boden, Robin",Amsterdam Westhaven,47,60
+"ten Boden, Robin",Amsterdam Westhaven West,48,63
+"ten Boden, Robin","Arnhem, goederenemplacement",56,66
+"ten Boden, Robin","Bad Bentheim, empl. / staalfabriek",97,137
+"ten Boden, Robin","Bad Bentheim, Hilgenstiege sp.25",96,137
+"ten Boden, Robin","Beverwijk, emplacement",57,77
+"ten Boden, Robin","Blerick, emplacement en werkplaats",98,137
+"ten Boden, Robin","Born, emplacement",118,175
+"ten Boden, Robin","Botlek, emplacement",76,103
+"ten Boden, Robin",Bottrop,109,152
+"ten Boden, Robin","Coevorden, euroterminal",96,126
+"ten Boden, Robin",Deventer goed. empl.,55,66
+"ten Boden, Robin","Deventer, goederenemplacement",56,66
+"ten Boden, Robin","Dordrecht, dok",67,91
+"ten Boden, Robin","Dortmund Obereving, emplacement",134,196
+"ten Boden, Robin",Duisburg Ruhrorthafen,108,154
+"ten Boden, Robin","Duisburg, Hochfeld Süd Vorbahnhof",109,162
+"ten Boden, Robin","Eindhoven, emplacement",80,111
+"ten Boden, Robin","Eindhoven, emplacement Acht",79,106
+"ten Boden, Robin",Eltville Ost,260,396
+"ten Boden, Robin","Emmerich, station",73,89
+"ten Boden, Robin",Euromax,100,138
+"ten Boden, Robin","Europoort, emplacement",82,114
+"ten Boden, Robin","Gekkengraaf, emplacement",96,135
+"ten Boden, Robin",Germersheim,309,494
+"ten Boden, Robin",Goes,120,170
+"ten Boden, Robin","Hengelo, emplacement",83,109
+"ten Boden, Robin","Herzogenrath, station",147,212
+"ten Boden, Robin",Holland Cargo Terminal,51,66
+"ten Boden, Robin","Houtrakpolder, emplacement",47,63
+"ten Boden, Robin","IJsselmonde, emplacement",67,86
+"ten Boden, Robin","Kaldenkirchen, station",102,145
+"ten Boden, Robin","Kijfhoek, emplacement",64,88
+"ten Boden, Robin","Köln Eifeltor, emplacement",153,231
+"ten Boden, Robin",Koole Vondelingenweg,74,100
+"ten Boden, Robin","Krefeld Linn, emplacement",124,175
+"ten Boden, Robin","Lage Zwaluwe, emplacement",70,95
+"ten Boden, Robin","Leusden, PON",16,8
+"ten Boden, Robin",Ludwigshafen-Oggersheim,290,447
+"ten Boden, Robin","Maasvlakte, emplacement",94,129
+"ten Boden, Robin",Magdeburg Hbf,298,477
+"ten Boden, Robin","Marl-Sinsen, emplacement",122,181
+"ten Boden, Robin",Matrans Rotterdam Terminal,85,101
+"ten Boden, Robin","Moerdijk, emplacement",76,99
+"ten Boden, Robin",Moers,115,163
+"ten Boden, Robin","Neuss, guterbahnhof",132,192
+"ten Boden, Robin","Nijmegen, emplacement",67,81
+"ten Boden, Robin",NWB terminal,48,60
+"ten Boden, Robin",OBA,48,61
+"ten Boden, Robin","Oberhausen West, emplacement",101,151
+"ten Boden, Robin","Oldenzaal, emplacement",87,119
+"ten Boden, Robin","Onnen, emplacement noordingang",117,169
+"ten Boden, Robin","Onnen, emplacement zuidingang",113,166
+"ten Boden, Robin",Opladen,136,204
+"ten Boden, Robin","Oss, terminal OOC",71,89
+"ten Boden, Robin","Pernis, emplacement",71,97
+"ten Boden, Robin",Rheine,112,158
+"ten Boden, Robin","Rheinhausen, emplacement",120,167
+"ten Boden, Robin","Roosendaal, emplacement",87,116
+"ten Boden, Robin","Sittard, emplacement",125,180
+"ten Boden, Robin",Sloehaven empl.,126,181
+"ten Boden, Robin",Steinweg Amsterdam,49,63
+"ten Boden, Robin",Stroe,30,29
+"ten Boden, Robin","Tilburg, industrie",75,98
+"ten Boden, Robin","Uitgeest, emplacement",58,73
+"ten Boden, Robin","Valburg, emplacement CUP",57,71
+"ten Boden, Robin","Venlo, emplacement",101,139
+"ten Boden, Robin","Viersen, guterbahnhof",121,165
+"ten Boden, Robin","Vlissingen Sloe, emplacement",126,182
+"ten Boden, Robin",Vopak-Sloe,127,181
+"ten Boden, Robin","Waalhaven, emplacement",71,96
+"ten Boden, Robin","Waalhaven, kantoor RFO",73,97
+"ten Boden, Robin","Westhaven, emplacement",47,60
+"ten Boden, Robin",Zevenaar grens,59,72
+"ten Boden, Robin","Zutphen, emplacement",60,67
+"Uenk, Jesse",Acht,89,124
+"Uenk, Jesse","Almelo, emplacement",49,60
+"Uenk, Jesse","Amersfoort, emplacement sp.12",53,63
+"Uenk, Jesse","Amersfoort, remise Strukton",54,68
+"Uenk, Jesse",Amsterdam Centraal,82,110
+"Uenk, Jesse",Amsterdam Westhaven,80,114
+"Uenk, Jesse",Amsterdam Westhaven West,81,117
+"Uenk, Jesse","Arnhem, goederenemplacement",42,44
+"Uenk, Jesse","Bad Bentheim, empl. / staalfabriek",64,90
+"Uenk, Jesse","Bad Bentheim, Hilgenstiege sp.25",64,90
+"Uenk, Jesse","Beverwijk, emplacement",90,131
+"Uenk, Jesse","Blerick, emplacement en werkplaats",92,130
+"Uenk, Jesse","Born, emplacement",122,179
+"Uenk, Jesse","Botlek, emplacement",110,159
+"Uenk, Jesse",Bottrop,94,131
+"Uenk, Jesse","Coevorden, euroterminal",72,90
+"Uenk, Jesse",Deventer goed. empl.,16,11
+"Uenk, Jesse","Deventer, goederenemplacement",16,11
+"Uenk, Jesse","Dordrecht, dok",101,147
+"Uenk, Jesse","Dortmund Obereving, emplacement",119,175
+"Uenk, Jesse",Duisburg Ruhrorthafen,93,132
+"Uenk, Jesse","Duisburg, Hochfeld Süd Vorbahnhof",94,141
+"Uenk, Jesse","Eindhoven, emplacement",87,121
+"Uenk, Jesse","Eindhoven, emplacement Acht",89,125
+"Uenk, Jesse",Eltville Ost,245,375
+"Uenk, Jesse","Emmerich, station",59,67
+"Uenk, Jesse",Euromax,134,194
+"Uenk, Jesse","Europoort, emplacement",115,170
+"Uenk, Jesse","Gekkengraaf, emplacement",91,128
+"Uenk, Jesse",Germersheim,294,473
+"Uenk, Jesse",Goes,154,226
+"Uenk, Jesse","Hengelo, emplacement",50,61
+"Uenk, Jesse","Herzogenrath, station",151,217
+"Uenk, Jesse",Holland Cargo Terminal,84,120
+"Uenk, Jesse","Houtrakpolder, emplacement",80,117
+"Uenk, Jesse","IJsselmonde, emplacement",101,142
+"Uenk, Jesse","Kaldenkirchen, station",96,138
+"Uenk, Jesse","Kijfhoek, emplacement",98,144
+"Uenk, Jesse","Köln Eifeltor, emplacement",138,209
+"Uenk, Jesse",Koole Vondelingenweg,108,156
+"Uenk, Jesse","Krefeld Linn, emplacement",114,157
+"Uenk, Jesse","Lage Zwaluwe, emplacement",104,151
+"Uenk, Jesse","Leusden, PON",50,63
+"Uenk, Jesse",Ludwigshafen-Oggersheim,275,439
+"Uenk, Jesse","Maasvlakte, emplacement",127,185
+"Uenk, Jesse",Magdeburg Hbf,265,429
+"Uenk, Jesse","Marl-Sinsen, emplacement",107,160
+"Uenk, Jesse",Matrans Rotterdam Terminal,119,157
+"Uenk, Jesse","Moerdijk, emplacement",110,155
+"Uenk, Jesse",Moers,102,143
+"Uenk, Jesse","Neuss, guterbahnhof",119,168
+"Uenk, Jesse","Nijmegen, emplacement",60,63
+"Uenk, Jesse",NWB terminal,81,114
+"Uenk, Jesse",OBA,81,114
+"Uenk, Jesse","Oberhausen West, emplacement",86,129
+"Uenk, Jesse","Oldenzaal, emplacement",54,72
+"Uenk, Jesse","Onnen, emplacement noordingang",94,134
+"Uenk, Jesse","Onnen, emplacement zuidingang",90,130
+"Uenk, Jesse",Opladen,122,182
+"Uenk, Jesse","Oss, terminal OOC",65,82
+"Uenk, Jesse","Pernis, emplacement",105,153
+"Uenk, Jesse",Rheine,79,111
+"Uenk, Jesse","Rheinhausen, emplacement",106,145
+"Uenk, Jesse","Roosendaal, emplacement",121,172
+"Uenk, Jesse","Sittard, emplacement",129,185
+"Uenk, Jesse",Sloehaven empl.,160,237
+"Uenk, Jesse",Steinweg Amsterdam,82,117
+"Uenk, Jesse",Stroe,32,38
+"Uenk, Jesse","Tilburg, industrie",91,122
+"Uenk, Jesse","Uitgeest, emplacement",91,127
+"Uenk, Jesse","Valburg, emplacement CUP",50,59
+"Uenk, Jesse","Venlo, emplacement",96,132
+"Uenk, Jesse","Viersen, guterbahnhof",115,158
+"Uenk, Jesse","Vlissingen Sloe, emplacement",160,238
+"Uenk, Jesse",Vopak-Sloe,161,237
+"Uenk, Jesse","Waalhaven, emplacement",105,152
+"Uenk, Jesse","Waalhaven, kantoor RFO",107,153
+"Uenk, Jesse","Westhaven, emplacement",80,114
+"Uenk, Jesse",Zevenaar grens,44,51
+"Uenk, Jesse","Zutphen, emplacement",28,25
+"van Amerongen, Mark",Acht,80,120
+"van Amerongen, Mark","Almelo, emplacement",115,171
+"van Amerongen, Mark","Amersfoort, emplacement sp.12",54,70
+"van Amerongen, Mark","Amersfoort, remise Strukton",52,67
+"van Amerongen, Mark",Amsterdam Centraal,37,39
+"van Amerongen, Mark",Amsterdam Westhaven,31,37
+"van Amerongen, Mark",Amsterdam Westhaven West,28,34
+"van Amerongen, Mark","Arnhem, goederenemplacement",76,109
+"van Amerongen, Mark","Bad Bentheim, empl. / staalfabriek",129,201
+"van Amerongen, Mark","Bad Bentheim, Hilgenstiege sp.25",129,201
+"van Amerongen, Mark","Beverwijk, emplacement",33,43
+"van Amerongen, Mark","Blerick, emplacement en werkplaats",116,171
+"van Amerongen, Mark","Born, emplacement",121,187
+"van Amerongen, Mark","Botlek, emplacement",46,59
+"van Amerongen, Mark",Bottrop,128,196
+"van Amerongen, Mark","Coevorden, euroterminal",129,188
+"van Amerongen, Mark",Deventer goed. empl.,88,129
+"van Amerongen, Mark","Deventer, goederenemplacement",88,130
+"van Amerongen, Mark","Dordrecht, dok",42,57
+"van Amerongen, Mark","Dortmund Obereving, emplacement",153,239
+"van Amerongen, Mark",Duisburg Ruhrorthafen,127,197
+"van Amerongen, Mark","Duisburg, Hochfeld Süd Vorbahnhof",128,206
+"van Amerongen, Mark","Eindhoven, emplacement",83,123
+"van Amerongen, Mark","Eindhoven, emplacement Acht",82,118
+"van Amerongen, Mark",Eltville Ost,279,439
+"van Amerongen, Mark","Emmerich, station",93,132
+"van Amerongen, Mark",Euromax,70,94
+"van Amerongen, Mark","Europoort, emplacement",52,70
+"van Amerongen, Mark","Gekkengraaf, emplacement",114,173
+"van Amerongen, Mark",Germersheim,326,514
+"van Amerongen, Mark",Goes,98,144
+"van Amerongen, Mark","Hengelo, emplacement",116,172
+"van Amerongen, Mark","Herzogenrath, station",150,224
+"van Amerongen, Mark",Holland Cargo Terminal,30,36
+"van Amerongen, Mark","Houtrakpolder, emplacement",26,32
+"van Amerongen, Mark","IJsselmonde, emplacement",39,46
+"van Amerongen, Mark","Kaldenkirchen, station",120,180
+"van Amerongen, Mark","Kijfhoek, emplacement",40,54
+"van Amerongen, Mark","Köln Eifeltor, emplacement",173,274
+"van Amerongen, Mark",Koole Vondelingenweg,44,55
+"van Amerongen, Mark","Krefeld Linn, emplacement",141,210
+"van Amerongen, Mark","Lage Zwaluwe, emplacement",51,71
+"van Amerongen, Mark","Leusden, PON",50,68
+"van Amerongen, Mark",Ludwigshafen-Oggersheim,308,482
+"van Amerongen, Mark","Maasvlakte, emplacement",64,85
+"van Amerongen, Mark",Magdeburg Hbf,330,540
+"van Amerongen, Mark","Marl-Sinsen, emplacement",142,225
+"van Amerongen, Mark",Matrans Rotterdam Terminal,58,59
+"van Amerongen, Mark","Moerdijk, emplacement",54,74
+"van Amerongen, Mark",Moers,132,198
+"van Amerongen, Mark","Neuss, guterbahnhof",150,227
+"van Amerongen, Mark","Nijmegen, emplacement",85,116
+"van Amerongen, Mark",NWB terminal,32,37
+"van Amerongen, Mark",OBA,32,37
+"van Amerongen, Mark","Oberhausen West, emplacement",120,194
+"van Amerongen, Mark","Oldenzaal, emplacement",120,183
+"van Amerongen, Mark","Onnen, emplacement noordingang",140,216
+"van Amerongen, Mark","Onnen, emplacement zuidingang",141,221
+"van Amerongen, Mark",Opladen,156,247
+"van Amerongen, Mark","Oss, terminal OOC",76,109
+"van Amerongen, Mark","Pernis, emplacement",41,52
+"van Amerongen, Mark",Rheine,144,222
+"van Amerongen, Mark","Rheinhausen, emplacement",140,210
+"van Amerongen, Mark","Roosendaal, emplacement",65,91
+"van Amerongen, Mark","Sittard, emplacement",127,192
+"van Amerongen, Mark",Sloehaven empl.,103,155
+"van Amerongen, Mark",Steinweg Amsterdam,29,35
+"van Amerongen, Mark",Stroe,63,92
+"van Amerongen, Mark","Tilburg, industrie",78,110
+"van Amerongen, Mark","Uitgeest, emplacement",38,49
+"van Amerongen, Mark","Valburg, emplacement CUP",76,112
+"van Amerongen, Mark","Venlo, emplacement",119,173
+"van Amerongen, Mark","Viersen, guterbahnhof",139,199
+"van Amerongen, Mark","Vlissingen Sloe, emplacement",104,156
+"van Amerongen, Mark",Vopak-Sloe,104,154
+"van Amerongen, Mark","Waalhaven, emplacement",43,55
+"van Amerongen, Mark","Waalhaven, kantoor RFO",46,57
+"van Amerongen, Mark","Westhaven, emplacement",30,36
+"van Amerongen, Mark",Zevenaar grens,78,116
+"van Amerongen, Mark","Zutphen, emplacement",93,132
+"van de Velde, Jan",Acht,71,102
+"van de Velde, Jan","Almelo, emplacement",128,192
+"van de Velde, Jan","Amersfoort, emplacement sp.12",68,90
+"van de Velde, Jan","Amersfoort, remise Strukton",66,88
+"van de Velde, Jan",Amsterdam Centraal,68,91
+"van de Velde, Jan",Amsterdam Westhaven,63,89
+"van de Velde, Jan",Amsterdam Westhaven West,60,86
+"van de Velde, Jan","Arnhem, goederenemplacement",79,113
+"van de Velde, Jan","Bad Bentheim, empl. / staalfabriek",143,221
+"van de Velde, Jan","Bad Bentheim, Hilgenstiege sp.25",142,222
+"van de Velde, Jan","Beverwijk, emplacement",64,94
+"van de Velde, Jan","Blerick, emplacement en werkplaats",110,161
+"van de Velde, Jan","Born, emplacement",113,171
+"van de Velde, Jan","Botlek, emplacement",19,20
+"van de Velde, Jan",Bottrop,140,208
+"van de Velde, Jan","Coevorden, euroterminal",142,209
+"van de Velde, Jan",Deventer goed. empl.,102,150
+"van de Velde, Jan","Deventer, goederenemplacement",102,150
+"van de Velde, Jan","Dordrecht, dok",16,18
+"van de Velde, Jan","Dortmund Obereving, emplacement",165,252
+"van de Velde, Jan",Duisburg Ruhrorthafen,131,198
+"van de Velde, Jan","Duisburg, Hochfeld Süd Vorbahnhof",132,203
+"van de Velde, Jan","Eindhoven, emplacement",77,113
+"van de Velde, Jan","Eindhoven, emplacement Acht",73,105
+"van de Velde, Jan",Eltville Ost,287,439
+"van de Velde, Jan","Emmerich, station",104,144
+"van de Velde, Jan",Euromax,43,55
+"van de Velde, Jan","Europoort, emplacement",24,31
+"van de Velde, Jan","Gekkengraaf, emplacement",105,157
+"van de Velde, Jan",Germersheim,320,503
+"van de Velde, Jan",Goes,67,97
+"van de Velde, Jan","Hengelo, emplacement",129,193
+"van de Velde, Jan","Herzogenrath, station",142,208
+"van de Velde, Jan",Holland Cargo Terminal,62,87
+"van de Velde, Jan","Houtrakpolder, emplacement",57,84
+"van de Velde, Jan","IJsselmonde, emplacement",7,2
+"van de Velde, Jan","Kaldenkirchen, station",114,169
+"van de Velde, Jan","Kijfhoek, emplacement",14,15
+"van de Velde, Jan","Köln Eifeltor, emplacement",170,261
+"van de Velde, Jan",Koole Vondelingenweg,17,16
+"van de Velde, Jan","Krefeld Linn, emplacement",135,199
+"van de Velde, Jan","Lage Zwaluwe, emplacement",26,32
+"van de Velde, Jan","Leusden, PON",63,89
+"van de Velde, Jan",Ludwigshafen-Oggersheim,302,471
+"van de Velde, Jan","Maasvlakte, emplacement",36,46
+"van de Velde, Jan",Magdeburg Hbf,344,561
+"van de Velde, Jan","Marl-Sinsen, emplacement",153,237
+"van de Velde, Jan",Matrans Rotterdam Terminal,26,14
+"van de Velde, Jan","Moerdijk, emplacement",28,35
+"van de Velde, Jan",Moers,126,187
+"van de Velde, Jan","Neuss, guterbahnhof",144,216
+"van de Velde, Jan","Nijmegen, emplacement",79,106
+"van de Velde, Jan",NWB terminal,63,88
+"van de Velde, Jan",OBA,64,89
+"van de Velde, Jan","Oberhausen West, emplacement",130,199
+"van de Velde, Jan","Oldenzaal, emplacement",133,203
+"van de Velde, Jan","Onnen, emplacement noordingang",163,252
+"van de Velde, Jan","Onnen, emplacement zuidingang",160,249
+"van de Velde, Jan",Opladen,165,252
+"van de Velde, Jan","Oss, terminal OOC",70,99
+"van de Velde, Jan","Pernis, emplacement",14,14
+"van de Velde, Jan",Rheine,158,242
+"van de Velde, Jan","Rheinhausen, emplacement",133,200
+"van de Velde, Jan","Roosendaal, emplacement",39,51
+"van de Velde, Jan","Sittard, emplacement",119,176
+"van de Velde, Jan",Sloehaven empl.,72,107
+"van de Velde, Jan",Steinweg Amsterdam,60,86
+"van de Velde, Jan",Stroe,76,113
+"van de Velde, Jan","Tilburg, industrie",55,77
+"van de Velde, Jan","Uitgeest, emplacement",69,101
+"van de Velde, Jan","Valburg, emplacement CUP",70,102
+"van de Velde, Jan","Venlo, emplacement",113,163
+"van de Velde, Jan","Viersen, guterbahnhof",133,189
+"van de Velde, Jan","Vlissingen Sloe, emplacement",73,108
+"van de Velde, Jan",Vopak-Sloe,73,107
+"van de Velde, Jan","Waalhaven, emplacement",12,5
+"van de Velde, Jan","Waalhaven, kantoor RFO",12,5
+"van de Velde, Jan","Westhaven, emplacement",62,88
+"van de Velde, Jan",Zevenaar grens,90,128
+"van de Velde, Jan","Zutphen, emplacement",104,144
+"van der Heul, Rutger",Acht,75,108
+"van der Heul, Rutger","Almelo, emplacement",138,209
+"van der Heul, Rutger","Amersfoort, emplacement sp.12",77,108
+"van der Heul, Rutger","Amersfoort, remise Strukton",75,105
+"van der Heul, Rutger",Amsterdam Centraal,79,109
+"van der Heul, Rutger",Amsterdam Westhaven,74,107
+"van der Heul, Rutger",Amsterdam Westhaven West,70,104
+"van der Heul, Rutger","Arnhem, goederenemplacement",89,130
+"van der Heul, Rutger","Bad Bentheim, empl. / staalfabriek",153,238
+"van der Heul, Rutger","Bad Bentheim, Hilgenstiege sp.25",152,239
+"van der Heul, Rutger","Beverwijk, emplacement",75,112
+"van der Heul, Rutger","Blerick, emplacement en werkplaats",112,167
+"van der Heul, Rutger","Born, emplacement",116,177
+"van der Heul, Rutger","Botlek, emplacement",29,38
+"van der Heul, Rutger",Bottrop,149,225
+"van der Heul, Rutger","Coevorden, euroterminal",152,226
+"van der Heul, Rutger",Deventer goed. empl.,111,167
+"van der Heul, Rutger","Deventer, goederenemplacement",112,167
+"van der Heul, Rutger","Dordrecht, dok",26,35
+"van der Heul, Rutger","Dortmund Obereving, emplacement",174,269
+"van der Heul, Rutger",Duisburg Ruhrorthafen,141,215
+"van der Heul, Rutger","Duisburg, Hochfeld Süd Vorbahnhof",142,220
+"van der Heul, Rutger","Eindhoven, emplacement",81,118
+"van der Heul, Rutger","Eindhoven, emplacement Acht",76,111
+"van der Heul, Rutger",Eltville Ost,289,446
+"van der Heul, Rutger","Emmerich, station",114,161
+"van der Heul, Rutger",Euromax,53,73
+"van der Heul, Rutger","Europoort, emplacement",35,49
+"van der Heul, Rutger","Gekkengraaf, emplacement",109,163
+"van der Heul, Rutger",Germersheim,323,510
+"van der Heul, Rutger",Goes,57,82
+"van der Heul, Rutger","Hengelo, emplacement",139,210
+"van der Heul, Rutger","Herzogenrath, station",141,212
+"van der Heul, Rutger",Holland Cargo Terminal,72,106
+"van der Heul, Rutger","Houtrakpolder, emplacement",68,102
+"van der Heul, Rutger","IJsselmonde, emplacement",21,23
+"van der Heul, Rutger","Kaldenkirchen, station",116,176
+"van der Heul, Rutger","Kijfhoek, emplacement",23,32
+"van der Heul, Rutger","Köln Eifeltor, emplacement",176,278
+"van der Heul, Rutger",Koole Vondelingenweg,28,35
+"van der Heul, Rutger","Krefeld Linn, emplacement",145,216
+"van der Heul, Rutger","Lage Zwaluwe, emplacement",29,38
+"van der Heul, Rutger","Leusden, PON",73,106
+"van der Heul, Rutger",Ludwigshafen-Oggersheim,304,478
+"van der Heul, Rutger","Maasvlakte, emplacement",47,64
+"van der Heul, Rutger",Magdeburg Hbf,354,578
+"van der Heul, Rutger","Marl-Sinsen, emplacement",163,254
+"van der Heul, Rutger",Matrans Rotterdam Terminal,37,32
+"van der Heul, Rutger","Moerdijk, emplacement",28,34
+"van der Heul, Rutger",Moers,136,204
+"van der Heul, Rutger","Neuss, guterbahnhof",148,223
+"van der Heul, Rutger","Nijmegen, emplacement",88,123
+"van der Heul, Rutger",NWB terminal,74,107
+"van der Heul, Rutger",OBA,75,107
+"van der Heul, Rutger","Oberhausen West, emplacement",139,216
+"van der Heul, Rutger","Oldenzaal, emplacement",143,221
+"van der Heul, Rutger","Onnen, emplacement noordingang",173,269
+"van der Heul, Rutger","Onnen, emplacement zuidingang",169,266
+"van der Heul, Rutger",Opladen,175,269
+"van der Heul, Rutger","Oss, terminal OOC",80,116
+"van der Heul, Rutger","Pernis, emplacement",25,32
+"van der Heul, Rutger",Rheine,168,259
+"van der Heul, Rutger","Rheinhausen, emplacement",142,217
+"van der Heul, Rutger","Roosendaal, emplacement",30,37
+"van der Heul, Rutger","Sittard, emplacement",122,182
+"van der Heul, Rutger",Sloehaven empl.,62,93
+"van der Heul, Rutger",Steinweg Amsterdam,71,105
+"van der Heul, Rutger",Stroe,86,130
+"van der Heul, Rutger","Tilburg, industrie",58,82
+"van der Heul, Rutger","Uitgeest, emplacement",80,119
+"van der Heul, Rutger","Valburg, emplacement CUP",79,119
+"van der Heul, Rutger","Venlo, emplacement",115,169
+"van der Heul, Rutger","Viersen, guterbahnhof",135,195
+"van der Heul, Rutger","Vlissingen Sloe, emplacement",63,94
+"van der Heul, Rutger",Vopak-Sloe,63,93
+"van der Heul, Rutger","Waalhaven, emplacement",22,28
+"van der Heul, Rutger","Waalhaven, kantoor RFO",24,28
+"van der Heul, Rutger","Westhaven, emplacement",73,106
+"van der Heul, Rutger",Zevenaar grens,100,145
+"van der Heul, Rutger","Zutphen, emplacement",113,161
+"van Dijk, Nick",Acht,55,79
+"van Dijk, Nick","Almelo, emplacement",78,113
+"van Dijk, Nick","Amersfoort, emplacement sp.12",52,49
+"van Dijk, Nick","Amersfoort, remise Strukton",51,52
+"van Dijk, Nick",Amsterdam Centraal,77,108
+"van Dijk, Nick",Amsterdam Westhaven,72,106
+"van Dijk, Nick",Amsterdam Westhaven West,74,107
+"van Dijk, Nick","Arnhem, goederenemplacement",27,30
+"van Dijk, Nick","Bad Bentheim, empl. / staalfabriek",93,143
+"van Dijk, Nick","Bad Bentheim, Hilgenstiege sp.25",92,143
+"van Dijk, Nick","Beverwijk, emplacement",79,120
+"van Dijk, Nick","Blerick, emplacement en werkplaats",59,85
+"van Dijk, Nick","Born, emplacement",88,134
+"van Dijk, Nick","Botlek, emplacement",69,103
+"van Dijk, Nick",Bottrop,87,125
+"van Dijk, Nick","Coevorden, euroterminal",108,153
+"van Dijk, Nick",Deventer goed. empl.,52,72
+"van Dijk, Nick","Deventer, goederenemplacement",52,72
+"van Dijk, Nick","Dordrecht, dok",58,87
+"van Dijk, Nick","Dortmund Obereving, emplacement",112,169
+"van Dijk, Nick",Duisburg Ruhrorthafen,80,122
+"van Dijk, Nick","Duisburg, Hochfeld Süd Vorbahnhof",81,128
+"van Dijk, Nick","Eindhoven, emplacement",53,76
+"van Dijk, Nick","Eindhoven, emplacement Acht",55,80
+"van Dijk, Nick",Eltville Ost,236,363
+"van Dijk, Nick","Emmerich, station",52,62
+"van Dijk, Nick",Euromax,93,138
+"van Dijk, Nick","Europoort, emplacement",75,114
+"van Dijk, Nick","Gekkengraaf, emplacement",57,83
+"van Dijk, Nick",Germersheim,269,427
+"van Dijk, Nick",Goes,112,167
+"van Dijk, Nick","Hengelo, emplacement",79,114
+"van Dijk, Nick","Herzogenrath, station",118,172
+"van Dijk, Nick",Holland Cargo Terminal,77,114
+"van Dijk, Nick","Houtrakpolder, emplacement",72,110
+"van Dijk, Nick","IJsselmonde, emplacement",60,86
+"van Dijk, Nick","Kaldenkirchen, station",62,93
+"van Dijk, Nick","Kijfhoek, emplacement",56,84
+"van Dijk, Nick","Köln Eifeltor, emplacement",119,185
+"van Dijk, Nick",Koole Vondelingenweg,67,99
+"van Dijk, Nick","Krefeld Linn, emplacement",84,124
+"van Dijk, Nick","Lage Zwaluwe, emplacement",62,92
+"van Dijk, Nick","Leusden, PON",43,44
+"van Dijk, Nick",Ludwigshafen-Oggersheim,250,395
+"van Dijk, Nick","Maasvlakte, emplacement",87,129
+"van Dijk, Nick",Magdeburg Hbf,294,482
+"van Dijk, Nick","Marl-Sinsen, emplacement",101,154
+"van Dijk, Nick",Matrans Rotterdam Terminal,77,97
+"van Dijk, Nick","Moerdijk, emplacement",67,95
+"van Dijk, Nick",Moers,75,112
+"van Dijk, Nick","Neuss, guterbahnhof",93,141
+"van Dijk, Nick","Nijmegen, emplacement",27,30
+"van Dijk, Nick",NWB terminal,73,105
+"van Dijk, Nick",OBA,73,106
+"van Dijk, Nick","Oberhausen West, emplacement",79,123
+"van Dijk, Nick","Oldenzaal, emplacement",83,125
+"van Dijk, Nick","Onnen, emplacement noordingang",128,194
+"van Dijk, Nick","Onnen, emplacement zuidingang",125,190
+"van Dijk, Nick",Opladen,114,176
+"van Dijk, Nick","Oss, terminal OOC",31,37
+"van Dijk, Nick","Pernis, emplacement",65,97
+"van Dijk, Nick",Rheine,108,164
+"van Dijk, Nick","Rheinhausen, emplacement",82,125
+"van Dijk, Nick","Roosendaal, emplacement",78,112
+"van Dijk, Nick","Sittard, emplacement",95,140
+"van Dijk, Nick",Sloehaven empl.,117,177
+"van Dijk, Nick",Steinweg Amsterdam,74,107
+"van Dijk, Nick",Stroe,44,54
+"van Dijk, Nick","Tilburg, industrie",58,79
+"van Dijk, Nick","Uitgeest, emplacement",84,127
+"van Dijk, Nick","Valburg, emplacement CUP",17,19
+"van Dijk, Nick","Venlo, emplacement",62,87
+"van Dijk, Nick","Viersen, guterbahnhof",81,113
+"van Dijk, Nick","Vlissingen Sloe, emplacement",118,178
+"van Dijk, Nick",Vopak-Sloe,118,177
+"van Dijk, Nick","Waalhaven, emplacement",62,92
+"van Dijk, Nick","Waalhaven, kantoor RFO",64,93
+"van Dijk, Nick","Westhaven, emplacement",71,105
+"van Dijk, Nick",Zevenaar grens,38,45
+"van Dijk, Nick","Zutphen, emplacement",51,62
+"van Kleij, Silvester",Acht,85,120
+"van Kleij, Silvester","Almelo, emplacement",140,206
+"van Kleij, Silvester","Amersfoort, emplacement sp.12",79,105
+"van Kleij, Silvester","Amersfoort, remise Strukton",77,103
+"van Kleij, Silvester",Amsterdam Centraal,72,92
+"van Kleij, Silvester",Amsterdam Westhaven,66,90
+"van Kleij, Silvester",Amsterdam Westhaven West,63,88
+"van Kleij, Silvester","Arnhem, goederenemplacement",93,131
+"van Kleij, Silvester","Bad Bentheim, empl. / staalfabriek",154,236
+"van Kleij, Silvester","Bad Bentheim, Hilgenstiege sp.25",154,236
+"van Kleij, Silvester","Beverwijk, emplacement",68,96
+"van Kleij, Silvester","Blerick, emplacement en werkplaats",124,179
+"van Kleij, Silvester","Born, emplacement",126,189
+"van Kleij, Silvester","Botlek, emplacement",17,13
+"van Kleij, Silvester",Bottrop,153,231
+"van Kleij, Silvester","Coevorden, euroterminal",154,224
+"van Kleij, Silvester",Deventer goed. empl.,113,165
+"van Kleij, Silvester","Deventer, goederenemplacement",113,165
+"van Kleij, Silvester","Dordrecht, dok",30,36
+"van Kleij, Silvester","Dortmund Obereving, emplacement",178,275
+"van Kleij, Silvester",Duisburg Ruhrorthafen,145,216
+"van Kleij, Silvester","Duisburg, Hochfeld Süd Vorbahnhof",146,222
+"van Kleij, Silvester","Eindhoven, emplacement",91,132
+"van Kleij, Silvester","Eindhoven, emplacement Acht",86,123
+"van Kleij, Silvester",Eltville Ost,301,458
+"van Kleij, Silvester","Emmerich, station",118,168
+"van Kleij, Silvester",Euromax,42,48
+"van Kleij, Silvester","Europoort, emplacement",22,18
+"van Kleij, Silvester","Gekkengraaf, emplacement",119,176
+"van Kleij, Silvester",Germersheim,334,522
+"van Kleij, Silvester",Goes,81,116
+"van Kleij, Silvester","Hengelo, emplacement",141,208
+"van Kleij, Silvester","Herzogenrath, station",155,227
+"van Kleij, Silvester",Holland Cargo Terminal,65,89
+"van Kleij, Silvester","Houtrakpolder, emplacement",61,86
+"van Kleij, Silvester","IJsselmonde, emplacement",26,25
+"van Kleij, Silvester","Kaldenkirchen, station",127,188
+"van Kleij, Silvester","Kijfhoek, emplacement",28,34
+"van Kleij, Silvester","Köln Eifeltor, emplacement",184,280
+"van Kleij, Silvester",Koole Vondelingenweg,17,10
+"van Kleij, Silvester","Krefeld Linn, emplacement",149,218
+"van Kleij, Silvester","Lage Zwaluwe, emplacement",39,51
+"van Kleij, Silvester","Leusden, PON",74,104
+"van Kleij, Silvester",Ludwigshafen-Oggersheim,315,490
+"van Kleij, Silvester","Maasvlakte, emplacement",36,39
+"van Kleij, Silvester",Magdeburg Hbf,355,576
+"van Kleij, Silvester","Marl-Sinsen, emplacement",166,260
+"van Kleij, Silvester",Matrans Rotterdam Terminal,33,21
+"van Kleij, Silvester","Moerdijk, emplacement",42,54
+"van Kleij, Silvester",Moers,140,206
+"van Kleij, Silvester","Neuss, guterbahnhof",158,235
+"van Kleij, Silvester","Nijmegen, emplacement",92,124
+"van Kleij, Silvester",NWB terminal,67,90
+"van Kleij, Silvester",OBA,67,91
+"van Kleij, Silvester","Oberhausen West, emplacement",144,217
+"van Kleij, Silvester","Oldenzaal, emplacement",144,218
+"van Kleij, Silvester","Onnen, emplacement noordingang",175,267
+"van Kleij, Silvester","Onnen, emplacement zuidingang",171,264
+"van Kleij, Silvester",Opladen,179,270
+"van Kleij, Silvester","Oss, terminal OOC",84,118
+"van Kleij, Silvester","Pernis, emplacement",17,9
+"van Kleij, Silvester",Rheine,169,257
+"van Kleij, Silvester","Rheinhausen, emplacement",147,219
+"van Kleij, Silvester","Roosendaal, emplacement",53,71
+"van Kleij, Silvester","Sittard, emplacement",133,195
+"van Kleij, Silvester",Sloehaven empl.,86,126
+"van Kleij, Silvester",Steinweg Amsterdam,64,88
+"van Kleij, Silvester",Stroe,88,128
+"van Kleij, Silvester","Tilburg, industrie",69,95
+"van Kleij, Silvester","Uitgeest, emplacement",73,103
+"van Kleij, Silvester","Valburg, emplacement CUP",83,120
+"van Kleij, Silvester","Venlo, emplacement",127,181
+"van Kleij, Silvester","Viersen, guterbahnhof",146,207
+"van Kleij, Silvester","Vlissingen Sloe, emplacement",87,127
+"van Kleij, Silvester",Vopak-Sloe,87,126
+"van Kleij, Silvester","Waalhaven, emplacement",19,17
+"van Kleij, Silvester","Waalhaven, kantoor RFO",22,19
+"van Kleij, Silvester","Westhaven, emplacement",65,89
+"van Kleij, Silvester",Zevenaar grens,103,152
+"van Kleij, Silvester","Zutphen, emplacement",117,163
+"van Kleij, M.B.",Acht,94,136
+"van Kleij, M.B.","Almelo, emplacement",116,170
+"van Kleij, M.B.","Amersfoort, emplacement sp.12",57,71
+"van Kleij, M.B.","Amersfoort, remise Strukton",56,70
+"van Kleij, M.B.",Amsterdam Centraal,31,21
+"van Kleij, M.B.",Amsterdam Westhaven,25,18
+"van Kleij, M.B.",Amsterdam Westhaven West,22,16
+"van Kleij, M.B.","Arnhem, goederenemplacement",89,126
+"van Kleij, M.B.","Bad Bentheim, empl. / staalfabriek",131,199
+"van Kleij, M.B.","Bad Bentheim, Hilgenstiege sp.25",130,200
+"van Kleij, M.B.","Beverwijk, emplacement",12,10
+"van Kleij, M.B.","Blerick, emplacement en werkplaats",129,188
+"van Kleij, M.B.","Born, emplacement",134,203
+"van Kleij, M.B.","Botlek, emplacement",62,85
+"van Kleij, M.B.",Bottrop,142,213
+"van Kleij, M.B.","Coevorden, euroterminal",131,187
+"van Kleij, M.B.",Deventer goed. empl.,90,128
+"van Kleij, M.B.","Deventer, goederenemplacement",90,128
+"van Kleij, M.B.","Dordrecht, dok",69,97
+"van Kleij, M.B.","Dortmund Obereving, emplacement",166,256
+"van Kleij, M.B.",Duisburg Ruhrorthafen,141,214
+"van Kleij, M.B.","Duisburg, Hochfeld Süd Vorbahnhof",142,223
+"van Kleij, M.B.","Eindhoven, emplacement",96,140
+"van Kleij, M.B.","Eindhoven, emplacement Acht",95,134
+"van Kleij, M.B.",Eltville Ost,293,456
+"van Kleij, M.B.","Emmerich, station",106,149
+"van Kleij, M.B.",Euromax,86,120
+"van Kleij, M.B.","Europoort, emplacement",68,96
+"van Kleij, M.B.","Gekkengraaf, emplacement",127,190
+"van Kleij, M.B.",Germersheim,340,530
+"van Kleij, M.B.",Goes,122,180
+"van Kleij, M.B.","Hengelo, emplacement",117,171
+"van Kleij, M.B.","Herzogenrath, station",163,241
+"van Kleij, M.B.",Holland Cargo Terminal,20,19
+"van Kleij, M.B.","Houtrakpolder, emplacement",18,13
+"van Kleij, M.B.","IJsselmonde, emplacement",66,89
+"van Kleij, M.B.","Kaldenkirchen, station",133,196
+"van Kleij, M.B.","Kijfhoek, emplacement",67,94
+"van Kleij, M.B.","Köln Eifeltor, emplacement",186,291
+"van Kleij, M.B.",Koole Vondelingenweg,60,82
+"van Kleij, M.B.","Krefeld Linn, emplacement",154,226
+"van Kleij, M.B.","Lage Zwaluwe, emplacement",79,111
+"van Kleij, M.B.","Leusden, PON",57,76
+"van Kleij, M.B.",Ludwigshafen-Oggersheim,321,498
+"van Kleij, M.B.","Maasvlakte, emplacement",80,111
+"van Kleij, M.B.",Magdeburg Hbf,332,539
+"van Kleij, M.B.","Marl-Sinsen, emplacement",155,242
+"van Kleij, M.B.",Matrans Rotterdam Terminal,74,86
+"van Kleij, M.B.","Moerdijk, emplacement",82,114
+"van Kleij, M.B.",Moers,145,214
+"van Kleij, M.B.","Neuss, guterbahnhof",163,243
+"van Kleij, M.B.","Nijmegen, emplacement",98,133
+"van Kleij, M.B.",NWB terminal,25,17
+"van Kleij, M.B.",OBA,26,18
+"van Kleij, M.B.","Oberhausen West, emplacement",134,211
+"van Kleij, M.B.","Oldenzaal, emplacement",121,182
+"van Kleij, M.B.","Onnen, emplacement noordingang",137,207
+"van Kleij, M.B.","Onnen, emplacement zuidingang",138,212
+"van Kleij, M.B.",Opladen,169,264
+"van Kleij, M.B.","Oss, terminal OOC",89,126
+"van Kleij, M.B.","Pernis, emplacement",58,79
+"van Kleij, M.B.",Rheine,146,220
+"van Kleij, M.B.","Rheinhausen, emplacement",152,227
+"van Kleij, M.B.","Roosendaal, emplacement",92,131
+"van Kleij, M.B.","Sittard, emplacement",141,209
+"van Kleij, M.B.",Sloehaven empl.,127,191
+"van Kleij, M.B.",Steinweg Amsterdam,23,17
+"van Kleij, M.B.",Stroe,64,91
+"van Kleij, M.B.","Tilburg, industrie",91,127
+"van Kleij, M.B.","Uitgeest, emplacement",18,19
+"van Kleij, M.B.","Valburg, emplacement CUP",89,129
+"van Kleij, M.B.","Venlo, emplacement",132,190
+"van Kleij, M.B.","Viersen, guterbahnhof",152,216
+"van Kleij, M.B.","Vlissingen Sloe, emplacement",128,192
+"van Kleij, M.B.",Vopak-Sloe,128,191
+"van Kleij, M.B.","Waalhaven, emplacement",59,81
+"van Kleij, M.B.","Waalhaven, kantoor RFO",63,83
+"van Kleij, M.B.","Westhaven, emplacement",26,18
+"van Kleij, M.B.",Zevenaar grens,92,133
+"van Kleij, M.B.","Zutphen, emplacement",94,129
+"van Leijden, Niels",Acht,112,168
+"van Leijden, Niels","Almelo, emplacement",125,154
+"van Leijden, Niels","Amersfoort, emplacement sp.12",69,91
+"van Leijden, Niels","Amersfoort, remise Strukton",67,91
+"van Leijden, Niels",Amsterdam Centraal,42,46
+"van Leijden, Niels",Amsterdam Westhaven,36,44
+"van Leijden, Niels",Amsterdam Westhaven West,37,46
+"van Leijden, Niels","Arnhem, goederenemplacement",102,149
+"van Leijden, Niels","Bad Bentheim, empl. / staalfabriek",143,220
+"van Leijden, Niels","Bad Bentheim, Hilgenstiege sp.25",142,220
+"van Leijden, Niels","Beverwijk, emplacement",45,50
+"van Leijden, Niels","Blerick, emplacement en werkplaats",144,219
+"van Leijden, Niels","Born, emplacement",153,235
+"van Leijden, Niels","Botlek, emplacement",86,125
+"van Leijden, Niels",Bottrop,155,235
+"van Leijden, Niels","Coevorden, euroterminal",119,149
+"van Leijden, Niels",Deventer goed. empl.,101,149
+"van Leijden, Niels","Deventer, goederenemplacement",102,149
+"van Leijden, Niels","Dordrecht, dok",93,137
+"van Leijden, Niels","Dortmund Obereving, emplacement",179,279
+"van Leijden, Niels",Duisburg Ruhrorthafen,154,237
+"van Leijden, Niels","Duisburg, Hochfeld Süd Vorbahnhof",155,245
+"van Leijden, Niels","Eindhoven, emplacement",115,172
+"van Leijden, Niels","Eindhoven, emplacement Acht",114,166
+"van Leijden, Niels",Eltville Ost,306,479
+"van Leijden, Niels","Emmerich, station",119,171
+"van Leijden, Niels",Euromax,110,161
+"van Leijden, Niels","Europoort, emplacement",92,136
+"van Leijden, Niels","Gekkengraaf, emplacement",142,218
+"van Leijden, Niels",Germersheim,354,577
+"van Leijden, Niels",Goes,146,221
+"van Leijden, Niels","Hengelo, emplacement",129,191
+"van Leijden, Niels","Herzogenrath, station",182,273
+"van Leijden, Niels",Holland Cargo Terminal,40,49
+"van Leijden, Niels","Houtrakpolder, emplacement",35,46
+"van Leijden, Niels","IJsselmonde, emplacement",91,130
+"van Leijden, Niels","Kaldenkirchen, station",148,228
+"van Leijden, Niels","Kijfhoek, emplacement",91,135
+"van Leijden, Niels","Köln Eifeltor, emplacement",199,313
+"van Leijden, Niels",Koole Vondelingenweg,85,122
+"van Leijden, Niels","Krefeld Linn, emplacement",169,258
+"van Leijden, Niels","Lage Zwaluwe, emplacement",103,152
+"van Leijden, Niels","Leusden, PON",68,96
+"van Leijden, Niels",Ludwigshafen-Oggersheim,336,530
+"van Leijden, Niels","Maasvlakte, emplacement",104,151
+"van Leijden, Niels",Magdeburg Hbf,344,559
+"van Leijden, Niels","Marl-Sinsen, emplacement",168,264
+"van Leijden, Niels",Matrans Rotterdam Terminal,98,126
+"van Leijden, Niels","Moerdijk, emplacement",106,155
+"van Leijden, Niels",Moers,160,246
+"van Leijden, Niels","Neuss, guterbahnhof",178,275
+"van Leijden, Niels","Nijmegen, emplacement",113,164
+"van Leijden, Niels",NWB terminal,36,43
+"van Leijden, Niels",OBA,37,44
+"van Leijden, Niels","Oberhausen West, emplacement",147,233
+"van Leijden, Niels","Oldenzaal, emplacement",133,202
+"van Leijden, Niels","Onnen, emplacement noordingang",115,170
+"van Leijden, Niels","Onnen, emplacement zuidingang",117,175
+"van Leijden, Niels",Opladen,182,286
+"van Leijden, Niels","Oss, terminal OOC",108,158
+"van Leijden, Niels","Pernis, emplacement",82,119
+"van Leijden, Niels",Rheine,158,241
+"van Leijden, Niels","Rheinhausen, emplacement",166,250
+"van Leijden, Niels","Roosendaal, emplacement",117,172
+"van Leijden, Niels","Sittard, emplacement",159,241
+"van Leijden, Niels",Sloehaven empl.,151,231
+"van Leijden, Niels",Steinweg Amsterdam,37,46
+"van Leijden, Niels",Stroe,76,111
+"van Leijden, Niels","Tilburg, industrie",110,159
+"van Leijden, Niels","Uitgeest, emplacement",39,41
+"van Leijden, Niels","Valburg, emplacement CUP",103,154
+"van Leijden, Niels","Venlo, emplacement",147,221
+"van Leijden, Niels","Viersen, guterbahnhof",167,247
+"van Leijden, Niels","Vlissingen Sloe, emplacement",152,232
+"van Leijden, Niels",Vopak-Sloe,152,231
+"van Leijden, Niels","Waalhaven, emplacement",83,122
+"van Leijden, Niels","Waalhaven, kantoor RFO",87,124
+"van Leijden, Niels","Westhaven, emplacement",35,43
+"van Leijden, Niels",Zevenaar grens,105,155
+"van Leijden, Niels","Zutphen, emplacement",106,150

@@ -12,28 +12,24 @@ namespace Thesis {
         public readonly string DutyName, ActivityName, DutyId, ProjectName, StartStationName, EndStationName;
         public readonly List<Trip> Successors;
 
-        public Trip(string dutyName, string activityName, string dutyId, string projectName, string startStationName, string endStationName, int startStationAddressIndex, int endStationAddressIndex, int startTime, int endTime, int duration) {
-            Index = -1;
-            DutyName = dutyName;
-            ProjectName = projectName;
-            StartStationName = startStationName;
-            EndStationName = endStationName;
-            ActivityName = activityName;
-            DutyId = dutyId;
+        public Trip(RawTrip rawTrip, int index, int startStationAddressIndex, int endStationAddressIndex) {
+            Index = index;
+            DutyName = rawTrip.DutyName;
+            ProjectName = rawTrip.ProjectName;
+            StartStationName = rawTrip.StartStationName;
+            EndStationName = rawTrip.EndStationName;
+            ActivityName = rawTrip.ActivityName;
+            DutyId = rawTrip.DutyId;
             StartStationAddressIndex = startStationAddressIndex;
             EndStationAddressIndex = endStationAddressIndex;
             Successors = new List<Trip>();
-            StartTime = startTime;
-            EndTime = endTime;
-            Duration = duration;
+            StartTime = rawTrip.StartTime;
+            EndTime = rawTrip.EndTime;
+            Duration = rawTrip.Duration;
         }
 
         public void AddSuccessor(Trip trip) {
             Successors.Add(trip);
-        }
-
-        public void SetIndex(int index) {
-            Index = index;
         }
 
         public void SetSharedRouteIndex(int sharedRouteIndex) {
