@@ -84,3 +84,6 @@ body {
 .shift .pathItem:not(.trip) {
     color: rgba(0, 0, 0, 0.4);
 }
+.shift .pathItem.overlapError {
+    color: rgba(240, 0, 0, 1);
+}

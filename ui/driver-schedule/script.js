@@ -78,13 +78,14 @@ class VisualiseDriverApp {
             } else {
                 let description;
                 if (item.type === 'travelBetween') description = 'Travel between activities';
-                if (item.type === 'wait') description = 'Waiting';
+                else if (item.type === 'wait') description = 'Waiting';
                 else if (item.type === 'travelBefore') description = 'Travel from home';
                 else if (item.type === 'travelAfter') description = 'Travel to home';
                 else if (item.type === 'travelBeforeHotel') description = 'Travel to hotel';
                 else if (item.type === 'travelAfterHotel') description = 'Travel from hotel';
                 else if (item.type === 'rest') description = 'Rest';
                 else if (item.type === 'hotel') description = 'Hotel stay';
+                else if (item.type === 'overlapError') description = 'Overlap error';
 
                 shiftHtmlParts.push(`
                     <div class="row pathItem ${item.type}">

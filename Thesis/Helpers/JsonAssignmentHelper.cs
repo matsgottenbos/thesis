@@ -151,6 +151,13 @@ namespace Thesis {
                     ["endTime"] = trip2.StartTime
                 };
                 fullDriverPathJArray.Add(waitBetweenPathItem);
+            } else if (waitingTime < 0) {
+                JObject overlapErrorBetweenPathItem = new JObject {
+                    ["type"] = "overlapError",
+                    ["startTime"] = trip1.EndTime + carTravelTime,
+                    ["endTime"] = trip2.StartTime
+                };
+                fullDriverPathJArray.Add(overlapErrorBetweenPathItem);
             }
         }
 

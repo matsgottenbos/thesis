@@ -23,13 +23,13 @@ body {
 }
 
 .driversColumn {
-    width: 10%;
-    padding: 0 2rem;
+    width: 12.5%;
+    padding: 0 1.5rem;
     border-right: 1px solid rgba(150, 150, 150, 1);
 }
 
 .scheduleColumn {
-    width: 90%;
+    width: 87.5%;
 }
 
 .scheduleInner {

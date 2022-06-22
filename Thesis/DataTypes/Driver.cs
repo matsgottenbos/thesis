@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 namespace Thesis {
     abstract class Driver {
         public readonly int AllDriversIndex;
+        protected readonly bool isInternational;
         readonly int[] homeTravelTimes;
         readonly SalarySettings salaryInfo;
         protected Instance instance;
 
-        public Driver(int allDriversIndex, int[] homeTravelTimes, SalarySettings salaryInfo) {
+        public Driver(int allDriversIndex, bool isInternational, int[] homeTravelTimes, SalarySettings salaryInfo) {
             AllDriversIndex = allDriversIndex;
+            this.isInternational = isInternational;
             this.homeTravelTimes = homeTravelTimes;
             this.salaryInfo = salaryInfo;
         }
@@ -72,7 +74,7 @@ namespace Thesis {
         readonly string InternalDriverName;
         public readonly bool[,] TrackProficiencies;
 
-        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, int[] homeTravelTimes, bool[,] trackProficiencies, int contractTime, SalarySettings salaryInfo) : base(allDriversIndex, homeTravelTimes, salaryInfo) {
+        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, bool isInternational, int[] homeTravelTimes, bool[,] trackProficiencies, int contractTime, SalarySettings salaryInfo) : base(allDriversIndex, isInternational, homeTravelTimes, salaryInfo) {
             InternalIndex = internalIndex;
             InternalDriverName = internalDriverName;
             TrackProficiencies = trackProficiencies;
@@ -96,10 +98,13 @@ namespace Thesis {
     class ExternalDriver : Driver {
         public readonly int ExternalDriverTypeIndex, IndexInType;
         readonly int[] homeTravelDistances;
+        public readonly string CompanyName, ShortCompanyName;
 
-        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, int[] homeTravelTimes, int[] homeTravelDistances, SalarySettings salaryInfo) : base(allDriversIndex, homeTravelTimes, salaryInfo) {
+        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, string companyName, string shortCompanyName, bool isInternational, int[] homeTravelTimes, int[] homeTravelDistances, SalarySettings salaryInfo) : base(allDriversIndex, isInternational, homeTravelTimes, salaryInfo) {
             ExternalDriverTypeIndex = externalDriverTypeIndex;
             IndexInType = indexInType;
+            CompanyName = companyName;
+            ShortCompanyName = shortCompanyName;
             this.homeTravelDistances = homeTravelDistances;
         }
 
@@ -108,7 +113,8 @@ namespace Thesis {
         }
 
         public override string GetName(bool useRealName) {
-            return string.Format("External {0}.{1}", ExternalDriverTypeIndex + 1, IndexInType + 1);
+            string nationalInternationalStr = isInternational ? "international" : "national";
+            return string.Format("{0} {1} {2}", ShortCompanyName, nationalInternationalStr, IndexInType + 1);
         }
 
         public override double GetSatisfaction(SaDriverInfo driverInfo) {

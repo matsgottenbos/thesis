@@ -40,6 +40,11 @@ namespace Thesis {
                 new DebugJsonExporter(instance);
                 return;
             }
+            if (AppConfig.DebugRunPastDataExporter) {
+                Console.WriteLine("Running debug past data exporter");
+                new DebugPastDataExporter(instance);
+                return;
+            }
 
             // Simulated annealing
             SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance);

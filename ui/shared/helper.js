@@ -5,29 +5,27 @@ function toDateObj(rawTime) {
 }
 
 export function parseTime(rawTime) {
-    const time = toDateObj(rawTime);
-    let hoursStr = time.getHours().toString();
-    if (hoursStr.length < 2) hoursStr = "0" + hoursStr;
-    let minsStr = time.getMinutes().toString();
-    if (minsStr.length < 2) minsStr = "0" + minsStr;
-    return `${hoursStr}:${minsStr}`;
+    const dateObj = toDateObj(rawTime);
+    return dateObj.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 }
 
 export function parseTimeDiff(rawTime1, rawTime2) {
-    const timeDiff = rawTime2 - rawTime1;
-    let hoursStr = Math.floor(timeDiff / 60).toString();
-    if (hoursStr.length < 2) hoursStr = "0" + hoursStr;
-    let minsStr = (timeDiff % 60).toString();
-    if (minsStr.length < 2) minsStr = "0" + minsStr;
-    return `${hoursStr}:${minsStr}`;
+    const dateObj1 = toDateObj(rawTime1);
+    const dateObj2 = toDateObj(rawTime2);
+    const isNegative = dateObj1 > dateObj2;
+    const dateDiffObj = new Date(Math.abs(dateObj2 - dateObj1));
+    let dateDiffStr = dateDiffObj.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
+    if (isNegative) dateDiffStr = '-' + dateDiffStr;
+    console.log(rawTime1, rawTime2, dateObj2 - dateObj1, new Date(Math.abs(dateObj2 - dateObj1)));
+    return dateDiffStr;
 }
 
 export function parseDate(rawTime) {
-    const time = toDateObj(rawTime);
-    return time.toDateString();
+    const dateObj = toDateObj(rawTime);
+    return dateObj.toDateString();
 }
 
 export function parseDateShort(rawTime) {
-    const time = toDateObj(rawTime);
-    return time.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'numeric' });
+    const dateObj = toDateObj(rawTime);
+    return dateObj.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'numeric' });
 }

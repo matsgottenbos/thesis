@@ -18,10 +18,12 @@ namespace Thesis {
     }
 
     class ExcelSheet {
+        readonly string sheetName;
         readonly ISheet sheet;
         readonly Dictionary<string, int> columnNamesToIndices;
 
         public ExcelSheet(string sheetName, XSSFWorkbook excelBook) {
+            this.sheetName = sheetName;
             sheet = excelBook.GetSheet(sheetName);
             if (sheet == null) throw new Exception($"Unknown sheet `{sheetName}`");
 
@@ -35,6 +37,9 @@ namespace Thesis {
         }
 
         int GetColumnIndex(string columnName) {
+            if (!columnNamesToIndices.ContainsKey(columnName)) {
+                throw new Exception(string.Format("Could not find column `{0}` in Excel sheet `{1}`", columnName, sheetName));
+            }
             return columnNamesToIndices[columnName];
         }
 

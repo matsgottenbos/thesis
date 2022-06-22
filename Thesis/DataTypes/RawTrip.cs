@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace Thesis {
     class RawTrip {
         public readonly int StartTime, EndTime, Duration;
-        public readonly string DutyName, ActivityName, DutyId, ProjectName, StartStationName, EndStationName;
+        public readonly string DutyName, ActivityName, DutyId, ProjectName, StartStationName, EndStationName, DataAssignedCompanyName, DataAssignedEmployeeName;
 
-        public RawTrip(string dutyName, string activityName, string dutyId, string projectName, string startStationName, string endStationName, int startTime, int endTime, int duration) {
+        public RawTrip(string dutyName, string activityName, string dutyId, string projectName, string startStationName, string endStationName, int startTime, int endTime, int duration, string dataAssignedCompanyName, string dataAssignedEmployeeName) {
             DutyName = dutyName;
             ProjectName = projectName;
             StartStationName = startStationName;
@@ -19,6 +19,8 @@ namespace Thesis {
             StartTime = startTime;
             EndTime = endTime;
             Duration = duration;
+            DataAssignedCompanyName = dataAssignedCompanyName;
+            DataAssignedEmployeeName = dataAssignedEmployeeName;
         }
     }
 }

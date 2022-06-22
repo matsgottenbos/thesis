@@ -94,7 +94,7 @@ namespace Thesis {
             };
         }
 
-        public void ProcessDriverPaths() {
+        public void ProcessDriverPaths(bool shouldIgnoreEmpty = false) {
             DriverPaths = new List<Trip>[Instance.AllDrivers.Length];
             DriverPathIndices = new int[Instance.Trips.Length];
             for (int driverIndex = 0; driverIndex < Instance.AllDrivers.Length; driverIndex++) {
@@ -103,6 +103,11 @@ namespace Thesis {
             for (int tripIndex = 0; tripIndex < Instance.Trips.Length; tripIndex++) {
                 Trip trip = Instance.Trips[tripIndex];
                 Driver driver = Assignment[tripIndex];
+                if (driver == null) {
+                    if (shouldIgnoreEmpty) continue;
+                    throw new Exception(string.Format("Trip {0} has no driver assigned", tripIndex));
+                }
+
                 List<Trip> driverPath = DriverPaths[driver.AllDriversIndex];
                 DriverPathIndices[trip.Index] = driverPath.Count;
                 driverPath.Add(trip);
