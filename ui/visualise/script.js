@@ -8,7 +8,6 @@ class VisualiseApp {
         const data = await Api.getData();
 
         const dayCount = Math.ceil(Config.originalTimeframeLength / (24 * 60));
-        console.log(Config.originalTimeframeLength, dayCount);
         for (let i = 0; i < dayCount; i++) {
             const dateString = Helper.parseDateShort(i * 24 * 60);
             $('.scheduleHeader').append(`<div class="dayHeader">${dateString}</div>`);
@@ -18,7 +17,7 @@ class VisualiseApp {
             if (driver.driverPath.length === 0) return;
 
             const name = Config.showRealDriverNames ? driver.realDriverName : driver.driverName;
-            const satisfactionStr = driver.driverSatisfaction === undefined ? '' : ` (${Math.round(driver.driverSatisfaction * 100)}%)`;
+            const satisfactionStr = driver.isInternal ? ` (${Math.round(driver.stats.driverSatisfaction * 100)}%)` : '';
             $('.drivers').append(`<div class="driver">${name}${satisfactionStr}</div>`);
 
             const tripsHtml = driver.driverPath.map(item => {

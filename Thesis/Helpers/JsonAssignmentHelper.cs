@@ -11,11 +11,11 @@ namespace Thesis {
         public static void ExportAssignmentInfoJson(string folderPath, SaInfo info) {
             JObject jsonObj = new JObject {
                 ["cost"] = info.TotalInfo.Stats.RawCost,
-                ["satisfaction"] = info.TotalInfo.Stats.SatisfactionScore.Value,
                 ["drivers"] = CreateDriversJArray(info.DriverPaths, info),
+                ["satisfaction"] = info.TotalInfo.Stats.SatisfactionScore.Value,
             };
 
-            string jsonString = jsonObj.ToString();
+            string jsonString = SortJTokenAlphabetically(jsonObj).ToString();
             string fileName = string.Format("{0}k-{1}p.json", Math.Round(info.TotalInfo.Stats.Cost / 1000), Math.Round(info.TotalInfo.Stats.SatisfactionScore.Value * 100));
             string filePath = Path.Combine(folderPath, fileName);
             File.WriteAllText(filePath, jsonString);
@@ -33,9 +33,54 @@ namespace Thesis {
                 ["driverName"] = driver.GetName(false),
                 ["realDriverName"] = driver.GetName(true),
                 ["driverPath"] = CreateFullDriverPathJArray(driver, driverPath, info),
+                ["stats"] = CreateDriverStatsJObject(driver, driverInfo),
+                ["info"] = CreateDriverInfoJObject(driverInfo),
             };
-            if (driver is InternalDriver) driverJObject["driverSatisfaction"] = driverInfo.Stats.DriverSatisfaction;
+            if (driver is InternalDriver internalDriver) {
+                driverJObject["isInternal"] = true;
+                driverJObject["contractTime"] = internalDriver.ContractTime;
+            } else {
+                driverJObject["isInternal"] = false;
+            }
             return driverJObject;
+        }
+
+        static JObject CreateDriverStatsJObject(Driver driver, SaDriverInfo driverInfo) {
+            JObject driverStatsJObject = new JObject {
+                ["cost"] = driverInfo.Stats.Cost,
+                ["rawCost"] = driverInfo.Stats.RawCost,
+                ["robustness"] = driverInfo.Stats.Robustness,
+                ["penalty"] = driverInfo.Stats.Penalty,
+                ["driverSatisfaction"] = driverInfo.Stats.DriverSatisfaction,
+            };
+            if (driver is InternalDriver internalDriver) {
+                driverStatsJObject["driverSatisfactionCriteria"] = CreateDriverSatisfactionCriteriaJObject(internalDriver, driverInfo);
+            }
+            return driverStatsJObject;
+        }
+
+        static JObject CreateDriverInfoJObject(SaDriverInfo driverInfo) {
+            return new JObject {
+                ["workedTime"] = driverInfo.WorkedTime,
+                ["shiftCount"] = driverInfo.ShiftCount,
+                ["hotelCount"] = driverInfo.HotelCount,
+                ["nightShiftCountByCompanyRules"] = driverInfo.NightShiftCountByCompanyRules,
+                ["weekendShiftCountByCompanyRules"] = driverInfo.WeekendShiftCountByCompanyRules,
+                ["travelTime"] = driverInfo.TravelTime,
+                ["singleFreeDays"] = driverInfo.SingleFreeDays,
+                ["doubleFreeDays"] = driverInfo.DoubleFreeDays,
+                ["duplicateRouteCount"] = driverInfo.SharedRouteCounts.Sum(),
+            };
+        }
+
+        static JObject CreateDriverSatisfactionCriteriaJObject(InternalDriver internalDriver, SaDriverInfo driverInfo) {
+            Dictionary<string, double> satisfactionPerCriterion = SatisfactionCalculator.GetDriverSatisfactionPerCriterion(driverInfo, internalDriver);
+
+            JObject driverSatisfactionCriteriaJObject = new JObject();
+            foreach (KeyValuePair<string, double> criterionKvp in satisfactionPerCriterion) {
+                driverSatisfactionCriteriaJObject[criterionKvp.Key] = criterionKvp.Value;
+            }
+            return driverSatisfactionCriteriaJObject;
         }
 
         static JArray CreateFullDriverPathJArray(Driver driver, List<Trip> driverPath, SaInfo info) {
@@ -166,6 +211,24 @@ namespace Thesis {
                 ["endTime"] = tripAfterHotel.StartTime
             };
             fullDriverPathJArray.Add(travelAfterHotelPathItem);
+        }
+
+        static JToken SortJTokenAlphabetically(JToken token) {
+            if (token is JObject jObject) {
+                JObject processedJObject = new JObject();
+                foreach (JProperty property in jObject.Properties().ToList().OrderBy(p => p.Name)) {
+                    processedJObject.Add(property.Name, SortJTokenAlphabetically(property.Value));
+                }
+                return processedJObject;
+            }
+            if (token is JArray jArray) {
+                JArray processedJArray = new JArray();
+                foreach (var element in jArray) {
+                    processedJArray.Add(SortJTokenAlphabetically(element));
+                }
+                return processedJArray;
+            }
+            return token;
         }
     }
 }

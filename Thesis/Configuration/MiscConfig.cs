@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Thesis {
     class MiscConfig {
         // Time periods
-        public const int HourLength = 24 * 60;
+        public const int HourLength = 60;
         public const int DayLength = 24 * HourLength;
 
         // Technical

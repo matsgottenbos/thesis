@@ -22,6 +22,33 @@ class VisualiseDriverApp {
         const name = this.showRealDriverNames ? driver.realDriverName : driver.driverName;
         $('.driverName').html(name);
 
+        // Driver info
+        const driverDetails = {
+            cost: Math.round(driver.stats.cost),
+            rawCost: Math.round(driver.stats.rawCost),
+            robustness: Math.round(driver.stats.robustness),
+            satisfaction: Math.round(driver.stats.driverSatisfaction * 100) + '%',
+        };
+
+        const driverStatsHtmlParts = Object.keys(driverDetails).map(key => `<div class="row"><span class="label">${this.camelCaseToWords(key)}</span><span class="value">${driverDetails[key]}</span></div>`);
+        $('.driverDetails .stats .rows').html(driverStatsHtmlParts.join(''));
+
+        const driverSatisfactionCriteriaHtmlParts = Object.keys(driver.stats.driverSatisfactionCriteria).map(key => {
+            const value = Math.round(driver.stats.driverSatisfactionCriteria[key] * 100);
+            return `<div class="row"><span class="label">${key}</span><span class="value">${value}%</span></div>`;
+        });
+        $('.driverDetails .satisfactionCriteria .rows').html(driverSatisfactionCriteriaHtmlParts.join(''));
+
+        const driverInfo = {
+            contractTime: driver.contractTime,
+            ...driver.info,
+        }
+
+        const driverInfoHtmlParts = Object.keys(driverInfo).map(key => `<div class="row"><span class="label">${this.camelCaseToWords(key)}</span><span class="value">${driverInfo[key]}</span></div>`);
+        $('.driverDetails .info .rows').html(driverInfoHtmlParts.join(''));
+        
+
+        // Driver path
         const shiftsHtmlParts = [];
         let shiftHtmlParts = [];
         let currentShiftDateStr = null;
@@ -99,6 +126,13 @@ class VisualiseDriverApp {
                 <div class="shiftPath">${shiftHtmlParts.join('')}</div>
             </div>
         `);
+    }
+
+    camelCaseToWords(camelCaseStr) {
+        let result = camelCaseStr.replace(/([A-Z])/g, " $1");
+        result = result.toLowerCase();
+        result = result.charAt(0).toUpperCase() + result.slice(1);
+        return result;
     }
 }
 

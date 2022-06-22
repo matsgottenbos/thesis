@@ -7,7 +7,39 @@ using System.Threading.Tasks;
 namespace Thesis {
     static class SatisfactionCalculator {
         public static double GetDriverSatisfaction(SaDriverInfo driverInfo, InternalDriver driver) {
-            // Determine duplicate route count
+            double averageSatisfaction = 0;
+            double minimumSatisfaction = 1;
+
+            ProcessCriterion(RulesConfig.SatCriterionHotels, driverInfo.HotelCount, driver, ref averageSatisfaction, ref minimumSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionNightShifts, driverInfo.NightShiftCountByCompanyRules, driver, ref averageSatisfaction, ref minimumSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionWeekendShifts, driverInfo.WeekendShiftCountByCompanyRules, driver, ref averageSatisfaction, ref minimumSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionTravelTime, driverInfo.TravelTime, driver, ref averageSatisfaction, ref minimumSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionDuplicateRoutes, GetDuplicateRouteCount(driverInfo), driver, ref averageSatisfaction, ref minimumSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionConsecutiveFreeDays, (driverInfo.SingleFreeDays, driverInfo.DoubleFreeDays), driver, ref averageSatisfaction, ref minimumSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionContractTime, driverInfo.WorkedTime, driver, ref averageSatisfaction, ref minimumSatisfaction);
+
+            return (averageSatisfaction + minimumSatisfaction) / 2;
+        }
+
+        static void ProcessCriterion<T>(AbstractSatisfactionCriterion<T> criterion, T value, InternalDriver driver, ref double averageSatisfaction, ref double minimumSatisfaction) {
+            averageSatisfaction += criterion.GetSatisfaction(value, driver);
+            minimumSatisfaction = Math.Min(minimumSatisfaction, criterion.GetSatisfactionForMinimum(value, driver));
+        }
+
+        public static Dictionary<string, double> GetDriverSatisfactionPerCriterion(SaDriverInfo driverInfo, InternalDriver driver) {
+            Dictionary<string, double> satisfactionPerCriterion = new Dictionary<string, double> {
+                { "hotelStays", RulesConfig.SatCriterionHotels.GetUnweightedSatisfaction(driverInfo.HotelCount, driver) },
+                { "nightShifts", RulesConfig.SatCriterionNightShifts.GetUnweightedSatisfaction(driverInfo.NightShiftCountByCompanyRules, driver) },
+                { "weekendShifts", RulesConfig.SatCriterionWeekendShifts.GetUnweightedSatisfaction(driverInfo.WeekendShiftCountByCompanyRules, driver) },
+                { "travelTime", RulesConfig.SatCriterionTravelTime.GetUnweightedSatisfaction(driverInfo.TravelTime, driver) },
+                { "duplicateRoutes", RulesConfig.SatCriterionDuplicateRoutes.GetUnweightedSatisfaction(GetDuplicateRouteCount(driverInfo), driver) },
+                { "consecutiveFreeDays", RulesConfig.SatCriterionConsecutiveFreeDays.GetUnweightedSatisfaction((driverInfo.SingleFreeDays, driverInfo.DoubleFreeDays), driver) },
+                { "contractTime", RulesConfig.SatCriterionContractTime.GetUnweightedSatisfaction(driverInfo.WorkedTime, driver) },
+            };
+            return satisfactionPerCriterion;
+        }
+
+        static int GetDuplicateRouteCount(SaDriverInfo driverInfo) {
             int duplicateRouteCount = 0;
             for (int sharedRouteIndex = 0; sharedRouteIndex < driverInfo.SharedRouteCounts.Length; sharedRouteIndex++) {
                 int count = driverInfo.SharedRouteCounts[sharedRouteIndex];
@@ -15,16 +47,7 @@ namespace Thesis {
                     duplicateRouteCount += count - 1;
                 }
             }
-
-            // Determine driver satisfaction
-            double driverSatisfaction = 0;
-            driverSatisfaction += RulesConfig.SatCriteriumHotels.GetSatisfaction(driverInfo.HotelCount, driver);
-            driverSatisfaction += RulesConfig.SatCriteriumNightShifts.GetSatisfaction(driverInfo.NightShiftCountByCompanyRules, driver);
-            driverSatisfaction += RulesConfig.SatCriteriumWeekendShifts.GetSatisfaction(driverInfo.WeekendShiftCountByCompanyRules, driver);
-            driverSatisfaction += RulesConfig.SatCriteriumTravelTime.GetSatisfaction(driverInfo.TravelTime, driver);
-            driverSatisfaction += RulesConfig.SatCriteriumDuplicateRoutes.GetSatisfaction(duplicateRouteCount, driver);
-            driverSatisfaction += RulesConfig.SatCriteriumConsecutiveFreeDays.GetSatisfaction((driverInfo.SingleFreeDays, driverInfo.DoubleFreeDays), driver);
-            return driverSatisfaction;
+            return duplicateRouteCount;
         }
 
         public static double GetSatisfactionScore(SaInfo info) {

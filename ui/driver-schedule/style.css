@@ -14,44 +14,73 @@ body {
     font-weight: bold;
 }
 
-.shift {
-    margin-bottom: 4rem;
+
+/* Driver details */
+
+.driverDetails {
+    margin-bottom: 6rem;
+    padding: 0 2rem;
 }
 
-.row {
+.driverDetails .category {
+    margin-bottom: 2rem;
+}
+
+.driverDetails .categoryHeader {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.driverDetails .row {
+    padding: 0.4rem 0;
+}
+
+.driverDetails .label {
+    width: 20rem;
+    display: inline-block;
+}
+
+
+/* Driver path */
+
+.shift {
+    margin-bottom: 4rem;
     padding: 0 2rem;
+}
+
+.shift .row {
     display: flex;
 }
 
-.shiftHeader {
-    padding: 0 2rem;
+.shift .shiftHeader {
     margin-bottom: 1.5rem;
     font-size: 1.1rem;
     font-weight: bold;
 }
 
-.shiftPathHeader {
+.shift .shiftPathHeader {
     font-weight: bold;
 }
 
-.cell {
+.shift .cell {
     padding: 0.75rem 0;
 }
 
-.cell.id {
+.shift .cell.id {
     width: 5%;
 }
-.cell.startTime, .cell.endTime, .cell.duration {
+.shift .cell.startTime, .shift .cell.endTime, .shift .cell.duration {
     width: calc(25% / 3);
 }
-.duty, .activity, .fromLocation, .toLocation {
+.shift .cell.duty, .shift .cell.activity, .shift .cell.fromLocation, .shift .cell.toLocation {
     width: calc(70% / 4);
 }
 
-.pathItem {
+.shift .pathItem {
     width: 100%;
 }
 
-.pathItem:not(.trip) {
+.shift .pathItem:not(.trip) {
     color: rgba(0, 0, 0, 0.4);
 }

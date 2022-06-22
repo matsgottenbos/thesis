@@ -41,13 +41,13 @@ namespace Thesis {
         };
 
         // Satisfaction
-        public static readonly RangeSatisfactionCriterium SatCriteriumHotels = new RangeSatisfactionCriterium(4, 0, 0.2f);
-        public static readonly RangeSatisfactionCriterium SatCriteriumNightShifts = new RangeSatisfactionCriterium(5, 0, 0.1f);
-        public static readonly RangeSatisfactionCriterium SatCriteriumWeekendShifts = new RangeSatisfactionCriterium(2, 0, 0.1f);
-        public static readonly RangeSatisfactionCriterium SatCriteriumTravelTime = new RangeSatisfactionCriterium(30 * 60, 0, 0.1f);
-        public static readonly RangeSatisfactionCriterium SatCriteriumDuplicateRoutes = new RangeSatisfactionCriterium(10, 0, 0.2f);
-        public static readonly ConsecutiveFreeDaysCriterium SatCriteriumConsecutiveFreeDays = new ConsecutiveFreeDaysCriterium(0.1f);
-        public static readonly TargetSatisfactionCriterium SatCriteriumContractTime = new TargetSatisfactionCriterium(driver => driver.ContractTime, driver => 0.3f * driver.ContractTime, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionHotels = new RangeSatisfactionCriterion(4, 0, 0.2f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionNightShifts = new RangeSatisfactionCriterion(5, 0, 0.1f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionWeekendShifts = new RangeSatisfactionCriterion(2, 0, 0.1f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionTravelTime = new RangeSatisfactionCriterion(30 * 60, 0, 0.1f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionDuplicateRoutes = new RangeSatisfactionCriterion(10, 0, 0.2f, 0.2f);
+        public static readonly ConsecutiveFreeDaysCriterion SatCriterionConsecutiveFreeDays = new ConsecutiveFreeDaysCriterion(0.1f, 0.2f);
+        public static readonly TargetSatisfactionCriterion SatCriterionContractTime = new TargetSatisfactionCriterion(driver => driver.ContractTime, driver => 0.3f * driver.ContractTime, 0.2f, 0.2f);
 
         // Robustness
         public const float RobustnessCostFactorSameDuty = 0f; // Added cost for each expected conflict due to delays, if the conflict is between trips of the same duty

@@ -12,6 +12,7 @@ namespace Thesis {
 
         /* Excel importer */
         public static readonly string[] ExcelIncludedRailwayUndertakings = new string[] { "Rail Force One" };
+        public static readonly string[] ExcelInternalDriverCompanyNames = new string[] { "Rail Force One" };
         public static readonly string[] ExcelIncludedActivityDescriptions = new string[] { // Activity descriptions in English
             "8-uurs controle",
             "Aankomst controle",
