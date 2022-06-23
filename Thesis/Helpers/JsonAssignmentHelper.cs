@@ -67,14 +67,14 @@ namespace Thesis {
                 ["nightShiftCountByCompanyRules"] = driverInfo.NightShiftCountByCompanyRules,
                 ["weekendShiftCountByCompanyRules"] = driverInfo.WeekendShiftCountByCompanyRules,
                 ["travelTime"] = driverInfo.TravelTime,
-                ["singleFreeDays"] = driverInfo.SingleFreeDays,
-                ["doubleFreeDays"] = driverInfo.DoubleFreeDays,
+                ["singleFreeDays"] = driverInfo.SingleFreeDayCount,
+                ["doubleFreeDays"] = driverInfo.DoubleFreeDayCount,
                 ["duplicateRouteCount"] = driverInfo.SharedRouteCounts.Sum(),
             };
         }
 
         static JObject CreateDriverSatisfactionCriteriaJObject(InternalDriver internalDriver, SaDriverInfo driverInfo) {
-            Dictionary<string, double> satisfactionPerCriterion = SatisfactionCalculator.GetDriverSatisfactionPerCriterion(driverInfo, internalDriver);
+            Dictionary<string, double> satisfactionPerCriterion = SatisfactionCalculator.GetDriverSatisfactionPerCriterion(internalDriver, driverInfo);
 
             JObject driverSatisfactionCriteriaJObject = new JObject();
             foreach (KeyValuePair<string, double> criterionKvp in satisfactionPerCriterion) {

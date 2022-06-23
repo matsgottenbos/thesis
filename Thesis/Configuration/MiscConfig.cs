@@ -11,7 +11,7 @@ namespace Thesis {
         public const int DayLength = 24 * HourLength;
 
         // Technical
-        public const float FloatingPointMargin = 0.0001f;
+        public const float FloatingPointMargin = 0.00001f;
         public const int PercentageFactor = 100;
     }
 }

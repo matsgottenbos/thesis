@@ -10,7 +10,7 @@ namespace Thesis {
         public const float HotelCosts = 130f;
 
         // Salary rates for driver types
-        public static readonly SalarySettings InternalNationalSalaryInfo = SalarySettings.CreateByHours(
+        public static readonly InternalSalarySettings InternalNationalSalaryInfo = InternalSalarySettings.CreateByHours(
             new SalaryRateBlock[] { // Weekday salary rates
                 SalaryRateBlock.CreateByHours(0, 55, true), // Night 0-4, continuing hourly rate of 55
                 SalaryRateBlock.CreateByHours(4, 55), // Night 4-6, hourly rate of 55
@@ -19,12 +19,12 @@ namespace Thesis {
                 SalaryRateBlock.CreateByHours(19, 50), // Evening 19-23, hourly rate of 50
                 SalaryRateBlock.CreateByHours(23, 55, true), // Night 23-0, continuing hourly rate of 55
             },
-            55, // Weekend rate
-            45, // Travel rate
+            55, // Weekend rate (per hour)
+            45, // Travel time rate (per hour)
             6, // Minimum paid shift time (hours)
             1 // Unpaid travel time per shift (hours)
         );
-        public static readonly SalarySettings InternalInternationalSalaryInfo = SalarySettings.CreateByHours(
+        public static readonly InternalSalarySettings InternalInternationalSalaryInfo = InternalSalarySettings.CreateByHours(
             new SalaryRateBlock[] { // Weekday salary rates
                 SalaryRateBlock.CreateByHours(0, 55, true), // Night 0-4, continuing hourly rate of 55
                 SalaryRateBlock.CreateByHours(4, 55), // Night 4-6, hourly rate of 55
@@ -33,12 +33,12 @@ namespace Thesis {
                 SalaryRateBlock.CreateByHours(19, 50), // Evening 19-23, hourly rate of 50
                 SalaryRateBlock.CreateByHours(23, 55, true), // Night 23-0, continuing hourly rate of 55
             },
-            60, // Weekend rate
-            50, // Travel rate
+            60, // Weekend rate (per hour)
+            50, // Travel time rate (per hour)
             6, // Minimum paid shift time (hours)
             1 // Unpaid travel time per shift (hours)
         );
-        public static readonly SalarySettings ExternalNationalSalaryInfo = SalarySettings.CreateByHours(
+        public static readonly ExternalSalarySettings ExternalNationalSalaryInfo = ExternalSalarySettings.CreateByHours(
             new SalaryRateBlock[] {
                 SalaryRateBlock.CreateByHours(0, 75), // Night 0-6, hourly rate of 75
                 SalaryRateBlock.CreateByHours(6, 70), // Morning 6-7, hourly rate of 70
@@ -46,12 +46,12 @@ namespace Thesis {
                 SalaryRateBlock.CreateByHours(18, 70), // Evening 18-23, hourly rate of 70
                 SalaryRateBlock.CreateByHours(23, 75), // Night 23-0, hourly rate of 75
             },
-            75, // Weekend rate
-            30, // Travel rate
+            75, // Weekend rate (per hour)
+            0.3f, // Travel distance rate (per kilometer)
             8, // Minimum paid shift time (hours)
-            1 // Unpaid travel time per shift (hours)
+            100 // Unpaid travel time per shift (hours)
         );
-        public static readonly SalarySettings ExternalInternationalSalaryInfo = SalarySettings.CreateByHours(
+        public static readonly ExternalSalarySettings ExternalInternationalSalaryInfo = ExternalSalarySettings.CreateByHours(
             new SalaryRateBlock[] {
                 SalaryRateBlock.CreateByHours(0, 80), // Night 0-6, hourly rate of 80
                 SalaryRateBlock.CreateByHours(6, 75), // Morning 6-7, hourly rate of 75
@@ -59,26 +59,23 @@ namespace Thesis {
                 SalaryRateBlock.CreateByHours(18, 75), // Evening 18-23, hourly rate of 75
                 SalaryRateBlock.CreateByHours(23, 80), // Night 23-0, hourly rate of 80
             },
-            80, // Weekend rate
-            30, // Travel rate
+            80, // Weekend rate (per hour)
+            0.3f, // Travel distance rate (per kilometer)
             8, // Minimum paid shift time (hours)
-            1 // Unpaid travel time per shift (hours)
+            100 // Unpaid travel distance per shift (kilometers)
         );
     }
 
-    class SalarySettings {
+    abstract class SalarySettings {
         public int DriverTypeIndex;
         public readonly SalaryRateBlock[] WeekdaySalaryRates;
-        public readonly float WeekendSalaryRate, TravelSalaryRate;
+        public readonly float WeekendSalaryRate;
         public readonly int MinPaidShiftTime; // The minimum amount of worked time that is paid per shift, for an internal driver
-        public readonly int UnpaidTravelTimePerShift; // For each shift, only travel time longer than this is paid
 
-        public SalarySettings(SalaryRateBlock[] weekdaySalaryRates, float weekendSalaryRate, float travelSalaryRate, int minPaidShiftTime, int unpaidTravelTimePerShift) {
+        public SalarySettings(SalaryRateBlock[] weekdaySalaryRates, float weekendSalaryRate, int minPaidShiftTime) {
             WeekdaySalaryRates = weekdaySalaryRates;
             WeekendSalaryRate = weekendSalaryRate;
-            TravelSalaryRate = travelSalaryRate;
             MinPaidShiftTime = minPaidShiftTime;
-            UnpaidTravelTimePerShift = unpaidTravelTimePerShift;
             DriverTypeIndex = -1;
         }
 
@@ -86,14 +83,44 @@ namespace Thesis {
         public void SetDriverTypeIndex(int salaryInfoIndex) {
             DriverTypeIndex = salaryInfoIndex;
         }
+    }
 
-        public static SalarySettings CreateByHours(SalaryRateBlock[] weekdaySalaryRates, float weekendHourlySalaryRate, float travelHourlySalaryRate, float minPaidShiftTimeHours, float unpaidTravelTimePerShiftHours) {
-            return new SalarySettings(
+    class InternalSalarySettings : SalarySettings {
+        public readonly float TravelTimeSalaryRate; // Travel compensation per minute
+        public readonly int UnpaidTravelTimePerShift; // For each shift, only travel time longer than this is paid
+
+        public InternalSalarySettings(SalaryRateBlock[] weekdaySalaryRates, float weekendSalaryRate, float travelTimeSalaryRate, int minPaidShiftTime, int unpaidTravelTimePerShift) : base(weekdaySalaryRates, weekendSalaryRate, minPaidShiftTime) {
+            TravelTimeSalaryRate = travelTimeSalaryRate;
+            UnpaidTravelTimePerShift = unpaidTravelTimePerShift;
+        }
+
+        public static InternalSalarySettings CreateByHours(SalaryRateBlock[] weekdaySalaryRates, float weekendHourlySalaryRate, float travelTimeHourlySalaryRate, float minPaidShiftTimeHours, float unpaidTravelTimePerShiftHours) {
+            return new InternalSalarySettings(
                 weekdaySalaryRates,
                 weekendHourlySalaryRate / MiscConfig.HourLength,
-                travelHourlySalaryRate / MiscConfig.HourLength,
+                travelTimeHourlySalaryRate / MiscConfig.HourLength,
                 (int)Math.Round(minPaidShiftTimeHours * MiscConfig.HourLength),
                 (int)Math.Round(unpaidTravelTimePerShiftHours * MiscConfig.HourLength)
+            );
+        }
+    }
+
+    class ExternalSalarySettings : SalarySettings {
+        public readonly float TravelDistanceSalaryRate; // Travel compensation per kilometer
+        public readonly int UnpaidTravelDistancePerShift; // For each shift, only travel distance longer than this is paid
+
+        public ExternalSalarySettings(SalaryRateBlock[] weekdaySalaryRates, float weekendSalaryRate, float travelDistanceSalaryRate, int minPaidShiftTime, int unpaidTravelDistancePerShift) : base(weekdaySalaryRates, weekendSalaryRate, minPaidShiftTime) {
+            TravelDistanceSalaryRate = travelDistanceSalaryRate;
+            UnpaidTravelDistancePerShift = unpaidTravelDistancePerShift;
+        }
+
+        public static ExternalSalarySettings CreateByHours(SalaryRateBlock[] weekdaySalaryRates, float weekendHourlySalaryRate, float travelDistanceSalaryRate, float minPaidShiftTimeHours, int unpaidTravelDistancePerShift) {
+            return new ExternalSalarySettings(
+                weekdaySalaryRates,
+                weekendHourlySalaryRate / MiscConfig.HourLength,
+                travelDistanceSalaryRate,
+                (int)Math.Round(minPaidShiftTimeHours * MiscConfig.HourLength),
+                unpaidTravelDistancePerShift
             );
         }
     }

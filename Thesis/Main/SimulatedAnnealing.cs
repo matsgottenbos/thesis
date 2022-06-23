@@ -38,7 +38,7 @@ namespace Thesis {
 
             #if DEBUG
             // Initialise debugger
-            if (AppConfig.DebugCheckAndLogOperations) {
+            if (AppConfig.DebugCheckOperations) {
                 SaDebugger.ResetIteration(info);
                 SaDebugger.GetCurrentOperation().StartPart("Initial assignment", null);
                 SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.OldChecked);
@@ -50,7 +50,7 @@ namespace Thesis {
 
             #if DEBUG
             // Reset iteration in debugger after initial assignment cost
-            if (AppConfig.DebugCheckAndLogOperations) {
+            if (AppConfig.DebugCheckOperations) {
                 SaDebugger.ResetIteration(info);
             }
             #endif
@@ -95,9 +95,9 @@ namespace Thesis {
                         TotalCostCalculator.ProcessAssignmentCost(info);
 
                         #if DEBUG
-                        // Set debugger to next iteration
-                        if (AppConfig.DebugCheckAndLogOperations) {
+                        if (AppConfig.DebugCheckOperations) {
                             if (info.TotalInfo.Stats.Penalty > 0.01) throw new Exception("New best solution is invalid");
+                            if (Math.Abs(info.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor - satisfactionLevel) > 0.6) throw new Exception("New best solution has incorrect satisfaction level");
                         }
                         #endif
 
@@ -119,7 +119,7 @@ namespace Thesis {
 
                 #if DEBUG
                 // Set debugger to next iteration
-                if (AppConfig.DebugCheckAndLogOperations) {
+                if (AppConfig.DebugCheckOperations) {
                     SaDebugger.NextIteration(info);
                 }
                 #endif
@@ -148,7 +148,7 @@ namespace Thesis {
 
                 #if DEBUG
                 // Reset iteration in debugger after additional checks
-                if (AppConfig.DebugCheckAndLogOperations) {
+                if (AppConfig.DebugCheckOperations) {
                     SaDebugger.ResetIteration(info);
                 }
                 #endif

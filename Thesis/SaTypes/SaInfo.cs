@@ -25,7 +25,7 @@ namespace Thesis {
 
         public void ReassignTrip(Trip trip, Driver oldDriver, Driver newDriver) {
             #if DEBUG
-            if (AppConfig.DebugCheckAndLogOperations) {
+            if (AppConfig.DebugCheckOperations) {
                 DebugCheckDriverPaths();
             }
             #endif
@@ -54,7 +54,7 @@ namespace Thesis {
             }
 
             #if DEBUG
-            if (AppConfig.DebugCheckAndLogOperations) {
+            if (AppConfig.DebugCheckOperations) {
                 DebugCheckDriverPaths();
             }
             #endif

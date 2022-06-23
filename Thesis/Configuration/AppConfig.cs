@@ -18,7 +18,7 @@ namespace Thesis {
 
         // Debug
         public const bool DebugUseSeededSa = true;
-        public const bool DebugCheckAndLogOperations = false;
+        public const bool DebugCheckOperations = false;
         public const bool DebugSaLogCurrentSolution = false;
         public const bool DebugSaLogAdditionalInfo = false;
         public const bool DebugRunInspector = false;

@@ -151,27 +151,29 @@ namespace Thesis {
 
         /* Debug logging */
 
-        public static void LogDebugValue(int value, string name, bool isDiff, bool shouldLogZeros) {
+        public static void LogDebugValue(string value, string name, bool isDiff, bool isZero, bool shouldLogZeros) {
             string diffStr = isDiff ? " diff" : "";
-            bool isZero = value == 0;
             if (shouldLogZeros || !isZero) Console.WriteLine("{0}{1}: {2}", name, diffStr, value);
         }
-        public static void LogDebugValue(double value, string name, bool isDiff, bool shouldLogZeros) {
-            string diffStr = isDiff ? " diff" : "";
-            bool isZero = Math.Abs(value) < MiscConfig.FloatingPointMargin;
-            if (shouldLogZeros || !isZero) Console.WriteLine("{0}{1}: {2}", name, diffStr, ToString(value));
+
+        public static void LogDebugValue(int value, string name, bool isDiff, bool shouldLogZeros) {
+            bool isZero = value == 0;
+            LogDebugValue(value.ToString(), name, isDiff, isZero, shouldLogZeros);
         }
         public static void LogDebugValue(int? value, string name, bool isDiff, bool shouldLogZeros) {
             string valueStr = value.HasValue ? value.ToString() : "-";
-            string diffStr = isDiff ? " diff" : "";
             bool isZero = value == 0;
-            if (shouldLogZeros || !isZero) Console.WriteLine("{0}{1}: {2}", name, diffStr, valueStr);
+            LogDebugValue(valueStr, name, isDiff, isZero, shouldLogZeros);
+        }
+
+        public static void LogDebugValue(double value, string name, bool isDiff, bool shouldLogZeros) {
+            bool isZero = Math.Abs(value) < MiscConfig.FloatingPointMargin;
+            LogDebugValue(value.ToString(), name, isDiff, isZero, shouldLogZeros);
         }
         public static void LogDebugValue(double? value, string name, bool isDiff, bool shouldLogZeros) {
             string valueStr = value.HasValue ? ToString(value.Value) : "-";
-            string diffStr = isDiff ? " diff" : "";
             bool isZero = !value.HasValue || Math.Abs(value.Value) < MiscConfig.FloatingPointMargin;
-            if (shouldLogZeros || !isZero) Console.WriteLine("{0}{1}: {2}", name, diffStr, valueStr);
+            LogDebugValue(valueStr, name, isDiff, isZero, shouldLogZeros);
         }
     }
 }

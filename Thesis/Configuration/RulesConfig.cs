@@ -16,6 +16,7 @@ namespace Thesis {
         public const int NightShiftMinRestTime = 14 * 60; // Minimum required resting time after a night shift
         public const int HotelMaxRestTime = 24 * 60; // Maximum allowed resting time during a hotel stay
         public const int HotelExtraTravelTime = 30; // Additional travel time between two shifts when there is an hotel stay; this travel time is equally split between the shift before and after
+        public const int HotelExtraTravelDistance = 40; // Additional travel distance between two shifts when there is an hotel stay; this travel time is equally split between the shift before and after
         public const int SingleFreeDayMinRestTime = 24 * 60; // Minimum required resting time between two shifts to count as a single free day
         public const int DoubleFreeDayMinRestTime = 48 * 60; // Minimum required resting time between two shifts to count as two consecutive free days
 
@@ -41,13 +42,20 @@ namespace Thesis {
         };
 
         // Satisfaction
-        public static readonly RangeSatisfactionCriterion SatCriterionHotels = new RangeSatisfactionCriterion(4, 0, 0.2f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionNightShifts = new RangeSatisfactionCriterion(5, 0, 0.1f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionWeekendShifts = new RangeSatisfactionCriterion(2, 0, 0.1f, 0.2f);
+        public const int IdealShiftLength = 8 * 60;
+        public const int IdealRestTime = 14 * 60;
+        public static readonly RangeSatisfactionCriterion SatCriterionRouteVariation = new RangeSatisfactionCriterion(10, 0, 0.2f, 0.2f);
         public static readonly RangeSatisfactionCriterion SatCriterionTravelTime = new RangeSatisfactionCriterion(30 * 60, 0, 0.1f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionDuplicateRoutes = new RangeSatisfactionCriterion(10, 0, 0.2f, 0.2f);
-        public static readonly ConsecutiveFreeDaysCriterion SatCriterionConsecutiveFreeDays = new ConsecutiveFreeDaysCriterion(0.1f, 0.2f);
-        public static readonly TargetSatisfactionCriterion SatCriterionContractTime = new TargetSatisfactionCriterion(driver => driver.ContractTime, driver => 0.3f * driver.ContractTime, 0.2f, 0.2f);
+        public static readonly TargetSatisfactionCriterion SatCriterionContractTime = new TargetSatisfactionCriterion(driver => driver.ContractTime, driver => 0.4f * driver.ContractTime, 0.2f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionShiftLengths = new RangeSatisfactionCriterion(10 * 60, 0, 0.1f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionRobustness = new RangeSatisfactionCriterion(200, 0, 0.1f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionNightShifts = new RangeSatisfactionCriterion(5, 0, 0.05f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionWeekendShifts = new RangeSatisfactionCriterion(2, 0, 0.05f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionHotels = new RangeSatisfactionCriterion(4, 0, 0.05f, 0.2f);
+        // TBA: time off requests
+        // TBA: consecutive shifts
+        public static readonly RangeSatisfactionCriterion SatCriterionConsecutiveFreeDays = new RangeSatisfactionCriterion(0, 1, 0.05f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionRestingTime = new RangeSatisfactionCriterion(36, 0, 0.1f, 0.2f);
 
         // Robustness
         public const float RobustnessCostFactorSameDuty = 0f; // Added cost for each expected conflict due to delays, if the conflict is between trips of the same duty

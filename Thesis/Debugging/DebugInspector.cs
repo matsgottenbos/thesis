@@ -27,7 +27,7 @@ namespace Thesis {
             for (int internalDriverIndex = 0; internalDriverIndex < info.Instance.InternalDrivers.Length; internalDriverIndex++) {
                 InternalDriver driver = info.Instance.InternalDrivers[internalDriverIndex];
                 SaDriverInfo driverInfo = info.DriverInfos[internalDriverIndex];
-                Dictionary<string, double> satisfactionPerCriterion = SatisfactionCalculator.GetDriverSatisfactionPerCriterion(driverInfo, driver);
+                Dictionary<string, double> satisfactionPerCriterion = SatisfactionCalculator.GetDriverSatisfactionPerCriterion(driver, driverInfo);
 
                 Console.WriteLine("\n* Driver {0} satisfaction *", driver.GetId());
                 foreach (KeyValuePair<string, double> criterionKvp in satisfactionPerCriterion) {

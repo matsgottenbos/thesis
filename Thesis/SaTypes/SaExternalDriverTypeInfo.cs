@@ -23,6 +23,7 @@ namespace Thesis {
         public static SaExternalDriverTypeInfo operator -(SaExternalDriverTypeInfo a) {
             return new SaExternalDriverTypeInfo() {
                 Cost = -a.Cost,
+                Penalty = -a.Penalty,
                 ExternalShiftCount = -a.ExternalShiftCount,
                 ExternalShiftCountViolationAmount = -a.ExternalShiftCountViolationAmount,
             };

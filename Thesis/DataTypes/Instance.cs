@@ -12,7 +12,7 @@ namespace Thesis {
         public readonly XorShiftRandom Rand;
         readonly int timeframeLength;
         public readonly int UniqueSharedRouteCount;
-        readonly int[,] expectedCarTravelTimes;
+        readonly int[,] expectedCarTravelTimes, carTravelDistances;
         public readonly Trip[] Trips;
         public readonly string[] StationNames;
         readonly ShiftInfo[,] shiftInfos;
@@ -28,7 +28,7 @@ namespace Thesis {
             XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "settings.xlsx"));
 
             Rand = rand;
-            (StationNames, expectedCarTravelTimes) = GetStationNamesAndExpectedCarTravelTimes();
+            (StationNames, expectedCarTravelTimes, carTravelDistances) = GetStationNamesAndExpectedCarTravelInfo();
             (Trips, tripSuccession, tripSuccessionRobustness, tripsAreSameShift, timeframeLength, UniqueSharedRouteCount) = ProcessRawTrips(addressesBook, rawTrips, StationNames, expectedCarTravelTimes);
             shiftInfos = GetShiftInfos(Trips, timeframeLength);
             InternalDrivers = CreateInternalDrivers(settingsBook, rand);
@@ -50,8 +50,8 @@ namespace Thesis {
             }
         }
 
-        static (string[], int[,]) GetStationNamesAndExpectedCarTravelTimes() {
-            (int[,] plannedCarTravelTimes, _, string[] stationNames) = TravelInfoImporter.ImportFullyConnectedTravelInfo(Path.Combine(AppConfig.IntermediateFolder, "stationTravelInfo.csv"));
+        static (string[], int[,], int[,]) GetStationNamesAndExpectedCarTravelInfo() {
+            (int[,] plannedCarTravelTimes, int[,] carTravelDistances, string[] stationNames) = TravelInfoImporter.ImportFullyConnectedTravelInfo(Path.Combine(AppConfig.IntermediateFolder, "stationTravelInfo.csv"));
 
             int stationCount = plannedCarTravelTimes.GetLength(0);
             int[,] expectedCarTravelTimes = new int[stationCount, stationCount];
@@ -65,7 +65,7 @@ namespace Thesis {
                     }
                 }
             }
-            return (stationNames, expectedCarTravelTimes);
+            return (stationNames, expectedCarTravelTimes, carTravelDistances);
         }
 
         (Trip[], bool[,], float[,], bool[,], int, int) ProcessRawTrips(XSSFWorkbook addressesBook, RawTrip[] rawTrips, string[] stationNames, int[,] expectedCarTravelTimes) {
@@ -385,7 +385,7 @@ namespace Thesis {
         static InternalDriver[] CreateInternalDrivers(XSSFWorkbook settingsBook, XorShiftRandom rand) {
             ExcelSheet internalDriverSettingsSheet = new ExcelSheet("Internal drivers", settingsBook);
 
-            (int[][] internalDriversHomeTravelTimes, _, string[] travelInfoInternalDriverNames, _) = TravelInfoImporter.ImportBipartiteTravelInfo(Path.Combine(AppConfig.IntermediateFolder, "internalTravelInfo.csv"));
+            (int[][] internalDriversHomeTravelTimes, int[][] internalDriversHomeTravelDistances, string[] travelInfoInternalDriverNames, _) = TravelInfoImporter.ImportBipartiteTravelInfo(Path.Combine(AppConfig.IntermediateFolder, "internalTravelInfo.csv"));
 
             List<InternalDriver> internalDrivers = new List<InternalDriver>();
             internalDriverSettingsSheet.ForEachRow(internalDriverSettingsRow => {
@@ -399,14 +399,15 @@ namespace Thesis {
                     throw new Exception(string.Format("Could not find internal driver `{0}` in internal travel info", driverName));
                 }
                 int[] homeTravelTimes = internalDriversHomeTravelTimes[travelInfoInternalDriverIndex];
+                int[] homeTravelDistance = internalDriversHomeTravelDistances[travelInfoInternalDriverIndex];
 
                 // Temp: generate track proficiencies
                 bool[,] trackProficiencies = DataGenerator.GenerateInternalDriverTrackProficiencies(homeTravelTimes.Length, rand);
 
-                SalarySettings salaryInfo = isInternationalDriver.Value ? SalaryConfig.InternalInternationalSalaryInfo : SalaryConfig.InternalNationalSalaryInfo;
+                InternalSalarySettings salaryInfo = isInternationalDriver.Value ? SalaryConfig.InternalInternationalSalaryInfo : SalaryConfig.InternalNationalSalaryInfo;
 
                 int internalDriverIndex = internalDrivers.Count;
-                internalDrivers.Add(new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, isInternationalDriver.Value, homeTravelTimes, trackProficiencies, contractTime.Value, salaryInfo));
+                internalDrivers.Add(new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, isInternationalDriver.Value, homeTravelTimes, homeTravelDistance, trackProficiencies, contractTime.Value, salaryInfo));
             });
             return internalDrivers.ToArray();
         }
@@ -577,12 +578,20 @@ namespace Thesis {
             return expectedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex];
         }
 
+        public int CarTravelDistance(Trip trip1, Trip trip2) {
+            return carTravelDistances[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex];
+        }
+
         public int TravelTimeViaHotel(Trip trip1, Trip trip2) {
             return expectedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime;
         }
 
         public int HalfTravelTimeViaHotel(Trip trip1, Trip trip2) {
             return (expectedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime) / 2;
+        }
+
+        public int HalfTravelDistanceViaHotel(Trip trip1, Trip trip2) {
+            return (carTravelDistances[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelDistance) / 2;
         }
 
         public int RestTimeWithTravelTime(Trip trip1, Trip trip2, int travelTime) {

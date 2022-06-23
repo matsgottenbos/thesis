@@ -6,7 +6,7 @@ namespace Thesis {
         public readonly Instance Instance;
         public SaStats Stats;
         public SaDriverPenaltyInfo PenaltyInfo;
-        public int WorkedTime, ShiftCount, HotelCount, NightShiftCountByCompanyRules, WeekendShiftCountByCompanyRules, TravelTime, SingleFreeDays, DoubleFreeDays;
+        public int WorkedTime, ShiftCount, HotelCount, NightShiftCountByCompanyRules, WeekendShiftCountByCompanyRules, TravelTime, SingleFreeDayCount, DoubleFreeDayCount, IdealShiftLengthScore, IdealRestingTimeScore;
         public int[] SharedRouteCounts;
 
         public SaDriverInfo(Instance instance) {
@@ -26,8 +26,10 @@ namespace Thesis {
                 NightShiftCountByCompanyRules = -a.NightShiftCountByCompanyRules,
                 WeekendShiftCountByCompanyRules = -a.WeekendShiftCountByCompanyRules,
                 TravelTime = -a.TravelTime,
-                SingleFreeDays = -a.SingleFreeDays,
-                DoubleFreeDays = -a.DoubleFreeDays,
+                SingleFreeDayCount = -a.SingleFreeDayCount,
+                DoubleFreeDayCount = -a.DoubleFreeDayCount,
+                IdealShiftLengthScore = -a.IdealShiftLengthScore,
+                IdealRestingTimeScore = -a.IdealRestingTimeScore,
                 SharedRouteCounts = InvertArray(a.SharedRouteCounts),
             };
         }
@@ -41,8 +43,10 @@ namespace Thesis {
                 NightShiftCountByCompanyRules = a.NightShiftCountByCompanyRules + b.NightShiftCountByCompanyRules,
                 WeekendShiftCountByCompanyRules = a.WeekendShiftCountByCompanyRules + b.WeekendShiftCountByCompanyRules,
                 TravelTime = a.TravelTime + b.TravelTime,
-                SingleFreeDays = a.SingleFreeDays + b.SingleFreeDays,
-                DoubleFreeDays = a.DoubleFreeDays + b.DoubleFreeDays,
+                SingleFreeDayCount = a.SingleFreeDayCount + b.SingleFreeDayCount,
+                DoubleFreeDayCount = a.DoubleFreeDayCount + b.DoubleFreeDayCount,
+                IdealShiftLengthScore = a.IdealShiftLengthScore + b.IdealShiftLengthScore,
+                IdealRestingTimeScore = a.IdealRestingTimeScore + b.IdealRestingTimeScore,
                 SharedRouteCounts = AddArrays(a.SharedRouteCounts, b.SharedRouteCounts),
             };
         }
@@ -58,8 +62,10 @@ namespace Thesis {
                 a.NightShiftCountByCompanyRules == b.NightShiftCountByCompanyRules &&
                 a.WeekendShiftCountByCompanyRules == b.WeekendShiftCountByCompanyRules &&
                 a.TravelTime == b.TravelTime &&
-                a.SingleFreeDays == b.SingleFreeDays &&
-                a.DoubleFreeDays == b.DoubleFreeDays &&
+                a.SingleFreeDayCount == b.SingleFreeDayCount &&
+                a.DoubleFreeDayCount == b.DoubleFreeDayCount &&
+                a.IdealShiftLengthScore == b.IdealShiftLengthScore &&
+                a.IdealRestingTimeScore == b.IdealRestingTimeScore &&
                 AreArraysEqual(a.SharedRouteCounts, b.SharedRouteCounts)
             );
         }
@@ -96,6 +102,11 @@ namespace Thesis {
             ParseHelper.LogDebugValue(NightShiftCountByCompanyRules, "Night shift count (company rules)", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(WeekendShiftCountByCompanyRules, "Weekend shift count (company rules)", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(TravelTime, "Travel time", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(SingleFreeDayCount, "Single free days", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(DoubleFreeDayCount, "Double free days", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(IdealShiftLengthScore, "Ideal shift length score", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(IdealRestingTimeScore, "Ideal resting time score", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(ParseHelper.ToString(SharedRouteCounts), "Shared route counts", isDiff, SharedRouteCounts.Sum() == 0, shouldLogZeros);
         }
     }
 }

@@ -52,15 +52,4 @@ namespace Thesis {
             return Math.Max(0, 1 - deviation / worstDeviationFunc(driver));
         }
     }
-
-    class ConsecutiveFreeDaysCriterion : AbstractSatisfactionCriterion<(int, int)> {
-
-        public ConsecutiveFreeDaysCriterion(float weight, float maxWeight) : base(weight, maxWeight) { }
-
-        public override double GetUnweightedSatisfaction((int, int) value, InternalDriver driver) {
-            // Satisfaction is 100% when there are two consecutive free days, or otherwise 25% per single free day
-            if (value.Item2 >= 1) return 1;
-            return value.Item1 * 0.25;
-        }
-    }
 }
