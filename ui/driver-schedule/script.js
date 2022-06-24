@@ -13,6 +13,10 @@ class VisualiseDriverApp {
 
         addEventListener('hashchange', () => this.updateContent());
         this.updateContent();
+
+        $('.backButton').click(() => {
+            window.location = '../visualise';
+        });
     }
 
     updateContent() {
@@ -33,11 +37,16 @@ class VisualiseDriverApp {
         const driverStatsHtmlParts = Object.keys(driverDetails).map(key => `<div class="row"><span class="label">${this.camelCaseToWords(key)}</span><span class="value">${driverDetails[key]}</span></div>`);
         $('.driverDetails .stats .rows').html(driverStatsHtmlParts.join(''));
 
-        const driverSatisfactionCriteriaHtmlParts = Object.keys(driver.stats.driverSatisfactionCriteria).map(key => {
-            const value = Math.round(driver.stats.driverSatisfactionCriteria[key] * 100);
-            return `<div class="row"><span class="label">${key}</span><span class="value">${value}%</span></div>`;
-        });
-        $('.driverDetails .satisfactionCriteria .rows').html(driverSatisfactionCriteriaHtmlParts.join(''));
+        if (driver.isInternal) {
+            const driverSatisfactionCriteriaHtmlParts = Object.keys(driver.stats.driverSatisfactionCriteria).map(key => {
+                const value = Math.round(driver.stats.driverSatisfactionCriteria[key] * 100);
+                return `<div class="row"><span class="label">${key}</span><span class="value">${value}%</span></div>`;
+            });
+            $('.driverDetails .satisfactionCriteria').html(`
+                <h2 class="categoryHeader">Satisfaction criteria</h2>
+                <div class="rows">${driverSatisfactionCriteriaHtmlParts.join('')}</div>
+            `);
+        }
 
         const driverInfo = {
             contractTime: driver.contractTime,

@@ -24,7 +24,6 @@ body {
 
 .driversColumn {
     width: 12.5%;
-    padding: 0 1.5rem;
     border-right: 1px solid rgba(150, 150, 150, 1);
 }
 
@@ -41,8 +40,8 @@ body {
 }
 
 .driversHeader, .scheduleHeader {
-    height: 3rem;
-    margin-bottom: 2rem;
+    height: 4rem;
+    margin-bottom: 1rem;
     font-weight: bold;
 }
 
@@ -62,22 +61,27 @@ body {
     flex: 1;
 }
 
-.driver, .driverSchedule {
-    height: 2rem;
-}
-
-.driver:not(:last-child), .driverSchedule:not(:last-child) {
-    margin-bottom: 2rem;
+.driverSchedule {
+    margin: 2rem 0;
 }
 
 .driver {
+    height: 4rem;
+    padding: 1rem 1.5rem;
     display: flex;
     align-items: center;
+    cursor: pointer;
+}
+
+.driver:hover {
+    font-weight: bold;
+    background-color: rgba(245, 245, 245, 1);
 }
 
 .driverSchedule {
     position: relative;
     width: 100%;
+    height: 2rem;
 }
 
 .pathItem {

@@ -13,12 +13,12 @@ class VisualiseApp {
             $('.scheduleHeader').append(`<div class="dayHeader">${dateString}</div>`);
         }
 
-        data.drivers.forEach(driver => {
-            if (driver.driverPath.length === 0) return;
+        data.drivers.forEach((driver, i) => {
+            if (!driver.isInternal && driver.driverPath.length === 0) return;
 
             const name = Config.showRealDriverNames ? driver.realDriverName : driver.driverName;
             const satisfactionStr = driver.isInternal ? ` (${Math.round(driver.stats.driverSatisfaction * 100)}%)` : '';
-            $('.drivers').append(`<div class="driver">${name}${satisfactionStr}</div>`);
+            $('.drivers').append(`<div class="driver" data-driver-index="${i}">${name}${satisfactionStr}</div>`);
 
             const tripsHtml = driver.driverPath.map(item => {
                 const leftPercent = 100 * (item.startTime + Config.bufferBeforeTimeframe) / Config.timeframeLength;
@@ -30,6 +30,11 @@ class VisualiseApp {
             });
 
             $('.driverSchedules').append(`<div class="driverSchedule">${tripsHtml.join('')}</div>`);
+        });
+
+        $('.driver').click(function () {
+            const driverIndex = parseInt($(this).attr('data-driver-index'));
+            window.location = `../driver-schedule/#${driverIndex + 1}`;
         });
     }
 }

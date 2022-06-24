@@ -1,4 +1,4 @@
-export const jsonFile = '2022-06-24-00-27/57k-38p';
+export const jsonFile = '2022-06-24-14-09/56k-59p';
 export const showRealDriverNames = false;
 export const startDate = new Date(2022, 4, 23); // NB: months are 0-based, days are 1-based
 export const originalTimeframeLength = 7 * 24 * 60;

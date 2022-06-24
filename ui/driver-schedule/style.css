@@ -4,8 +4,26 @@ body {
 }
 
 .driverHeader {
+    position: relative;
     margin-bottom: 2rem;
     padding: 2rem;
+}
+
+.backButton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+
+.backButton:hover {
+    opacity: 0.6;
 }
 
 .driverName {

@@ -87,17 +87,21 @@ namespace Thesis {
             JArray fullDriverPathJArray = new JArray();
             if (driverPath.Count == 0) return fullDriverPathJArray;
 
+            JObject shiftJObject = new JObject(); // TODO: split into shifts, with more info per shift
             Trip prevTrip = null;
             Trip parkingTrip = driverPath[0];
             for (int i = 0; i < driverPath.Count; i++) {
                 Trip searchTrip = driverPath[i];
 
                 if (prevTrip == null) {
+                    // First activity
                     AddTravelFromHomeToPath(searchTrip, driver, fullDriverPathJArray);
                 } else {
                     if (info.Instance.AreSameShift(prevTrip, searchTrip)) {
+                        // Activity in same shift
                         AddTravelAndWaitBetweenTripsToPath(prevTrip, searchTrip, fullDriverPathJArray, info);
                     } else {
+                        // Activity in new shift
                         if (info.IsHotelStayAfterTrip[prevTrip.Index]) {
                             AddHotelStayToPath(prevTrip, searchTrip, fullDriverPathJArray, info);
                         } else {

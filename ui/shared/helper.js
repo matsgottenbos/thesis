@@ -16,7 +16,6 @@ export function parseTimeDiff(rawTime1, rawTime2) {
     const dateDiffObj = new Date(Math.abs(dateObj2 - dateObj1));
     let dateDiffStr = dateDiffObj.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
     if (isNegative) dateDiffStr = '-' + dateDiffStr;
-    console.log(rawTime1, rawTime2, dateObj2 - dateObj1, new Date(Math.abs(dateObj2 - dateObj1)));
     return dateDiffStr;
 }
 
