@@ -67,8 +67,8 @@ namespace Thesis {
                 restTimeAfter = instance.RestTimeViaHotel(prevTrip, searchTrip);
                 driverInfo.Stats.RawCost += SalaryConfig.HotelCosts;
 
-                // Check if the hotel stay isn't too long
-                if (restTimeAfter > RulesConfig.HotelMaxRestTime) {
+                // Check if the hotel stay is valid
+                if (!driver.IsHotelAllowed || restTimeAfter > RulesConfig.HotelMaxRestTime) {
                     driverInfo.PenaltyInfo.AddInvalidHotel();
                     isInvalidHotelAfter = true;
                 }

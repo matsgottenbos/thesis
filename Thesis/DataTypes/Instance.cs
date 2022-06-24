@@ -457,11 +457,12 @@ namespace Thesis {
             externalDriverCompanySettingsSheet.ForEachRow(externalDriverCompanySettingsRow => {
                 string companyName = externalDriverCompanySettingsSheet.GetStringValue(externalDriverCompanySettingsRow, "External company name");
                 string shortCompanyName = externalDriverCompanySettingsSheet.GetStringValue(externalDriverCompanySettingsRow, "Short name");
+                bool? isHotelAllowed = externalDriverCompanySettingsSheet.GetBoolValue(externalDriverCompanySettingsRow, "Allows hotel stays?");
                 int? nationalMinShiftCount = externalDriverCompanySettingsSheet.GetIntValue(externalDriverCompanySettingsRow, "National min shift count");
                 int? nationalMaxShiftCount = externalDriverCompanySettingsSheet.GetIntValue(externalDriverCompanySettingsRow, "National max shift count");
                 int? internationalMinShiftCount = externalDriverCompanySettingsSheet.GetIntValue(externalDriverCompanySettingsRow, "International min shift count");
                 int? internationalMaxShiftCount = externalDriverCompanySettingsSheet.GetIntValue(externalDriverCompanySettingsRow, "International max shift count");
-                if (companyName == null || !nationalMinShiftCount.HasValue || !nationalMaxShiftCount.HasValue || !internationalMinShiftCount.HasValue || !internationalMaxShiftCount.HasValue) return;
+                if (companyName == null || shortCompanyName == null || !isHotelAllowed.HasValue || !nationalMinShiftCount.HasValue || !nationalMaxShiftCount.HasValue || !internationalMinShiftCount.HasValue || !internationalMaxShiftCount.HasValue) return;
 
                 int travelInfoExternalCompanyIndex = Array.IndexOf(travelInfoExternalCompanyNames, companyName);
                 if (travelInfoExternalCompanyIndex == -1) {
@@ -473,11 +474,11 @@ namespace Thesis {
                 // National drivers
                 if (nationalMaxShiftCount.Value > 0) {
                     string typeName = string.Format("{0}", companyName);
-                    externalDriverTypes.Add(new ExternalDriverType(typeName, false, nationalMinShiftCount.Value, nationalMaxShiftCount.Value));
+                    externalDriverTypes.Add(new ExternalDriverType(typeName, false, isHotelAllowed.Value, nationalMinShiftCount.Value, nationalMaxShiftCount.Value));
 
                     ExternalDriver[] currentTypeNationalDrivers = new ExternalDriver[nationalMaxShiftCount.Value];
                     for (int indexInType = 0; indexInType < nationalMaxShiftCount; indexInType++) {
-                        ExternalDriver newExternalDriver = new ExternalDriver(allDriverIndex, externalDriverTypeIndex, indexInType, companyName, shortCompanyName, false, homeTravelTimes, homeTravelDistances, SalaryConfig.ExternalNationalSalaryInfo);
+                        ExternalDriver newExternalDriver = new ExternalDriver(allDriverIndex, externalDriverTypeIndex, indexInType, companyName, shortCompanyName, false, isHotelAllowed.Value, homeTravelTimes, homeTravelDistances, SalaryConfig.ExternalNationalSalaryInfo);
                         currentTypeNationalDrivers[indexInType] = newExternalDriver;
                         allDriverIndex++;
                     }
@@ -490,11 +491,11 @@ namespace Thesis {
                 // International drivers
                 if (internationalMaxShiftCount.Value > 0) {
                     string typeName = string.Format("{0}", companyName);
-                    externalDriverTypes.Add(new ExternalDriverType(typeName, true, internationalMinShiftCount.Value, internationalMaxShiftCount.Value));
+                    externalDriverTypes.Add(new ExternalDriverType(typeName, true, isHotelAllowed.Value, internationalMinShiftCount.Value, internationalMaxShiftCount.Value));
 
                     ExternalDriver[] currentTypeInternationalDrivers = new ExternalDriver[internationalMaxShiftCount.Value];
                     for (int indexInType = 0; indexInType < internationalMaxShiftCount; indexInType++) {
-                        ExternalDriver newExternalDriver = new ExternalDriver(allDriverIndex, externalDriverTypeIndex, indexInType, companyName, shortCompanyName, true, homeTravelTimes, homeTravelDistances, SalaryConfig.ExternalInternationalSalaryInfo);
+                        ExternalDriver newExternalDriver = new ExternalDriver(allDriverIndex, externalDriverTypeIndex, indexInType, companyName, shortCompanyName, true, isHotelAllowed.Value, homeTravelTimes, homeTravelDistances, SalaryConfig.ExternalInternationalSalaryInfo);
                         currentTypeInternationalDrivers[indexInType] = newExternalDriver;
                         allDriverIndex++;
                     }

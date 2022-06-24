@@ -8,13 +8,15 @@ namespace Thesis {
     abstract class Driver {
         public readonly int AllDriversIndex;
         protected readonly bool isInternational;
+        public readonly bool IsHotelAllowed;
         readonly int[] homeTravelTimes, homeTravelDistances;
         protected Instance instance;
         readonly SalarySettings salarySettings;
 
-        public Driver(int allDriversIndex, bool isInternational, int[] homeTravelTimes, int[] homeTravelDistances, SalarySettings salarySettings) {
+        public Driver(int allDriversIndex, bool isInternational, bool isHotelAllowed, int[] homeTravelTimes, int[] homeTravelDistances, SalarySettings salarySettings) {
             AllDriversIndex = allDriversIndex;
             this.isInternational = isInternational;
+            this.IsHotelAllowed = isHotelAllowed;
             this.homeTravelTimes = homeTravelTimes;
             this.homeTravelDistances = homeTravelDistances;
             this.salarySettings = salarySettings;
@@ -51,7 +53,7 @@ namespace Thesis {
         public readonly bool[,] TrackProficiencies;
         readonly InternalSalarySettings internalSalarySettings;
 
-        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, bool isInternational, int[] homeTravelTimes, int[] homeTravelDistances, bool[,] trackProficiencies, int contractTime, InternalSalarySettings internalSalarySettings) : base(allDriversIndex, isInternational, homeTravelTimes, homeTravelDistances, internalSalarySettings) {
+        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, bool isInternational, int[] homeTravelTimes, int[] homeTravelDistances, bool[,] trackProficiencies, int contractTime, InternalSalarySettings internalSalarySettings) : base(allDriversIndex, isInternational, true, homeTravelTimes, homeTravelDistances, internalSalarySettings) {
             InternalIndex = internalIndex;
             InternalDriverName = internalDriverName;
             TrackProficiencies = trackProficiencies;
@@ -86,7 +88,7 @@ namespace Thesis {
         public readonly string CompanyName, ShortCompanyName;
         readonly ExternalSalarySettings externalSalarySettings;
 
-        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, string companyName, string shortCompanyName, bool isInternational, int[] homeTravelTimes, int[] homeTravelDistances, ExternalSalarySettings externalSalarySettings) : base(allDriversIndex, isInternational, homeTravelTimes, homeTravelDistances, externalSalarySettings) {
+        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, string companyName, string shortCompanyName, bool isInternational, bool isHotelAllowed, int[] homeTravelTimes, int[] homeTravelDistances, ExternalSalarySettings externalSalarySettings) : base(allDriversIndex, isInternational, isHotelAllowed, homeTravelTimes, homeTravelDistances, externalSalarySettings) {
             ExternalDriverTypeIndex = externalDriverTypeIndex;
             IndexInType = indexInType;
             CompanyName = companyName;
