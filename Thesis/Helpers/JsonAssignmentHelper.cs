@@ -10,7 +10,10 @@ namespace Thesis {
     static class JsonAssignmentHelper {
         public static void ExportAssignmentInfoJson(string folderPath, SaInfo info) {
             JObject jsonObj = new JObject {
-                ["cost"] = info.TotalInfo.Stats.RawCost,
+                ["cost"] = info.TotalInfo.Stats.Cost,
+                ["rawCost"] = info.TotalInfo.Stats.RawCost,
+                ["robustness"] = info.TotalInfo.Stats.Robustness,
+                ["penalty"] = info.TotalInfo.Stats.Penalty,
                 ["drivers"] = CreateDriversJArray(info.DriverPaths, info),
                 ["satisfaction"] = info.TotalInfo.Stats.SatisfactionScore.Value,
             };
@@ -22,25 +25,42 @@ namespace Thesis {
         }
 
         static JArray CreateDriversJArray(List<Trip>[] driverPaths, SaInfo info) {
-            return new JArray(driverPaths.Select((driverPath, driverIndex) => CreateDriverJObject(driverIndex, driverPath, info)));
+            JArray driversJArray = new JArray();
+            for (int internalDriverIndex = 0; internalDriverIndex < info.Instance.InternalDrivers.Length; internalDriverIndex++) {
+                InternalDriver internalDriver = info.Instance.InternalDrivers[internalDriverIndex];
+                List<Trip> driverPath = driverPaths[internalDriver.AllDriversIndex];
+                driversJArray.Add(CreateDriverJObject(driverPath, internalDriver, internalDriver.GetInternalDriverName(false), internalDriver.GetInternalDriverName(true), info));
+            }
+            for (int externalDriverTypeIndex = 0; externalDriverTypeIndex < info.Instance.ExternalDriverTypes.Length; externalDriverTypeIndex++) {
+                ExternalDriver[] externalDriversInType = info.Instance.ExternalDriversByType[externalDriverTypeIndex];
+                int usedExternalDriverInTypeIndex = 0;
+                for (int externalDriverInTypeIndex = 0; externalDriverInTypeIndex < externalDriversInType.Length; externalDriverInTypeIndex++) {
+                    ExternalDriver externalDriver = externalDriversInType[externalDriverInTypeIndex];
+                    List<Trip> driverPath = driverPaths[externalDriver.AllDriversIndex];
+                    if (driverPath.Count == 0) continue;
+
+                    string externalDriverName = externalDriver.GetExternalDriverName(usedExternalDriverInTypeIndex);
+                    driversJArray.Add(CreateDriverJObject(driverPath, externalDriver, externalDriverName, externalDriverName, info));
+                    usedExternalDriverInTypeIndex++;
+                }
+            }
+            return driversJArray;
         }
 
-        static JObject CreateDriverJObject(int driverIndex, List<Trip> driverPath, SaInfo info) {
-            Driver driver = info.Instance.AllDrivers[driverIndex];
-            SaDriverInfo driverInfo = info.DriverInfos[driverIndex];
+        static JObject CreateDriverJObject(List<Trip> driverPath, Driver driver, string driverName, string driverRealName, SaInfo info) {
+            SaDriverInfo driverInfo = info.DriverInfos[driver.AllDriversIndex];
 
             JObject driverJObject = new JObject {
-                ["driverName"] = driver.GetName(false),
-                ["realDriverName"] = driver.GetName(true),
-                ["driverPath"] = CreateFullDriverPathJArray(driver, driverPath, info),
+                ["driverName"] = driverName,
+                ["realDriverName"] = driverRealName,
+                ["isInternal"] = driver is InternalDriver,
+                ["isInternational"] = driver.IsInternational,
+                ["shifts"] = CreateDriverShiftsJArray(driver, driverPath, info),
                 ["stats"] = CreateDriverStatsJObject(driver, driverInfo),
                 ["info"] = CreateDriverInfoJObject(driverInfo),
             };
             if (driver is InternalDriver internalDriver) {
-                driverJObject["isInternal"] = true;
                 driverJObject["contractTime"] = internalDriver.ContractTime;
-            } else {
-                driverJObject["isInternal"] = false;
             }
             return driverJObject;
         }
@@ -67,8 +87,8 @@ namespace Thesis {
                 ["nightShiftCountByCompanyRules"] = driverInfo.NightShiftCountByCompanyRules,
                 ["weekendShiftCountByCompanyRules"] = driverInfo.WeekendShiftCountByCompanyRules,
                 ["travelTime"] = driverInfo.TravelTime,
-                ["singleFreeDays"] = driverInfo.SingleFreeDayCount,
-                ["doubleFreeDays"] = driverInfo.DoubleFreeDayCount,
+                ["singleFreeDayCount"] = driverInfo.SingleFreeDayCount,
+                ["doubleFreeDayCount"] = driverInfo.DoubleFreeDayCount,
                 ["duplicateRouteCount"] = driverInfo.SharedRouteCounts.Sum(),
             };
         }
@@ -83,46 +103,124 @@ namespace Thesis {
             return driverSatisfactionCriteriaJObject;
         }
 
-        static JArray CreateFullDriverPathJArray(Driver driver, List<Trip> driverPath, SaInfo info) {
-            JArray fullDriverPathJArray = new JArray();
-            if (driverPath.Count == 0) return fullDriverPathJArray;
+        static JArray CreateDriverShiftsJArray(Driver driver, List<Trip> driverPath, SaInfo info) {
+            JArray shiftsJArray = new JArray();
+            if (driverPath.Count == 0) return shiftsJArray;
 
-            JObject shiftJObject = new JObject(); // TODO: split into shifts, with more info per shift
+            Func<Trip, bool> isHotelAfterTripFunc = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index];
+
+            JArray shiftPathJArray = new JArray();
+            Trip shiftFirstTrip = null;
             Trip prevTrip = null;
             Trip parkingTrip = driverPath[0];
+            Trip tripBeforeHotelBeforeShift = null;
+            float shiftRobustness = 0;
             for (int i = 0; i < driverPath.Count; i++) {
                 Trip searchTrip = driverPath[i];
 
                 if (prevTrip == null) {
                     // First activity
-                    AddTravelFromHomeToPath(searchTrip, driver, fullDriverPathJArray);
+                    shiftFirstTrip = searchTrip;
+                    AddTravelFromHomeToPath(searchTrip, driver, shiftPathJArray);
                 } else {
                     if (info.Instance.AreSameShift(prevTrip, searchTrip)) {
                         // Activity in same shift
-                        AddTravelAndWaitBetweenTripsToPath(prevTrip, searchTrip, fullDriverPathJArray, info);
+                        shiftRobustness += AddTravelAndWaitBetweenTripsToPath(prevTrip, searchTrip, shiftPathJArray, info);
                     } else {
                         // Activity in new shift
                         if (info.IsHotelStayAfterTrip[prevTrip.Index]) {
-                            AddHotelStayToPath(prevTrip, searchTrip, fullDriverPathJArray, info);
+                            AddHotelStayAfterToPath(prevTrip, searchTrip, shiftPathJArray, info);
+                            AddShiftToDriverShifts(shiftFirstTrip, prevTrip, parkingTrip, tripBeforeHotelBeforeShift, searchTrip, shiftRobustness, shiftPathJArray, shiftsJArray, driver, info);
+                            tripBeforeHotelBeforeShift = prevTrip;
                         } else {
-                            AddTravelToHomeToPath(prevTrip, parkingTrip, driver, fullDriverPathJArray, info);
-                            AddRestToPath(prevTrip, searchTrip, parkingTrip, driver, fullDriverPathJArray, info);
-                            AddTravelFromHomeToPath(searchTrip, driver, fullDriverPathJArray);
-                            parkingTrip = searchTrip;
+                            AddTravelToHomeToPath(prevTrip, parkingTrip, driver, shiftPathJArray, info);
+                            AddRestToPath(prevTrip, searchTrip, parkingTrip, driver, shiftPathJArray, info);
+                            AddShiftToDriverShifts(shiftFirstTrip, prevTrip, parkingTrip, tripBeforeHotelBeforeShift, null, shiftRobustness, shiftPathJArray, shiftsJArray, driver, info);
+                            tripBeforeHotelBeforeShift = null;
+                        }
+
+                        // Start new shift
+                        shiftPathJArray = new JArray();
+                        shiftFirstTrip = searchTrip;
+                        parkingTrip = searchTrip;
+
+                        if (info.IsHotelStayAfterTrip[prevTrip.Index]) {
+                            AddHotelStayBeforeToPath(prevTrip, searchTrip, shiftPathJArray, info);
+                        } else {
+                            AddTravelFromHomeToPath(searchTrip, driver, shiftPathJArray);
                         }
                     }
                 }
 
-                AddTripToPath(searchTrip, fullDriverPathJArray, info);
+                AddTripToPath(searchTrip, shiftPathJArray, info);
 
                 prevTrip = searchTrip;
             }
-            AddTravelToHomeToPath(prevTrip, parkingTrip, driver, fullDriverPathJArray, info);
+            AddTravelToHomeToPath(prevTrip, parkingTrip, driver, shiftPathJArray, info);
+            AddShiftToDriverShifts(shiftFirstTrip, prevTrip, parkingTrip, tripBeforeHotelBeforeShift, null, shiftRobustness, shiftPathJArray, shiftsJArray, driver, info);
 
-            return fullDriverPathJArray;
+            return shiftsJArray;
         }
 
-        static void AddTripToPath(Trip trip, JArray fullDriverPathJArray, SaInfo info) {
+        static void AddShiftToDriverShifts(Trip shiftFirstTrip, Trip shiftLastTrip, Trip parkingTrip, Trip tripBeforeHotel, Trip tripAfterHotel, float shiftRobustness, JArray shiftPathJArray, JArray shiftsJArray, Driver driver, SaInfo info) {
+            ShiftInfo shiftInfo = info.Instance.ShiftInfo(shiftFirstTrip, shiftLastTrip);
+
+            int administrativeDrivingTime = shiftInfo.AdministrativeDrivingTimeByDriverType[driver.SalarySettings.DriverTypeIndex];
+            int startTime = shiftFirstTrip.StartTime;
+            int administrativeEndTime = startTime + administrativeDrivingTime;
+
+            float drivingCost = driver.DrivingCost(shiftFirstTrip, shiftLastTrip);
+
+            (int travelTimeBefore, int travelDistanceBefore) = RangeCostTripProcessor.GetTravelInfoBefore(tripBeforeHotel, shiftFirstTrip, driver, info.Instance);
+            (int travelTimeAfter, int travelDistanceAfter) = RangeCostTripProcessor.GetTravelInfoAfter(shiftLastTrip, tripAfterHotel, parkingTrip, tripAfterHotel != null, driver, info.Instance);
+
+            int travelTime = travelTimeBefore + travelTimeAfter;
+            int travelDistance = travelDistanceBefore + travelDistanceAfter;
+            float travelCost = driver.GetPaidTravelCost(travelTime, travelDistance);
+            float hotelCost = tripAfterHotel == null ? 0 : SalaryConfig.HotelCosts;
+            float cost = drivingCost + travelCost + hotelCost + shiftRobustness;
+
+            // Salary rates breakdown
+            JArray salaryRates = new JArray();
+            List<ComputedSalaryRateBlock> computeSalaryRateBlocks = shiftInfo.ComputeSalaryRateBlocksByType[driver.SalarySettings.DriverTypeIndex];
+            for (int salaryRateIndex = 0; salaryRateIndex < computeSalaryRateBlocks.Count; salaryRateIndex++) {
+                ComputedSalaryRateBlock computeSalaryRateBlock = computeSalaryRateBlocks[salaryRateIndex];
+                JObject salaryRateJObject = new JObject() {
+                    ["rateStartTime"] = computeSalaryRateBlock.RateStartTime,
+                    ["rateEndTime"] = computeSalaryRateBlock.RateEndTime,
+                    ["salaryStartTime"] = computeSalaryRateBlock.SalaryStartTime,
+                    ["salaryEndTime"] = computeSalaryRateBlock.SalaryEndTime,
+                    ["salaryDuration"] = computeSalaryRateBlock.SalaryDuration,
+                    ["hourlySalaryRate"] = computeSalaryRateBlock.SalaryRate * MiscConfig.HourLength,
+                    ["usesContinuingRate"] = computeSalaryRateBlock.UsesContinuingRate,
+                    ["drivingCostInRange"] = computeSalaryRateBlock.DrivingCostInRate,
+                };
+                salaryRates.Add(salaryRateJObject);
+            }
+
+            JObject shiftJObject = new JObject() {
+                ["tripPath"] = shiftPathJArray,
+                ["drivingTime"] = shiftInfo.DrivingTime,
+                ["administrativeDrivingTime"] = administrativeDrivingTime,
+                ["startTime"] = startTime,
+                ["administrativeEndTime"] = administrativeEndTime,
+                ["drivingCost"] = drivingCost,
+                ["travelTimeBefore"] = travelTimeBefore,
+                ["travelDistanceBefore"] = travelDistanceBefore,
+                ["travelTimeAfter"] = travelTimeAfter,
+                ["travelDistanceAfter"] = travelDistanceAfter,
+                ["travelTime"] = travelDistanceAfter,
+                ["travelDistance"] = travelDistanceAfter,
+                ["cost"] = cost,
+                ["travelCost"] = travelCost,
+                ["hotelCost"] = hotelCost,
+                ["robustness"] = shiftRobustness,
+                ["salaryRates"] = salaryRates,
+            };
+            shiftsJArray.Add(shiftJObject);
+        }
+
+        static void AddTripToPath(Trip trip, JArray driverPathJArray, SaInfo info) {
             JObject tripPathItem = new JObject {
                 ["type"] = "trip",
                 ["tripIndex"] = trip.Index,
@@ -131,97 +229,96 @@ namespace Thesis {
                 ["dutyName"] = trip.DutyName,
                 ["activityName"] = trip.ActivityName,
                 ["startStationName"] = info.Instance.StationNames[trip.StartStationAddressIndex],
-                ["endStationName"] = info.Instance.StationNames[trip.EndStationAddressIndex]
+                ["endStationName"] = info.Instance.StationNames[trip.EndStationAddressIndex],
             };
-            fullDriverPathJArray.Add(tripPathItem);
+            driverPathJArray.Add(tripPathItem);
         }
 
-        static void AddTravelAndWaitBetweenTripsToPath(Trip trip1, Trip trip2, JArray fullDriverPathJArray, SaInfo info) {
-            int carTravelTime = info.Instance.CarTravelTime(trip1, trip2);
+        static float AddTravelAndWaitBetweenTripsToPath(Trip trip1, Trip trip2, JArray driverPathJArray, SaInfo info) {
+            int carTravelTime = info.Instance.PlannedCarTravelTime(trip1, trip2);
             if (carTravelTime > 0) {
                 JObject travelBetweenPathItem = new JObject {
                     ["type"] = "travelBetween",
                     ["startTime"] = trip1.EndTime,
-                    ["endTime"] = trip1.EndTime + carTravelTime
+                    ["endTime"] = trip1.EndTime + carTravelTime,
                 };
-                fullDriverPathJArray.Add(travelBetweenPathItem);
+                driverPathJArray.Add(travelBetweenPathItem);
             }
 
             int waitingTime = trip2.StartTime - trip1.EndTime - carTravelTime;
-            if (waitingTime > 0) {
-                JObject waitBetweenPathItem = new JObject {
-                    ["type"] = "wait",
-                    ["startTime"] = trip1.EndTime + carTravelTime,
-                    ["endTime"] = trip2.StartTime
-                };
-                fullDriverPathJArray.Add(waitBetweenPathItem);
-            } else if (waitingTime < 0) {
-                JObject overlapErrorBetweenPathItem = new JObject {
-                    ["type"] = "overlapError",
-                    ["startTime"] = trip1.EndTime + carTravelTime,
-                    ["endTime"] = trip2.StartTime
-                };
-                fullDriverPathJArray.Add(overlapErrorBetweenPathItem);
-            }
+            float robustness = info.Instance.TripSuccessionRobustness(trip1, trip2);
+            string typeStr = waitingTime >= 0 ? "wait" : "overlapError";
+            JObject waitBetweenPathItem = new JObject {
+                ["type"] = typeStr,
+                ["startTime"] = trip1.EndTime + carTravelTime,
+                ["endTime"] = trip2.StartTime,
+                ["robustness"] = robustness,
+            };
+            driverPathJArray.Add(waitBetweenPathItem);
+
+            return robustness;
         }
 
-        static void AddRestToPath(Trip tripBeforeRest, Trip tripAfterRest, Trip parkingTrip, Driver driver, JArray fullDriverPathJArray, SaInfo info) {
-            int travelTimeAfterShift = info.Instance.CarTravelTime(tripBeforeRest, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
+        static void AddRestToPath(Trip tripBeforeRest, Trip tripAfterRest, Trip parkingTrip, Driver driver, JArray driverPathJArray, SaInfo info) {
+            int travelTimeAfterShift = info.Instance.PlannedCarTravelTime(tripBeforeRest, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
             int travelTimeBeforeShift = driver.HomeTravelTimeToStart(tripAfterRest);
 
             JObject restPathItem = new JObject {
                 ["type"] = "rest",
                 ["startTime"] = tripBeforeRest.EndTime + travelTimeAfterShift,
-                ["endTime"] = tripAfterRest.StartTime - travelTimeBeforeShift
+                ["endTime"] = tripAfterRest.StartTime - travelTimeBeforeShift,
             };
-            fullDriverPathJArray.Add(restPathItem);
+            driverPathJArray.Add(restPathItem);
         }
 
-        static void AddTravelToHomeToPath(Trip tripBeforeHome, Trip parkingTrip, Driver driver, JArray fullDriverPathJArray, SaInfo info) {
-            int travelTimeAfterShift = info.Instance.CarTravelTime(tripBeforeHome, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
+        static void AddTravelToHomeToPath(Trip tripBeforeHome, Trip parkingTrip, Driver driver, JArray driverPathJArray, SaInfo info) {
+            int travelTimeAfterShift = info.Instance.PlannedCarTravelTime(tripBeforeHome, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
 
             JObject travelAfterPathItem = new JObject {
                 ["type"] = "travelAfter",
                 ["startTime"] = tripBeforeHome.EndTime,
-                ["endTime"] = tripBeforeHome.EndTime + travelTimeAfterShift
+                ["endTime"] = tripBeforeHome.EndTime + travelTimeAfterShift,
             };
-            fullDriverPathJArray.Add(travelAfterPathItem);
+            driverPathJArray.Add(travelAfterPathItem);
         }
 
-        static void AddTravelFromHomeToPath(Trip tripAfterHome, Driver driver, JArray fullDriverPathJArray) {
+        static void AddTravelFromHomeToPath(Trip tripAfterHome, Driver driver, JArray driverPathJArray) {
             int travelTimeBeforeShift = driver.HomeTravelTimeToStart(tripAfterHome);
 
             JObject travelBeforePathItem = new JObject {
                 ["type"] = "travelBefore",
                 ["startTime"] = tripAfterHome.StartTime - travelTimeBeforeShift,
-                ["endTime"] = tripAfterHome.StartTime
+                ["endTime"] = tripAfterHome.StartTime,
             };
-            fullDriverPathJArray.Add(travelBeforePathItem);
+            driverPathJArray.Add(travelBeforePathItem);
         }
 
-        static void AddHotelStayToPath(Trip tripBeforeHotel, Trip tripAfterHotel, JArray fullDriverPathJArray, SaInfo info) {
-            int halfTravelTimeViaHotel = info.Instance.HalfTravelTimeViaHotel(tripBeforeHotel, tripAfterHotel);
+        static void AddHotelStayAfterToPath(Trip tripBeforeHotel, Trip tripAfterHotel, JArray driverPathJArray, SaInfo info) {
+            int halfTravelTimeViaHotel = info.Instance.PlannedHalfTravelTimeViaHotel(tripBeforeHotel, tripAfterHotel);
 
             JObject travelBeforeHotelPathItem = new JObject {
                 ["type"] = "travelBeforeHotel",
                 ["startTime"] = tripBeforeHotel.EndTime,
-                ["endTime"] = tripBeforeHotel.EndTime + halfTravelTimeViaHotel
+                ["endTime"] = tripBeforeHotel.EndTime + halfTravelTimeViaHotel,
             };
-            fullDriverPathJArray.Add(travelBeforeHotelPathItem);
+            driverPathJArray.Add(travelBeforeHotelPathItem);
 
             JObject hotelPathItem = new JObject {
                 ["type"] = "hotel",
                 ["startTime"] = tripBeforeHotel.EndTime + halfTravelTimeViaHotel,
-                ["endTime"] = tripAfterHotel.StartTime - halfTravelTimeViaHotel
+                ["endTime"] = tripAfterHotel.StartTime - halfTravelTimeViaHotel,
             };
-            fullDriverPathJArray.Add(hotelPathItem);
+            driverPathJArray.Add(hotelPathItem);
+        }
 
+        static void AddHotelStayBeforeToPath(Trip tripBeforeHotel, Trip tripAfterHotel, JArray driverPathJArray, SaInfo info) {
+            int halfTravelTimeViaHotel = info.Instance.PlannedHalfTravelTimeViaHotel(tripBeforeHotel, tripAfterHotel);
             JObject travelAfterHotelPathItem = new JObject {
                 ["type"] = "travelAfterHotel",
                 ["startTime"] = tripAfterHotel.StartTime - halfTravelTimeViaHotel,
-                ["endTime"] = tripAfterHotel.StartTime
+                ["endTime"] = tripAfterHotel.StartTime,
             };
-            fullDriverPathJArray.Add(travelAfterHotelPathItem);
+            driverPathJArray.Add(travelAfterHotelPathItem);
         }
 
         static JToken SortJTokenAlphabetically(JToken token) {

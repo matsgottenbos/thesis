@@ -8,8 +8,8 @@ export async function checkForErrors (response) {
     else throw Error(`API call 'getData' returned error ${response.status}`);
 }
 
-export async function getData() {
-    const response = await fetch(`../../output/${Config.jsonFile}.json`, {
+export async function getData(selectedScheduleName, uiRootPath = './') {
+    const response = await fetch(`${uiRootPath}${Config.outputRootPath}${Config.selectedOutputFolder}/${selectedScheduleName}.json`, {
         method: 'GET',
     });
     this.checkForErrors(response);

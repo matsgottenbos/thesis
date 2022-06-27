@@ -46,12 +46,12 @@ namespace Thesis {
         public const int IdealRestTime = 14 * 60;
         public static readonly RangeSatisfactionCriterion SatCriterionRouteVariation = new RangeSatisfactionCriterion(10, 0, 0.2f, 0.2f);
         public static readonly RangeSatisfactionCriterion SatCriterionTravelTime = new RangeSatisfactionCriterion(30 * 60, 0, 0.1f, 0.2f);
-        public static readonly TargetSatisfactionCriterion SatCriterionContractTime = new TargetSatisfactionCriterion(driver => driver.ContractTime, driver => 0.4f * driver.ContractTime, 0.2f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionShiftLengths = new RangeSatisfactionCriterion(10 * 60, 0, 0.1f, 0.2f);
+        public static readonly TargetSatisfactionCriterion SatCriterionMatchingContractTime = new TargetSatisfactionCriterion(driver => driver.ContractTime, driver => 0.4f * driver.ContractTime, 0.2f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionShiftLengths = new RangeSatisfactionCriterion(10 * 60, 0, 0.05f, 0.2f);
         public static readonly RangeSatisfactionCriterion SatCriterionRobustness = new RangeSatisfactionCriterion(200, 0, 0.1f, 0.2f);
         public static readonly RangeSatisfactionCriterion SatCriterionNightShifts = new RangeSatisfactionCriterion(5, 0, 0.05f, 0.2f);
         public static readonly RangeSatisfactionCriterion SatCriterionWeekendShifts = new RangeSatisfactionCriterion(2, 0, 0.05f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionHotels = new RangeSatisfactionCriterion(4, 0, 0.05f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionHotelStays = new RangeSatisfactionCriterion(4, 0, 0.1f, 0.2f);
         // TBA: time off requests
         // TBA: consecutive shifts
         public static readonly RangeSatisfactionCriterion SatCriterionConsecutiveFreeDays = new RangeSatisfactionCriterion(0, 1, 0.05f, 0.2f);

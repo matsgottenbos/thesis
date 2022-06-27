@@ -57,13 +57,12 @@ namespace Thesis {
 
             // Get travel time after and rest time
             bool isHotelAfter = isHotelAfterTrip(prevTrip);
-            int travelTimeAfter, travelDistanceAfter, restTimeAfter;
+            (int travelTimeAfter, int travelDistanceAfter) = GetTravelInfoAfter(prevTrip, searchTrip, parkingTrip, isHotelAfter, driver, instance);
+            int restTimeAfter;
             bool isInvalidHotelAfter = false; // Used for debugger
             if (isHotelAfter) {
                 // Hotel stay after
                 driverInfo.HotelCount++;
-                travelTimeAfter = instance.HalfTravelTimeViaHotel(prevTrip, searchTrip);
-                travelDistanceAfter = instance.HalfTravelDistanceViaHotel(prevTrip, searchTrip);
                 restTimeAfter = instance.RestTimeViaHotel(prevTrip, searchTrip);
                 driverInfo.Stats.RawCost += SalaryConfig.HotelCosts;
 
@@ -76,8 +75,6 @@ namespace Thesis {
                 beforeHotelTrip = prevTrip;
             } else {
                 // No hotel stay after
-                travelTimeAfter = instance.CarTravelTime(prevTrip, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
-                travelDistanceAfter = instance.CarTravelDistance(prevTrip, parkingTrip) + driver.HomeTravelDistanceToStart(parkingTrip);
                 restTimeAfter = instance.RestTimeWithTravelTime(prevTrip, searchTrip, travelTimeAfter + driver.HomeTravelTimeToStart(searchTrip));
 
                 // Update free days
@@ -118,7 +115,7 @@ namespace Thesis {
             ShiftInfo shiftInfo = info.Instance.ShiftInfo(shiftFirstTrip, prevTrip);
 
             // Get travel time after
-            int travelTimeAfter = instance.CarTravelTime(prevTrip, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
+            int travelTimeAfter = instance.ExpectedCarTravelTime(prevTrip, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
             int travelDistanceAfter = instance.CarTravelDistance(prevTrip, parkingTrip) + driver.HomeTravelDistanceToStart(parkingTrip);
 
             // Check for invalid hotel stay
@@ -141,16 +138,7 @@ namespace Thesis {
             driverInfo.ShiftCount++;
 
             // Get travel time before
-            int travelTimeBefore, travelDistanceBefore;
-            if (beforeHotelTrip == null) {
-                // No hotel stay before
-                travelTimeBefore = driver.HomeTravelTimeToStart(shiftFirstTrip);
-                travelDistanceBefore = driver.HomeTravelDistanceToStart(shiftFirstTrip);
-            } else {
-                // Hotel stay before
-                travelTimeBefore = instance.HalfTravelTimeViaHotel(beforeHotelTrip, shiftFirstTrip);
-                travelDistanceBefore = instance.HalfTravelDistanceViaHotel(beforeHotelTrip, shiftFirstTrip);
-            }
+            (int travelTimeBefore, int travelDistanceBefore) = GetTravelInfoBefore(beforeHotelTrip, shiftFirstTrip, driver, instance);
 
             // Get driving time
             int shiftLengthWithoutTravel = shiftInfo.DrivingTime;
@@ -197,6 +185,37 @@ namespace Thesis {
                 SaDebugger.GetCurrentStageInfo().AddTrip(trip, isPrecedenceViolation, isInvalidHotelAfter);
             }
             #endif
+        }
+
+
+        /* Helpers */
+
+        public static (int, int) GetTravelInfoBefore(Trip tripBeforeHotel, Trip shiftFirstTrip, Driver driver, Instance instance) {
+            int travelTimeBefore, travelDistanceBefore;
+            if (tripBeforeHotel == null) {
+                // No hotel stay before
+                travelTimeBefore = driver.HomeTravelTimeToStart(shiftFirstTrip);
+                travelDistanceBefore = driver.HomeTravelDistanceToStart(shiftFirstTrip);
+            } else {
+                // Hotel stay before
+                travelTimeBefore = instance.ExpectedHalfTravelTimeViaHotel(tripBeforeHotel, shiftFirstTrip);
+                travelDistanceBefore = instance.HalfTravelDistanceViaHotel(tripBeforeHotel, shiftFirstTrip);
+            }
+            return (travelTimeBefore, travelDistanceBefore);
+        }
+
+        public static (int, int) GetTravelInfoAfter(Trip shiftLastTrip, Trip nextShiftFirstTrip, Trip parkingTrip, bool isHotelAfter, Driver driver, Instance instance) {
+            int travelTimeAfter, travelDistanceAfter;
+            if (isHotelAfter) {
+                // Hotel stay after
+                travelTimeAfter = instance.ExpectedHalfTravelTimeViaHotel(shiftLastTrip, nextShiftFirstTrip);
+                travelDistanceAfter = instance.HalfTravelDistanceViaHotel(shiftLastTrip, nextShiftFirstTrip);
+            } else {
+                // No hotel stay after
+                travelTimeAfter = instance.ExpectedCarTravelTime(shiftLastTrip, parkingTrip) + driver.HomeTravelTimeToStart(parkingTrip);
+                travelDistanceAfter = instance.CarTravelDistance(shiftLastTrip, parkingTrip) + driver.HomeTravelDistanceToStart(parkingTrip);
+            }
+            return (travelTimeAfter, travelDistanceAfter);
         }
     }
 }

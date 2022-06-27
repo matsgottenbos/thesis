@@ -1,5 +1,7 @@
-export const jsonFile = '2022-06-24-14-09/56k-59p';
+export const selectedOutputFolder = '2022-06-27-21-09';
+export const outputRootPath = '../output/'
 export const showRealDriverNames = false;
+export const shouldShowActivityIds = true;
 export const startDate = new Date(2022, 4, 23); // NB: months are 0-based, days are 1-based
 export const originalTimeframeLength = 7 * 24 * 60;
 export const bufferBeforeTimeframe = 2 * 60;

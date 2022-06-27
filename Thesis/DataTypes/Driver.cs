@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 namespace Thesis {
     abstract class Driver {
         public readonly int AllDriversIndex;
-        protected readonly bool isInternational;
+        public readonly bool IsInternational;
         public readonly bool IsHotelAllowed;
         readonly int[] homeTravelTimes, homeTravelDistances;
         protected Instance instance;
-        readonly SalarySettings salarySettings;
+        public readonly SalarySettings SalarySettings;
 
         public Driver(int allDriversIndex, bool isInternational, bool isHotelAllowed, int[] homeTravelTimes, int[] homeTravelDistances, SalarySettings salarySettings) {
             AllDriversIndex = allDriversIndex;
-            this.isInternational = isInternational;
-            this.IsHotelAllowed = isHotelAllowed;
+            this.IsInternational = isInternational;
+            IsHotelAllowed = isHotelAllowed;
             this.homeTravelTimes = homeTravelTimes;
             this.homeTravelDistances = homeTravelDistances;
-            this.salarySettings = salarySettings;
+            SalarySettings = salarySettings;
         }
 
         public void SetInstance(Instance instance) {
@@ -27,10 +27,9 @@ namespace Thesis {
         }
 
         public abstract string GetId();
-        public abstract string GetName(bool useRealName);
 
         public float DrivingCost(Trip firstTripInternal, Trip lastTripInternal) {
-            return instance.ShiftInfo(firstTripInternal, lastTripInternal).GetDrivingCost(salarySettings.DriverTypeIndex);
+            return instance.ShiftInfo(firstTripInternal, lastTripInternal).GetDrivingCost(SalarySettings.DriverTypeIndex);
         }
 
         public int HomeTravelTimeToStart(Trip trip) {
@@ -65,7 +64,7 @@ namespace Thesis {
             return InternalIndex.ToString();
         }
 
-        public override string GetName(bool useRealName) {
+        public string GetInternalDriverName(bool useRealName) {
             if (useRealName) return InternalDriverName;
             return string.Format("Driver {0}", InternalIndex + 1);
         }
@@ -100,9 +99,9 @@ namespace Thesis {
             return string.Format("e{0}.{1}", ExternalDriverTypeIndex, IndexInType);
         }
 
-        public override string GetName(bool useRealName) {
-            string nationalInternationalStr = isInternational ? "international" : "national";
-            return string.Format("{0} {1} {2}", ShortCompanyName, nationalInternationalStr, IndexInType + 1);
+        public string GetExternalDriverName(int actualIndexInType) {
+            string nationalInternationalStr = IsInternational ? "international" : "national";
+            return string.Format("{0} {1} {2}", ShortCompanyName, nationalInternationalStr, actualIndexInType + 1);
         }
 
         public override double GetSatisfaction(SaDriverInfo driverInfo, SaInfo info) {

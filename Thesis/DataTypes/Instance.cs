@@ -12,7 +12,7 @@ namespace Thesis {
         public readonly XorShiftRandom Rand;
         readonly int timeframeLength;
         public readonly int UniqueSharedRouteCount;
-        readonly int[,] expectedCarTravelTimes, carTravelDistances;
+        readonly int[,] plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances;
         public readonly Trip[] Trips;
         public readonly string[] StationNames;
         readonly ShiftInfo[,] shiftInfos;
@@ -28,7 +28,7 @@ namespace Thesis {
             XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "settings.xlsx"));
 
             Rand = rand;
-            (StationNames, expectedCarTravelTimes, carTravelDistances) = GetStationNamesAndExpectedCarTravelInfo();
+            (StationNames, plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances) = GetStationNamesAndExpectedCarTravelInfo();
             (Trips, tripSuccession, tripSuccessionRobustness, tripsAreSameShift, timeframeLength, UniqueSharedRouteCount) = ProcessRawTrips(addressesBook, rawTrips, StationNames, expectedCarTravelTimes);
             shiftInfos = GetShiftInfos(Trips, timeframeLength);
             InternalDrivers = CreateInternalDrivers(settingsBook, rand);
@@ -50,7 +50,7 @@ namespace Thesis {
             }
         }
 
-        static (string[], int[,], int[,]) GetStationNamesAndExpectedCarTravelInfo() {
+        static (string[], int[,], int[,], int[,]) GetStationNamesAndExpectedCarTravelInfo() {
             (int[,] plannedCarTravelTimes, int[,] carTravelDistances, string[] stationNames) = TravelInfoImporter.ImportFullyConnectedTravelInfo(Path.Combine(AppConfig.IntermediateFolder, "stationTravelInfo.csv"));
 
             int stationCount = plannedCarTravelTimes.GetLength(0);
@@ -58,14 +58,18 @@ namespace Thesis {
             for (int location1Index = 0; location1Index < stationCount; location1Index++) {
                 for (int location2Index = location1Index; location2Index < stationCount; location2Index++) {
                     int plannedTravelTimeBetween = plannedCarTravelTimes[location1Index, location2Index];
+                    int expectedTravelTimeBetween;
                     if (plannedTravelTimeBetween == 0) {
-                        expectedCarTravelTimes[location1Index, location2Index] = 0;
+                        expectedTravelTimeBetween = 0;
                     } else {
-                        expectedCarTravelTimes[location1Index, location2Index] = RulesConfig.TravelDelayExpectedFunc(plannedTravelTimeBetween);
+                        expectedTravelTimeBetween = plannedTravelTimeBetween + RulesConfig.TravelDelayExpectedFunc(plannedTravelTimeBetween);
                     }
+                    expectedCarTravelTimes[location1Index, location2Index] = expectedTravelTimeBetween;
+                    expectedCarTravelTimes[location2Index, location1Index] = expectedTravelTimeBetween;
                 }
             }
-            return (stationNames, expectedCarTravelTimes, carTravelDistances);
+
+            return (stationNames, plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances);
         }
 
         (Trip[], bool[,], float[,], bool[,], int, int) ProcessRawTrips(XSSFWorkbook addressesBook, RawTrip[] rawTrips, string[] stationNames, int[,] expectedCarTravelTimes) {
@@ -116,7 +120,7 @@ namespace Thesis {
                     Trip successor = trip.Successors[successorIndex];
                     tripSuccession[tripIndex, successor.Index] = true;
 
-                    int plannedWaitingTime = WaitingTime(trip, successor);
+                    int plannedWaitingTime = ExpectedWaitingTime(trip, successor);
                     tripSuccessionRobustness[tripIndex, successor.Index] = GetSuccessionRobustness(trip, successor, trip.Duration, plannedWaitingTime);
                 }
             }
@@ -127,7 +131,7 @@ namespace Thesis {
                 Trip trip1 = trips[trip1Index];
                 for (int trip2Index = trip1Index; trip2Index < trips.Length; trip2Index++) {
                     Trip trip2 = trips[trip2Index];
-                    tripsAreSameShift[trip1.Index, trip2.Index] = WaitingTime(trip1, trip2) <= SaConfig.ShiftWaitingTimeThreshold;
+                    tripsAreSameShift[trip1.Index, trip2.Index] = ExpectedWaitingTime(trip1, trip2) <= SaConfig.ShiftWaitingTimeThreshold;
                 }
             }
 
@@ -248,11 +252,13 @@ namespace Thesis {
                         SalaryConfig.ExternalNationalSalaryInfo,
                         SalaryConfig.ExternalInternationalSalaryInfo,
                     };
+                    int[] administrativeDrivingTimeByDriverType = new int[salarySettingsByDriverType.Length];
                     float[] drivingCostsByDriverType = new float[salarySettingsByDriverType.Length];
+                    List<ComputedSalaryRateBlock>[] computeSalaryRateBlocksByType = new List<ComputedSalaryRateBlock>[salarySettingsByDriverType.Length];
                     for (int driverTypeIndex = 0; driverTypeIndex < salarySettingsByDriverType.Length; driverTypeIndex++) {
                         SalarySettings typeSalarySettings = salarySettingsByDriverType[driverTypeIndex];
                         typeSalarySettings.SetDriverTypeIndex(driverTypeIndex);
-                        drivingCostsByDriverType[driverTypeIndex] = GetDrivingCost(firstTripInternal, lastTripInternal, typeSalarySettings, timeframeLength);
+                        (administrativeDrivingTimeByDriverType[driverTypeIndex], drivingCostsByDriverType[driverTypeIndex], computeSalaryRateBlocksByType[driverTypeIndex]) = GetDrivingCost(firstTripInternal, lastTripInternal, typeSalarySettings, timeframeLength);
                     }
 
                     // Get time in night and weekend
@@ -273,14 +279,14 @@ namespace Thesis {
                         minRestTimeAfter = RulesConfig.NormalShiftMinRestTime;
                     }
 
-                    shiftInfos[firstTripIndex, lastTripIndex] = new ShiftInfo(drivingTime, maxShiftLengthWithoutTravel, maxShiftLengthWithTravel, minRestTimeAfter, drivingCostsByDriverType, isNightShiftByLaw, isNightShiftByCompanyRules, isWeekendShiftByCompanyRules);
+                    shiftInfos[firstTripIndex, lastTripIndex] = new ShiftInfo(drivingTime, maxShiftLengthWithoutTravel, maxShiftLengthWithTravel, minRestTimeAfter, administrativeDrivingTimeByDriverType, drivingCostsByDriverType, computeSalaryRateBlocksByType, isNightShiftByLaw, isNightShiftByCompanyRules, isWeekendShiftByCompanyRules);
                 }
             }
 
             return shiftInfos;
         }
 
-        static float GetDrivingCost(Trip firstTripInternal, Trip lastTripInternal, SalarySettings salaryInfo, int timeframeLength) {
+        static (int, float, List<ComputedSalaryRateBlock>) GetDrivingCost(Trip firstTripInternal, Trip lastTripInternal, SalarySettings salaryInfo, int timeframeLength) {
             // Repeat salary rate to cover entire week
             int timeframeDayCount = (int)Math.Floor((float)timeframeLength / MiscConfig.DayLength) + 1;
             List<SalaryRateBlock> processedSalaryRates = new List<SalaryRateBlock>();
@@ -313,16 +319,17 @@ namespace Thesis {
             // Determine driving time, while keeping in mind the minimum paid time
             int drivingStartTime = firstTripInternal.StartTime;
             int drivingEndTimeReal = lastTripInternal.EndTime;
-            int drivingTime = Math.Max(salaryInfo.MinPaidShiftTime, drivingEndTimeReal - drivingStartTime);
-            int drivingEndTimeAdministrative = drivingStartTime + drivingTime;
+            int administrativeDrivingTime = Math.Max(salaryInfo.MinPaidShiftTime, drivingEndTimeReal - drivingStartTime);
+            int administrativeDrivingEndTime = drivingStartTime + administrativeDrivingTime;
 
             // Determine driving cost from the different salary rates; final block is skipped since we copied beyond timeframe length
             float? shiftContinuingRate = null;
             float drivingCost = 0;
+            List<ComputedSalaryRateBlock> computeSalaryRateBlocks = new List<ComputedSalaryRateBlock>();
             for (int salaryRateIndex = 0; salaryRateIndex < processedSalaryRates.Count - 1; salaryRateIndex++) {
                 SalaryRateBlock salaryRateInfo = processedSalaryRates[salaryRateIndex];
                 SalaryRateBlock nextSalaryRateInfo = processedSalaryRates[salaryRateIndex + 1];
-                int drivingTimeInRate = GetTimeInRange(drivingStartTime, drivingEndTimeAdministrative, salaryRateInfo.StartTime, nextSalaryRateInfo.StartTime);
+                int drivingTimeInRate = GetTimeInRange(drivingStartTime, administrativeDrivingEndTime, salaryRateInfo.StartTime, nextSalaryRateInfo.StartTime);
 
                 if (drivingTimeInRate == 0) continue;
 
@@ -332,10 +339,25 @@ namespace Thesis {
                 }
 
                 float applicableSalaryRate = Math.Max(salaryRateInfo.SalaryRate, shiftContinuingRate.Value);
-                drivingCost += drivingTimeInRate * applicableSalaryRate;
+                float drivingCostInRate = drivingTimeInRate * applicableSalaryRate;
+                drivingCost += drivingCostInRate;
+
+                int salaryStartTime = Math.Max(salaryRateInfo.StartTime, drivingStartTime);
+                int salaryEndTime = Math.Min(nextSalaryRateInfo.StartTime, administrativeDrivingEndTime);
+                bool usesContinuingRate = shiftContinuingRate.Value > salaryRateInfo.SalaryRate;
+
+                ComputedSalaryRateBlock prevComputedSalaryBlock = computeSalaryRateBlocks.Count > 0 ? computeSalaryRateBlocks[^1] : null;
+                if (prevComputedSalaryBlock == null || prevComputedSalaryBlock.SalaryRate != applicableSalaryRate || prevComputedSalaryBlock.UsesContinuingRate != usesContinuingRate) {
+                    computeSalaryRateBlocks.Add(new ComputedSalaryRateBlock(salaryRateInfo.StartTime, nextSalaryRateInfo.StartTime, salaryStartTime, salaryEndTime, drivingTimeInRate, applicableSalaryRate, usesContinuingRate, drivingCostInRate));
+                } else {
+                    prevComputedSalaryBlock.RateEndTime = nextSalaryRateInfo.StartTime;
+                    prevComputedSalaryBlock.SalaryEndTime = salaryEndTime;
+                    prevComputedSalaryBlock.SalaryDuration += drivingTimeInRate;
+                    prevComputedSalaryBlock.DrivingCostInRate += drivingCostInRate;
+                }
             }
 
-            return drivingCost;
+            return (administrativeDrivingTime, drivingCost, computeSalaryRateBlocks);
         }
 
         static (int, int) GetShiftNightWeekendTime(Trip firstTripInternal, Trip lastTripInternal, int timeframeLength) {
@@ -532,7 +554,7 @@ namespace Thesis {
 
                 if (DataConfig.ExcelInternalDriverCompanyNames.Contains(trip.DataAssignedCompanyName)) {
                     // Assigned to internal driver
-                    dataAssignment[tripIndex] = Array.Find(internalDrivers, internalDriver => internalDriver.GetName(true) == trip.DataAssignedEmployeeName);
+                    dataAssignment[tripIndex] = Array.Find(internalDrivers, internalDriver => internalDriver.GetInternalDriverName(true) == trip.DataAssignedEmployeeName);
                 } else {
                     // Assigned to external driver
                     bool isInternational = externalInternationalDriverNames.Contains((trip.DataAssignedEmployeeName, trip.DataAssignedCompanyName));
@@ -575,7 +597,11 @@ namespace Thesis {
             return tripSuccessionRobustness[trip1.Index, trip2.Index];
         }
 
-        public int CarTravelTime(Trip trip1, Trip trip2) {
+        public int PlannedCarTravelTime(Trip trip1, Trip trip2) {
+            return plannedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex];
+        }
+
+        public int ExpectedCarTravelTime(Trip trip1, Trip trip2) {
             return expectedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex];
         }
 
@@ -583,11 +609,19 @@ namespace Thesis {
             return carTravelDistances[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex];
         }
 
-        public int TravelTimeViaHotel(Trip trip1, Trip trip2) {
+        public int PlannedTravelTimeViaHotel(Trip trip1, Trip trip2) {
+            return plannedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime;
+        }
+
+        public int ExpectedTravelTimeViaHotel(Trip trip1, Trip trip2) {
             return expectedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime;
         }
 
-        public int HalfTravelTimeViaHotel(Trip trip1, Trip trip2) {
+        public int PlannedHalfTravelTimeViaHotel(Trip trip1, Trip trip2) {
+            return (plannedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime) / 2;
+        }
+
+        public int ExpectedHalfTravelTimeViaHotel(Trip trip1, Trip trip2) {
             return (expectedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime) / 2;
         }
 
@@ -600,11 +634,15 @@ namespace Thesis {
         }
 
         public int RestTimeViaHotel(Trip trip1, Trip trip2) {
-            return RestTimeWithTravelTime(trip1, trip2, TravelTimeViaHotel(trip1, trip2));
+            return RestTimeWithTravelTime(trip1, trip2, ExpectedTravelTimeViaHotel(trip1, trip2));
         }
 
-        int WaitingTime(Trip trip1, Trip trip2) {
-            return trip2.StartTime - trip1.EndTime - CarTravelTime(trip1, trip2);
+        int PlannedWaitingTime(Trip trip1, Trip trip2) {
+            return trip2.StartTime - trip1.EndTime - PlannedCarTravelTime(trip1, trip2);
+        }
+
+        int ExpectedWaitingTime(Trip trip1, Trip trip2) {
+            return trip2.StartTime - trip1.EndTime - ExpectedCarTravelTime(trip1, trip2);
         }
 
         /** Check if two trips belong to the same shift or not, based on whether their waiting time is within the threshold */
@@ -623,6 +661,23 @@ namespace Thesis {
 
                 Console.WriteLine("{0,4} {1,2}:00  |  Rate: {3,5}  |  Cont.: {4,5}", weekdays[dayNum], hourNum, rate.StartTime, rate.SalaryRate * 60, rate.ContinuingRate * 60);
             }
+        }
+    }
+
+    class ComputedSalaryRateBlock {
+        public int RateStartTime, RateEndTime, SalaryStartTime, SalaryEndTime, SalaryDuration;
+        public float SalaryRate, DrivingCostInRate;
+        public bool UsesContinuingRate;
+
+        public ComputedSalaryRateBlock(int rateStartTime, int rateEndTime, int salaryStartTime, int salaryEndTime, int salaryDuration, float salaryRate, bool usesContinuingRate, float drivingCostInRate) {
+            RateStartTime = rateStartTime;
+            RateEndTime = rateEndTime;
+            SalaryStartTime = salaryStartTime;
+            SalaryEndTime = salaryEndTime;
+            SalaryDuration = salaryDuration;
+            SalaryRate = salaryRate;
+            UsesContinuingRate = usesContinuingRate;
+            DrivingCostInRate = drivingCostInRate;
         }
     }
 }

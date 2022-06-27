@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Driver planner UI</title>
+        <link rel="stylesheet" type="text/css" href="../src/css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="../src/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="../src/lib/fontawesome6/css/fontawesome.min.css">
+        <link rel="stylesheet" type="text/css" href="../src/lib/fontawesome6/css/solid.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="module" src="../src/js/visualisePage.js"></script>
+    </head>
+
+    <body>
+        <div class="pageHeader">
+            <div class="backButton"><i class="fa-solid fa-arrow-left"></i></div>
+            <h1 class="pageTitle">Schedule</h1>
+        </div>
+
+        <div class="scheduleInfo">
+            <h2 class="scheduleInfoHeader">Schedule info</h2>
+            <div class="scheduleInfoRows"></div>
+        </div>
+
+        <div class="scheduleVisual">
+            <div class="driversColumn">
+                <div class="driversHeader">Driver</div>
+                <div class="drivers"></div>
+            </div>
+
+            <div class="scheduleColumn">
+                <div class="scheduleInner">
+                    <div class="scheduleHeader"></div>
+                    <div class="driverSchedules"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>
