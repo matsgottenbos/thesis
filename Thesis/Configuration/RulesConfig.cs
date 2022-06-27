@@ -48,9 +48,9 @@ namespace Thesis {
         public static readonly RangeSatisfactionCriterion SatCriterionTravelTime = new RangeSatisfactionCriterion(30 * 60, 0, 0.1f, 0.2f);
         public static readonly TargetSatisfactionCriterion SatCriterionMatchingContractTime = new TargetSatisfactionCriterion(driver => driver.ContractTime, driver => 0.4f * driver.ContractTime, 0.2f, 0.2f);
         public static readonly RangeSatisfactionCriterion SatCriterionShiftLengths = new RangeSatisfactionCriterion(10 * 60, 0, 0.05f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionRobustness = new RangeSatisfactionCriterion(200, 0, 0.1f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionRobustness = new RangeSatisfactionCriterion(400, 0, 0.1f, 0.2f);
         public static readonly RangeSatisfactionCriterion SatCriterionNightShifts = new RangeSatisfactionCriterion(5, 0, 0.05f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionWeekendShifts = new RangeSatisfactionCriterion(2, 0, 0.05f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionWeekendShifts = new RangeSatisfactionCriterion(3, 0, 0.05f, 0.2f);
         public static readonly RangeSatisfactionCriterion SatCriterionHotelStays = new RangeSatisfactionCriterion(4, 0, 0.1f, 0.2f);
         // TBA: time off requests
         // TBA: consecutive shifts
