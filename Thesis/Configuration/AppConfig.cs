@@ -21,6 +21,7 @@ namespace Thesis {
         public const bool DebugCheckOperations = false;
         public const bool DebugSaLogCurrentSolution = false;
         public const bool DebugSaLogAdditionalInfo = false;
+        public const bool DebugSaLogOperationStats = false;
         public const bool DebugRunInspector = false;
         public const bool DebugRunJsonExporter = false;
         public const bool DebugRunDelaysExporter = false;

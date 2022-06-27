@@ -11,6 +11,7 @@ namespace Thesis {
     class SimulatedAnnealing {
         readonly SaInfo info;
         readonly SaInfo[] bestInfoBySatisfaction;
+        int[] debugOperationCounts, debugAcceptedOperationCounts;
 
         public SimulatedAnnealing(Instance instance) {
             // Initialise info
@@ -63,6 +64,13 @@ namespace Thesis {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
+            #if DEBUG
+            if (AppConfig.DebugSaLogOperationStats) {
+                debugOperationCounts = new int[4];
+                debugAcceptedOperationCounts = new int[4];
+            }
+            #endif
+
             // Log initial assignment
             LogIteration(stopwatch);
 
@@ -77,6 +85,17 @@ namespace Thesis {
                 else if (operationDouble < SaConfig.SwapProbCumulative) operation = SwapOperation.CreateRandom(info);
                 else operation = ToggleHotelOperation.CreateRandom(info);
 
+                #if DEBUG
+                int operationTypeIndex;
+                if (AppConfig.DebugSaLogOperationStats) {
+                    if (operationDouble < SaConfig.AssignInternalProbCumulative) operationTypeIndex = 0;
+                    else if (operationDouble < SaConfig.AssignExternalProbCumulative) operationTypeIndex = 1;
+                    else if (operationDouble < SaConfig.SwapProbCumulative) operationTypeIndex = 2;
+                    else operationTypeIndex = 3;
+                    debugOperationCounts[operationTypeIndex]++;
+                }
+                #endif
+
                 SaTotalInfo totalInfoDiff = operation.GetCostDiff();
                 double oldAdjustedCost = GetAdjustedCost(info.TotalInfo.Stats.Cost, info.TotalInfo.Stats.SatisfactionScore.Value, info.SatisfactionFactor);
                 double newAdjustedCost = GetAdjustedCost(info.TotalInfo.Stats.Cost + totalInfoDiff.Stats.Cost, info.TotalInfo.Stats.SatisfactionScore.Value + totalInfoDiff.Stats.SatisfactionScore.Value, info.SatisfactionFactor);
@@ -85,6 +104,12 @@ namespace Thesis {
                 bool isAccepted = adjustedCostDiff < 0 || fastRand.NextDouble() < Math.Exp(-adjustedCostDiff / info.Temperature);
                 if (isAccepted) {
                     operation.Execute();
+
+                    #if DEBUG
+                    if (AppConfig.DebugSaLogOperationStats) {
+                        debugAcceptedOperationCounts[operationTypeIndex]++;
+                    }
+                    #endif
 
                     int satisfactionLevel = (int)Math.Round(info.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor);
                     if (info.TotalInfo.Stats.Penalty < 0.01 && info.TotalInfo.Stats.Cost < bestInfoBySatisfaction[satisfactionLevel].TotalInfo.Stats.Cost) {
@@ -241,6 +266,18 @@ namespace Thesis {
             if (AppConfig.DebugSaLogCurrentSolution) {
                 Console.WriteLine("Current solution: {0}", ParseHelper.AssignmentToString(info));
             }
+
+            #if DEBUG
+            if (AppConfig.DebugSaLogOperationStats) {
+                string[] operationNames = new string[] { "Assign internal", "Assign external", "Swap", "Toggle hotel" };
+                for (int i = 0; i < debugOperationCounts.Length; i++) {
+                    string acceptancePercentageStr = debugOperationCounts[i] == 0 ? "0" : ParseHelper.ToString(100f * debugAcceptedOperationCounts[i] / debugOperationCounts[i], "0");
+                    Console.Write("{0}: {1}/{2} ({3}%)", operationNames[i], ParseHelper.LargeNumToString(debugAcceptedOperationCounts[i]), ParseHelper.LargeNumToString(debugOperationCounts[i]), acceptancePercentageStr);
+                    if (i + 1 < debugOperationCounts.Length) Console.Write("  |  ");
+                }
+                Console.WriteLine();
+            }
+            #endif
 
             //if (bestInfo.Assignment != null) {
             //    Console.WriteLine("Best solution: {0}", ParseHelper.AssignmentToString(bestInfo));

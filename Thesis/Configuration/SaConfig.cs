@@ -18,13 +18,13 @@ namespace Thesis {
         public const float SaTemperatureReductionFactor = 0.97f;
         public const float SaEndCycleTemperature = 0.1f;
         public const float SaCycleMinSatisfactionFactor = 0f;
-        public const float SaCycleMaxSatisfactionFactor = 5f;
+        public const float SaCycleMaxSatisfactionFactor = 10f;
         public const int ShiftWaitingTimeThreshold = 6 * 60; // Waiting times shorter than this count as the same trip; waiting time longer start a new shift
         public const float ParetoFrontMinCostDiff = 500f; // Minmum cost difference to consider two solutions to be separate points on the pareto front
 
         // Operation probabilities
-        public const float AssignInternalProbCumulative = 0.4f;
-        public const float AssignExternalProbCumulative = 0.6f;
+        public const float AssignInternalProbCumulative = 0.7f;
+        public const float AssignExternalProbCumulative = 0.8f;
         public const float SwapProbCumulative = 0.999f;
         public const float ToggleHotelProbCumulative = 1f;
 
