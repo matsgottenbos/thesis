@@ -9,7 +9,7 @@ namespace Thesis {
         public DebugPastDataExporter(Instance instance) {
             SaInfo info = new SaInfo(instance);
             info.Assignment = instance.DataAssignment;
-            info.IsHotelStayAfterTrip = new bool[instance.Trips.Length];
+            info.IsHotelStayAfterActivity = new bool[instance.Activities.Length];
             info.ProcessDriverPaths(true);
 
             TotalCostCalculator.ProcessAssignmentCost(info);

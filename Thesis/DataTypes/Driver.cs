@@ -28,16 +28,16 @@ namespace Thesis {
 
         public abstract string GetId();
 
-        public float DrivingCost(Trip firstTripInternal, Trip lastTripInternal) {
-            return instance.ShiftInfo(firstTripInternal, lastTripInternal).GetDrivingCost(SalarySettings.DriverTypeIndex);
+        public float DrivingCost(Activity shiftFirstActivity, Activity shiftLastActivity) {
+            return instance.ShiftInfo(shiftFirstActivity, shiftLastActivity).GetDrivingCost(SalarySettings.DriverTypeIndex);
         }
 
-        public int HomeTravelTimeToStart(Trip trip) {
-            return homeTravelTimes[trip.StartStationAddressIndex];
+        public int HomeTravelTimeToStart(Activity activity) {
+            return homeTravelTimes[activity.StartStationAddressIndex];
         }
 
-        public int HomeTravelDistanceToStart(Trip trip) {
-            return homeTravelDistances[trip.StartStationAddressIndex];
+        public int HomeTravelDistanceToStart(Activity activity) {
+            return homeTravelDistances[activity.StartStationAddressIndex];
         }
 
         public abstract float GetPaidTravelCost(int travelTime, int travelDistance);

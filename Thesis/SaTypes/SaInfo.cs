@@ -8,8 +8,8 @@ namespace Thesis {
     class SaInfo {
         public readonly Instance Instance;
         public Driver[] Assignment;
-        public List<Trip>[] DriverPaths;
-        public bool[] IsHotelStayAfterTrip;
+        public List<Activity>[] DriverPaths;
+        public bool[] IsHotelStayAfterActivity;
         public int[] DriverPathIndices;
         public SaTotalInfo TotalInfo;
         public SaDriverInfo[] DriverInfos;
@@ -23,7 +23,7 @@ namespace Thesis {
             Instance = instance;
         }
 
-        public void ReassignTrip(Trip trip, Driver oldDriver, Driver newDriver) {
+        public void ReassignActivity(Activity activity, Driver oldDriver, Driver newDriver) {
             #if DEBUG
             if (AppConfig.DebugCheckOperations) {
                 DebugCheckDriverPaths();
@@ -31,24 +31,24 @@ namespace Thesis {
             #endif
 
             // Update assignment
-            Assignment[trip.Index] = newDriver;
+            Assignment[activity.Index] = newDriver;
 
             // Remove from old driver path
-            List<Trip> oldDriverPath = DriverPaths[oldDriver.AllDriversIndex];
-            int tripOldPathIndex = DriverPathIndices[trip.Index];
-            oldDriverPath.RemoveAt(tripOldPathIndex);
-            for (int i = tripOldPathIndex; i < oldDriverPath.Count; i++) {
+            List<Activity> oldDriverPath = DriverPaths[oldDriver.AllDriversIndex];
+            int activityOldPathIndex = DriverPathIndices[activity.Index];
+            oldDriverPath.RemoveAt(activityOldPathIndex);
+            for (int i = activityOldPathIndex; i < oldDriverPath.Count; i++) {
                 DriverPathIndices[oldDriverPath[i].Index]--;
             }
 
             // Add to new driver path
-            List<Trip> newDriverPath = DriverPaths[newDriver.AllDriversIndex];
+            List<Activity> newDriverPath = DriverPaths[newDriver.AllDriversIndex];
             int pathInsertIndex;
             for (pathInsertIndex = 0; pathInsertIndex < newDriverPath.Count; pathInsertIndex++) {
-                if (newDriverPath[pathInsertIndex].Index > trip.Index) break;
+                if (newDriverPath[pathInsertIndex].Index > activity.Index) break;
             }
-            newDriverPath.Insert(pathInsertIndex, trip);
-            DriverPathIndices[trip.Index] = pathInsertIndex;
+            newDriverPath.Insert(pathInsertIndex, activity);
+            DriverPathIndices[activity.Index] = pathInsertIndex;
             for (int j = pathInsertIndex + 1; j < newDriverPath.Count; j++) {
                 DriverPathIndices[newDriverPath[j].Index]++;
             }
@@ -61,26 +61,26 @@ namespace Thesis {
         }
 
         public void DebugCheckDriverPaths() {
-            for (int tripIndex = 0; tripIndex < Instance.Trips.Length; tripIndex++) {
-                Trip debugTrip = Instance.Trips[tripIndex];
-                Driver debugDriver = Assignment[tripIndex];
-                List<Trip> debugDriverPath = DriverPaths[debugDriver.AllDriversIndex];
+            for (int activityIndex = 0; activityIndex < Instance.Activities.Length; activityIndex++) {
+                Activity debugActivity = Instance.Activities[activityIndex];
+                Driver debugDriver = Assignment[activityIndex];
+                List<Activity> debugDriverPath = DriverPaths[debugDriver.AllDriversIndex];
 
-                if (!debugDriverPath.Contains(debugTrip)) {
-                    throw new Exception(string.Format("Missing trip {0} in path of driver {1}", debugTrip.Index, debugDriver.GetId()));
+                if (!debugDriverPath.Contains(debugActivity)) {
+                    throw new Exception(string.Format("Missing activity {0} in path of driver {1}", debugActivity.Index, debugDriver.GetId()));
                 }
             }
             for (int driverIndex = 0; driverIndex < Instance.AllDrivers.Length; driverIndex++) {
                 Driver debugDriver = Instance.AllDrivers[driverIndex];
-                List<Trip> debugDriverPath = DriverPaths[debugDriver.AllDriversIndex];
+                List<Activity> debugDriverPath = DriverPaths[debugDriver.AllDriversIndex];
 
                 for (int i = 0; i < debugDriverPath.Count; i++) {
-                    Trip debugTrip = debugDriverPath[i];
-                    if (Assignment[debugTrip.Index] != debugDriver) {
-                        throw new Exception(string.Format("Incorrect trip {0} in path of driver {1}", debugTrip.Index, debugDriver.GetId()));
+                    Activity debugActivity = debugDriverPath[i];
+                    if (Assignment[debugActivity.Index] != debugDriver) {
+                        throw new Exception(string.Format("Incorrect activity {0} in path of driver {1}", debugActivity.Index, debugDriver.GetId()));
                     }
-                    if (DriverPathIndices[debugTrip.Index] != i) {
-                        throw new Exception(string.Format("Trip {0} of driver {1} has stored path index {2} but is at index {3}", debugTrip.Index, debugDriver.GetId(), DriverPathIndices[debugTrip.Index], i));
+                    if (DriverPathIndices[debugActivity.Index] != i) {
+                        throw new Exception(string.Format("Activity {0} of driver {1} has stored path index {2} but is at index {3}", debugActivity.Index, debugDriver.GetId(), DriverPathIndices[debugActivity.Index], i));
                     }
                 }
             }
@@ -90,27 +90,27 @@ namespace Thesis {
             return new SaInfo(Instance) {
                 TotalInfo = TotalInfo,
                 Assignment = (Driver[])Assignment.Clone(),
-                IsHotelStayAfterTrip = (bool[])IsHotelStayAfterTrip.Clone(),
+                IsHotelStayAfterActivity = (bool[])IsHotelStayAfterActivity.Clone(),
             };
         }
 
         public void ProcessDriverPaths(bool shouldIgnoreEmpty = false) {
-            DriverPaths = new List<Trip>[Instance.AllDrivers.Length];
-            DriverPathIndices = new int[Instance.Trips.Length];
+            DriverPaths = new List<Activity>[Instance.AllDrivers.Length];
+            DriverPathIndices = new int[Instance.Activities.Length];
             for (int driverIndex = 0; driverIndex < Instance.AllDrivers.Length; driverIndex++) {
-                DriverPaths[driverIndex] = new List<Trip>();
+                DriverPaths[driverIndex] = new List<Activity>();
             }
-            for (int tripIndex = 0; tripIndex < Instance.Trips.Length; tripIndex++) {
-                Trip trip = Instance.Trips[tripIndex];
-                Driver driver = Assignment[tripIndex];
+            for (int activityIndex = 0; activityIndex < Instance.Activities.Length; activityIndex++) {
+                Activity activity = Instance.Activities[activityIndex];
+                Driver driver = Assignment[activityIndex];
                 if (driver == null) {
                     if (shouldIgnoreEmpty) continue;
-                    throw new Exception(string.Format("Trip {0} has no driver assigned", tripIndex));
+                    throw new Exception(string.Format("Activity {0} has no driver assigned", activityIndex));
                 }
 
-                List<Trip> driverPath = DriverPaths[driver.AllDriversIndex];
-                DriverPathIndices[trip.Index] = driverPath.Count;
-                driverPath.Add(trip);
+                List<Activity> driverPath = DriverPaths[driver.AllDriversIndex];
+                DriverPathIndices[activity.Index] = driverPath.Count;
+                driverPath.Add(activity);
             }
         }
     }

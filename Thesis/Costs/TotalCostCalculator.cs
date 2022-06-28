@@ -11,9 +11,9 @@ namespace Thesis {
             info.TotalInfo = new SaTotalInfo();
             info.DriverInfos = new SaDriverInfo[info.Instance.AllDrivers.Length];
             for (int driverIndex = 0; driverIndex < info.Instance.AllDrivers.Length; driverIndex++) {
-                List<Trip> driverPath = info.DriverPaths[driverIndex];
+                List<Activity> driverPath = info.DriverPaths[driverIndex];
                 Driver driver = info.Instance.AllDrivers[driverIndex];
-                SaDriverInfo driverInfo = GetDriverInfo(driverPath, info.IsHotelStayAfterTrip, driver, info);
+                SaDriverInfo driverInfo = GetDriverInfo(driverPath, info.IsHotelStayAfterActivity, driver, info);
 
                 info.DriverInfos[driverIndex] = driverInfo;
                 info.TotalInfo.AddDriverInfo(driverInfo);
@@ -28,20 +28,20 @@ namespace Thesis {
             }
         }
 
-        public static SaDriverInfo GetDriverInfo(List<Trip> driverPath, bool[] isHotelStayAfterTrip, Driver driver, SaInfo info) {
+        public static SaDriverInfo GetDriverInfo(List<Activity> driverPath, bool[] isHotelStayAfterActivity, Driver driver, SaInfo info) {
             SaDriverInfo driverInfo = new SaDriverInfo(info.Instance);
 
             if (driverPath.Count > 0) {
-                Func<Trip, bool> isHotelAfterTrip = (Trip trip) => isHotelStayAfterTrip[trip.Index];
-                Trip shiftFirstTrip = driverPath[0];
-                Trip parkingTrip = shiftFirstTrip;
-                Trip prevTrip = shiftFirstTrip;
-                Trip beforeHotelTrip = null;
-                for (int pathTripIndex = 1; pathTripIndex < driverPath.Count; pathTripIndex++) {
-                    Trip searchTrip = driverPath[pathTripIndex];
-                    RangeCostTripProcessor.ProcessDriverTrip(searchTrip, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, driverInfo, driver, info, info.Instance);
+                Func<Activity, bool> isHotelAfterActivity = (Activity activity) => isHotelStayAfterActivity[activity.Index];
+                Activity shiftFirstActivity = driverPath[0];
+                Activity parkingActivity = shiftFirstActivity;
+                Activity prevActivity = shiftFirstActivity;
+                Activity beforeHotelActivity = null;
+                for (int pathActivityIndex = 1; pathActivityIndex < driverPath.Count; pathActivityIndex++) {
+                    Activity searchActivity = driverPath[pathActivityIndex];
+                    RangeCostActivityProcessor.ProcessDriverActivity(searchActivity, ref shiftFirstActivity, ref parkingActivity, ref prevActivity, ref beforeHotelActivity, isHotelAfterActivity, driverInfo, driver, info, info.Instance);
                 }
-                RangeCostTripProcessor.ProcessDriverEndRange(null, ref shiftFirstTrip, ref parkingTrip, ref prevTrip, ref beforeHotelTrip, isHotelAfterTrip, driverInfo, driver, info, info.Instance);
+                RangeCostActivityProcessor.ProcessDriverEndRange(null, ref shiftFirstActivity, ref parkingActivity, ref prevActivity, ref beforeHotelActivity, isHotelAfterActivity, driverInfo, driver, info, info.Instance);
             }
 
             RangeCostDiffCalculator.ProcessFullPathValues(driverInfo, driverInfo, driver, info);

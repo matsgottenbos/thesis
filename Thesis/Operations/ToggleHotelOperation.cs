@@ -6,32 +6,32 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class ToggleHotelOperation : AbstractOperation {
-        readonly Trip trip;
+        readonly Activity activity;
         readonly bool isAddition;
         readonly Driver driver;
         readonly SaDriverInfo driverInfo;
         SaDriverInfo driverInfoDiff;
 
-        public ToggleHotelOperation(int tripIndex, bool isAddition, SaInfo info) : base(info) {
-            trip = info.Instance.Trips[tripIndex];
+        public ToggleHotelOperation(int activityIndex, bool isAddition, SaInfo info) : base(info) {
+            activity = info.Instance.Activities[activityIndex];
             this.isAddition = isAddition;
-            driver = info.Assignment[tripIndex];
+            driver = info.Assignment[activityIndex];
             driverInfo = info.DriverInfos[driver.AllDriversIndex];
         }
 
         public override SaTotalInfo GetCostDiff() {
             #if DEBUG
             if (AppConfig.DebugCheckOperations) {
-                string templateStr = isAddition ? "Add hotel stay to trip {0} with driver {1}" : "Remove hotel stay from trip {0} with driver {1}";
-                SaDebugger.GetCurrentOperation().Description = string.Format(templateStr, trip.Index, driver.GetId());
+                string templateStr = isAddition ? "Add hotel stay to activity {0} with driver {1}" : "Remove hotel stay from activity {0} with driver {1}";
+                SaDebugger.GetCurrentOperation().Description = string.Format(templateStr, activity.Index, driver.GetId());
             }
             #endif
 
             // Get cost diffs
             if (isAddition) {
-                driverInfoDiff = CostDiffCalculator.GetAddHotelDriverCostDiff(trip, driver, driverInfo, info);
+                driverInfoDiff = CostDiffCalculator.GetAddHotelDriverCostDiff(activity, driver, driverInfo, info);
             } else {
-                driverInfoDiff = CostDiffCalculator.GetRemoveHotelDriverCostDiff(trip, driver, driverInfo, info);
+                driverInfoDiff = CostDiffCalculator.GetRemoveHotelDriverCostDiff(activity, driver, driverInfo, info);
             }
 
             // Store cost diffs in total diff object
@@ -44,16 +44,16 @@ namespace Thesis {
         }
 
         public override void Execute() {
-            info.IsHotelStayAfterTrip[trip.Index] = isAddition;
+            info.IsHotelStayAfterActivity[activity.Index] = isAddition;
             UpdateDriverInfo(driver, driverInfoDiff);
         }
 
         public static ToggleHotelOperation CreateRandom(SaInfo info, XorShiftRandom rand) {
-            int tripIndex = rand.Next(info.Instance.Trips.Length);
+            int activityIndex = rand.Next(info.Instance.Activities.Length);
 
-            bool isAddition = !info.IsHotelStayAfterTrip[tripIndex];
+            bool isAddition = !info.IsHotelStayAfterActivity[activityIndex];
 
-            return new ToggleHotelOperation(tripIndex, isAddition, info);
+            return new ToggleHotelOperation(activityIndex, isAddition, info);
         }
     }
 }

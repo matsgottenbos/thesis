@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class AssignInternalOperation : AbstractAssignOperation {
-        public AssignInternalOperation(int tripIndex, InternalDriver newInternalDriver, SaInfo info) : base(tripIndex, newInternalDriver, info) { }
+        public AssignInternalOperation(int activityIndex, InternalDriver newInternalDriver, SaInfo info) : base(activityIndex, newInternalDriver, info) { }
 
         public static AbstractAssignOperation CreateRandom(SaInfo info, XorShiftRandom rand) {
-            int tripIndex = rand.Next(info.Instance.Trips.Length);
-            Driver oldDriver = info.Assignment[tripIndex];
+            int activityIndex = rand.Next(info.Instance.Activities.Length);
+            Driver oldDriver = info.Assignment[activityIndex];
 
             // Select random internal driver that is not the current driver
             InternalDriver newInternalDriver;
@@ -19,7 +19,7 @@ namespace Thesis {
                 newInternalDriver = info.Instance.InternalDrivers[newInternalDriverIndex];
             } while (newInternalDriver == oldDriver);
 
-            return new AssignInternalOperation(tripIndex, newInternalDriver, info);
+            return new AssignInternalOperation(activityIndex, newInternalDriver, info);
         }
     }
 }

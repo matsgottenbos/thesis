@@ -192,8 +192,8 @@ namespace Thesis {
             currentShift = new DebugShiftInfo();
         }
 
-        public void AddTrip(Trip trip, bool isPrecedenceViolationAfter, bool isInvalidHotelAfter) {
-            currentShift.Trips.Add(new DebugTripInfo(trip, isPrecedenceViolationAfter, isInvalidHotelAfter));
+        public void AddActivity(Activity activity, bool isOverlapViolationAfter, bool isInvalidHotelAfter) {
+            currentShift.Activities.Add(new DebugActivityInfo(activity, isOverlapViolationAfter, isInvalidHotelAfter));
         }
 
         public void EndShiftPart1(int? restTimeAfter, bool isHotelAfter, bool isInvalidHotelAfter) {
@@ -217,10 +217,10 @@ namespace Thesis {
             // Log path string
             for (int shiftIndex = 0; shiftIndex < shifts.Count; shiftIndex++) {
                 DebugShiftInfo shiftInfo = shifts[shiftIndex];
-                for (int shiftTripIndex = 0; shiftTripIndex < shiftInfo.Trips.Count; shiftTripIndex++) {
-                    DebugTripInfo tripInfo = shiftInfo.Trips[shiftTripIndex];
-                    Console.Write(tripInfo.Trip.Index);
-                    if (shiftTripIndex + 1 < shiftInfo.Trips.Count) Console.Write("-");
+                for (int shiftActivityIndex = 0; shiftActivityIndex < shiftInfo.Activities.Count; shiftActivityIndex++) {
+                    DebugActivityInfo activityInfo = shiftInfo.Activities[shiftActivityIndex];
+                    Console.Write(activityInfo.Activity.Index);
+                    if (shiftActivityIndex + 1 < shiftInfo.Activities.Count) Console.Write("-");
                 }
                 Console.Write("|");
                 if (shiftInfo.IsHotelAfter) Console.WriteLine("H|");
@@ -230,15 +230,9 @@ namespace Thesis {
             // Log path info
             for (int shiftIndex = 0; shiftIndex < shifts.Count; shiftIndex++) {
                 DebugShiftInfo shiftInfo = shifts[shiftIndex];
-                Console.WriteLine("Shift {0}--{1} length with travel: {2}", shiftInfo.Trips[0].Trip.Index, shiftInfo.Trips[^1].Trip.Index, shiftInfo.ShiftLengthWithTravel);
-                Console.WriteLine("Shift {0}--{1} length without travel: {2}", shiftInfo.Trips[0].Trip.Index, shiftInfo.Trips[^1].Trip.Index, shiftInfo.ShiftInfo.DrivingTime);
-                if (shiftInfo.RestTimeAfter.HasValue) Console.WriteLine("Rest after shift {0}--{1}: {2}", shiftInfo.Trips[0].Trip.Index, shiftInfo.Trips[^1].Trip.Index, shiftInfo.RestTimeAfter);
-                // Todo: add more shift info
-
-                for (int shiftTripIndex = 0; shiftTripIndex < shiftInfo.Trips.Count; shiftTripIndex++) {
-                    DebugTripInfo tripInfo = shiftInfo.Trips[shiftTripIndex];
-                    // Todo: add trip info
-                }
+                Console.WriteLine("Shift {0}--{1} length with travel: {2}", shiftInfo.Activities[0].Activity.Index, shiftInfo.Activities[^1].Activity.Index, shiftInfo.ShiftLengthWithTravel);
+                Console.WriteLine("Shift {0}--{1} length without travel: {2}", shiftInfo.Activities[0].Activity.Index, shiftInfo.Activities[^1].Activity.Index, shiftInfo.ShiftInfo.DrivingTime);
+                if (shiftInfo.RestTimeAfter.HasValue) Console.WriteLine("Rest after shift {0}--{1}: {2}", shiftInfo.Activities[0].Activity.Index, shiftInfo.Activities[^1].Activity.Index, shiftInfo.RestTimeAfter);
             }
         }
     }
@@ -262,43 +256,25 @@ namespace Thesis {
     }
 
     class DebugShiftInfo {
-        public List<DebugTripInfo> Trips;
+        public List<DebugActivityInfo> Activities;
         public ShiftInfo ShiftInfo;
         public int ShiftLengthWithTravel, TravelTimeBefore, TravelTimeAfter;
         public int? RestTimeAfter;
         public bool IsHotelAfter, IsInvalidHotelAfter;
 
         public DebugShiftInfo() {
-            Trips = new List<DebugTripInfo>();
+            Activities = new List<DebugActivityInfo>();
         }
     }
 
-    class DebugTripInfo {
-        public Trip Trip;
-        public bool IsPrecedenceViolationAfter, IsInvalidHotelAfter;
+    class DebugActivityInfo {
+        public Activity Activity;
+        public bool IsOverlapViolationAfter, IsInvalidHotelAfter;
 
-        public DebugTripInfo(Trip trip, bool isPrecedenceViolation, bool isInvalidHotel) {
-            Trip = trip;
-            IsPrecedenceViolationAfter = isPrecedenceViolation;
+        public DebugActivityInfo(Activity activity, bool isOverlapViolationAfter, bool isInvalidHotel) {
+            Activity = activity;
+            IsOverlapViolationAfter = isOverlapViolationAfter;
             IsInvalidHotelAfter = isInvalidHotel;
-        }
-    }
-
-
-
-
-    class CheckedTotal {
-        public readonly DebugTotalInfoBasic Total = new DebugTotalInfoBasic();
-        public string DriverPathString = "";
-        public List<(int, int)> ShiftLengths = new List<(int, int)>();
-        public List<int> RestTimes = new List<int>();
-
-        public void Log() {
-            Console.WriteLine("Driver path: {0}", DriverPathString);
-            Console.WriteLine("Shift lengths: {0}", OperationPart.ParseValuePairs(ShiftLengths));
-            Console.WriteLine("Rest times: {0}", ParseHelper.ToString(RestTimes));
-            Console.WriteLine("Worked time: {0}", ShiftLengths.Select(shiftLengthPair => shiftLengthPair.Item1).Sum());
-            Total.Log(false);
         }
     }
 }

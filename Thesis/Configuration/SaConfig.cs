@@ -19,7 +19,7 @@ namespace Thesis {
         public const float SaEndCycleTemperature = 0.1f;
         public const float SaCycleMinSatisfactionFactor = 0f;
         public const float SaCycleMaxSatisfactionFactor = 10f;
-        public const int ShiftWaitingTimeThreshold = 6 * 60; // Waiting times shorter than this count as the same trip; waiting time longer start a new shift
+        public const int ShiftWaitingTimeThreshold = 6 * 60; // Waiting times shorter than this count as the same shift; waiting time longer start a new shift
         public const float ParetoFrontMinCostDiff = 500f; // Minmum cost difference to consider two solutions to be separate points on the pareto front
 
         // Operation probabilities
@@ -29,13 +29,13 @@ namespace Thesis {
         public const float ToggleHotelProbCumulative = 1f;
 
         // Penalties
-        public const double PrecendenceViolationPenalty = 4000;
+        public const double OverlapViolationPenalty = 4000;
         public const double ShiftLengthViolationPenalty = 1000;
         public const double ShiftLengthViolationPenaltyPerMin = 1000 / 60f;
         public const double RestTimeViolationPenalty = 1000;
         public const double RestTimeViolationPenaltyPerMin = 1000 / 60f;
         public const double InternalShiftCountViolationPenaltyPerShift = 2000;
-        public const double InvalidHotelPenalty = 4000;
         public const double ExternalShiftCountPenaltyPerShift = 4000;
+        public const double InvalidHotelPenalty = 4000;
     }
 }

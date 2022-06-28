@@ -12,27 +12,27 @@ namespace Thesis {
         readonly int timeframeLength;
         public readonly int UniqueSharedRouteCount;
         readonly int[,] plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances;
-        public readonly Trip[] Trips;
+        public readonly Activity[] Activities;
         public readonly string[] StationNames;
         readonly ShiftInfo[,] shiftInfos;
-        readonly float[,] tripSuccessionRobustness;
-        readonly bool[,] tripSuccession, tripsAreSameShift;
+        readonly float[,] activitySuccessionRobustness;
+        readonly bool[,] activitySuccession, activitiesAreSameShift;
         public readonly InternalDriver[] InternalDrivers;
         public readonly ExternalDriverType[] ExternalDriverTypes;
         public readonly ExternalDriver[][] ExternalDriversByType;
         public readonly Driver[] AllDrivers, DataAssignment;
 
-        public Instance(XorShiftRandom rand, RawTrip[] rawTrips) {
+        public Instance(XorShiftRandom rand, RawActivity[] rawActivities) {
             XSSFWorkbook addressesBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "stationAddresses.xlsx"));
             XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "settings.xlsx"));
 
             (StationNames, plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances) = GetStationNamesAndExpectedCarTravelInfo();
-            (Trips, tripSuccession, tripSuccessionRobustness, tripsAreSameShift, timeframeLength, UniqueSharedRouteCount) = ProcessRawTrips(addressesBook, rawTrips, StationNames, expectedCarTravelTimes);
-            shiftInfos = GetShiftInfos(Trips, timeframeLength);
+            (Activities, activitySuccession, activitySuccessionRobustness, activitiesAreSameShift, timeframeLength, UniqueSharedRouteCount) = ProcessRawActivities(addressesBook, rawActivities, StationNames, expectedCarTravelTimes);
+            shiftInfos = GetShiftInfos(Activities, timeframeLength);
             InternalDrivers = CreateInternalDrivers(settingsBook, rand);
             Dictionary<(string, bool), ExternalDriver[]> externalDriversByTypeDict;
             (ExternalDriverTypes, ExternalDriversByType, externalDriversByTypeDict) = CreateExternalDrivers(settingsBook, InternalDrivers.Length, rand);
-            DataAssignment = GetDataAssignment(settingsBook, Trips, InternalDrivers, externalDriversByTypeDict);
+            DataAssignment = GetDataAssignment(settingsBook, Activities, InternalDrivers, externalDriversByTypeDict);
 
             // Create all drivers array
             List<Driver> allDriversList = new List<Driver>();
@@ -70,105 +70,105 @@ namespace Thesis {
             return (stationNames, plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances);
         }
 
-        (Trip[], bool[,], float[,], bool[,], int, int) ProcessRawTrips(XSSFWorkbook addressesBook, RawTrip[] rawTrips, string[] stationNames, int[,] expectedCarTravelTimes) {
-            if (rawTrips.Length == 0) {
-                throw new Exception("No trips found in timeframe");
+        (Activity[], bool[,], float[,], bool[,], int, int) ProcessRawActivities(XSSFWorkbook addressesBook, RawActivity[] rawActivities, string[] stationNames, int[,] expectedCarTravelTimes) {
+            if (rawActivities.Length == 0) {
+                throw new Exception("No activities found in timeframe");
             }
 
-            // Sort trips by start time
-            rawTrips = rawTrips.OrderBy(trip => trip.StartTime).ToArray();
+            // Sort activities by start time
+            rawActivities = rawActivities.OrderBy(activity => activity.StartTime).ToArray();
 
             // Get dictionary mapping station names in data to their index in the address list
             Dictionary<string, int> stationDataNameToAddressIndex = GetStationDataNameToAddressIndexDict(addressesBook, stationNames);
 
-            // Create trip objects
-            Trip[] trips = new Trip[rawTrips.Length];
-            for (int tripIndex = 0; tripIndex < trips.Length; tripIndex++) {
-                RawTrip rawTrip = rawTrips[tripIndex];
+            // Create activity objects
+            Activity[] activities = new Activity[rawActivities.Length];
+            for (int activityIndex = 0; activityIndex < activities.Length; activityIndex++) {
+                RawActivity rawActivity = rawActivities[activityIndex];
 
                 // Get index of start and end station addresses
-                if (!stationDataNameToAddressIndex.ContainsKey(rawTrip.StartStationName)) throw new Exception(string.Format("Unknown station `{0}`", rawTrip.StartStationName));
-                int startStationAddressIndex = stationDataNameToAddressIndex[rawTrip.StartStationName];
-                if (!stationDataNameToAddressIndex.ContainsKey(rawTrip.EndStationName)) throw new Exception(string.Format("Unknown station `{0}`", rawTrip.EndStationName));
-                int endStationAddressIndex = stationDataNameToAddressIndex[rawTrip.EndStationName];
+                if (!stationDataNameToAddressIndex.ContainsKey(rawActivity.StartStationName)) throw new Exception(string.Format("Unknown station `{0}`", rawActivity.StartStationName));
+                int startStationAddressIndex = stationDataNameToAddressIndex[rawActivity.StartStationName];
+                if (!stationDataNameToAddressIndex.ContainsKey(rawActivity.EndStationName)) throw new Exception(string.Format("Unknown station `{0}`", rawActivity.EndStationName));
+                int endStationAddressIndex = stationDataNameToAddressIndex[rawActivity.EndStationName];
 
-                trips[tripIndex] = new Trip(rawTrip, tripIndex, startStationAddressIndex, endStationAddressIndex);
+                activities[activityIndex] = new Activity(rawActivity, activityIndex, startStationAddressIndex, endStationAddressIndex);
             }
 
-            // Generate precedence constraints
-            for (int trip1Index = 0; trip1Index < trips.Length; trip1Index++) {
-                for (int trip2Index = trip1Index; trip2Index < trips.Length; trip2Index++) {
-                    Trip trip1 = trips[trip1Index];
-                    Trip trip2 = trips[trip2Index];
-                    int travelTimeBetween = expectedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex];
+            // Determine valid successors constraints
+            for (int activity1Index = 0; activity1Index < activities.Length; activity1Index++) {
+                for (int activity2Index = activity1Index; activity2Index < activities.Length; activity2Index++) {
+                    Activity activity1 = activities[activity1Index];
+                    Activity activity2 = activities[activity2Index];
+                    int travelTimeBetween = expectedCarTravelTimes[activity1.EndStationAddressIndex, activity2.StartStationAddressIndex];
 
-                    if (trip1.EndTime + travelTimeBetween <= trip2.StartTime) {
-                        trip1.AddSuccessor(trip2);
+                    if (activity1.EndTime + travelTimeBetween <= activity2.StartTime) {
+                        activity1.AddSuccessor(activity2);
                     }
                 }
             }
 
-            // Create 2D bool array indicating whether trips can succeed each other
-            // Also preprocess the robustness scores of trips when used in successsion
-            bool[,] tripSuccession = new bool[trips.Length, trips.Length];
-            float[,] tripSuccessionRobustness = new float[trips.Length, trips.Length];
-            for (int tripIndex = 0; tripIndex < trips.Length; tripIndex++) {
-                Trip trip = trips[tripIndex];
-                for (int successorIndex = 0; successorIndex < trip.Successors.Count; successorIndex++) {
-                    Trip successor = trip.Successors[successorIndex];
-                    tripSuccession[tripIndex, successor.Index] = true;
+            // Create 2D bool array indicating whether activities can succeed each other without overlapping
+            // Also preprocess the robustness scores of activities when used in successsion
+            bool[,] activitySuccession = new bool[activities.Length, activities.Length];
+            float[,] activitySuccessionRobustness = new float[activities.Length, activities.Length];
+            for (int activityIndex = 0; activityIndex < activities.Length; activityIndex++) {
+                Activity activity = activities[activityIndex];
+                for (int successorIndex = 0; successorIndex < activity.Successors.Count; successorIndex++) {
+                    Activity successor = activity.Successors[successorIndex];
+                    activitySuccession[activityIndex, successor.Index] = true;
 
-                    int plannedWaitingTime = ExpectedWaitingTime(trip, successor);
-                    tripSuccessionRobustness[tripIndex, successor.Index] = GetSuccessionRobustness(trip, successor, trip.Duration, plannedWaitingTime);
+                    int plannedWaitingTime = ExpectedWaitingTime(activity, successor);
+                    activitySuccessionRobustness[activityIndex, successor.Index] = GetSuccessionRobustness(activity, successor, activity.Duration, plannedWaitingTime);
                 }
             }
 
-            // Preprocess whether trips could belong to the same shift
-            bool[,] tripsAreSameShift = new bool[trips.Length, trips.Length];
-            for (int trip1Index = 0; trip1Index < trips.Length; trip1Index++) {
-                Trip trip1 = trips[trip1Index];
-                for (int trip2Index = trip1Index; trip2Index < trips.Length; trip2Index++) {
-                    Trip trip2 = trips[trip2Index];
-                    tripsAreSameShift[trip1.Index, trip2.Index] = ExpectedWaitingTime(trip1, trip2) <= SaConfig.ShiftWaitingTimeThreshold;
+            // Preprocess whether activities could belong to the same shift
+            bool[,] activitiesAreSameShift = new bool[activities.Length, activities.Length];
+            for (int activity1Index = 0; activity1Index < activities.Length; activity1Index++) {
+                Activity activity1 = activities[activity1Index];
+                for (int activity2Index = activity1Index; activity2Index < activities.Length; activity2Index++) {
+                    Activity activity2 = activities[activity2Index];
+                    activitiesAreSameShift[activity1.Index, activity2.Index] = ExpectedWaitingTime(activity1, activity2) <= SaConfig.ShiftWaitingTimeThreshold;
                 }
             }
 
-            // Timeframe length is the last end time of all trips
+            // Timeframe length is the last end time of all activities
             int timeframeLength = 0;
-            for (int tripIndex = 0; tripIndex < trips.Length; tripIndex++) {
-                timeframeLength = Math.Max(timeframeLength, trips[tripIndex].EndTime);
+            for (int activityIndex = 0; activityIndex < activities.Length; activityIndex++) {
+                timeframeLength = Math.Max(timeframeLength, activities[activityIndex].EndTime);
             }
 
-            // Determine list of unique trip routes
+            // Determine list of unique activity routes
             List<(int, int, int)> routeCounts = new List<(int, int, int)>();
-            for (int tripIndex = 0; tripIndex < trips.Length; tripIndex++) {
-                Trip trip = trips[tripIndex];
-                if (trip.StartStationAddressIndex == trip.EndStationAddressIndex) continue;
-                (int lowStationIndex, int highStationIndex) = GetLowHighStationIndices(trip);
+            for (int activityIndex = 0; activityIndex < activities.Length; activityIndex++) {
+                Activity activity = activities[activityIndex];
+                if (activity.StartStationAddressIndex == activity.EndStationAddressIndex) continue;
+                (int lowStationIndex, int highStationIndex) = GetLowHighStationIndices(activity);
 
                 bool isExistingRoute = routeCounts.Any(route => route.Item1 == lowStationIndex && route.Item2 == highStationIndex);
                 if (isExistingRoute) {
                     int routeIndex = routeCounts.FindIndex(route => route.Item1 == lowStationIndex && route.Item2 == highStationIndex);
                     routeCounts[routeIndex] = (routeCounts[routeIndex].Item1, routeCounts[routeIndex].Item2, routeCounts[routeIndex].Item3 + 1);
                 } else {
-                    routeCounts.Add((trip.StartStationAddressIndex, trip.EndStationAddressIndex, 1));
+                    routeCounts.Add((activity.StartStationAddressIndex, activity.EndStationAddressIndex, 1));
                 }
             }
 
-            // Store indices of shared routes for trips
+            // Store indices of shared routes for activities
             List<(int, int, int)> sharedRouteCounts = routeCounts.FindAll(route => route.Item3 > 1);
-            for (int tripIndex = 0; tripIndex < trips.Length; tripIndex++) {
-                Trip trip = trips[tripIndex];
-                (int lowStationIndex, int highStationIndex) = GetLowHighStationIndices(trip);
+            for (int activityIndex = 0; activityIndex < activities.Length; activityIndex++) {
+                Activity activity = activities[activityIndex];
+                (int lowStationIndex, int highStationIndex) = GetLowHighStationIndices(activity);
 
                 int sharedRouteIndex = sharedRouteCounts.FindIndex(route => route.Item1 == lowStationIndex && route.Item2 == highStationIndex);
                 if (sharedRouteIndex != -1) {
-                    trip.SetSharedRouteIndex(sharedRouteIndex);
+                    activity.SetSharedRouteIndex(sharedRouteIndex);
                 }
             }
             int uniqueSharedRouteCount = sharedRouteCounts.Count;
 
-            return (trips, tripSuccession, tripSuccessionRobustness, tripsAreSameShift, timeframeLength, uniqueSharedRouteCount);
+            return (activities, activitySuccession, activitySuccessionRobustness, activitiesAreSameShift, timeframeLength, uniqueSharedRouteCount);
         }
 
         /** Get a dictionary that converts from station name in data to station index in address list */
@@ -189,11 +189,11 @@ namespace Thesis {
             return stationDataNameToAddressIndex;
         }
 
-        static float GetSuccessionRobustness(Trip trip1, Trip trip2, int plannedDuration, int waitingTime) {
+        static float GetSuccessionRobustness(Activity activity1, Activity activity2, int plannedDuration, int waitingTime) {
             double conflictProb = GetConflictProbability(plannedDuration, waitingTime);
 
-            bool areSameDuty = trip1.DutyId == trip2.DutyId;
-            bool areSameProject = trip1.ProjectName == trip2.ProjectName && trip1.ProjectName != "";
+            bool areSameDuty = activity1.DutyId == activity2.DutyId;
+            bool areSameProject = activity1.ProjectName == activity2.ProjectName && activity1.ProjectName != "";
 
             double robustnessCost;
             if (areSameDuty) {
@@ -209,38 +209,38 @@ namespace Thesis {
         }
 
         static double GetConflictProbability(int plannedDuration, int waitingTime) {
-            double meanDelay = RulesConfig.TripMeanDelayFunc(plannedDuration);
-            double delayAlpha = RulesConfig.TripDelayGammaDistributionAlphaFunc(meanDelay);
-            double delayBeta = RulesConfig.TripDelayGammaDistributionBetaFunc(meanDelay);
-            float delayProb = RulesConfig.TripDelayProbability;
+            double meanDelay = RulesConfig.ActivityMeanDelayFunc(plannedDuration);
+            double delayAlpha = RulesConfig.ActivityDelayGammaDistributionAlphaFunc(meanDelay);
+            double delayBeta = RulesConfig.ActivityDelayGammaDistributionBetaFunc(meanDelay);
+            float delayProb = RulesConfig.ActivityDelayProbability;
             double conflictProbWhenDelayed = 1 - Gamma.CDF(delayAlpha, delayBeta, waitingTime);
             double conflictProb = delayProb * conflictProbWhenDelayed;
             return conflictProb;
         }
 
-        static (int, int) GetLowHighStationIndices(Trip trip) {
+        static (int, int) GetLowHighStationIndices(Activity activity) {
             int lowStationIndex, highStationIndex;
-            if (trip.StartStationAddressIndex < trip.EndStationAddressIndex) {
-                lowStationIndex = trip.StartStationAddressIndex;
-                highStationIndex = trip.EndStationAddressIndex;
+            if (activity.StartStationAddressIndex < activity.EndStationAddressIndex) {
+                lowStationIndex = activity.StartStationAddressIndex;
+                highStationIndex = activity.EndStationAddressIndex;
             } else {
-                lowStationIndex = trip.EndStationAddressIndex;
-                highStationIndex = trip.StartStationAddressIndex;
+                lowStationIndex = activity.EndStationAddressIndex;
+                highStationIndex = activity.StartStationAddressIndex;
             }
             return (lowStationIndex, highStationIndex);
         }
 
         /** Preprocess shift driving times, night fractions and weekend fractions */
-        static ShiftInfo[,] GetShiftInfos(Trip[] trips, int timeframeLength) {
-            ShiftInfo[,] shiftInfos = new ShiftInfo[trips.Length, trips.Length];
-            for (int firstTripIndex = 0; firstTripIndex < trips.Length; firstTripIndex++) {
-                for (int lastTripIndex = 0; lastTripIndex < trips.Length; lastTripIndex++) {
-                    Trip firstTripInternal = trips[firstTripIndex];
-                    Trip lastTripInternal = trips[lastTripIndex];
+        static ShiftInfo[,] GetShiftInfos(Activity[] activities, int timeframeLength) {
+            ShiftInfo[,] shiftInfos = new ShiftInfo[activities.Length, activities.Length];
+            for (int firstActivityIndex = 0; firstActivityIndex < activities.Length; firstActivityIndex++) {
+                for (int lastActivityIndex = 0; lastActivityIndex < activities.Length; lastActivityIndex++) {
+                    Activity shiftFirstActivity = activities[firstActivityIndex];
+                    Activity shiftLastActivity = activities[lastActivityIndex];
 
                     // Determine driving time
-                    int drivingStartTime = firstTripInternal.StartTime;
-                    int drivingEndTime = lastTripInternal.EndTime;
+                    int drivingStartTime = shiftFirstActivity.StartTime;
+                    int drivingEndTime = shiftLastActivity.EndTime;
                     int drivingTime = Math.Max(0, drivingEndTime - drivingStartTime);
 
                     // Determine driving costs for driver types
@@ -256,11 +256,11 @@ namespace Thesis {
                     for (int driverTypeIndex = 0; driverTypeIndex < salarySettingsByDriverType.Length; driverTypeIndex++) {
                         SalarySettings typeSalarySettings = salarySettingsByDriverType[driverTypeIndex];
                         typeSalarySettings.SetDriverTypeIndex(driverTypeIndex);
-                        (administrativeDrivingTimeByDriverType[driverTypeIndex], drivingCostsByDriverType[driverTypeIndex], computeSalaryRateBlocksByType[driverTypeIndex]) = GetDrivingCost(firstTripInternal, lastTripInternal, typeSalarySettings, timeframeLength);
+                        (administrativeDrivingTimeByDriverType[driverTypeIndex], drivingCostsByDriverType[driverTypeIndex], computeSalaryRateBlocksByType[driverTypeIndex]) = GetDrivingCost(shiftFirstActivity, shiftLastActivity, typeSalarySettings, timeframeLength);
                     }
 
                     // Get time in night and weekend
-                    (int drivingTimeAtNight, int drivingTimeInWeekend) = GetShiftNightWeekendTime(firstTripInternal, lastTripInternal, timeframeLength);
+                    (int drivingTimeAtNight, int drivingTimeInWeekend) = GetShiftNightWeekendTime(shiftFirstActivity, shiftLastActivity, timeframeLength);
 
                     bool isNightShiftByLaw = RulesConfig.IsNightShiftByLawFunc(drivingTimeAtNight, drivingTime);
                     bool isNightShiftByCompanyRules = RulesConfig.IsNightShiftByCompanyRulesFunc(drivingTimeAtNight, drivingTime);
@@ -277,14 +277,14 @@ namespace Thesis {
                         minRestTimeAfter = RulesConfig.NormalShiftMinRestTime;
                     }
 
-                    shiftInfos[firstTripIndex, lastTripIndex] = new ShiftInfo(drivingTime, maxShiftLengthWithoutTravel, maxShiftLengthWithTravel, minRestTimeAfter, administrativeDrivingTimeByDriverType, drivingCostsByDriverType, computeSalaryRateBlocksByType, isNightShiftByLaw, isNightShiftByCompanyRules, isWeekendShiftByCompanyRules);
+                    shiftInfos[firstActivityIndex, lastActivityIndex] = new ShiftInfo(drivingTime, maxShiftLengthWithoutTravel, maxShiftLengthWithTravel, minRestTimeAfter, administrativeDrivingTimeByDriverType, drivingCostsByDriverType, computeSalaryRateBlocksByType, isNightShiftByLaw, isNightShiftByCompanyRules, isWeekendShiftByCompanyRules);
                 }
             }
 
             return shiftInfos;
         }
 
-        static (int, float, List<ComputedSalaryRateBlock>) GetDrivingCost(Trip firstTripInternal, Trip lastTripInternal, SalarySettings salaryInfo, int timeframeLength) {
+        static (int, float, List<ComputedSalaryRateBlock>) GetDrivingCost(Activity shiftFirstActivity, Activity shiftLastActivity, SalarySettings salaryInfo, int timeframeLength) {
             // Repeat salary rate to cover entire week
             int timeframeDayCount = (int)Math.Floor((float)timeframeLength / MiscConfig.DayLength) + 1;
             List<SalaryRateBlock> processedSalaryRates = new List<SalaryRateBlock>();
@@ -315,8 +315,8 @@ namespace Thesis {
             }
 
             // Determine driving time, while keeping in mind the minimum paid time
-            int drivingStartTime = firstTripInternal.StartTime;
-            int drivingEndTimeReal = lastTripInternal.EndTime;
+            int drivingStartTime = shiftFirstActivity.StartTime;
+            int drivingEndTimeReal = shiftLastActivity.EndTime;
             int administrativeDrivingTime = Math.Max(salaryInfo.MinPaidShiftTime, drivingEndTimeReal - drivingStartTime);
             int administrativeDrivingEndTime = drivingStartTime + administrativeDrivingTime;
 
@@ -358,7 +358,7 @@ namespace Thesis {
             return (administrativeDrivingTime, drivingCost, computeSalaryRateBlocks);
         }
 
-        static (int, int) GetShiftNightWeekendTime(Trip firstTripInternal, Trip lastTripInternal, int timeframeLength) {
+        static (int, int) GetShiftNightWeekendTime(Activity shiftFirstActivity, Activity shiftLastActivity, int timeframeLength) {
             // Repeat day parts for night info to cover entire week
             int timeframeDayCount = (int)Math.Floor((float)timeframeLength / MiscConfig.DayLength) + 1;
             List<TimePart> weekPartsForNight = new List<TimePart>();
@@ -370,8 +370,8 @@ namespace Thesis {
             }
 
             // Determine driving time, while keeping in mind the minimum paid time
-            int drivingStartTime = firstTripInternal.StartTime;
-            int drivingEndTime = lastTripInternal.EndTime;
+            int drivingStartTime = shiftFirstActivity.StartTime;
+            int drivingEndTime = shiftLastActivity.EndTime;
 
             // Determine driving time at night
             int drivingTimeAtNight = GetTimeInSelectedTimeParts(drivingStartTime, drivingEndTime, weekPartsForNight.ToArray());
@@ -530,7 +530,7 @@ namespace Thesis {
             return (externalDriverTypes.ToArray(), externalDriversByType.ToArray(), externalDriversByTypeDict);
         }
 
-        static Driver[] GetDataAssignment(XSSFWorkbook settingsBook, Trip[] trips, InternalDriver[] internalDrivers, Dictionary<(string, bool), ExternalDriver[]> externalDriversByTypeDict) {
+        static Driver[] GetDataAssignment(XSSFWorkbook settingsBook, Activity[] activities, InternalDriver[] internalDrivers, Dictionary<(string, bool), ExternalDriver[]> externalDriversByTypeDict) {
             ExcelSheet externalDriversSettingsSheet = new ExcelSheet("External drivers", settingsBook);
             List<(string, string)> externalInternationalDriverNames = new List<(string, string)>();
             externalDriversSettingsSheet.ForEachRow(externalDriverSettingsRow => {
@@ -542,40 +542,40 @@ namespace Thesis {
                 externalInternationalDriverNames.Add((driverName, companyName));
             });
 
-            Driver[] dataAssignment = new Driver[trips.Length];
+            Driver[] dataAssignment = new Driver[activities.Length];
             Dictionary<(string, bool), List<string>> externalDriverNamesByTypeDict = new Dictionary<(string, bool), List<string>>();
-            for (int tripIndex = 0; tripIndex < dataAssignment.Length; tripIndex++) {
-                Trip trip = trips[tripIndex];
-                if (trip.DataAssignedCompanyName == null || trip.DataAssignedEmployeeName == null) {
-                    // Unassigned trip
+            for (int activityIndex = 0; activityIndex < dataAssignment.Length; activityIndex++) {
+                Activity activity = activities[activityIndex];
+                if (activity.DataAssignedCompanyName == null || activity.DataAssignedEmployeeName == null) {
+                    // Unassigned activity
                     continue;
                 }
 
-                if (DataConfig.ExcelInternalDriverCompanyNames.Contains(trip.DataAssignedCompanyName)) {
+                if (DataConfig.ExcelInternalDriverCompanyNames.Contains(activity.DataAssignedCompanyName)) {
                     // Assigned to internal driver
-                    dataAssignment[tripIndex] = Array.Find(internalDrivers, internalDriver => internalDriver.GetInternalDriverName(true) == trip.DataAssignedEmployeeName);
+                    dataAssignment[activityIndex] = Array.Find(internalDrivers, internalDriver => internalDriver.GetInternalDriverName(true) == activity.DataAssignedEmployeeName);
                 } else {
                     // Assigned to external driver
-                    bool isInternational = externalInternationalDriverNames.Contains((trip.DataAssignedEmployeeName, trip.DataAssignedCompanyName));
+                    bool isInternational = externalInternationalDriverNames.Contains((activity.DataAssignedEmployeeName, activity.DataAssignedCompanyName));
 
                     // Get list of already encountered names of this type
                     List<string> externalDriverNamesOfType;
-                    if (externalDriverNamesByTypeDict.ContainsKey((trip.DataAssignedCompanyName, isInternational))) {
-                        externalDriverNamesOfType = externalDriverNamesByTypeDict[(trip.DataAssignedCompanyName, isInternational)];
+                    if (externalDriverNamesByTypeDict.ContainsKey((activity.DataAssignedCompanyName, isInternational))) {
+                        externalDriverNamesOfType = externalDriverNamesByTypeDict[(activity.DataAssignedCompanyName, isInternational)];
                     } else {
                         externalDriverNamesOfType = new List<string>();
-                        externalDriverNamesByTypeDict.Add((trip.DataAssignedCompanyName, isInternational), externalDriverNamesOfType);
+                        externalDriverNamesByTypeDict.Add((activity.DataAssignedCompanyName, isInternational), externalDriverNamesOfType);
                     }
 
                     // Determine index of this driver in the type
-                    int externalDriverIndexInType = externalDriverNamesOfType.IndexOf(trip.DataAssignedEmployeeName);
+                    int externalDriverIndexInType = externalDriverNamesOfType.IndexOf(activity.DataAssignedEmployeeName);
                     if (externalDriverIndexInType == -1) {
                         externalDriverIndexInType = externalDriverNamesOfType.Count;
-                        externalDriverNamesOfType.Add(trip.DataAssignedEmployeeName);
+                        externalDriverNamesOfType.Add(activity.DataAssignedEmployeeName);
                     }
 
-                    ExternalDriver[] externalDriversOfType = externalDriversByTypeDict[(trip.DataAssignedCompanyName, isInternational)];
-                    dataAssignment[tripIndex] = externalDriversOfType[externalDriverIndexInType];
+                    ExternalDriver[] externalDriversOfType = externalDriversByTypeDict[(activity.DataAssignedCompanyName, isInternational)];
+                    dataAssignment[activityIndex] = externalDriversOfType[externalDriverIndexInType];
                 }
             }
             return dataAssignment;
@@ -584,69 +584,69 @@ namespace Thesis {
 
         /* Helper methods */
 
-        public ShiftInfo ShiftInfo(Trip trip1, Trip trip2) {
-            return shiftInfos[trip1.Index, trip2.Index];
+        public ShiftInfo ShiftInfo(Activity activity1, Activity activity2) {
+            return shiftInfos[activity1.Index, activity2.Index];
         }
 
-        public bool IsValidPrecedence(Trip trip1, Trip trip2) {
-            return tripSuccession[trip1.Index, trip2.Index];
+        public bool IsValidSuccession(Activity activity1, Activity activity2) {
+            return activitySuccession[activity1.Index, activity2.Index];
         }
 
-        public float TripSuccessionRobustness(Trip trip1, Trip trip2) {
-            return tripSuccessionRobustness[trip1.Index, trip2.Index];
+        public float ActivitySuccessionRobustness(Activity activity1, Activity activity2) {
+            return activitySuccessionRobustness[activity1.Index, activity2.Index];
         }
 
-        public int PlannedCarTravelTime(Trip trip1, Trip trip2) {
-            return plannedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex];
+        public int PlannedCarTravelTime(Activity activity1, Activity activity2) {
+            return plannedCarTravelTimes[activity1.EndStationAddressIndex, activity2.StartStationAddressIndex];
         }
 
-        public int ExpectedCarTravelTime(Trip trip1, Trip trip2) {
-            return expectedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex];
+        public int ExpectedCarTravelTime(Activity activity1, Activity activity2) {
+            return expectedCarTravelTimes[activity1.EndStationAddressIndex, activity2.StartStationAddressIndex];
         }
 
-        public int CarTravelDistance(Trip trip1, Trip trip2) {
-            return carTravelDistances[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex];
+        public int CarTravelDistance(Activity activity1, Activity activity2) {
+            return carTravelDistances[activity1.EndStationAddressIndex, activity2.StartStationAddressIndex];
         }
 
-        public int PlannedTravelTimeViaHotel(Trip trip1, Trip trip2) {
-            return plannedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime;
+        public int PlannedTravelTimeViaHotel(Activity activity1, Activity activity2) {
+            return plannedCarTravelTimes[activity1.EndStationAddressIndex, activity2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime;
         }
 
-        public int ExpectedTravelTimeViaHotel(Trip trip1, Trip trip2) {
-            return expectedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime;
+        public int ExpectedTravelTimeViaHotel(Activity activity1, Activity activity2) {
+            return expectedCarTravelTimes[activity1.EndStationAddressIndex, activity2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime;
         }
 
-        public int PlannedHalfTravelTimeViaHotel(Trip trip1, Trip trip2) {
-            return (plannedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime) / 2;
+        public int PlannedHalfTravelTimeViaHotel(Activity activity1, Activity activity2) {
+            return (plannedCarTravelTimes[activity1.EndStationAddressIndex, activity2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime) / 2;
         }
 
-        public int ExpectedHalfTravelTimeViaHotel(Trip trip1, Trip trip2) {
-            return (expectedCarTravelTimes[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime) / 2;
+        public int ExpectedHalfTravelTimeViaHotel(Activity activity1, Activity activity2) {
+            return (expectedCarTravelTimes[activity1.EndStationAddressIndex, activity2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelTime) / 2;
         }
 
-        public int HalfTravelDistanceViaHotel(Trip trip1, Trip trip2) {
-            return (carTravelDistances[trip1.EndStationAddressIndex, trip2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelDistance) / 2;
+        public int HalfTravelDistanceViaHotel(Activity activity1, Activity activity2) {
+            return (carTravelDistances[activity1.EndStationAddressIndex, activity2.StartStationAddressIndex] + RulesConfig.HotelExtraTravelDistance) / 2;
         }
 
-        public int RestTimeWithTravelTime(Trip trip1, Trip trip2, int travelTime) {
-            return trip2.StartTime - trip1.EndTime - travelTime;
+        public int RestTimeWithTravelTime(Activity activity1, Activity activity2, int travelTime) {
+            return activity2.StartTime - activity1.EndTime - travelTime;
         }
 
-        public int RestTimeViaHotel(Trip trip1, Trip trip2) {
-            return RestTimeWithTravelTime(trip1, trip2, ExpectedTravelTimeViaHotel(trip1, trip2));
+        public int RestTimeViaHotel(Activity activity1, Activity activity2) {
+            return RestTimeWithTravelTime(activity1, activity2, ExpectedTravelTimeViaHotel(activity1, activity2));
         }
 
-        int PlannedWaitingTime(Trip trip1, Trip trip2) {
-            return trip2.StartTime - trip1.EndTime - PlannedCarTravelTime(trip1, trip2);
+        int PlannedWaitingTime(Activity activity1, Activity activity2) {
+            return activity2.StartTime - activity1.EndTime - PlannedCarTravelTime(activity1, activity2);
         }
 
-        int ExpectedWaitingTime(Trip trip1, Trip trip2) {
-            return trip2.StartTime - trip1.EndTime - ExpectedCarTravelTime(trip1, trip2);
+        int ExpectedWaitingTime(Activity activity1, Activity activity2) {
+            return activity2.StartTime - activity1.EndTime - ExpectedCarTravelTime(activity1, activity2);
         }
 
-        /** Check if two trips belong to the same shift or not, based on whether their waiting time is within the threshold */
-        public bool AreSameShift(Trip trip1, Trip trip2) {
-            return tripsAreSameShift[trip1.Index, trip2.Index];
+        /** Check if two activites belong to the same shift or not, based on whether their waiting time is within the threshold */
+        public bool AreSameShift(Activity activity1, Activity activity2) {
+            return activitiesAreSameShift[activity1.Index, activity2.Index];
         }
 
         void DebugLogProcessedSalaryRates(List<SalaryRateBlock> processedSalaryRates) {

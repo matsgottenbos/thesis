@@ -58,13 +58,13 @@ namespace Thesis {
         public static readonly RangeSatisfactionCriterion SatCriterionRestingTime = new RangeSatisfactionCriterion(36, 0, 0.1f, 0.2f);
 
         // Robustness
-        public const float RobustnessCostFactorSameDuty = 0f; // Added cost for each expected conflict due to delays, if the conflict is between trips of the same duty
-        public const float RobustnessCostFactorSameProject = 500f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties but of the same project
-        public const float RobustnessCostFactorDifferentProject = 1000f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties and projects
-        public const float TripDelayProbability = 0.275f; // Chance that a trip has a delay
-        public static readonly Func<int, double> TripMeanDelayFunc = (int plannedDuration) => plannedDuration * plannedDuration / 5561 + 0.123 * plannedDuration + 37.38; // Trip mean delay by planned duration: p^2/5571 + 0.123p + 37.38
-        public static readonly Func<double, double> TripDelayGammaDistributionAlphaFunc = (double meanDelay) => meanDelay * meanDelay / 3879; // Alpha parameter of trip delay gamma distribution, by mean delay: p^2/3879
-        public static readonly Func<double, double> TripDelayGammaDistributionBetaFunc = (double meanDelay) => meanDelay / 3879; // Beta parameter of trip delay gamma distribution, by mean delay: p/3879
+        public const float RobustnessCostFactorSameDuty = 0f; // Added cost for each expected conflict due to delays, if the conflict is between activities of the same duty
+        public const float RobustnessCostFactorSameProject = 500f; // Added cost for each expected conflict due to delays, if the conflict is between activities of different duties but of the same project
+        public const float RobustnessCostFactorDifferentProject = 1000f; // Added cost for each expected conflict due to delays, if the conflict is between activities of different duties and projects
+        public const float ActivityDelayProbability = 0.275f; // Chance that a activity has a delay
+        public static readonly Func<int, double> ActivityMeanDelayFunc = (int plannedDuration) => plannedDuration * plannedDuration / 5561 + 0.123 * plannedDuration + 37.38; // Activity mean delay by planned duration: p^2/5571 + 0.123p + 37.38
+        public static readonly Func<double, double> ActivityDelayGammaDistributionAlphaFunc = (double meanDelay) => meanDelay * meanDelay / 3879; // Alpha parameter of activity delay gamma distribution, by mean delay: p^2/3879
+        public static readonly Func<double, double> ActivityDelayGammaDistributionBetaFunc = (double meanDelay) => meanDelay / 3879; // Beta parameter of activity delay gamma distribution, by mean delay: p/3879
         public static readonly Func<int, int> TravelDelayExpectedFunc = (int plannedTravelTime) => plannedTravelTime / 10 + 15; // Expected travel delay of 10% + 15 minutes
     }
 }

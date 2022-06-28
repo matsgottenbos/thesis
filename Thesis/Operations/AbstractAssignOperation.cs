@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     abstract class AbstractAssignOperation : AbstractOperation {
-        readonly Trip trip;
+        readonly Activity activity;
         readonly Driver unassignedDriver, assignedDriver;
         readonly SaDriverInfo unassignedDriverInfo, assignedDriverInfo;
         SaDriverInfo unassignedDriverInfoDiff, assignedDriverInfoDiff;
         SaExternalDriverTypeInfo unassignedExternalDriverTypeDiff, assignedExternalDriverTypeDiff;
 
-        public AbstractAssignOperation(int tripIndex, Driver assignedDriver, SaInfo info) : base(info) {
+        public AbstractAssignOperation(int activityIndex, Driver assignedDriver, SaInfo info) : base(info) {
             this.assignedDriver = assignedDriver;
-            trip = info.Instance.Trips[tripIndex];
-            unassignedDriver = info.Assignment[tripIndex];
+            activity = info.Instance.Activities[activityIndex];
+            unassignedDriver = info.Assignment[activityIndex];
             unassignedDriverInfo = info.DriverInfos[unassignedDriver.AllDriversIndex];
             assignedDriverInfo = info.DriverInfos[assignedDriver.AllDriversIndex];
         }
@@ -23,13 +23,13 @@ namespace Thesis {
         public override SaTotalInfo GetCostDiff() {
             #if DEBUG
             if (AppConfig.DebugCheckOperations) {
-                SaDebugger.GetCurrentOperation().Description = string.Format("Re-assign trip {0} from driver {1} to driver {2}", trip.Index, unassignedDriver.GetId(), assignedDriver.GetId());
+                SaDebugger.GetCurrentOperation().Description = string.Format("Re-assign activity {0} from driver {1} to driver {2}", activity.Index, unassignedDriver.GetId(), assignedDriver.GetId());
             }
             #endif
 
             // Get cost diffs
-            unassignedDriverInfoDiff = CostDiffCalculator.GetUnassignDriverCostDiff(trip, unassignedDriver, unassignedDriverInfo, info);
-            assignedDriverInfoDiff = CostDiffCalculator.GetAssignDriverCostDiff(trip, assignedDriver, assignedDriverInfo, info);
+            unassignedDriverInfoDiff = CostDiffCalculator.GetUnassignDriverCostDiff(activity, unassignedDriver, unassignedDriverInfo, info);
+            assignedDriverInfoDiff = CostDiffCalculator.GetAssignDriverCostDiff(activity, assignedDriver, assignedDriverInfo, info);
             (unassignedExternalDriverTypeDiff, assignedExternalDriverTypeDiff) = GlobalCostDiffCalculator.GetExternalDriversGlobalCostDiff(unassignedDriver, assignedDriver, unassignedDriverInfoDiff, assignedDriverInfoDiff, info);
 
             // Store cost diffs in total diff object
@@ -46,7 +46,7 @@ namespace Thesis {
 
         public override void Execute() {
             base.Execute();
-            info.ReassignTrip(trip, unassignedDriver, assignedDriver);
+            info.ReassignActivity(activity, unassignedDriver, assignedDriver);
             UpdateDriverInfo(unassignedDriver, unassignedDriverInfoDiff);
             UpdateDriverInfo(assignedDriver, assignedDriverInfoDiff);
             UpdateExternalDriverTypeInfo(unassignedDriver, unassignedExternalDriverTypeDiff);

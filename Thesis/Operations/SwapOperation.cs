@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class SwapOperation : AbstractOperation {
-        readonly Trip trip1, trip2;
+        readonly Activity activity1, activity2;
         readonly Driver driver1, driver2;
         readonly SaDriverInfo driver1Info, driver2Info;
         SaDriverInfo driver1InfoDiff, driver2InfoDiff;
         SaExternalDriverTypeInfo externalDriver1TypeDiff, externalDriver2TypeDiff;
 
-        public SwapOperation(int tripIndex1, int tripIndex2, SaInfo info) : base(info) {
-            trip1 = info.Instance.Trips[tripIndex1];
-            trip2 = info.Instance.Trips[tripIndex2];
-            driver1 = info.Assignment[tripIndex1];
-            driver2 = info.Assignment[tripIndex2];
+        public SwapOperation(int activityIndex1, int activityIndex2, SaInfo info) : base(info) {
+            activity1 = info.Instance.Activities[activityIndex1];
+            activity2 = info.Instance.Activities[activityIndex2];
+            driver1 = info.Assignment[activityIndex1];
+            driver2 = info.Assignment[activityIndex2];
             driver1Info = info.DriverInfos[driver1.AllDriversIndex];
             driver2Info = info.DriverInfos[driver2.AllDriversIndex];
         }
@@ -24,13 +24,13 @@ namespace Thesis {
         public override SaTotalInfo GetCostDiff() {
             #if DEBUG
             if (AppConfig.DebugCheckOperations) {
-                SaDebugger.GetCurrentOperation().Description = string.Format("Swap trip {0} from driver {1} with trip {2} from driver {3}", trip1.Index, driver1.GetId(), trip2.Index, driver2.GetId());
+                SaDebugger.GetCurrentOperation().Description = string.Format("Swap activity {0} from driver {1} with activity {2} from driver {3}", activity1.Index, driver1.GetId(), activity2.Index, driver2.GetId());
             }
             #endif
 
             // Get cost diffs
-            driver1InfoDiff = CostDiffCalculator.GetSwapDriverCostDiff(trip1, trip2, driver1, driver1Info, info);
-            driver2InfoDiff = CostDiffCalculator.GetSwapDriverCostDiff(trip2, trip1, driver2, driver2Info, info);
+            driver1InfoDiff = CostDiffCalculator.GetSwapDriverCostDiff(activity1, activity2, driver1, driver1Info, info);
+            driver2InfoDiff = CostDiffCalculator.GetSwapDriverCostDiff(activity2, activity1, driver2, driver2Info, info);
             (externalDriver1TypeDiff, externalDriver2TypeDiff) = GlobalCostDiffCalculator.GetExternalDriversGlobalCostDiff(driver1, driver2, driver1InfoDiff, driver2InfoDiff, info);
 
             // Store cost diffs in total diff object
@@ -47,8 +47,8 @@ namespace Thesis {
 
         public override void Execute() {
             base.Execute();
-            info.ReassignTrip(trip1, driver1, driver2);
-            info.ReassignTrip(trip2, driver2, driver1);
+            info.ReassignActivity(activity1, driver1, driver2);
+            info.ReassignActivity(activity2, driver2, driver1);
             UpdateDriverInfo(driver1, driver1InfoDiff);
             UpdateDriverInfo(driver2, driver2InfoDiff);
             UpdateExternalDriverTypeInfo(driver1, externalDriver1TypeDiff);
@@ -56,15 +56,15 @@ namespace Thesis {
         }
 
         public static SwapOperation CreateRandom(SaInfo info, XorShiftRandom rand) {
-            int tripIndex1 = rand.Next(info.Instance.Trips.Length);
+            int activityIndex1 = rand.Next(info.Instance.Activities.Length);
 
-            // Select random second trip that is not the first trip, and that isn't assigned to the same driver as the first trip
-            int tripIndex2;
+            // Select random second activity that is not the first activity, and that isn't assigned to the same driver as the first activity
+            int activityIndex2;
             do {
-                tripIndex2 = rand.Next(info.Instance.Trips.Length);
-            } while (tripIndex1 == tripIndex2 || info.Assignment[tripIndex1] == info.Assignment[tripIndex2]);
+                activityIndex2 = rand.Next(info.Instance.Activities.Length);
+            } while (activityIndex1 == activityIndex2 || info.Assignment[activityIndex1] == info.Assignment[activityIndex2]);
 
-            return new SwapOperation(tripIndex1, tripIndex2, info);
+            return new SwapOperation(activityIndex1, activityIndex2, info);
         }
     }
 }

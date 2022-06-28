@@ -41,41 +41,41 @@ namespace Thesis {
             }
         }
 
-        public static string TripToIndexOrUnderscore(Trip trip) {
-            if (trip == null) return "_";
-            return trip.Index.ToString();
+        public static string ActivityToIndexOrUnderscore(Activity activity) {
+            if (activity == null) return "_";
+            return activity.Index.ToString();
         }
 
         public static string AssignmentToString(SaInfo info) {
             string[] assignmentStrParts = new string[info.Assignment.Length];
-            for (int tripIndex = 0; tripIndex < info.Instance.Trips.Length; tripIndex++) {
-                Driver driver = info.Assignment[tripIndex];
-                assignmentStrParts[tripIndex] = driver.GetId();
-                if (info.IsHotelStayAfterTrip[tripIndex]) assignmentStrParts[tripIndex] += "h";
+            for (int activityIndex = 0; activityIndex < info.Instance.Activities.Length; activityIndex++) {
+                Driver driver = info.Assignment[activityIndex];
+                assignmentStrParts[activityIndex] = driver.GetId();
+                if (info.IsHotelStayAfterActivity[activityIndex]) assignmentStrParts[activityIndex] += "h";
             }
             return string.Join(" ", assignmentStrParts);
         }
 
-        public static string DriverPathToString(List<Trip> driverPath, SaInfo info) {
+        public static string DriverPathToString(List<Activity> driverPath, SaInfo info) {
             string driverPathStr = "";
-            Trip prevTrip = null;
-            for (int driverTripIndex = 0; driverTripIndex < driverPath.Count; driverTripIndex++) {
-                Trip trip = driverPath[driverTripIndex];
+            Activity prevActivity = null;
+            for (int driverActivityIndex = 0; driverActivityIndex < driverPath.Count; driverActivityIndex++) {
+                Activity activity = driverPath[driverActivityIndex];
 
-                if (prevTrip != null) {
-                    if (info.Instance.AreSameShift(prevTrip, trip)) {
+                if (prevActivity != null) {
+                    if (info.Instance.AreSameShift(prevActivity, activity)) {
                         driverPathStr += "-";
-                        if (info.IsHotelStayAfterTrip[prevTrip.Index]) driverPathStr += "H-";
+                        if (info.IsHotelStayAfterActivity[prevActivity.Index]) driverPathStr += "H-";
                     } else {
                         driverPathStr += "|";
-                        if (info.IsHotelStayAfterTrip[prevTrip.Index]) driverPathStr += "H|";
+                        if (info.IsHotelStayAfterActivity[prevActivity.Index]) driverPathStr += "H|";
                     }
                 }
-                driverPathStr += trip.Index;
+                driverPathStr += activity.Index;
 
-                prevTrip = trip;
+                prevActivity = activity;
             }
-            if (prevTrip != null && info.IsHotelStayAfterTrip[prevTrip.Index]) driverPathStr += "|H";
+            if (prevActivity != null && info.IsHotelStayAfterActivity[prevActivity.Index]) driverPathStr += "|H";
             return driverPathStr;
         }
 
@@ -89,7 +89,7 @@ namespace Thesis {
             string penaltyString = string.Format("{0,6}", "-");
             if (penalty > 0) {
                 List<string> penaltyTypes = new List<string>();
-                if (penaltyInfo.PrecedenceViolationCount > 0) penaltyTypes.Add("Pr" + penaltyInfo.PrecedenceViolationCount);
+                if (penaltyInfo.OverlapViolationCount > 0) penaltyTypes.Add("Pr" + penaltyInfo.OverlapViolationCount);
                 if (penaltyInfo.ShiftLengthViolationCount > 0) penaltyTypes.Add("Sl" + penaltyInfo.ShiftLengthViolationCount);
                 if (penaltyInfo.RestTimeViolationCount > 0) penaltyTypes.Add("Rt" + penaltyInfo.RestTimeViolationCount);
                 if (penaltyInfo.ShiftCountViolationAmount > 0) penaltyTypes.Add("Sc" + penaltyInfo.ShiftCountViolationAmount);
@@ -118,12 +118,12 @@ namespace Thesis {
         public static SaInfo ParseAssignmentString(string assignmentStr, Instance instance) {
             string[] driverStrings = assignmentStr.Split();
             SaInfo info = new SaInfo(instance);
-            info.Assignment = new Driver[instance.Trips.Length];
-            info.IsHotelStayAfterTrip = new bool[instance.Trips.Length];
-            for (int tripIndex = 0; tripIndex < instance.Trips.Length; tripIndex++) {
-                (Driver driver, bool isHotelStayAfter) = ParseDriverString(driverStrings[tripIndex], instance);
-                info.Assignment[tripIndex] = driver;
-                info.IsHotelStayAfterTrip[tripIndex] = isHotelStayAfter;
+            info.Assignment = new Driver[instance.Activities.Length];
+            info.IsHotelStayAfterActivity = new bool[instance.Activities.Length];
+            for (int activityIndex = 0; activityIndex < instance.Activities.Length; activityIndex++) {
+                (Driver driver, bool isHotelStayAfter) = ParseDriverString(driverStrings[activityIndex], instance);
+                info.Assignment[activityIndex] = driver;
+                info.IsHotelStayAfterActivity[activityIndex] = isHotelStayAfter;
             }
             info.ProcessDriverPaths();
 

@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    class RawTrip {
+    class RawActivity {
         public readonly int StartTime, EndTime, Duration;
         public readonly string DutyName, ActivityName, DutyId, ProjectName, StartStationName, EndStationName, DataAssignedCompanyName, DataAssignedEmployeeName;
 
-        public RawTrip(string dutyName, string activityName, string dutyId, string projectName, string startStationName, string endStationName, int startTime, int endTime, int duration, string dataAssignedCompanyName, string dataAssignedEmployeeName) {
+        public RawActivity(string dutyName, string activityName, string dutyId, string projectName, string startStationName, string endStationName, int startTime, int endTime, int duration, string dataAssignedCompanyName, string dataAssignedEmployeeName) {
             DutyName = dutyName;
             ProjectName = projectName;
             StartStationName = startStationName;

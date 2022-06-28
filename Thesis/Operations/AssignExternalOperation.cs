@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class AssignExternalOperation : AbstractAssignOperation {
-        public AssignExternalOperation(int tripIndex, ExternalDriver newExternalDriver, SaInfo info) : base(tripIndex, newExternalDriver, info) { }
+        public AssignExternalOperation(int activityIndex, ExternalDriver newExternalDriver, SaInfo info) : base(activityIndex, newExternalDriver, info) { }
 
         public static AbstractAssignOperation CreateRandom(SaInfo info, XorShiftRandom rand) {
-            int tripIndex = rand.Next(info.Instance.Trips.Length);
-            Driver oldDriver = info.Assignment[tripIndex];
+            int activityIndex = rand.Next(info.Instance.Activities.Length);
+            Driver oldDriver = info.Assignment[activityIndex];
 
             // Select random existing driver that is not the same as the current driver
             ExternalDriver newExternalDriver;
@@ -24,7 +24,7 @@ namespace Thesis {
                 newExternalDriver = externalDriversOfCurrentType[newExternalDriverIndexInType];
             } while (newExternalDriver == oldDriver);
 
-            return new AssignExternalOperation(tripIndex, newExternalDriver, info);
+            return new AssignExternalOperation(activityIndex, newExternalDriver, info);
         }
     }
 }

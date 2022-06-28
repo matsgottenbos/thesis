@@ -27,7 +27,7 @@ namespace Thesis {
             info = new SaInfo(instance);
             info.Temperature = SaConfig.SaInitialTemperature;
             info.SatisfactionFactor = (float)this.rand.NextDouble(SaConfig.SaCycleMinSatisfactionFactor, SaConfig.SaCycleMaxSatisfactionFactor);
-            info.IsHotelStayAfterTrip = new bool[instance.Trips.Length];
+            info.IsHotelStayAfterActivity = new bool[instance.Activities.Length];
 
             // Initialise best info
             for (int i = 0; i < bestInfoBySatisfaction.Length; i++) {
@@ -179,32 +179,32 @@ namespace Thesis {
         }
 
         Driver[] GetInitialAssignment() {
-            Driver[] assignment = new Driver[info.Instance.Trips.Length];
-            List<Trip>[] driverPaths = new List<Trip>[info.Instance.AllDrivers.Length];
-            for (int i = 0; i < driverPaths.Length; i++) driverPaths[i] = new List<Trip>();
+            Driver[] assignment = new Driver[info.Instance.Activities.Length];
+            List<Activity>[] driverPaths = new List<Activity>[info.Instance.AllDrivers.Length];
+            for (int i = 0; i < driverPaths.Length; i++) driverPaths[i] = new List<Activity>();
 
-            for (int tripIndex = 0; tripIndex < info.Instance.Trips.Length; tripIndex++) {
-                Trip trip = info.Instance.Trips[tripIndex];
+            for (int activityIndex = 0; activityIndex < info.Instance.Activities.Length; activityIndex++) {
+                Activity activity = info.Instance.Activities[activityIndex];
 
-                // Greedily assign to random internal driver, avoiding precedence violations
+                // Greedily assign to random internal driver, avoiding overlap violations
                 InternalDriver[] internalDriversRandomOrder = Copy(info.Instance.InternalDrivers);
                 Shuffle(internalDriversRandomOrder);
                 bool isDone = false;
                 for (int shuffledInternalDriverIndex = 0; shuffledInternalDriverIndex < internalDriversRandomOrder.Length; shuffledInternalDriverIndex++) {
                     InternalDriver internalDriver = internalDriversRandomOrder[shuffledInternalDriverIndex];
-                    List<Trip> driverPath = driverPaths[internalDriver.AllDriversIndex];
+                    List<Activity> driverPath = driverPaths[internalDriver.AllDriversIndex];
 
-                    if (driverPath.Count == 0 || info.Instance.IsValidPrecedence(driverPath[^1], trip)) {
-                        // We can add this trip to this driver without precedence violations
-                        assignment[tripIndex] = internalDriver;
-                        driverPath.Add(trip);
+                    if (driverPath.Count == 0 || info.Instance.IsValidSuccession(driverPath[^1], activity)) {
+                        // We can add this activity to this driver without overlap violations
+                        assignment[activityIndex] = internalDriver;
+                        driverPath.Add(activity);
                         isDone = true;
                         break;
                     }
                 }
                 if (isDone) continue;
 
-                // Greedily assign to random external driver, avoiding precedence violations
+                // Greedily assign to random external driver, avoiding overlap violations
                 ExternalDriver[][] externalDriverTypesRandomOrder = Copy(info.Instance.ExternalDriversByType);
                 Shuffle(externalDriverTypesRandomOrder);
                 for (int shuffledExternalDriverTypeIndex = 0; shuffledExternalDriverTypeIndex < externalDriverTypesRandomOrder.Length; shuffledExternalDriverTypeIndex++) {
@@ -213,12 +213,12 @@ namespace Thesis {
                     // Assign to first possible driver in type
                     for (int externalDriverIndexInType = 0; externalDriverIndexInType < externalDriversInType.Length; externalDriverIndexInType++) {
                         ExternalDriver externalDriver = externalDriversInType[externalDriverIndexInType];
-                        List<Trip> driverPath = driverPaths[externalDriver.AllDriversIndex];
+                        List<Activity> driverPath = driverPaths[externalDriver.AllDriversIndex];
 
-                        if (driverPath.Count == 0 || info.Instance.IsValidPrecedence(driverPath[^1], trip)) {
-                            // We can add this trip to this driver without precedence violations
-                            assignment[tripIndex] = externalDriver;
-                            driverPath.Add(trip);
+                        if (driverPath.Count == 0 || info.Instance.IsValidSuccession(driverPath[^1], activity)) {
+                            // We can add this activity to this driver without overlap violations
+                            assignment[activityIndex] = externalDriver;
+                            driverPath.Add(activity);
                             isDone = true;
                             break;
                         }
@@ -227,14 +227,14 @@ namespace Thesis {
                 }
                 if (isDone) continue;
 
-                // Assigning without precedence violations is impossible, so assign to random external driver
+                // Assigning without overlap violations is impossible, so assign to random external driver
                 int randomExternalDriverTypeIndex = rand.Next(info.Instance.ExternalDriversByType.Length);
                 ExternalDriver[] externalDriversInRandomType = info.Instance.ExternalDriversByType[randomExternalDriverTypeIndex];
                 int randomExternalDriverIndexInType = rand.Next(externalDriversInRandomType.Length);
                 ExternalDriver randomExternalDriver = externalDriversInRandomType[randomExternalDriverIndexInType];
-                List<Trip> randomDriverPath = driverPaths[randomExternalDriver.AllDriversIndex];
-                assignment[tripIndex] = randomExternalDriver;
-                randomDriverPath.Add(trip);
+                List<Activity> randomDriverPath = driverPaths[randomExternalDriver.AllDriversIndex];
+                assignment[activityIndex] = randomExternalDriver;
+                randomDriverPath.Add(activity);
             }
 
             return assignment;

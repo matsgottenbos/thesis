@@ -2,12 +2,12 @@
 
 namespace Thesis {
     class SaDriverPenaltyInfo {
-        public int PrecedenceViolationCount, ShiftLengthViolationCount, ShiftLengthViolationAmount, RestTimeViolationCount, RestTimeViolationAmount, ShiftCountViolationAmount, InvalidHotelCount;
+        public int OverlapViolationCount, ShiftLengthViolationCount, ShiftLengthViolationAmount, RestTimeViolationCount, RestTimeViolationAmount, ShiftCountViolationAmount, InvalidHotelCount;
 
         /* Adding violations */
 
-        public void AddPrecedenceViolation() {
-            PrecedenceViolationCount++;
+        public void AddOverlapViolation() {
+            OverlapViolationCount++;
         }
 
         public void AddPossibleShiftLengthViolation(int shiftLengthWithoutTravel, int shiftLengthWithTravel, int maxShiftLengthWithoutTravel, int maxShiftLengthWithTravel) {
@@ -42,7 +42,7 @@ namespace Thesis {
 
         public double GetPenalty() {
             double penalty = 0;
-            penalty += PrecedenceViolationCount * SaConfig.PrecendenceViolationPenalty;
+            penalty += OverlapViolationCount * SaConfig.OverlapViolationPenalty;
             penalty += ShiftLengthViolationCount * SaConfig.ShiftLengthViolationPenalty + ShiftLengthViolationAmount * SaConfig.ShiftLengthViolationPenaltyPerMin;
             penalty += RestTimeViolationCount * SaConfig.RestTimeViolationPenalty + RestTimeViolationAmount * SaConfig.RestTimeViolationPenaltyPerMin;
             penalty += ShiftCountViolationAmount * SaConfig.InternalShiftCountViolationPenaltyPerShift;
@@ -55,7 +55,7 @@ namespace Thesis {
 
         public static SaDriverPenaltyInfo operator -(SaDriverPenaltyInfo a) {
             return new SaDriverPenaltyInfo() {
-                PrecedenceViolationCount = -a.PrecedenceViolationCount,
+                OverlapViolationCount = -a.OverlapViolationCount,
                 ShiftLengthViolationCount = -a.ShiftLengthViolationCount,
                 ShiftLengthViolationAmount = -a.ShiftLengthViolationAmount,
                 RestTimeViolationCount = -a.RestTimeViolationCount,
@@ -66,7 +66,7 @@ namespace Thesis {
         }
         public static SaDriverPenaltyInfo operator +(SaDriverPenaltyInfo a, SaDriverPenaltyInfo b) {
             return new SaDriverPenaltyInfo() {
-                PrecedenceViolationCount = a.PrecedenceViolationCount + b.PrecedenceViolationCount,
+                OverlapViolationCount = a.OverlapViolationCount + b.OverlapViolationCount,
                 ShiftLengthViolationCount = a.ShiftLengthViolationCount + b.ShiftLengthViolationCount,
                 ShiftLengthViolationAmount = a.ShiftLengthViolationAmount + b.ShiftLengthViolationAmount,
                 RestTimeViolationCount = a.RestTimeViolationCount + b.RestTimeViolationCount,
@@ -79,7 +79,7 @@ namespace Thesis {
 
         public static bool AreEqual(SaDriverPenaltyInfo a, SaDriverPenaltyInfo b) {
             return (
-                a.PrecedenceViolationCount == b.PrecedenceViolationCount &&
+                a.OverlapViolationCount == b.OverlapViolationCount &&
                 a.ShiftLengthViolationCount == b.ShiftLengthViolationCount &&
                 a.ShiftLengthViolationAmount == b.ShiftLengthViolationAmount &&
                 a.RestTimeViolationCount == b.RestTimeViolationCount &&
@@ -93,7 +93,7 @@ namespace Thesis {
         /* Debugging */
 
         public void DebugLog(bool isDiff, bool shouldLogZeros = true) {
-            ParseHelper.LogDebugValue(PrecedenceViolationCount, "Precedence violation count", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(OverlapViolationCount, "Overlap violation count", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(ShiftLengthViolationCount, "Shift length violation count", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(ShiftLengthViolationAmount, "Shift length violation", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(RestTimeViolationCount, "Rest time violation count", isDiff, shouldLogZeros);

@@ -14,12 +14,12 @@ namespace Thesis {
             XSSFWorkbook testDataBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "testData.xlsx"));
             ExcelSheet activitiesSheet = new ExcelSheet("DutyActivities", testDataBook);
 
-            RawTrip[] rawTrips = ParseRawTrips(activitiesSheet, DataConfig.ExcelPlanningStartDate, DataConfig.ExcelPlanningNextDate);
-            return new Instance(rand, rawTrips);
+            RawActivity[] rawActivities = ParseRawActivities(activitiesSheet, DataConfig.ExcelPlanningStartDate, DataConfig.ExcelPlanningNextDate);
+            return new Instance(rand, rawActivities);
         }
 
-        static RawTrip[] ParseRawTrips(ExcelSheet activitiesSheet, DateTime planningStartDate, DateTime planningNextDate) {
-            List<RawTrip> rawTrips = new List<RawTrip>();
+        static RawActivity[] ParseRawActivities(ExcelSheet activitiesSheet, DateTime planningStartDate, DateTime planningNextDate) {
+            List<RawActivity> rawActivities = new List<RawActivity>();
             activitiesSheet.ForEachRow(activityRow => {
                 // Skip if non-included order owner
                 string orderOwner = activitiesSheet.GetStringValue(activityRow, "RailwayUndertaking");
@@ -43,28 +43,28 @@ namespace Thesis {
 
                 // Get start and end time
                 DateTime? startTimeRaw = activitiesSheet.GetDateValue(activityRow, "PlannedStart");
-                if (startTimeRaw == null || startTimeRaw < planningStartDate || startTimeRaw > planningNextDate) return; // Skip trips outside planning timeframe
+                if (startTimeRaw == null || startTimeRaw < planningStartDate || startTimeRaw > planningNextDate) return; // Skip activities outside planning timeframe
                 int startTime = (int)Math.Round((startTimeRaw - planningStartDate).Value.TotalMinutes);
                 DateTime? endTimeRaw = activitiesSheet.GetDateValue(activityRow, "PlannedEnd");
                 if (endTimeRaw == null) return; // Skip row if required values are empty
                 int endTime = (int)Math.Round((endTimeRaw - planningStartDate).Value.TotalMinutes);
                 int duration = endTime - startTime;
 
-                // Temp: skip trips longer than max shift length
+                // Temp: skip activities longer than max shift length
                 if (duration > RulesConfig.NormalShiftMaxLengthWithoutTravel) return;
 
                 // Get company and employee assigned in data
                 string assignedCompanyName = activitiesSheet.GetStringValue(activityRow, "EmployeeWorksFor");
                 string assignedEmployeeName = activitiesSheet.GetStringValue(activityRow, "EmployeeName");
 
-                rawTrips.Add(new RawTrip(dutyName, activityName, dutyId, projectName, startStationDataName, endStationDataName, startTime, endTime, duration, assignedCompanyName, assignedEmployeeName));
+                rawActivities.Add(new RawActivity(dutyName, activityName, dutyId, projectName, startStationDataName, endStationDataName, startTime, endTime, duration, assignedCompanyName, assignedEmployeeName));
             });
 
-            if (rawTrips.Count == 0) {
-                throw new Exception("No trips found in timeframe");
+            if (rawActivities.Count == 0) {
+                throw new Exception("No activities found in timeframe");
             }
 
-            return rawTrips.ToArray();
+            return rawActivities.ToArray();
         }
     }
 }

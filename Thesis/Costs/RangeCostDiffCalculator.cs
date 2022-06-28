@@ -6,59 +6,59 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class RangeCostDiffCalculator {
-        public static SaDriverInfo GetRangeCostDiff(Trip rangeFirstTrip, Trip rangeLastTrip, SaDriverInfo oldDriverInfo, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+        public static SaDriverInfo GetRangeCostDiff(Activity rangeFirstActivity, Activity rangeLastActivity, SaDriverInfo oldDriverInfo, Func<Activity, bool> newIsHotelAfterActivity, Driver driver, List<Activity> driverPath, SaInfo info) {
             #if DEBUG
             if (AppConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.NewNormal);
             }
             #endif
 
-            SaDriverInfo newDriverInfo = RangeCostCalculator.GetRangeCost(rangeFirstTrip, rangeLastTrip, newIsHotelAfterTrip, driver, driverPath, info);
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo, newDriverInfo, driver, driverPath, info);
+            SaDriverInfo newDriverInfo = RangeCostCalculator.GetRangeCost(rangeFirstActivity, rangeLastActivity, newIsHotelAfterActivity, driver, driverPath, info);
+            return GetRangeCostDiffFromNewCosts(rangeFirstActivity, rangeLastActivity, oldDriverInfo, newDriverInfo, driver, driverPath, info);
         }
 
-        public static SaDriverInfo GetRangeCostDiffWithUnassign(Trip rangeFirstTrip, Trip rangeLastTrip, SaDriverInfo oldDriverInfo, Trip unassignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+        public static SaDriverInfo GetRangeCostDiffWithUnassign(Activity rangeFirstActivity, Activity rangeLastActivity, SaDriverInfo oldDriverInfo, Activity unassignedActivity, Func<Activity, bool> newIsHotelAfterActivity, Driver driver, List<Activity> driverPath, SaInfo info) {
             #if DEBUG
             if (AppConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.NewNormal);
             }
             #endif
 
-            SaDriverInfo newDriverInfo = RangeCostCalculator.GetRangeCostWithUnassign(rangeFirstTrip, rangeLastTrip, unassignedTrip, newIsHotelAfterTrip, driver, driverPath, info);
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo, newDriverInfo, driver, driverPath, info);
+            SaDriverInfo newDriverInfo = RangeCostCalculator.GetRangeCostWithUnassign(rangeFirstActivity, rangeLastActivity, unassignedActivity, newIsHotelAfterActivity, driver, driverPath, info);
+            return GetRangeCostDiffFromNewCosts(rangeFirstActivity, rangeLastActivity, oldDriverInfo, newDriverInfo, driver, driverPath, info);
         }
 
-        public static SaDriverInfo GetRangeCostDiffWithAssign(Trip rangeFirstTrip, Trip rangeLastTrip, SaDriverInfo oldDriverInfo, Trip assignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+        public static SaDriverInfo GetRangeCostDiffWithAssign(Activity rangeFirstActivity, Activity rangeLastActivity, SaDriverInfo oldDriverInfo, Activity assignedActivity, Func<Activity, bool> newIsHotelAfterActivity, Driver driver, List<Activity> driverPath, SaInfo info) {
             #if DEBUG
             if (AppConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.NewNormal);
             }
             #endif
 
-            SaDriverInfo newDriverInfo = RangeCostCalculator.GetRangeCostWithAssign(rangeFirstTrip, rangeLastTrip, assignedTrip, newIsHotelAfterTrip, driver, driverPath, info);
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo, newDriverInfo, driver, driverPath, info);
+            SaDriverInfo newDriverInfo = RangeCostCalculator.GetRangeCostWithAssign(rangeFirstActivity, rangeLastActivity, assignedActivity, newIsHotelAfterActivity, driver, driverPath, info);
+            return GetRangeCostDiffFromNewCosts(rangeFirstActivity, rangeLastActivity, oldDriverInfo, newDriverInfo, driver, driverPath, info);
         }
 
-        public static SaDriverInfo GetRangeCostDiffWithSwap(Trip rangeFirstTrip, Trip rangeLastTrip, SaDriverInfo oldDriverInfo, Trip unassignedTrip, Trip assignedTrip, Func<Trip, bool> newIsHotelAfterTrip, Driver driver, List<Trip> driverPath, SaInfo info) {
+        public static SaDriverInfo GetRangeCostDiffWithSwap(Activity rangeFirstActivity, Activity rangeLastActivity, SaDriverInfo oldDriverInfo, Activity unassignedActivity, Activity assignedActivity, Func<Activity, bool> newIsHotelAfterActivity, Driver driver, List<Activity> driverPath, SaInfo info) {
             #if DEBUG
             if (AppConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.NewNormal);
             }
             #endif
 
-            SaDriverInfo newDriverInfo = RangeCostCalculator.GetRangeCostWithSwap(rangeFirstTrip, rangeLastTrip, unassignedTrip, assignedTrip, newIsHotelAfterTrip, driver, driverPath, info);
-            return GetRangeCostDiffFromNewCosts(rangeFirstTrip, rangeLastTrip, oldDriverInfo, newDriverInfo, driver, driverPath, info);
+            SaDriverInfo newDriverInfo = RangeCostCalculator.GetRangeCostWithSwap(rangeFirstActivity, rangeLastActivity, unassignedActivity, assignedActivity, newIsHotelAfterActivity, driver, driverPath, info);
+            return GetRangeCostDiffFromNewCosts(rangeFirstActivity, rangeLastActivity, oldDriverInfo, newDriverInfo, driver, driverPath, info);
         }
 
-        public static SaDriverInfo GetRangeCostDiffFromNewCosts(Trip rangeFirstTrip, Trip rangeLastTrip, SaDriverInfo oldFullDriverInfo, SaDriverInfo newRangeDriverInfo, Driver driver, List<Trip> driverPath, SaInfo info) {
+        public static SaDriverInfo GetRangeCostDiffFromNewCosts(Activity rangeFirstActivity, Activity rangeLastActivity, SaDriverInfo oldFullDriverInfo, SaDriverInfo newRangeDriverInfo, Driver driver, List<Activity> driverPath, SaInfo info) {
             // Old range cost
             #if DEBUG
             if (AppConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.OldNormal);
             }
             #endif
-            Func<Trip, bool> oldIsHotelAfterTrip = (Trip trip) => info.IsHotelStayAfterTrip[trip.Index];
-            SaDriverInfo oldRangeDriverInfo = RangeCostCalculator.GetRangeCost(rangeFirstTrip, rangeLastTrip, oldIsHotelAfterTrip, driver, driverPath, info);
+            Func<Activity, bool> oldIsHotelAfterActivity = (Activity activity) => info.IsHotelStayAfterActivity[activity.Index];
+            SaDriverInfo oldRangeDriverInfo = RangeCostCalculator.GetRangeCost(rangeFirstActivity, rangeLastActivity, oldIsHotelAfterActivity, driver, driverPath, info);
             ProcessFullPathValues(oldRangeDriverInfo, oldFullDriverInfo, driver, info);
 
             // Finish new range cost
