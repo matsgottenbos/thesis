@@ -415,6 +415,7 @@ namespace Thesis {
                 int? contractTime = internalDriverSettingsSheet.GetIntValue(internalDriverSettingsRow, "Hours per week") * MiscConfig.HourLength;
                 bool? isInternationalDriver = internalDriverSettingsSheet.GetBoolValue(internalDriverSettingsRow, "Is international?");
                 if (driverName == null || !contractTime.HasValue || !isInternationalDriver.HasValue) return;
+                if (contractTime.Value == 0) return;
 
                 int travelInfoInternalDriverIndex = Array.IndexOf(travelInfoInternalDriverNames, driverName);
                 if (travelInfoInternalDriverIndex == -1) {

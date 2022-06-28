@@ -45,13 +45,13 @@ namespace Thesis {
         public const int IdealShiftLength = 8 * 60;
         public const int IdealRestTime = 14 * 60;
         public static readonly RangeSatisfactionCriterion SatCriterionRouteVariation = new RangeSatisfactionCriterion(10, 0, 0.2f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionTravelTime = new RangeSatisfactionCriterion(30 * 60, 0, 0.1f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionTravelTime = new RangeSatisfactionCriterion(40 * 60, 0, 0.1f, 0.2f);
         public static readonly TargetSatisfactionCriterion SatCriterionMatchingContractTime = new TargetSatisfactionCriterion(driver => driver.ContractTime, driver => 0.4f * driver.ContractTime, 0.2f, 0.2f);
         public static readonly RangeSatisfactionCriterion SatCriterionShiftLengths = new RangeSatisfactionCriterion(10 * 60, 0, 0.05f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionRobustness = new RangeSatisfactionCriterion(400, 0, 0.1f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionRobustness = new RangeSatisfactionCriterion(800, 0, 0.05f, 0.2f);
         public static readonly RangeSatisfactionCriterion SatCriterionNightShifts = new RangeSatisfactionCriterion(5, 0, 0.05f, 0.2f);
         public static readonly RangeSatisfactionCriterion SatCriterionWeekendShifts = new RangeSatisfactionCriterion(3, 0, 0.05f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionHotelStays = new RangeSatisfactionCriterion(4, 0, 0.1f, 0.2f);
+        public static readonly RangeSatisfactionCriterion SatCriterionHotelStays = new RangeSatisfactionCriterion(4, 0, 0.15f, 0.2f);
         // TBA: time off requests
         // TBA: consecutive shifts
         public static readonly RangeSatisfactionCriterion SatCriterionConsecutiveFreeDays = new RangeSatisfactionCriterion(0, 1, 0.05f, 0.2f);
@@ -59,8 +59,8 @@ namespace Thesis {
 
         // Robustness
         public const float RobustnessCostFactorSameDuty = 0f; // Added cost for each expected conflict due to delays, if the conflict is between trips of the same duty
-        public const float RobustnessCostFactorSameProject = 1000f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties but of the same project
-        public const float RobustnessCostFactorDifferentProject = 2000f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties and projects
+        public const float RobustnessCostFactorSameProject = 500f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties but of the same project
+        public const float RobustnessCostFactorDifferentProject = 1000f; // Added cost for each expected conflict due to delays, if the conflict is between trips of different duties and projects
         public const float TripDelayProbability = 0.275f; // Chance that a trip has a delay
         public static readonly Func<int, double> TripMeanDelayFunc = (int plannedDuration) => plannedDuration * plannedDuration / 5561 + 0.123 * plannedDuration + 37.38; // Trip mean delay by planned duration: p^2/5571 + 0.123p + 37.38
         public static readonly Func<double, double> TripDelayGammaDistributionAlphaFunc = (double meanDelay) => meanDelay * meanDelay / 3879; // Alpha parameter of trip delay gamma distribution, by mean delay: p^2/3879

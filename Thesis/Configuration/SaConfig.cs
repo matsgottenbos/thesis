@@ -29,13 +29,13 @@ namespace Thesis {
         public const float ToggleHotelProbCumulative = 1f;
 
         // Penalties
-        public const double PrecendenceViolationPenalty = 5000;
-        public const double ShiftLengthViolationPenalty = 2500;
-        public const double ShiftLengthViolationPenaltyPerMin = 2500 / 60f;
-        public const double RestTimeViolationPenalty = 2500;
-        public const double RestTimeViolationPenaltyPerMin = 2500 / 60f;
-        public const double InternalShiftCountViolationPenaltyPerShift = 5000;
-        public const double InvalidHotelPenalty = 5000;
-        public const double ExternalShiftCountPenaltyPerShift = 5000;
+        public const double PrecendenceViolationPenalty = 4000;
+        public const double ShiftLengthViolationPenalty = 1000;
+        public const double ShiftLengthViolationPenaltyPerMin = 1000 / 60f;
+        public const double RestTimeViolationPenalty = 1000;
+        public const double RestTimeViolationPenaltyPerMin = 1000 / 60f;
+        public const double InternalShiftCountViolationPenaltyPerShift = 2000;
+        public const double InvalidHotelPenalty = 4000;
+        public const double ExternalShiftCountPenaltyPerShift = 4000;
     }
 }

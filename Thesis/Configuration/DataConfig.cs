@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class DataConfig {
-        public static readonly DateTime ExcelPlanningStartDate = new DateTime(2022, 5, 23);
+        public static readonly DateTime ExcelPlanningStartDate = new DateTime(2022, 6, 27);
         public static readonly DateTime ExcelPlanningNextDate = ExcelPlanningStartDate.AddDays(7);
 
 
@@ -32,10 +32,6 @@ namespace Thesis {
         };
         public static readonly string[] ExcelIncludedJobTitlesNational = new string[] { "Machinist VB nationaal", "Rangeerder" }; // TODO: rangeerders wel of niet meenemen?
         public static readonly string[] ExcelIncludedJobTitlesInternational = new string[] { "Machinist VB Internationaal NL-D" };
-
-
-        // TODO: set per driver
-        public const int ExcelInternalDriverContractTime = 40 * 60;
 
 
         /* Generator */
