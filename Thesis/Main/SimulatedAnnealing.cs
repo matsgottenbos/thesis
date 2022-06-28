@@ -5,23 +5,31 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Thesis {
     class SimulatedAnnealing {
         readonly SaInfo info;
         readonly SaInfo[] bestInfoBySatisfaction;
+        readonly XorShiftRandom rand;
+        readonly Action threadCallback;
+        readonly CancellationToken cancellationToken;
         int[] debugOperationCounts, debugAcceptedOperationCounts;
 
-        public SimulatedAnnealing(Instance instance) {
+        public SimulatedAnnealing(Instance instance, XorShiftRandom rand, SaInfo[] bestInfoBySatisfaction, Action threadCallback, CancellationToken cancellationToken) {
+            this.rand = rand;
+            this.bestInfoBySatisfaction = bestInfoBySatisfaction;
+            this.threadCallback = threadCallback;
+            this.cancellationToken = cancellationToken;
+
             // Initialise info
             info = new SaInfo(instance);
             info.Temperature = SaConfig.SaInitialTemperature;
-            info.SatisfactionFactor = (float)info.Instance.Rand.NextDouble(SaConfig.SaCycleMinSatisfactionFactor, SaConfig.SaCycleMaxSatisfactionFactor);
+            info.SatisfactionFactor = (float)this.rand.NextDouble(SaConfig.SaCycleMinSatisfactionFactor, SaConfig.SaCycleMaxSatisfactionFactor);
             info.IsHotelStayAfterTrip = new bool[instance.Trips.Length];
 
             // Initialise best info
-            bestInfoBySatisfaction = new SaInfo[MiscConfig.PercentageFactor];
             for (int i = 0; i < bestInfoBySatisfaction.Length; i++) {
                 SaInfo initialBestInfo = new SaInfo(instance);
                 initialBestInfo.TotalInfo = new SaTotalInfo() {
@@ -57,13 +65,7 @@ namespace Thesis {
             #endif
         }
 
-        public List<SaInfo> Run() {
-            Console.WriteLine("Starting simulated annealing");
-
-            // Start stopwatch
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-
+        public void Run() {
             #if DEBUG
             if (AppConfig.DebugSaLogOperationStats) {
                 debugOperationCounts = new int[4];
@@ -71,19 +73,14 @@ namespace Thesis {
             }
             #endif
 
-            // Log initial assignment
-            LogIteration(stopwatch);
-
-            XorShiftRandom fastRand = info.Instance.Rand;
-
-            while (info.IterationNum < SaConfig.SaIterationCount) {
+            while (!cancellationToken.IsCancellationRequested) {
                 // Pick a random operation based on the configured probabilities
-                double operationDouble = fastRand.NextDouble();
+                double operationDouble = rand.NextDouble();
                 AbstractOperation operation;
-                if (operationDouble < SaConfig.AssignInternalProbCumulative) operation = AssignInternalOperation.CreateRandom(info);
-                else if (operationDouble < SaConfig.AssignExternalProbCumulative) operation = AssignExternalOperation.CreateRandom(info);
-                else if (operationDouble < SaConfig.SwapProbCumulative) operation = SwapOperation.CreateRandom(info);
-                else operation = ToggleHotelOperation.CreateRandom(info);
+                if (operationDouble < SaConfig.AssignInternalProbCumulative) operation = AssignInternalOperation.CreateRandom(info, rand);
+                else if (operationDouble < SaConfig.AssignExternalProbCumulative) operation = AssignExternalOperation.CreateRandom(info, rand);
+                else if (operationDouble < SaConfig.SwapProbCumulative) operation = SwapOperation.CreateRandom(info, rand);
+                else operation = ToggleHotelOperation.CreateRandom(info, rand);
 
                 #if DEBUG
                 int operationTypeIndex;
@@ -101,7 +98,7 @@ namespace Thesis {
                 double newAdjustedCost = GetAdjustedCost(info.TotalInfo.Stats.Cost + totalInfoDiff.Stats.Cost, info.TotalInfo.Stats.SatisfactionScore.Value + totalInfoDiff.Stats.SatisfactionScore.Value, info.SatisfactionFactor);
                 double adjustedCostDiff = newAdjustedCost - oldAdjustedCost;
 
-                bool isAccepted = adjustedCostDiff < 0 || fastRand.NextDouble() < Math.Exp(-adjustedCostDiff / info.Temperature);
+                bool isAccepted = adjustedCostDiff < 0 || rand.NextDouble() < Math.Exp(-adjustedCostDiff / info.Temperature);
                 if (isAccepted) {
                     operation.Execute();
 
@@ -149,12 +146,9 @@ namespace Thesis {
                 }
                 #endif
 
-                // Log
-                if (info.IterationNum % SaConfig.SaLogFrequency == 0) {
-                    // Check cost to remove floating point imprecisions
-                    TotalCostCalculator.ProcessAssignmentCost(info);
-
-                    LogIteration(stopwatch);
+                // Callback
+                if (info.IterationNum % SaConfig.SaThreadCallbackFrequency == 0) {
+                    threadCallback();
                 }
 
                 // Update temperature and penalty factor
@@ -164,8 +158,8 @@ namespace Thesis {
                     // Check if we should end the cycle
                     if (info.Temperature <= SaConfig.SaEndCycleTemperature) {
                         info.CycleNum++;
-                        info.Temperature = (float)fastRand.NextDouble(SaConfig.SaCycleMinInitialTemperature, SaConfig.SaCycleMaxInitialTemperature);
-                        info.SatisfactionFactor = (float)fastRand.NextDouble(SaConfig.SaCycleMinSatisfactionFactor, SaConfig.SaCycleMaxSatisfactionFactor);
+                        info.Temperature = (float)rand.NextDouble(SaConfig.SaCycleMinInitialTemperature, SaConfig.SaCycleMaxInitialTemperature);
+                        info.SatisfactionFactor = (float)rand.NextDouble(SaConfig.SaCycleMinSatisfactionFactor, SaConfig.SaCycleMaxSatisfactionFactor);
                     }
 
                     TotalCostCalculator.ProcessAssignmentCost(info);
@@ -178,62 +172,98 @@ namespace Thesis {
                 }
                 #endif
             }
-
-            stopwatch.Stop();
-            float saDuration = stopwatch.ElapsedMilliseconds / 1000f;
-            float saSpeed = SaConfig.SaIterationCount / saDuration;
-            Console.WriteLine("SA finished {0} iterations in {1} s  |  Speed: {2} iterations/s", ParseHelper.LargeNumToString(info.IterationNum), ParseHelper.ToString(saDuration), ParseHelper.LargeNumToString(saSpeed));
-
-            // Get Pareto-optimal front
-            List<SaInfo> paretoFront = GetParetoFront(bestInfoBySatisfaction);
-
-            // Perform all output
-            PerformOutput(paretoFront);
-
-            return paretoFront;
-        }
-
-        static void PerformOutput(List<SaInfo> paretoFront) {
-            // Log summary to console
-            using (StreamWriter consoleStreamWriter = new StreamWriter(Console.OpenStandardOutput())) {
-                LogSummaryToStream(paretoFront, consoleStreamWriter);
-            }
-
-            // Create output subfolder
-            string dateStr = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
-            string outputSubfolderPath = Path.Combine(AppConfig.OutputFolder, dateStr);
-            Directory.CreateDirectory(outputSubfolderPath);
-
-            // Log summary to file
-            using (StreamWriter summaryFileStreamWriter = new StreamWriter(Path.Combine(outputSubfolderPath, "summary.txt"))) {
-                LogSummaryToStream(paretoFront, summaryFileStreamWriter);
-            }
-
-            // Log pareto front solutions to separate JSON files
-            for (int i = 0; i < paretoFront.Count; i++) {
-                SaInfo paretoPoint = paretoFront[i];
-                paretoPoint.ProcessDriverPaths();
-                TotalCostCalculator.ProcessAssignmentCost(paretoPoint);
-                JsonAssignmentHelper.ExportAssignmentInfoJson(outputSubfolderPath, paretoPoint);
-            }
-        }
-
-        static void LogSummaryToStream(List<SaInfo> paretoFront, StreamWriter streamWriter) {
-            if (paretoFront.Count == 0) {
-                streamWriter.WriteLine("SA found no valid solution");
-            } else {
-                streamWriter.WriteLine("Pareto-optimal front: {0}", ParetoFrontToString(paretoFront));
-
-                for (int i = 0; i < paretoFront.Count; i++) {
-                    SaInfo paretoPoint = paretoFront[i];
-                    streamWriter.WriteLine("\nPoint {0}\n{1}", ParetoPointToString(paretoPoint), ParseHelper.AssignmentToString(paretoPoint));
-                }
-            }
         }
 
         public static double GetAdjustedCost(double cost, double satisfaction, float satisfactionFactor) {
             return cost * (1 + (1 - satisfaction) * satisfactionFactor);
         }
+
+        Driver[] GetInitialAssignment() {
+            Driver[] assignment = new Driver[info.Instance.Trips.Length];
+            List<Trip>[] driverPaths = new List<Trip>[info.Instance.AllDrivers.Length];
+            for (int i = 0; i < driverPaths.Length; i++) driverPaths[i] = new List<Trip>();
+
+            for (int tripIndex = 0; tripIndex < info.Instance.Trips.Length; tripIndex++) {
+                Trip trip = info.Instance.Trips[tripIndex];
+
+                // Greedily assign to random internal driver, avoiding precedence violations
+                InternalDriver[] internalDriversRandomOrder = Copy(info.Instance.InternalDrivers);
+                Shuffle(internalDriversRandomOrder);
+                bool isDone = false;
+                for (int shuffledInternalDriverIndex = 0; shuffledInternalDriverIndex < internalDriversRandomOrder.Length; shuffledInternalDriverIndex++) {
+                    InternalDriver internalDriver = internalDriversRandomOrder[shuffledInternalDriverIndex];
+                    List<Trip> driverPath = driverPaths[internalDriver.AllDriversIndex];
+
+                    if (driverPath.Count == 0 || info.Instance.IsValidPrecedence(driverPath[^1], trip)) {
+                        // We can add this trip to this driver without precedence violations
+                        assignment[tripIndex] = internalDriver;
+                        driverPath.Add(trip);
+                        isDone = true;
+                        break;
+                    }
+                }
+                if (isDone) continue;
+
+                // Greedily assign to random external driver, avoiding precedence violations
+                ExternalDriver[][] externalDriverTypesRandomOrder = Copy(info.Instance.ExternalDriversByType);
+                Shuffle(externalDriverTypesRandomOrder);
+                for (int shuffledExternalDriverTypeIndex = 0; shuffledExternalDriverTypeIndex < externalDriverTypesRandomOrder.Length; shuffledExternalDriverTypeIndex++) {
+                    ExternalDriver[] externalDriversInType = externalDriverTypesRandomOrder[shuffledExternalDriverTypeIndex];
+
+                    // Assign to first possible driver in type
+                    for (int externalDriverIndexInType = 0; externalDriverIndexInType < externalDriversInType.Length; externalDriverIndexInType++) {
+                        ExternalDriver externalDriver = externalDriversInType[externalDriverIndexInType];
+                        List<Trip> driverPath = driverPaths[externalDriver.AllDriversIndex];
+
+                        if (driverPath.Count == 0 || info.Instance.IsValidPrecedence(driverPath[^1], trip)) {
+                            // We can add this trip to this driver without precedence violations
+                            assignment[tripIndex] = externalDriver;
+                            driverPath.Add(trip);
+                            isDone = true;
+                            break;
+                        }
+                    }
+                    if (isDone) break;
+                }
+                if (isDone) continue;
+
+                // Assigning without precedence violations is impossible, so assign to random external driver
+                int randomExternalDriverTypeIndex = rand.Next(info.Instance.ExternalDriversByType.Length);
+                ExternalDriver[] externalDriversInRandomType = info.Instance.ExternalDriversByType[randomExternalDriverTypeIndex];
+                int randomExternalDriverIndexInType = rand.Next(externalDriversInRandomType.Length);
+                ExternalDriver randomExternalDriver = externalDriversInRandomType[randomExternalDriverIndexInType];
+                List<Trip> randomDriverPath = driverPaths[randomExternalDriver.AllDriversIndex];
+                assignment[tripIndex] = randomExternalDriver;
+                randomDriverPath.Add(trip);
+            }
+
+            return assignment;
+        }
+
+        void Shuffle<T>(T[] array) {
+            // Fisher–Yates shuffle
+            int n = array.Length;
+            while (n > 1) {
+                int k = rand.Next(n--);
+                T temp = array[n];
+                array[n] = array[k];
+                array[k] = temp;
+            }
+        }
+
+        static T[] Copy<T>(T[] array) {
+            T[] copy = new T[array.Length];
+            for (int i = 0; i < array.Length; i++) {
+                copy[i] = array[i];
+            }
+            return copy;
+        }
+
+
+
+
+
+        /* Obsolete */
 
         void LogIteration(Stopwatch stopwatch) {
             // Get Pareto-optimal front
@@ -309,88 +339,5 @@ namespace Thesis {
         static string ParetoPointToString(SaInfo paretoPoint) {
             return string.Format("{0}% {1}", ParseHelper.ToString(paretoPoint.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor, "0"), ParseHelper.LargeNumToString(paretoPoint.TotalInfo.Stats.Cost, "0"));
         }
-
-        Driver[] GetInitialAssignment() {
-            Driver[] assignment = new Driver[info.Instance.Trips.Length];
-            List<Trip>[] driverPaths = new List<Trip>[info.Instance.AllDrivers.Length];
-            for (int i = 0; i < driverPaths.Length; i++) driverPaths[i] = new List<Trip>();
-
-            for (int tripIndex = 0; tripIndex < info.Instance.Trips.Length; tripIndex++) {
-                Trip trip = info.Instance.Trips[tripIndex];
-
-                // Greedily assign to random internal driver, avoiding precedence violations
-                InternalDriver[] internalDriversRandomOrder = Copy(info.Instance.InternalDrivers);
-                Shuffle(internalDriversRandomOrder);
-                bool isDone = false;
-                for (int shuffledInternalDriverIndex = 0; shuffledInternalDriverIndex < internalDriversRandomOrder.Length; shuffledInternalDriverIndex++) {
-                    InternalDriver internalDriver = internalDriversRandomOrder[shuffledInternalDriverIndex];
-                    List<Trip> driverPath = driverPaths[internalDriver.AllDriversIndex];
-
-                    if (driverPath.Count == 0 || info.Instance.IsValidPrecedence(driverPath[^1], trip)) {
-                        // We can add this trip to this driver without precedence violations
-                        assignment[tripIndex] = internalDriver;
-                        driverPath.Add(trip);
-                        isDone = true;
-                        break;
-                    }
-                }
-                if (isDone) continue;
-
-                // Greedily assign to random external driver, avoiding precedence violations
-                ExternalDriver[][] externalDriverTypesRandomOrder = Copy(info.Instance.ExternalDriversByType);
-                Shuffle(externalDriverTypesRandomOrder);
-                for (int shuffledExternalDriverTypeIndex = 0; shuffledExternalDriverTypeIndex < externalDriverTypesRandomOrder.Length; shuffledExternalDriverTypeIndex++) {
-                    ExternalDriver[] externalDriversInType = externalDriverTypesRandomOrder[shuffledExternalDriverTypeIndex];
-
-                    // Assign to first possible driver in type
-                    for (int externalDriverIndexInType = 0; externalDriverIndexInType < externalDriversInType.Length; externalDriverIndexInType++) {
-                        ExternalDriver externalDriver = externalDriversInType[externalDriverIndexInType];
-                        List<Trip> driverPath = driverPaths[externalDriver.AllDriversIndex];
-
-                        if (driverPath.Count == 0 || info.Instance.IsValidPrecedence(driverPath[^1], trip)) {
-                            // We can add this trip to this driver without precedence violations
-                            assignment[tripIndex] = externalDriver;
-                            driverPath.Add(trip);
-                            isDone = true;
-                            break;
-                        }
-                    }
-                    if (isDone) break;
-                }
-                if (isDone) continue;
-
-                // Assigning without precedence violations is impossible, so assign to random external driver
-                int randomExternalDriverTypeIndex = info.Instance.Rand.Next(info.Instance.ExternalDriversByType.Length);
-                ExternalDriver[] externalDriversInRandomType = info.Instance.ExternalDriversByType[randomExternalDriverTypeIndex];
-                int randomExternalDriverIndexInType = info.Instance.Rand.Next(externalDriversInRandomType.Length);
-                ExternalDriver randomExternalDriver = externalDriversInRandomType[randomExternalDriverIndexInType];
-                List<Trip> randomDriverPath = driverPaths[randomExternalDriver.AllDriversIndex];
-                assignment[tripIndex] = randomExternalDriver;
-                randomDriverPath.Add(trip);
-            }
-
-            return assignment;
-        }
-
-        void Shuffle<T>(T[] array) {
-            // Fisher–Yates shuffle
-            int n = array.Length;
-            while (n > 1) {
-                int k = info.Instance.Rand.Next(n--);
-                T temp = array[n];
-                array[n] = array[k];
-                array[k] = temp;
-            }
-        }
-
-        T[] Copy<T>(T[] array) {
-            T[] copy = new T[array.Length];
-            for (int i = 0; i < array.Length; i++) {
-                copy[i] = array[i];
-            }
-            return copy;
-        }
     }
-
-
 }

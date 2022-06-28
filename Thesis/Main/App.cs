@@ -27,7 +27,8 @@ namespace Thesis {
                 return;
             }
 
-            Instance instance = GetInstance();
+            XorShiftRandom appRand = AppConfig.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
+            Instance instance = GetInstance(appRand);
 
             // Special app modes with data
             if (AppConfig.DebugRunInspector) {
@@ -47,25 +48,25 @@ namespace Thesis {
             }
 
             // Simulated annealing
-            SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance);
-            simulatedAnnealing.Run();
+            SaMultithreadHandler saMultithreadHandler = new SaMultithreadHandler();
+            saMultithreadHandler.Run(instance, appRand);
         }
 
-        Instance GetInstance() {
-            XorShiftRandom rand = AppConfig.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
-
+        static Instance GetInstance(XorShiftRandom appRand) {
             Instance instance;
             switch (AppConfig.SelectedDataSource) {
                 case DataSource.Excel:
-                    instance = ExcelDataImporter.Import(rand);
-                    Console.WriteLine("Instance import from excel data complete");
+                    Console.WriteLine("Importing data from Excel...");
+                    instance = ExcelDataImporter.Import(appRand);
                     break;
 
                 case DataSource.Odata:
+                    Console.WriteLine("Importing data from RailCube...");
                     OdataImporter.Import();
                     throw new NotImplementedException();
                     break;
             }
+            Console.WriteLine("Data import complete");
             return instance;
         }
     }

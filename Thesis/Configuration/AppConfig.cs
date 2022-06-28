@@ -16,8 +16,12 @@ namespace Thesis {
         public const DataSource SelectedDataSource = DataSource.Excel;
         //public const DataSource SelectedDataSource = DataSource.Odata;
 
+        // Multithreading
+        public const bool EnableMultithreading = true;
+        public const int ThreadCount = 8;
+
         // Debug
-        public const bool DebugUseSeededSa = true;
+        public const bool DebugUseSeededSa = false;
         public const bool DebugCheckOperations = false;
         public const bool DebugSaLogCurrentSolution = false;
         public const bool DebugSaLogAdditionalInfo = false;

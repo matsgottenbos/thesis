@@ -55,13 +55,13 @@ namespace Thesis {
             UpdateExternalDriverTypeInfo(driver2, externalDriver2TypeDiff);
         }
 
-        public static SwapOperation CreateRandom(SaInfo info) {
-            int tripIndex1 = info.Instance.Rand.Next(info.Instance.Trips.Length);
+        public static SwapOperation CreateRandom(SaInfo info, XorShiftRandom rand) {
+            int tripIndex1 = rand.Next(info.Instance.Trips.Length);
 
             // Select random second trip that is not the first trip, and that isn't assigned to the same driver as the first trip
             int tripIndex2;
             do {
-                tripIndex2 = info.Instance.Rand.Next(info.Instance.Trips.Length);
+                tripIndex2 = rand.Next(info.Instance.Trips.Length);
             } while (tripIndex1 == tripIndex2 || info.Assignment[tripIndex1] == info.Assignment[tripIndex2]);
 
             return new SwapOperation(tripIndex1, tripIndex2, info);

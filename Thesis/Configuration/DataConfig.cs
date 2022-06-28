@@ -40,7 +40,7 @@ namespace Thesis {
         public const float GenMinCarTravelTimeFactor = 0.5f;
         public const float GenMaxCarTravelTimeFactor = 0.8f;
         public const int GenMaxHomeTravelTime = 2 * 60;
-        public const float GenTrackProficiencyProb = 0.7f;
+        public const float GenTrackProficiencyProb = 1f;
 
 
         /* Google Maps */

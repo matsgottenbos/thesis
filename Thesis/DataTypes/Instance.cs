@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class Instance {
-        public readonly XorShiftRandom Rand;
         readonly int timeframeLength;
         public readonly int UniqueSharedRouteCount;
         readonly int[,] plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances;
@@ -27,7 +26,6 @@ namespace Thesis {
             XSSFWorkbook addressesBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "stationAddresses.xlsx"));
             XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "settings.xlsx"));
 
-            Rand = rand;
             (StationNames, plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances) = GetStationNamesAndExpectedCarTravelInfo();
             (Trips, tripSuccession, tripSuccessionRobustness, tripsAreSameShift, timeframeLength, UniqueSharedRouteCount) = ProcessRawTrips(addressesBook, rawTrips, StationNames, expectedCarTravelTimes);
             shiftInfos = GetShiftInfos(Trips, timeframeLength);

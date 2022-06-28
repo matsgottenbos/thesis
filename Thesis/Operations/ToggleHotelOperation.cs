@@ -48,8 +48,8 @@ namespace Thesis {
             UpdateDriverInfo(driver, driverInfoDiff);
         }
 
-        public static ToggleHotelOperation CreateRandom(SaInfo info) {
-            int tripIndex = info.Instance.Rand.Next(info.Instance.Trips.Length);
+        public static ToggleHotelOperation CreateRandom(SaInfo info, XorShiftRandom rand) {
+            int tripIndex = rand.Next(info.Instance.Trips.Length);
 
             bool isAddition = !info.IsHotelStayAfterTrip[tripIndex];
 

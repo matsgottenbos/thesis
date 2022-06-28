@@ -8,14 +8,14 @@ namespace Thesis {
     class AssignInternalOperation : AbstractAssignOperation {
         public AssignInternalOperation(int tripIndex, InternalDriver newInternalDriver, SaInfo info) : base(tripIndex, newInternalDriver, info) { }
 
-        public static AbstractAssignOperation CreateRandom(SaInfo info) {
-            int tripIndex = info.Instance.Rand.Next(info.Instance.Trips.Length);
+        public static AbstractAssignOperation CreateRandom(SaInfo info, XorShiftRandom rand) {
+            int tripIndex = rand.Next(info.Instance.Trips.Length);
             Driver oldDriver = info.Assignment[tripIndex];
 
             // Select random internal driver that is not the current driver
             InternalDriver newInternalDriver;
             do {
-                int newInternalDriverIndex = info.Instance.Rand.Next(info.Instance.InternalDrivers.Length);
+                int newInternalDriverIndex = rand.Next(info.Instance.InternalDrivers.Length);
                 newInternalDriver = info.Instance.InternalDrivers[newInternalDriverIndex];
             } while (newInternalDriver == oldDriver);
 
