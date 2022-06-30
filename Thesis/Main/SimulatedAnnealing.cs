@@ -10,27 +10,22 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class SimulatedAnnealing {
-        readonly SaInfo info;
-        readonly SaInfo[] bestInfoBySatisfaction;
+        public SaInfo Info;
+        public readonly SaInfo[] BestInfoBySatisfaction;
         readonly XorShiftRandom rand;
         readonly Action threadCallback;
-        readonly CancellationToken cancellationToken;
-        int[] debugOperationCounts, debugAcceptedOperationCounts;
+        public int[] DebugOperationCounts, DebugAcceptedOperationCounts;
 
-        public SimulatedAnnealing(Instance instance, XorShiftRandom rand, SaInfo[] bestInfoBySatisfaction, Action threadCallback, CancellationToken cancellationToken) {
+        public SimulatedAnnealing(Instance instance, XorShiftRandom rand, Action threadCallback) {
             this.rand = rand;
-            this.bestInfoBySatisfaction = bestInfoBySatisfaction;
             this.threadCallback = threadCallback;
-            this.cancellationToken = cancellationToken;
 
-            // Initialise info
-            info = new SaInfo(instance);
-            info.Temperature = SaConfig.SaInitialTemperature;
-            info.SatisfactionFactor = (float)this.rand.NextDouble(SaConfig.SaCycleMinSatisfactionFactor, SaConfig.SaCycleMaxSatisfactionFactor);
-            info.IsHotelStayAfterActivity = new bool[instance.Activities.Length];
+            // Initialise info with instance
+            Info = new SaInfo(instance);
 
             // Initialise best info
-            for (int i = 0; i < bestInfoBySatisfaction.Length; i++) {
+            BestInfoBySatisfaction = new SaInfo[MiscConfig.PercentageFactor];
+            for (int i = 0; i < BestInfoBySatisfaction.Length; i++) {
                 SaInfo initialBestInfo = new SaInfo(instance);
                 initialBestInfo.TotalInfo = new SaTotalInfo() {
                     Stats = new SaStats() {
@@ -38,38 +33,18 @@ namespace Thesis {
                         SatisfactionScore = -1,
                     },
                 };
-                bestInfoBySatisfaction[i] = initialBestInfo;
+                BestInfoBySatisfaction[i] = initialBestInfo;
             }
-
-            // Create a random assignment
-            info.Assignment = GetInitialAssignment();
-            info.ProcessDriverPaths();
-
-            #if DEBUG
-            // Initialise debugger
-            if (AppConfig.DebugCheckOperations) {
-                SaDebugger.ResetIteration(info);
-                SaDebugger.GetCurrentOperation().StartPart("Initial assignment", null);
-                SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.OldChecked);
-            }
-            #endif
-
-            // Get cost of initial assignment
-            TotalCostCalculator.ProcessAssignmentCost(info);
-
-            #if DEBUG
-            // Reset iteration in debugger after initial assignment cost
-            if (AppConfig.DebugCheckOperations) {
-                SaDebugger.ResetIteration(info);
-            }
-            #endif
         }
 
-        public void Run() {
+        public void Run(CancellationToken cancellationToken) {
+            // Initialise
+            PerformFullReset();
+
             #if DEBUG
             if (AppConfig.DebugSaLogOperationStats) {
-                debugOperationCounts = new int[4];
-                debugAcceptedOperationCounts = new int[4];
+                DebugOperationCounts = new int[4];
+                DebugAcceptedOperationCounts = new int[4];
             }
             #endif
 
@@ -77,10 +52,10 @@ namespace Thesis {
                 // Pick a random operation based on the configured probabilities
                 double operationDouble = rand.NextDouble();
                 AbstractOperation operation;
-                if (operationDouble < SaConfig.AssignInternalProbCumulative) operation = AssignInternalOperation.CreateRandom(info, rand);
-                else if (operationDouble < SaConfig.AssignExternalProbCumulative) operation = AssignExternalOperation.CreateRandom(info, rand);
-                else if (operationDouble < SaConfig.SwapProbCumulative) operation = SwapOperation.CreateRandom(info, rand);
-                else operation = ToggleHotelOperation.CreateRandom(info, rand);
+                if (operationDouble < SaConfig.AssignInternalProbCumulative) operation = AssignInternalOperation.CreateRandom(Info, rand);
+                else if (operationDouble < SaConfig.AssignExternalProbCumulative) operation = AssignExternalOperation.CreateRandom(Info, rand);
+                else if (operationDouble < SaConfig.SwapProbCumulative) operation = SwapOperation.CreateRandom(Info, rand);
+                else operation = ToggleHotelOperation.CreateRandom(Info, rand);
 
                 #if DEBUG
                 int operationTypeIndex;
@@ -89,112 +64,148 @@ namespace Thesis {
                     else if (operationDouble < SaConfig.AssignExternalProbCumulative) operationTypeIndex = 1;
                     else if (operationDouble < SaConfig.SwapProbCumulative) operationTypeIndex = 2;
                     else operationTypeIndex = 3;
-                    debugOperationCounts[operationTypeIndex]++;
+                    DebugOperationCounts[operationTypeIndex]++;
                 }
                 #endif
 
                 SaTotalInfo totalInfoDiff = operation.GetCostDiff();
-                double oldAdjustedCost = GetAdjustedCost(info.TotalInfo.Stats.Cost, info.TotalInfo.Stats.SatisfactionScore.Value, info.SatisfactionFactor);
-                double newAdjustedCost = GetAdjustedCost(info.TotalInfo.Stats.Cost + totalInfoDiff.Stats.Cost, info.TotalInfo.Stats.SatisfactionScore.Value + totalInfoDiff.Stats.SatisfactionScore.Value, info.SatisfactionFactor);
+                double oldAdjustedCost = GetAdjustedCost(Info.TotalInfo.Stats.Cost, Info.TotalInfo.Stats.SatisfactionScore.Value, Info.SatisfactionFactor);
+                double newAdjustedCost = GetAdjustedCost(Info.TotalInfo.Stats.Cost + totalInfoDiff.Stats.Cost, Info.TotalInfo.Stats.SatisfactionScore.Value + totalInfoDiff.Stats.SatisfactionScore.Value, Info.SatisfactionFactor);
                 double adjustedCostDiff = newAdjustedCost - oldAdjustedCost;
 
-                bool isAccepted = adjustedCostDiff < 0 || rand.NextDouble() < Math.Exp(-adjustedCostDiff / info.Temperature);
+                bool isAccepted = adjustedCostDiff < 0 || rand.NextDouble() < Math.Exp(-adjustedCostDiff / Info.Temperature);
                 if (isAccepted) {
                     operation.Execute();
 
                     #if DEBUG
                     if (AppConfig.DebugSaLogOperationStats) {
-                        debugAcceptedOperationCounts[operationTypeIndex]++;
+                        DebugAcceptedOperationCounts[operationTypeIndex]++;
                     }
                     #endif
 
-                    int satisfactionLevel = (int)Math.Round(info.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor);
-                    if (info.TotalInfo.Stats.Penalty < 0.01 && info.TotalInfo.Stats.Cost < bestInfoBySatisfaction[satisfactionLevel].TotalInfo.Stats.Cost) {
-                        info.LastImprovementIteration = info.IterationNum;
-                        info.HasImprovementSinceLog = true;
+                    int satisfactionLevel = (int)Math.Round(Info.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor);
+                    if (Info.TotalInfo.Stats.Penalty < 0.01 && Info.TotalInfo.Stats.Cost < BestInfoBySatisfaction[satisfactionLevel].TotalInfo.Stats.Cost) {
+                        Info.LastImprovementIteration = Info.IterationNum;
+                        Info.HasImprovementSinceLog = true;
 
                         // Check cost to remove floating point imprecisions
-                        TotalCostCalculator.ProcessAssignmentCost(info);
+                        TotalCostCalculator.ProcessAssignmentCost(Info);
 
                         #if DEBUG
                         if (AppConfig.DebugCheckOperations) {
-                            if (info.TotalInfo.Stats.Penalty > 0.01) throw new Exception("New best solution is invalid");
-                            if (Math.Abs(info.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor - satisfactionLevel) > 0.6) throw new Exception("New best solution has incorrect satisfaction level");
+                            if (Info.TotalInfo.Stats.Penalty > 0.01) throw new Exception("New best solution is invalid");
+                            if (Math.Abs(Info.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor - satisfactionLevel) > 0.6) throw new Exception("New best solution has incorrect satisfaction level");
                         }
                         #endif
 
                         // Store as the best solution for this satisfaction level
-                        SaInfo bestInfo = info.CopyForBestInfo();
-                        bestInfoBySatisfaction[satisfactionLevel] = bestInfo;
+                        SaInfo bestInfo = Info.CopyForBestInfo();
+                        BestInfoBySatisfaction[satisfactionLevel] = bestInfo;
 
                         // Check if this solution also improves on best solutions for lower satisfaction levels
                         for (int searchSatisfactionLevel = satisfactionLevel - 1; searchSatisfactionLevel >= 0; searchSatisfactionLevel--) {
-                            if (info.TotalInfo.Stats.Cost < bestInfoBySatisfaction[searchSatisfactionLevel].TotalInfo.Stats.Cost) {
-                                bestInfoBySatisfaction[searchSatisfactionLevel] = bestInfo;
+                            if (Info.TotalInfo.Stats.Cost < BestInfoBySatisfaction[searchSatisfactionLevel].TotalInfo.Stats.Cost) {
+                                BestInfoBySatisfaction[searchSatisfactionLevel] = bestInfo;
                             }
                         }
                     }
                 }
 
                 // Update iteration number
-                info.IterationNum++;
+                Info.IterationNum++;
 
                 #if DEBUG
                 // Set debugger to next iteration
                 if (AppConfig.DebugCheckOperations) {
-                    SaDebugger.NextIteration(info);
+                    SaDebugger.NextIteration(Info);
                 }
                 #endif
 
                 // Callback
-                if (info.IterationNum % SaConfig.SaThreadCallbackFrequency == 0) {
+                if (Info.IterationNum % SaConfig.SaThreadCallbackFrequency == 0) {
                     threadCallback();
                 }
 
                 // Update temperature and penalty factor
-                if (info.IterationNum % SaConfig.SaParameterUpdateFrequency == 0) {
-                    info.Temperature *= SaConfig.SaTemperatureReductionFactor;
+                if (Info.IterationNum % SaConfig.SaParameterUpdateFrequency == 0) {
+                    Info.Temperature *= SaConfig.SaTemperatureReductionFactor;
 
                     // Check if we should end the cycle
-                    if (info.Temperature <= SaConfig.SaEndCycleTemperature) {
-                        info.CycleNum++;
-                        info.Temperature = (float)rand.NextDouble(SaConfig.SaCycleMinInitialTemperature, SaConfig.SaCycleMaxInitialTemperature);
-                        info.SatisfactionFactor = (float)rand.NextDouble(SaConfig.SaCycleMinSatisfactionFactor, SaConfig.SaCycleMaxSatisfactionFactor);
+                    if (Info.Temperature <= SaConfig.SaEndCycleTemperature) {
+                        // Check if we should do a full reset
+                        if (rand.NextDouble() < SaConfig.FullResetProb) {
+                            // Full reset
+                            PerformFullReset();
+                        } else {
+                            // Partial reset
+                            Info.CycleNum++;
+                            Info.SatisfactionFactor = (float)rand.NextDouble(SaConfig.SaCycleMinSatisfactionFactor, SaConfig.SaCycleMaxSatisfactionFactor);
+                            Info.Temperature = (float)rand.NextDouble(SaConfig.SaCycleMinInitialTemperature, SaConfig.SaCycleMaxInitialTemperature);
+                        }
                     }
 
-                    TotalCostCalculator.ProcessAssignmentCost(info);
+                    TotalCostCalculator.ProcessAssignmentCost(Info);
                 }
 
                 #if DEBUG
                 // Reset iteration in debugger after additional checks
                 if (AppConfig.DebugCheckOperations) {
-                    SaDebugger.ResetIteration(info);
+                    SaDebugger.ResetIteration(Info);
                 }
                 #endif
             }
         }
+        void PerformFullReset() {
+            int oldCycleNum = Info == null ? 0 : Info.CycleNum;
 
-        public static double GetAdjustedCost(double cost, double satisfaction, float satisfactionFactor) {
-            return cost * (1 + (1 - satisfaction) * satisfactionFactor);
+            // Initialise info
+            Info = new SaInfo(Info.Instance);
+            Info.CycleNum = oldCycleNum + 1;
+            Info.Temperature = SaConfig.SaInitialTemperature;
+            Info.SatisfactionFactor = (float)rand.NextDouble(SaConfig.SaCycleMinSatisfactionFactor, SaConfig.SaCycleMaxSatisfactionFactor);
+            Info.IsHotelStayAfterActivity = new bool[Info.Instance.Activities.Length];
+
+            // Create a random initial assignment
+            Info.Assignment = GetInitialAssignment();
+            Info.ProcessDriverPaths();
+
+            #if DEBUG
+            // Initialise debugger
+            if (AppConfig.DebugCheckOperations) {
+                SaDebugger.ResetIteration(Info);
+                SaDebugger.GetCurrentOperation().StartPart("Initial assignment", null);
+                SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.OldChecked);
+            }
+            #endif
+
+            // Get cost of initial assignment
+            TotalCostCalculator.ProcessAssignmentCost(Info);
+
+            #if DEBUG
+            // Reset iteration in debugger after initial assignment cost
+            if (AppConfig.DebugCheckOperations) {
+                SaDebugger.ResetIteration(Info);
+            }
+            #endif
         }
 
         Driver[] GetInitialAssignment() {
-            Driver[] assignment = new Driver[info.Instance.Activities.Length];
-            List<Activity>[] driverPaths = new List<Activity>[info.Instance.AllDrivers.Length];
+            Driver[] assignment = new Driver[Info.Instance.Activities.Length];
+            List<Activity>[] driverPaths = new List<Activity>[Info.Instance.AllDrivers.Length];
             for (int i = 0; i < driverPaths.Length; i++) driverPaths[i] = new List<Activity>();
 
-            for (int activityIndex = 0; activityIndex < info.Instance.Activities.Length; activityIndex++) {
-                Activity activity = info.Instance.Activities[activityIndex];
+            for (int activityIndex = 0; activityIndex < Info.Instance.Activities.Length; activityIndex++) {
+                Activity activity = Info.Instance.Activities[activityIndex];
 
                 // Greedily assign to random internal driver, avoiding overlap violations
-                InternalDriver[] internalDriversRandomOrder = Copy(info.Instance.InternalDrivers);
+                InternalDriver[] internalDriversRandomOrder = Copy(Info.Instance.InternalDrivers);
                 Shuffle(internalDriversRandomOrder);
                 bool isDone = false;
                 for (int shuffledInternalDriverIndex = 0; shuffledInternalDriverIndex < internalDriversRandomOrder.Length; shuffledInternalDriverIndex++) {
                     InternalDriver internalDriver = internalDriversRandomOrder[shuffledInternalDriverIndex];
                     List<Activity> driverPath = driverPaths[internalDriver.AllDriversIndex];
 
-                    if (driverPath.Count == 0 || info.Instance.IsValidSuccession(driverPath[^1], activity)) {
+                    if (driverPath.Count == 0 || Info.Instance.IsValidSuccession(driverPath[^1], activity)) {
                         // We can add this activity to this driver without overlap violations
                         assignment[activityIndex] = internalDriver;
                         driverPath.Add(activity);
@@ -205,7 +216,7 @@ namespace Thesis {
                 if (isDone) continue;
 
                 // Greedily assign to random external driver, avoiding overlap violations
-                ExternalDriver[][] externalDriverTypesRandomOrder = Copy(info.Instance.ExternalDriversByType);
+                ExternalDriver[][] externalDriverTypesRandomOrder = Copy(Info.Instance.ExternalDriversByType);
                 Shuffle(externalDriverTypesRandomOrder);
                 for (int shuffledExternalDriverTypeIndex = 0; shuffledExternalDriverTypeIndex < externalDriverTypesRandomOrder.Length; shuffledExternalDriverTypeIndex++) {
                     ExternalDriver[] externalDriversInType = externalDriverTypesRandomOrder[shuffledExternalDriverTypeIndex];
@@ -215,7 +226,7 @@ namespace Thesis {
                         ExternalDriver externalDriver = externalDriversInType[externalDriverIndexInType];
                         List<Activity> driverPath = driverPaths[externalDriver.AllDriversIndex];
 
-                        if (driverPath.Count == 0 || info.Instance.IsValidSuccession(driverPath[^1], activity)) {
+                        if (driverPath.Count == 0 || Info.Instance.IsValidSuccession(driverPath[^1], activity)) {
                             // We can add this activity to this driver without overlap violations
                             assignment[activityIndex] = externalDriver;
                             driverPath.Add(activity);
@@ -228,8 +239,8 @@ namespace Thesis {
                 if (isDone) continue;
 
                 // Assigning without overlap violations is impossible, so assign to random external driver
-                int randomExternalDriverTypeIndex = rand.Next(info.Instance.ExternalDriversByType.Length);
-                ExternalDriver[] externalDriversInRandomType = info.Instance.ExternalDriversByType[randomExternalDriverTypeIndex];
+                int randomExternalDriverTypeIndex = rand.Next(Info.Instance.ExternalDriversByType.Length);
+                ExternalDriver[] externalDriversInRandomType = Info.Instance.ExternalDriversByType[randomExternalDriverTypeIndex];
                 int randomExternalDriverIndexInType = rand.Next(externalDriversInRandomType.Length);
                 ExternalDriver randomExternalDriver = externalDriversInRandomType[randomExternalDriverIndexInType];
                 List<Activity> randomDriverPath = driverPaths[randomExternalDriver.AllDriversIndex];
@@ -238,6 +249,10 @@ namespace Thesis {
             }
 
             return assignment;
+        }
+
+        static double GetAdjustedCost(double cost, double satisfaction, float satisfactionFactor) {
+            return cost * (1 + (1 - satisfaction) * satisfactionFactor);
         }
 
         void Shuffle<T>(T[] array) {
@@ -257,87 +272,6 @@ namespace Thesis {
                 copy[i] = array[i];
             }
             return copy;
-        }
-
-
-
-
-
-        /* Obsolete */
-
-        void LogIteration(Stopwatch stopwatch) {
-            // Get Pareto-optimal front
-            List<SaInfo> paretoFront = GetParetoFront(bestInfoBySatisfaction);
-            string paretoFrontStr;
-            if (paretoFront.Count == 0) {
-                paretoFrontStr = "No valid solutions";
-            } else {
-                paretoFrontStr = "Front: " + ParetoFrontToString(paretoFront);
-            }
-
-            float saDuration = stopwatch.ElapsedMilliseconds / 1000f;
-            string speedStr = saDuration > 1 ? ParseHelper.LargeNumToString(info.IterationNum / saDuration, "0") + "/s" : "-";
-
-            string lastImprovementIterationStr = info.LastImprovementIteration.HasValue ? ParseHelper.LargeNumToString(info.LastImprovementIteration.Value, "0") : "-";
-            string hasImprovementStr = info.HasImprovementSinceLog ? " !!!" : "";
-
-            double logCost = info.TotalInfo.Stats.RawCost + info.TotalInfo.Stats.Robustness;
-
-            // Log basic info
-            Console.WriteLine("# {0,4}    Last.impr: {1,4}    Speed: {2,6}    Cycle: {3,2}    Cost: {4,6} ({5,2}%)    Raw: {6,6}    Temp: {7,5}    Sat.f: {8,4}   Penalty: {9,-33}    {10}{11}", ParseHelper.LargeNumToString(info.IterationNum), lastImprovementIterationStr, speedStr, info.CycleNum, ParseHelper.LargeNumToString(logCost, "0.0"), ParseHelper.ToString(info.TotalInfo.Stats.SatisfactionScore.Value * 100, "0"), ParseHelper.LargeNumToString(info.TotalInfo.Stats.RawCost, "0.0"), ParseHelper.LargeNumToString(info.Temperature, "0.0"), ParseHelper.ToString(info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(info.TotalInfo), paretoFrontStr, hasImprovementStr);
-
-            if (AppConfig.DebugSaLogAdditionalInfo) {
-                Console.WriteLine("Worked times: {0}", ParseHelper.ToString(info.DriverInfos.Select(driverInfo => driverInfo.WorkedTime).ToArray()));
-                Console.WriteLine("Contract time factors: {0}", ParseHelper.ToString(info.Instance.InternalDrivers.Select(driver => (double)info.DriverInfos[driver.AllDriversIndex].WorkedTime / driver.ContractTime).ToArray()));
-                Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(info.DriverInfos.Select(driverInfo => driverInfo.ShiftCount).ToArray()));
-                Console.WriteLine("External type shift counts: {0}", ParseHelper.ToString(info.ExternalDriverTypeInfos.Select(externalDriverTypeInfo => externalDriverTypeInfo.ExternalShiftCount).ToArray()));
-            }
-
-            if (AppConfig.DebugSaLogCurrentSolution) {
-                Console.WriteLine("Current solution: {0}", ParseHelper.AssignmentToString(info));
-            }
-
-            #if DEBUG
-            if (AppConfig.DebugSaLogOperationStats) {
-                string[] operationNames = new string[] { "Assign internal", "Assign external", "Swap", "Toggle hotel" };
-                for (int i = 0; i < debugOperationCounts.Length; i++) {
-                    string acceptancePercentageStr = debugOperationCounts[i] == 0 ? "0" : ParseHelper.ToString(100f * debugAcceptedOperationCounts[i] / debugOperationCounts[i], "0");
-                    Console.Write("{0}: {1}/{2} ({3}%)", operationNames[i], ParseHelper.LargeNumToString(debugAcceptedOperationCounts[i]), ParseHelper.LargeNumToString(debugOperationCounts[i]), acceptancePercentageStr);
-                    if (i + 1 < debugOperationCounts.Length) Console.Write("  |  ");
-                }
-                Console.WriteLine();
-            }
-            #endif
-
-            //if (bestInfo.Assignment != null) {
-            //    Console.WriteLine("Best solution: {0}", ParseHelper.AssignmentToString(bestInfo));
-            //}
-
-            info.HasImprovementSinceLog = false;
-        }
-
-        static List<SaInfo> GetParetoFront(SaInfo[] bestInfoBySatisfaction) {
-            List<SaInfo> paretoFront = new List<SaInfo>();
-            SaInfo bestOfPrevLevel = null;
-            for (int satisfactionLevel = bestInfoBySatisfaction.Length - 1; satisfactionLevel >= 0; satisfactionLevel--) {
-                SaInfo bestInfoOfLevel = bestInfoBySatisfaction[satisfactionLevel];
-                if (bestInfoOfLevel.TotalInfo.Stats.Cost == double.MaxValue) continue;
-
-                if (bestOfPrevLevel == null || bestInfoOfLevel.TotalInfo.Stats.Cost < bestOfPrevLevel.TotalInfo.Stats.Cost - SaConfig.ParetoFrontMinCostDiff) {
-                    paretoFront.Add(bestInfoOfLevel);
-                    bestOfPrevLevel = bestInfoOfLevel;
-                }
-            }
-            paretoFront.Reverse();
-            return paretoFront;
-        }
-
-        static string ParetoFrontToString(List<SaInfo> paretoFront) {
-            return string.Join(" | ", paretoFront.Select(paretoPoint => ParetoPointToString(paretoPoint)));
-        }
-
-        static string ParetoPointToString(SaInfo paretoPoint) {
-            return string.Format("{0}% {1}", ParseHelper.ToString(paretoPoint.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor, "0"), ParseHelper.LargeNumToString(paretoPoint.TotalInfo.Stats.Cost, "0"));
         }
     }
 }

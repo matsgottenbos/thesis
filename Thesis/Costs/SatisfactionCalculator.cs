@@ -9,35 +9,35 @@ namespace Thesis {
         /* Driver satisfaction */
 
         public static double GetDriverSatisfaction(InternalDriver driver, SaDriverInfo driverInfo, SaInfo info) {
-            double averageCriteriumSatisfaction = 0;
-            double minimumCriteriumSatisfaction = 1;
+            double averageCriterionSatisfaction = 0;
+            double minimumCriterionSatisfaction = 1;
 
-            ProcessCriterion(RulesConfig.SatCriterionRouteVariation, GetDuplicateRouteCount(driverInfo), driver, ref averageCriteriumSatisfaction, ref minimumCriteriumSatisfaction);
-            ProcessCriterion(RulesConfig.SatCriterionTravelTime, driverInfo.TravelTime, driver, ref averageCriteriumSatisfaction, ref minimumCriteriumSatisfaction);
-            ProcessCriterion(RulesConfig.SatCriterionMatchingContractTime, driverInfo.WorkedTime, driver, ref averageCriteriumSatisfaction, ref minimumCriteriumSatisfaction);
-            ProcessCriterion(RulesConfig.SatCriterionShiftLengths, driverInfo.IdealShiftLengthScore, driver, ref averageCriteriumSatisfaction, ref minimumCriteriumSatisfaction);
-            ProcessCriterion(RulesConfig.SatCriterionRobustness, (float)driverInfo.Stats.Robustness, driver, ref averageCriteriumSatisfaction, ref minimumCriteriumSatisfaction);
-            ProcessCriterion(RulesConfig.SatCriterionNightShifts, driverInfo.NightShiftCountByCompanyRules, driver, ref averageCriteriumSatisfaction, ref minimumCriteriumSatisfaction);
-            ProcessCriterion(RulesConfig.SatCriterionWeekendShifts, driverInfo.WeekendShiftCountByCompanyRules, driver, ref averageCriteriumSatisfaction, ref minimumCriteriumSatisfaction);
-            ProcessCriterion(RulesConfig.SatCriterionHotelStays, driverInfo.HotelCount, driver, ref averageCriteriumSatisfaction, ref minimumCriteriumSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionRouteVariation, GetDuplicateRouteCount(driverInfo), driver, ref averageCriterionSatisfaction, ref minimumCriterionSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionTravelTime, driverInfo.TravelTime, driver, ref averageCriterionSatisfaction, ref minimumCriterionSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionContractTimeAccuracy, driverInfo.WorkedTime, driver, ref averageCriterionSatisfaction, ref minimumCriterionSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionShiftLengths, driverInfo.IdealShiftLengthScore, driver, ref averageCriterionSatisfaction, ref minimumCriterionSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionRobustness, (float)driverInfo.Stats.Robustness, driver, ref averageCriterionSatisfaction, ref minimumCriterionSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionNightShifts, driverInfo.NightShiftCountByCompanyRules, driver, ref averageCriterionSatisfaction, ref minimumCriterionSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionWeekendShifts, driverInfo.WeekendShiftCountByCompanyRules, driver, ref averageCriterionSatisfaction, ref minimumCriterionSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionHotelStays, driverInfo.HotelCount, driver, ref averageCriterionSatisfaction, ref minimumCriterionSatisfaction);
             // TBA: time off requests
             // TBA: consecutive shifts
-            ProcessCriterion(RulesConfig.SatCriterionConsecutiveFreeDays, GetConsecutiveFreeDaysScore(driverInfo), driver, ref averageCriteriumSatisfaction, ref minimumCriteriumSatisfaction);
-            ProcessCriterion(RulesConfig.SatCriterionRestingTime, driverInfo.IdealRestingTimeScore, driver, ref averageCriteriumSatisfaction, ref minimumCriteriumSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionConsecutiveFreeDays, GetConsecutiveFreeDaysScore(driverInfo), driver, ref averageCriterionSatisfaction, ref minimumCriterionSatisfaction);
+            ProcessCriterion(RulesConfig.SatCriterionRestingTime, driverInfo.IdealRestingTimeScore, driver, ref averageCriterionSatisfaction, ref minimumCriterionSatisfaction);
 
-            return (averageCriteriumSatisfaction + minimumCriteriumSatisfaction) / 2;
+            return (averageCriterionSatisfaction + minimumCriterionSatisfaction) / 2;
         }
 
-        static void ProcessCriterion<T>(AbstractSatisfactionCriterion<T> criterion, T value, InternalDriver driver, ref double averageCriteriumSatisfaction, ref double minimumCriteriumSatisfaction) {
-            averageCriteriumSatisfaction += criterion.GetSatisfaction(value, driver);
-            minimumCriteriumSatisfaction = Math.Min(minimumCriteriumSatisfaction, criterion.GetSatisfactionForMinimum(value, driver));
+        static void ProcessCriterion<T>(AbstractSatisfactionCriterion<T> criterion, T value, InternalDriver driver, ref double averageCriterionSatisfaction, ref double minimumCriterionSatisfaction) {
+            averageCriterionSatisfaction += criterion.GetSatisfaction(value, driver);
+            minimumCriterionSatisfaction = Math.Min(minimumCriterionSatisfaction, criterion.GetSatisfactionForMinimum(value, driver));
         }
 
         public static Dictionary<string, double> GetDriverSatisfactionPerCriterion(InternalDriver driver, SaDriverInfo driverInfo) {
             Dictionary<string, double> satisfactionPerCriterion = new Dictionary<string, double> {
                 { "routeVariation", RulesConfig.SatCriterionRouteVariation.GetUnweightedSatisfaction(GetDuplicateRouteCount(driverInfo), driver) },
                 { "travelTime", RulesConfig.SatCriterionTravelTime.GetUnweightedSatisfaction(driverInfo.TravelTime, driver) },
-                { "matchingContractTime", RulesConfig.SatCriterionMatchingContractTime.GetUnweightedSatisfaction(driverInfo.WorkedTime, driver) },
+                { "contractTimeAccuracy", RulesConfig.SatCriterionContractTimeAccuracy.GetUnweightedSatisfaction(driverInfo.WorkedTime, driver) },
                 { "shiftLengths", RulesConfig.SatCriterionShiftLengths.GetUnweightedSatisfaction(driverInfo.IdealShiftLengthScore, driver) },
                 { "robustness", RulesConfig.SatCriterionRobustness.GetUnweightedSatisfaction((float)driverInfo.Stats.Robustness, driver) },
                 { "nightShifts", RulesConfig.SatCriterionNightShifts.GetUnweightedSatisfaction(driverInfo.NightShiftCountByCompanyRules, driver) },
@@ -61,7 +61,7 @@ namespace Thesis {
         }
 
         static float GetConsecutiveFreeDaysScore(SaDriverInfo driverInfo) {
-            // Criterium score is 100% when there are two consecutive free days, or otherwise 25% per single free day
+            // Criterion score is 100% when there are two consecutive free days, or otherwise 25% per single free day
             if (driverInfo.DoubleFreeDayCount >= 1) return 1;
             return driverInfo.SingleFreeDayCount * 0.25f;
         }

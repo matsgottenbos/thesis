@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class SaMultithreadHandler {
-        readonly SaInfo[][] threadBestInfosBySatisfaction;
+        readonly SimulatedAnnealing[] saThreads;
         int totalIterationCount, totalIterationCountSinceLastLog;
+        int? lastImprovementTotalIterationCount;
+        string prevParetoFrontStr;
         readonly Stopwatch stopwatch;
         CancellationTokenSource[] threadCancellationTokens;
 
@@ -18,10 +20,7 @@ namespace Thesis {
             stopwatch = new Stopwatch();
 
             int actualThreadCount = AppConfig.EnableMultithreading ? AppConfig.ThreadCount : 1;
-            threadBestInfosBySatisfaction = new SaInfo[actualThreadCount][];
-            for (int i = 0; i < actualThreadCount; i++) {
-                threadBestInfosBySatisfaction[i] = new SaInfo[MiscConfig.PercentageFactor];
-            }
+            saThreads = new SimulatedAnnealing[actualThreadCount];
             threadCancellationTokens = new CancellationTokenSource[actualThreadCount];
         }
 
@@ -32,11 +31,13 @@ namespace Thesis {
             stopwatch.Start();
 
             if (!AppConfig.EnableMultithreading) {
+                SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, appRand, HandleThreadCallback);
+                saThreads[0] = simulatedAnnealing;
+
                 CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                 CancellationToken cancellationToken = cancellationTokenSource.Token;
+                simulatedAnnealing.Run(cancellationToken);
                 threadCancellationTokens[0] = cancellationTokenSource;
-                SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, appRand, threadBestInfosBySatisfaction[0], HandleThreadCallback, cancellationToken);
-                simulatedAnnealing.Run();
                 return;
             }
 
@@ -45,10 +46,11 @@ namespace Thesis {
                 ulong seed = appRand.NextUInt64();
                 XorShiftRandom saRand = new XorShiftRandom(seed);
 
-                SaInfo[] bestInfoBySatisfaction = threadBestInfosBySatisfaction[threadIndex];
+                SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, saRand, HandleThreadCallback);
+                saThreads[threadIndex] = simulatedAnnealing;
+
                 (CancellationTokenSource cts, ManualResetEvent handle) = ThreadHandler.ExecuteInThreadWithCancellation(saRand, (CancellationToken cancellationToken, XorShiftRandom threadRand) => {
-                    SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, saRand, bestInfoBySatisfaction, HandleThreadCallback, cancellationToken);
-                    simulatedAnnealing.Run();
+                    simulatedAnnealing.Run(cancellationToken);
                 });
 
                 threadCancellationTokens[threadIndex] = cts;
@@ -93,12 +95,30 @@ namespace Thesis {
 
             List<SaInfo> paretoFront = GetCombinedParetoFront();
             string paretoFrontStr;
+            bool hasImprovementSinceLastLog;
             if (paretoFront.Count == 0) {
                 paretoFrontStr = "No valid solutions";
+                hasImprovementSinceLastLog = false;
             } else {
-                paretoFrontStr = "Front: " + ParetoFrontToString(paretoFront);
+                paretoFrontStr = "Solutions: " + ParetoFrontToString(paretoFront);
+                hasImprovementSinceLastLog = paretoFrontStr != prevParetoFrontStr;
             }
-            Console.WriteLine("# {0,4}    Speed: {1,6}    {2}", ParseHelper.LargeNumToString(totalIterationCount), speedStr, paretoFrontStr);
+
+            if (hasImprovementSinceLastLog) {
+                lastImprovementTotalIterationCount = totalIterationCount;
+            }
+            string lastImprovementIterationStr = lastImprovementTotalIterationCount.HasValue ? ParseHelper.LargeNumToString(lastImprovementTotalIterationCount.Value, "0") : "-";
+            string hasImprovementStr = hasImprovementSinceLastLog ? " !!!" : "";
+
+            Console.WriteLine("# {0,4}    Speed: {1,6}    Last impr.: {2,4}    {3}{4}", ParseHelper.LargeNumToString(totalIterationCount), speedStr, lastImprovementIterationStr, paretoFrontStr, hasImprovementStr);
+
+            prevParetoFrontStr = paretoFrontStr;
+
+            if (AppConfig.DebugSaLogThreads) {
+                for (int threadIndex = 0; threadIndex < saThreads.Length; threadIndex++) {
+                    PeformSaDebugLog(saThreads[threadIndex], threadIndex);
+                }
+            }
         }
 
         List<SaInfo> GetCombinedParetoFront() {
@@ -106,9 +126,9 @@ namespace Thesis {
             SaInfo bestOfPrevLevel = null;
             for (int satisfactionLevel = MiscConfig.PercentageFactor - 1; satisfactionLevel >= 0; satisfactionLevel--) {
                 // Get best info of all threads for this satisfaction level
-                SaInfo bestInfoOfLevel = threadBestInfosBySatisfaction[0][satisfactionLevel];
-                for (int threadIndex = 1; threadIndex < threadBestInfosBySatisfaction.Length; threadIndex++) {
-                    SaInfo threadBestInfoOfLevel = threadBestInfosBySatisfaction[threadIndex][satisfactionLevel];
+                SaInfo bestInfoOfLevel = saThreads[0].BestInfoBySatisfaction[satisfactionLevel];
+                for (int threadIndex = 1; threadIndex < saThreads.Length; threadIndex++) {
+                    SaInfo threadBestInfoOfLevel = saThreads[threadIndex].BestInfoBySatisfaction[satisfactionLevel];
                     if (threadBestInfoOfLevel.TotalInfo.Stats.Cost < bestInfoOfLevel.TotalInfo.Stats.Cost) {
                         bestInfoOfLevel = threadBestInfoOfLevel;
                     }
@@ -169,6 +189,66 @@ namespace Thesis {
                     streamWriter.WriteLine("\nPoint {0}\n{1}", ParetoPointToString(paretoPoint), ParseHelper.AssignmentToString(paretoPoint));
                 }
             }
+        }
+
+        static void PeformSaDebugLog(SimulatedAnnealing saThread, int threadIndex) {
+            // Get Pareto-optimal front
+            List<SaInfo> paretoFront = GetSingleParetoFront(saThread.BestInfoBySatisfaction);
+            string paretoFrontStr;
+            if (paretoFront.Count == 0) {
+                paretoFrontStr = "No valid solutions";
+            } else {
+                paretoFrontStr = "Front: " + ParetoFrontToString(paretoFront);
+            }
+
+            string lastImprovementIterationStr = saThread.Info.LastImprovementIteration.HasValue ? ParseHelper.LargeNumToString(saThread.Info.LastImprovementIteration.Value, "0") : "-";
+            string hasImprovementStr = saThread.Info.HasImprovementSinceLog ? " !!!" : "";
+
+            double logCost = saThread.Info.TotalInfo.Stats.RawCost + saThread.Info.TotalInfo.Stats.Robustness;
+
+            // Log basic info
+            Console.WriteLine("{0}:    # {1,4}    Last.impr: {2,4}    Cycle: {3,2}    Cost: {4,6} ({5,2}%)    Raw: {6,6}    Temp: {7,5}    Sat.f: {8,4}   Penalty: {9,-33}    {10}{11}", threadIndex, ParseHelper.LargeNumToString(saThread.Info.IterationNum), lastImprovementIterationStr, saThread.Info.CycleNum, ParseHelper.LargeNumToString(logCost, "0.0"), ParseHelper.ToString(saThread.Info.TotalInfo.Stats.SatisfactionScore.Value * 100, "0"), ParseHelper.LargeNumToString(saThread.Info.TotalInfo.Stats.RawCost, "0.0"), ParseHelper.LargeNumToString(saThread.Info.Temperature, "0.0"), ParseHelper.ToString(saThread.Info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(saThread.Info.TotalInfo), paretoFrontStr, hasImprovementStr);
+
+            if (AppConfig.DebugSaLogAdditionalInfo) {
+                Console.WriteLine("Worked times: {0}", ParseHelper.ToString(saThread.Info.DriverInfos.Select(driverInfo => driverInfo.WorkedTime).ToArray()));
+                Console.WriteLine("Contract time factors: {0}", ParseHelper.ToString(saThread.Info.Instance.InternalDrivers.Select(driver => (double)saThread.Info.DriverInfos[driver.AllDriversIndex].WorkedTime / driver.ContractTime).ToArray()));
+                Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(saThread.Info.DriverInfos.Select(driverInfo => driverInfo.ShiftCount).ToArray()));
+                Console.WriteLine("External type shift counts: {0}", ParseHelper.ToString(saThread.Info.ExternalDriverTypeInfos.Select(externalDriverTypeInfo => externalDriverTypeInfo.ExternalShiftCount).ToArray()));
+            }
+
+            if (AppConfig.DebugSaLogCurrentSolution) {
+                Console.WriteLine("Current solution: {0}", ParseHelper.AssignmentToString(saThread.Info));
+            }
+
+            #if DEBUG
+            if (AppConfig.DebugSaLogOperationStats) {
+                string[] operationNames = new string[] { "Assign internal", "Assign external", "Swap", "Toggle hotel" };
+                for (int i = 0; i < saThread.DebugOperationCounts.Length; i++) {
+                    string acceptancePercentageStr = saThread.DebugOperationCounts[i] == 0 ? "0" : ParseHelper.ToString(100f * saThread.DebugOperationCounts[i] / saThread.DebugOperationCounts[i], "0");
+                    Console.Write("{0}: {1}/{2} ({3}%)", operationNames[i], ParseHelper.LargeNumToString(saThread.DebugOperationCounts[i]), ParseHelper.LargeNumToString(saThread.DebugOperationCounts[i]), acceptancePercentageStr);
+                    if (i + 1 < saThread.DebugOperationCounts.Length) Console.Write("  |  ");
+                }
+                Console.WriteLine();
+            }
+            #endif
+
+            saThread.Info.HasImprovementSinceLog = false;
+        }
+
+        static List<SaInfo> GetSingleParetoFront(SaInfo[] bestInfoBySatisfaction) {
+            List<SaInfo> paretoFront = new List<SaInfo>();
+            SaInfo bestOfPrevLevel = null;
+            for (int satisfactionLevel = bestInfoBySatisfaction.Length - 1; satisfactionLevel >= 0; satisfactionLevel--) {
+                SaInfo bestInfoOfLevel = bestInfoBySatisfaction[satisfactionLevel];
+                if (bestInfoOfLevel.TotalInfo.Stats.Cost == double.MaxValue) continue;
+
+                if (bestOfPrevLevel == null || bestInfoOfLevel.TotalInfo.Stats.Cost < bestOfPrevLevel.TotalInfo.Stats.Cost - SaConfig.ParetoFrontMinCostDiff) {
+                    paretoFront.Add(bestInfoOfLevel);
+                    bestOfPrevLevel = bestInfoOfLevel;
+                }
+            }
+            paretoFront.Reverse();
+            return paretoFront;
         }
     }
 }

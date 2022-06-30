@@ -9,7 +9,9 @@ namespace Thesis {
         /* Simulated annealing */
         // SA parameters
         public const int SaIterationCount = 300000000;
+        //public const int SaIterationCount = 2000000000;
         public const int SaLogFrequency = 2000000;
+        //public const int SaLogFrequency = 20000000;
         public const int SaThreadCallbackFrequency = 500000;
         public const int SaParameterUpdateFrequency = 100000;
         public const float SaInitialTemperature = 2000f;
@@ -19,6 +21,7 @@ namespace Thesis {
         public const float SaEndCycleTemperature = 0.1f;
         public const float SaCycleMinSatisfactionFactor = 0f;
         public const float SaCycleMaxSatisfactionFactor = 10f;
+        public const float FullResetProb = 0.1f; // Chance of a full reset at the end of a cycle
         public const int ShiftWaitingTimeThreshold = 6 * 60; // Waiting times shorter than this count as the same shift; waiting time longer start a new shift
         public const float ParetoFrontMinCostDiff = 500f; // Minmum cost difference to consider two solutions to be separate points on the pareto front
 

@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as stats
 from matplotlib.ticker import PercentFormatter
+from matplotlib.ticker import FuncFormatter
 
 ### Helpers
 
@@ -146,6 +147,26 @@ def showStdScatterPlot(allPositiveDelaysByDuration, durationIndexSize):
     plt.ylim([0, 600])
     afterPlot(plotName='delays-duration-std')
 
+def plotSimulatedAnnealingProgress():
+    # Progress per 20M iterations
+    iterationNums = np.linspace(20000000, 2000000000, 99)
+
+    costProgress = [79, 66, 63, 59, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 57, 57, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54]
+    costProgress = [1000 * cost for cost in costProgress]
+
+    satisfactionProgress = [60, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63]
+
+    formatter = FuncFormatter(lambda x, pos: '%1.2fB' % (x * 1e-9))
+
+    _, ax1 = beforePlot(xLabel='Iterations', yLabel='Cost')
+    ax1.xaxis.set_major_formatter(formatter)
+    plt.plot(iterationNums, costProgress, color=(0, 0.5, 1, 1))
+    afterPlot(plotName='sa-progress-cost')
+
+    _, ax2 = beforePlot(xLabel='Iterations', yLabel='Satisfaction (%)')
+    ax2.xaxis.set_major_formatter(formatter)
+    plt.plot(iterationNums, satisfactionProgress, color=(0, 0.5, 1, 1))
+    afterPlot(plotName='sa-progress-satisfaction')
 
 
 ### Run
@@ -194,14 +215,15 @@ def run(durationIndexSize):
                 allPositiveDelaysFrequentDurations.append(plannedDuration)
 
     # Perform output
-    printBasicInfo(allDelays, allPositiveDelays)
-    plotAllDelays(allDelays)
-    plotAllPositiveDelays(allPositiveDelays)
-    printDrivingNonDrivingInfo(allDelaysDriving, allDelaysNonDriving, allPositiveDelaysDriving, allPositiveDelaysNonDriving)
-    plotDelaysDrivingNonDriving(allDelaysDriving, allDelaysNonDriving)
-    plotPositiveDelaysDrivingNonDriving(allPositiveDelaysDriving, allPositiveDelaysNonDriving)
-    fitGammaDistributionToAllPositiveDelays(allPositiveDelays)
-    fitMeanDelayFunction(allPositiveDelaysFrequentDurations, allPositiveDelaysFrequent)
-    showStdScatterPlot(allPositiveDelaysByDuration, durationIndexSize)
+    # printBasicInfo(allDelays, allPositiveDelays)
+    # plotAllDelays(allDelays)
+    # plotAllPositiveDelays(allPositiveDelays)
+    # printDrivingNonDrivingInfo(allDelaysDriving, allDelaysNonDriving, allPositiveDelaysDriving, allPositiveDelaysNonDriving)
+    # plotDelaysDrivingNonDriving(allDelaysDriving, allDelaysNonDriving)
+    # plotPositiveDelaysDrivingNonDriving(allPositiveDelaysDriving, allPositiveDelaysNonDriving)
+    # fitGammaDistributionToAllPositiveDelays(allPositiveDelays)
+    # fitMeanDelayFunction(allPositiveDelaysFrequentDurations, allPositiveDelaysFrequent)
+    # showStdScatterPlot(allPositiveDelaysByDuration, durationIndexSize)
+    plotSimulatedAnnealingProgress()
 
 run(durationIndexSize=30)

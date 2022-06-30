@@ -205,6 +205,7 @@ namespace Thesis {
                     robustnessCost = conflictProb * RulesConfig.RobustnessCostFactorDifferentProject;
                 }
             }
+
             return (float)robustnessCost;
         }
 
