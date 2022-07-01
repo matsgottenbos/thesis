@@ -247,7 +247,6 @@ namespace Thesis {
             return (lowStationIndex, highStationIndex);
         }
 
-        /** Preprocess shift driving times, night fractions and weekend fractions */
         static ShiftInfo[,] GetShiftInfos(Activity[] activities, int timeframeLength) {
             ShiftInfo[,] shiftInfos = new ShiftInfo[activities.Length, activities.Length];
             for (int firstActivityIndex = 0; firstActivityIndex < activities.Length; firstActivityIndex++) {
@@ -255,53 +254,53 @@ namespace Thesis {
                     Activity shiftFirstActivity = activities[firstActivityIndex];
                     Activity shiftLastActivity = activities[lastActivityIndex];
 
-                    // Determine driving time
-                    int drivingStartTime = shiftFirstActivity.StartTime;
-                    int drivingEndTime = shiftLastActivity.EndTime;
-                    int drivingTime = Math.Max(0, drivingEndTime - drivingStartTime);
+                    // Determine shift times
+                    int mainShiftStartTime = shiftFirstActivity.StartTime;
+                    int mainShiftEndTime = shiftLastActivity.EndTime;
+                    int mainShiftLength = Math.Max(0, mainShiftEndTime - mainShiftStartTime);
 
-                    // Determine driving costs for driver types
+                    // Determine shift costs for driver types
                     SalarySettings[] salarySettingsByDriverType = new SalarySettings[] {
                         SalaryConfig.InternalNationalSalaryInfo,
                         SalaryConfig.InternalInternationalSalaryInfo,
                         SalaryConfig.ExternalNationalSalaryInfo,
                         SalaryConfig.ExternalInternationalSalaryInfo,
                     };
-                    int[] administrativeDrivingTimeByDriverType = new int[salarySettingsByDriverType.Length];
-                    float[] drivingCostsByDriverType = new float[salarySettingsByDriverType.Length];
+                    int[] administrativeMainShiftLengthByDriverType = new int[salarySettingsByDriverType.Length];
+                    float[] mainShiftCostByDriverType = new float[salarySettingsByDriverType.Length];
                     List<ComputedSalaryRateBlock>[] computeSalaryRateBlocksByType = new List<ComputedSalaryRateBlock>[salarySettingsByDriverType.Length];
                     for (int driverTypeIndex = 0; driverTypeIndex < salarySettingsByDriverType.Length; driverTypeIndex++) {
                         SalarySettings typeSalarySettings = salarySettingsByDriverType[driverTypeIndex];
                         typeSalarySettings.SetDriverTypeIndex(driverTypeIndex);
-                        (administrativeDrivingTimeByDriverType[driverTypeIndex], drivingCostsByDriverType[driverTypeIndex], computeSalaryRateBlocksByType[driverTypeIndex]) = GetDrivingCost(shiftFirstActivity, shiftLastActivity, typeSalarySettings, timeframeLength);
+                        (administrativeMainShiftLengthByDriverType[driverTypeIndex], mainShiftCostByDriverType[driverTypeIndex], computeSalaryRateBlocksByType[driverTypeIndex]) = GetMainShiftCost(shiftFirstActivity, shiftLastActivity, typeSalarySettings, timeframeLength);
                     }
 
                     // Get time in night and weekend
-                    (int drivingTimeAtNight, int drivingTimeInWeekend) = GetShiftNightWeekendTime(shiftFirstActivity, shiftLastActivity, timeframeLength);
+                    (int mainShiftTimeAtNight, int mainShiftTimeInWeekend) = GetShiftNightWeekendTime(shiftFirstActivity, shiftLastActivity, timeframeLength);
 
-                    bool isNightShiftByLaw = RulesConfig.IsNightShiftByLawFunc(drivingTimeAtNight, drivingTime);
-                    bool isNightShiftByCompanyRules = RulesConfig.IsNightShiftByCompanyRulesFunc(drivingTimeAtNight, drivingTime);
-                    bool isWeekendShiftByCompanyRules = RulesConfig.IsWeekendShiftByCompanyRulesFunc(drivingTimeInWeekend, drivingTime);
+                    bool isNightShiftByLaw = RulesConfig.IsNightShiftByLawFunc(mainShiftTimeAtNight, mainShiftLength);
+                    bool isNightShiftByCompanyRules = RulesConfig.IsNightShiftByCompanyRulesFunc(mainShiftTimeAtNight, mainShiftLength);
+                    bool isWeekendShiftByCompanyRules = RulesConfig.IsWeekendShiftByCompanyRulesFunc(mainShiftTimeInWeekend, mainShiftLength);
 
-                    int maxShiftLengthWithoutTravel, maxShiftLengthWithTravel, minRestTimeAfter;
+                    int maxMainShiftLength, maxFullShiftLength, minRestTimeAfter;
                     if (isNightShiftByLaw) {
-                        maxShiftLengthWithoutTravel = RulesConfig.NightShiftMaxLengthWithoutTravel;
-                        maxShiftLengthWithTravel = RulesConfig.NightShiftMaxLengthWithTravel;
+                        maxMainShiftLength = RulesConfig.NightMaxMainShiftLength;
+                        maxFullShiftLength = RulesConfig.NightMaxFullShiftLength;
                         minRestTimeAfter = RulesConfig.NightShiftMinRestTime;
                     } else {
-                        maxShiftLengthWithoutTravel = RulesConfig.NormalShiftMaxLengthWithoutTravel;
-                        maxShiftLengthWithTravel = RulesConfig.NormalShiftMaxLengthWithTravel;
+                        maxMainShiftLength = RulesConfig.NormalMaxMainShiftLength;
+                        maxFullShiftLength = RulesConfig.NormalMaxFullShiftLength;
                         minRestTimeAfter = RulesConfig.NormalShiftMinRestTime;
                     }
 
-                    shiftInfos[firstActivityIndex, lastActivityIndex] = new ShiftInfo(drivingTime, maxShiftLengthWithoutTravel, maxShiftLengthWithTravel, minRestTimeAfter, administrativeDrivingTimeByDriverType, drivingCostsByDriverType, computeSalaryRateBlocksByType, isNightShiftByLaw, isNightShiftByCompanyRules, isWeekendShiftByCompanyRules);
+                    shiftInfos[firstActivityIndex, lastActivityIndex] = new ShiftInfo(mainShiftLength, maxMainShiftLength, maxFullShiftLength, minRestTimeAfter, administrativeMainShiftLengthByDriverType, mainShiftCostByDriverType, computeSalaryRateBlocksByType, isNightShiftByLaw, isNightShiftByCompanyRules, isWeekendShiftByCompanyRules);
                 }
             }
 
             return shiftInfos;
         }
 
-        static (int, float, List<ComputedSalaryRateBlock>) GetDrivingCost(Activity shiftFirstActivity, Activity shiftLastActivity, SalarySettings salaryInfo, int timeframeLength) {
+        static (int, float, List<ComputedSalaryRateBlock>) GetMainShiftCost(Activity shiftFirstActivity, Activity shiftLastActivity, SalarySettings salaryInfo, int timeframeLength) {
             // Repeat salary rate to cover entire week
             int timeframeDayCount = (int)Math.Floor((float)timeframeLength / MiscConfig.DayLength) + 1;
             List<SalaryRateBlock> processedSalaryRates = new List<SalaryRateBlock>();
@@ -331,22 +330,22 @@ namespace Thesis {
                 }
             }
 
-            // Determine driving time, while keeping in mind the minimum paid time
-            int drivingStartTime = shiftFirstActivity.StartTime;
-            int drivingEndTimeReal = shiftLastActivity.EndTime;
-            int administrativeDrivingTime = Math.Max(salaryInfo.MinPaidShiftTime, drivingEndTimeReal - drivingStartTime);
-            int administrativeDrivingEndTime = drivingStartTime + administrativeDrivingTime;
+            // Determine shift times, while keeping in mind the minimum paid time
+            int mainShiftStartTime = shiftFirstActivity.StartTime;
+            int realMainShiftEndTime = shiftLastActivity.EndTime;
+            int administrativeMainShiftLength = Math.Max(salaryInfo.MinPaidShiftTime, realMainShiftEndTime - mainShiftStartTime);
+            int administrativeMainShiftEndTime = mainShiftStartTime + administrativeMainShiftLength;
 
-            // Determine driving cost from the different salary rates; final block is skipped since we copied beyond timeframe length
+            // Determine shift cost from the different salary rates; final block is skipped since we copied beyond timeframe length
             float? shiftContinuingRate = null;
-            float drivingCost = 0;
+            float mainShiftCost = 0;
             List<ComputedSalaryRateBlock> computeSalaryRateBlocks = new List<ComputedSalaryRateBlock>();
             for (int salaryRateIndex = 0; salaryRateIndex < processedSalaryRates.Count - 1; salaryRateIndex++) {
                 SalaryRateBlock salaryRateInfo = processedSalaryRates[salaryRateIndex];
                 SalaryRateBlock nextSalaryRateInfo = processedSalaryRates[salaryRateIndex + 1];
-                int drivingTimeInRate = GetTimeInRange(drivingStartTime, administrativeDrivingEndTime, salaryRateInfo.StartTime, nextSalaryRateInfo.StartTime);
+                int mainShiftTimeInRate = GetTimeInRange(mainShiftStartTime, administrativeMainShiftEndTime, salaryRateInfo.StartTime, nextSalaryRateInfo.StartTime);
 
-                if (drivingTimeInRate == 0) continue;
+                if (mainShiftTimeInRate == 0) continue;
 
                 // If the shift starts in a continuing rate, store this continuing rate
                 if (!shiftContinuingRate.HasValue) {
@@ -354,25 +353,25 @@ namespace Thesis {
                 }
 
                 float applicableSalaryRate = Math.Max(salaryRateInfo.SalaryRate, shiftContinuingRate.Value);
-                float drivingCostInRate = drivingTimeInRate * applicableSalaryRate;
-                drivingCost += drivingCostInRate;
+                float mainShiftCostInRate = mainShiftTimeInRate * applicableSalaryRate;
+                mainShiftCost += mainShiftCostInRate;
 
-                int salaryStartTime = Math.Max(salaryRateInfo.StartTime, drivingStartTime);
-                int salaryEndTime = Math.Min(nextSalaryRateInfo.StartTime, administrativeDrivingEndTime);
+                int salaryStartTime = Math.Max(salaryRateInfo.StartTime, mainShiftStartTime);
+                int salaryEndTime = Math.Min(nextSalaryRateInfo.StartTime, administrativeMainShiftEndTime);
                 bool usesContinuingRate = shiftContinuingRate.Value > salaryRateInfo.SalaryRate;
 
                 ComputedSalaryRateBlock prevComputedSalaryBlock = computeSalaryRateBlocks.Count > 0 ? computeSalaryRateBlocks[^1] : null;
                 if (prevComputedSalaryBlock == null || prevComputedSalaryBlock.SalaryRate != applicableSalaryRate || prevComputedSalaryBlock.UsesContinuingRate != usesContinuingRate) {
-                    computeSalaryRateBlocks.Add(new ComputedSalaryRateBlock(salaryRateInfo.StartTime, nextSalaryRateInfo.StartTime, salaryStartTime, salaryEndTime, drivingTimeInRate, applicableSalaryRate, usesContinuingRate, drivingCostInRate));
+                    computeSalaryRateBlocks.Add(new ComputedSalaryRateBlock(salaryRateInfo.StartTime, nextSalaryRateInfo.StartTime, salaryStartTime, salaryEndTime, mainShiftTimeInRate, applicableSalaryRate, usesContinuingRate, mainShiftCostInRate));
                 } else {
                     prevComputedSalaryBlock.RateEndTime = nextSalaryRateInfo.StartTime;
                     prevComputedSalaryBlock.SalaryEndTime = salaryEndTime;
-                    prevComputedSalaryBlock.SalaryDuration += drivingTimeInRate;
-                    prevComputedSalaryBlock.DrivingCostInRate += drivingCostInRate;
+                    prevComputedSalaryBlock.SalaryDuration += mainShiftTimeInRate;
+                    prevComputedSalaryBlock.MainShiftCostInRate += mainShiftCostInRate;
                 }
             }
 
-            return (administrativeDrivingTime, drivingCost, computeSalaryRateBlocks);
+            return (administrativeMainShiftLength, mainShiftCost, computeSalaryRateBlocks);
         }
 
         static (int, int) GetShiftNightWeekendTime(Activity shiftFirstActivity, Activity shiftLastActivity, int timeframeLength) {
@@ -386,15 +385,15 @@ namespace Thesis {
                 }
             }
 
-            // Determine driving time, while keeping in mind the minimum paid time
-            int drivingStartTime = shiftFirstActivity.StartTime;
-            int drivingEndTime = shiftLastActivity.EndTime;
+            // Determine shift times, while keeping in mind the minimum paid time
+            int mainShiftStartTime = shiftFirstActivity.StartTime;
+            int mainShiftEndTime = shiftLastActivity.EndTime;
 
-            // Determine driving time at night
-            int drivingTimeAtNight = GetTimeInSelectedTimeParts(drivingStartTime, drivingEndTime, weekPartsForNight.ToArray());
-            int drivingTimeInWeekend = GetTimeInSelectedTimeParts(drivingStartTime, drivingEndTime, RulesConfig.WeekPartsForWeekend);
+            // Determine shift times at night
+            int mainShiftTimeAtNight = GetTimeInSelectedTimeParts(mainShiftStartTime, mainShiftEndTime, weekPartsForNight.ToArray());
+            int mainShiftTimeInWeekend = GetTimeInSelectedTimeParts(mainShiftStartTime, mainShiftEndTime, RulesConfig.WeekPartsForWeekend);
 
-            return (drivingTimeAtNight, drivingTimeInWeekend);
+            return (mainShiftTimeAtNight, mainShiftTimeInWeekend);
         }
 
         // Note that last part is not counted, since this should be the end of the timeframe
@@ -683,10 +682,10 @@ namespace Thesis {
 
     class ComputedSalaryRateBlock {
         public int RateStartTime, RateEndTime, SalaryStartTime, SalaryEndTime, SalaryDuration;
-        public float SalaryRate, DrivingCostInRate;
+        public float SalaryRate, MainShiftCostInRate;
         public bool UsesContinuingRate;
 
-        public ComputedSalaryRateBlock(int rateStartTime, int rateEndTime, int salaryStartTime, int salaryEndTime, int salaryDuration, float salaryRate, bool usesContinuingRate, float drivingCostInRate) {
+        public ComputedSalaryRateBlock(int rateStartTime, int rateEndTime, int salaryStartTime, int salaryEndTime, int salaryDuration, float salaryRate, bool usesContinuingRate, float mainSshiftCostInRate) {
             RateStartTime = rateStartTime;
             RateEndTime = rateEndTime;
             SalaryStartTime = salaryStartTime;
@@ -694,7 +693,7 @@ namespace Thesis {
             SalaryDuration = salaryDuration;
             SalaryRate = salaryRate;
             UsesContinuingRate = usesContinuingRate;
-            DrivingCostInRate = drivingCostInRate;
+            MainShiftCostInRate = mainSshiftCostInRate;
         }
     }
 }

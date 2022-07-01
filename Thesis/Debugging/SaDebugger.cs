@@ -202,9 +202,9 @@ namespace Thesis {
             currentShift.IsInvalidHotelAfter = isInvalidHotelAfter;
         }
 
-        public void EndShiftPart2(ShiftInfo shiftInfo, int shiftLengthWithTravel, int travelTimeBefore, int travelTimeAfter) {
+        public void EndShiftPart2(ShiftInfo shiftInfo, int fullShiftLength, int travelTimeBefore, int travelTimeAfter) {
             currentShift.ShiftInfo = shiftInfo;
-            currentShift.ShiftLengthWithTravel = shiftLengthWithTravel;
+            currentShift.FullShiftLength = fullShiftLength;
             currentShift.TravelTimeBefore = travelTimeBefore;
             currentShift.TravelTimeAfter = travelTimeAfter;
             shifts.Add(currentShift);
@@ -230,8 +230,8 @@ namespace Thesis {
             // Log path info
             for (int shiftIndex = 0; shiftIndex < shifts.Count; shiftIndex++) {
                 DebugShiftInfo shiftInfo = shifts[shiftIndex];
-                Console.WriteLine("Shift {0}--{1} length with travel: {2}", shiftInfo.Activities[0].Activity.Index, shiftInfo.Activities[^1].Activity.Index, shiftInfo.ShiftLengthWithTravel);
-                Console.WriteLine("Shift {0}--{1} length without travel: {2}", shiftInfo.Activities[0].Activity.Index, shiftInfo.Activities[^1].Activity.Index, shiftInfo.ShiftInfo.DrivingTime);
+                Console.WriteLine("Shift {0}--{1} main length: {2}", shiftInfo.Activities[0].Activity.Index, shiftInfo.Activities[^1].Activity.Index, shiftInfo.FullShiftLength);
+                Console.WriteLine("Shift {0}--{1} full length: {2}", shiftInfo.Activities[0].Activity.Index, shiftInfo.Activities[^1].Activity.Index, shiftInfo.ShiftInfo.MainShiftLength);
                 if (shiftInfo.RestTimeAfter.HasValue) Console.WriteLine("Rest after shift {0}--{1}: {2}", shiftInfo.Activities[0].Activity.Index, shiftInfo.Activities[^1].Activity.Index, shiftInfo.RestTimeAfter);
             }
         }
@@ -258,7 +258,7 @@ namespace Thesis {
     class DebugShiftInfo {
         public List<DebugActivityInfo> Activities;
         public ShiftInfo ShiftInfo;
-        public int ShiftLengthWithTravel, TravelTimeBefore, TravelTimeAfter;
+        public int FullShiftLength, TravelTimeBefore, TravelTimeAfter;
         public int? RestTimeAfter;
         public bool IsHotelAfter, IsInvalidHotelAfter;
 

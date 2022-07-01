@@ -29,8 +29,8 @@ namespace Thesis {
 
         public abstract string GetId();
 
-        public float DrivingCost(Activity shiftFirstActivity, Activity shiftLastActivity) {
-            return instance.ShiftInfo(shiftFirstActivity, shiftLastActivity).GetDrivingCost(SalarySettings.DriverTypeIndex);
+        public float GetMainShiftCost(Activity shiftFirstActivity, Activity shiftLastActivity) {
+            return instance.ShiftInfo(shiftFirstActivity, shiftLastActivity).GetMainShiftCost(SalarySettings.DriverTypeIndex);
         }
 
         public int HomeTravelTimeToStart(Activity activity) {

@@ -8,10 +8,10 @@ namespace Thesis {
     class RulesConfig {
         // Shift constraints
         public const int DriverMaxShiftCount = 5; // The maximum number of shifts a driver can have per week
-        public const int NormalShiftMaxLengthWithTravel = 12 * 60; // Maximum length of a shift, including travel
-        public const int NormalShiftMaxLengthWithoutTravel = 10 * 60; // Maximum length of a shift, excluding travel
-        public const int NightShiftMaxLengthWithTravel = 10 * 60; // Maximum length of a night shift, including travel
-        public const int NightShiftMaxLengthWithoutTravel = 8 * 60; // Maximum length of a night shift, excluding travel
+        public const int NormalMaxFullShiftLength = 12 * 60; // Maximum length of a shift, including travel
+        public const int NormalMaxMainShiftLength = 10 * 60; // Maximum length of a shift, excluding travel
+        public const int NightMaxFullShiftLength = 10 * 60; // Maximum length of a night shift, including travel
+        public const int NightMaxMainShiftLength = 8 * 60; // Maximum length of a night shift, excluding travel
         public const int NormalShiftMinRestTime = 11 * 60; // Minimum required resting time after a non-night shift
         public const int NightShiftMinRestTime = 14 * 60; // Minimum required resting time after a night shift
         public const int HotelMaxRestTime = 24 * 60; // Maximum allowed resting time during a hotel stay
@@ -21,9 +21,9 @@ namespace Thesis {
         public const int DoubleFreeDayMinRestTime = 48 * 60; // Minimum required resting time between two shifts to count as two consecutive free days
 
         // Night/weekend shifts
-        public static readonly Func<int, int, bool> IsNightShiftByLawFunc = (int drivingTimeAtNight, int drivingTime) => drivingTimeAtNight >= 60; // Function determining whether a shift is a night shift, according to labour laws
-        public static readonly Func<int, int, bool> IsNightShiftByCompanyRulesFunc = (int drivingTimeAtNight, int drivingTime) => (float)drivingTimeAtNight / drivingTime >= 0.5; // Function determining whether a shift is a night shift, according to company rules
-        public static readonly Func<int, int, bool> IsWeekendShiftByCompanyRulesFunc = (int drivingTimeInWeekend, int drivingTime) => (float)drivingTimeInWeekend / drivingTime >= 0.5; // Function determining whether a shift is a weekend shift, according to company rules
+        public static readonly Func<int, int, bool> IsNightShiftByLawFunc = (int mainShiftTimeAtNight, int mainShiftLength) => mainShiftTimeAtNight >= 60; // Function determining whether a shift is a night shift, according to labour laws
+        public static readonly Func<int, int, bool> IsNightShiftByCompanyRulesFunc = (int mainShiftTimeAtNight, int mainShiftLength) => (float)mainShiftTimeAtNight / mainShiftLength >= 0.5; // Function determining whether a shift is a night shift, according to company rules
+        public static readonly Func<int, int, bool> IsWeekendShiftByCompanyRulesFunc = (int mainShiftTimeInWeekend, int mainShiftLength) => (float)mainShiftTimeInWeekend / mainShiftLength >= 0.5; // Function determining whether a shift is a weekend shift, according to company rules
         // TODO: configure holidays
 
         // Weekend/non-weekend parts of the week

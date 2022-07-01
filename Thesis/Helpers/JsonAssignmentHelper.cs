@@ -163,11 +163,11 @@ namespace Thesis {
         static void AddShiftToDriverShifts(Activity shiftFirstActivity, Activity shiftLastActivity, Activity parkingActivity, Activity activityBeforeHotel, Activity activityAfterHotel, float shiftRobustness, JArray shiftPathJArray, JArray shiftsJArray, Driver driver, SaInfo info) {
             ShiftInfo shiftInfo = info.Instance.ShiftInfo(shiftFirstActivity, shiftLastActivity);
 
-            int administrativeDrivingTime = shiftInfo.AdministrativeDrivingTimeByDriverType[driver.SalarySettings.DriverTypeIndex];
-            int startTime = shiftFirstActivity.StartTime;
-            int administrativeEndTime = startTime + administrativeDrivingTime;
+            int administrativeMainShiftLength = shiftInfo.AdministrativeMainShiftLengthByDriverType[driver.SalarySettings.DriverTypeIndex];
+            int shiftMainStartTime = shiftFirstActivity.StartTime;
+            int administrativeMainShiftEndTime = shiftMainStartTime + administrativeMainShiftLength;
 
-            float drivingCost = driver.DrivingCost(shiftFirstActivity, shiftLastActivity);
+            float mainShiftCostRaw = driver.GetMainShiftCost(shiftFirstActivity, shiftLastActivity);
 
             (int travelTimeBefore, int travelDistanceBefore) = RangeCostActivityProcessor.GetTravelInfoBefore(activityBeforeHotel, shiftFirstActivity, driver, info.Instance);
             (int travelTimeAfter, int travelDistanceAfter, _) = RangeCostActivityProcessor.GetTravelInfoAfter(shiftLastActivity, activityAfterHotel, parkingActivity, activityAfterHotel != null, driver, info.Instance);
@@ -176,7 +176,7 @@ namespace Thesis {
             int travelDistance = travelDistanceBefore + travelDistanceAfter;
             float travelCost = driver.GetPaidTravelCost(travelTime, travelDistance);
             float hotelCost = activityAfterHotel == null ? 0 : SalaryConfig.HotelCosts;
-            float cost = drivingCost + travelCost + hotelCost + shiftRobustness;
+            float cost = mainShiftCostRaw + travelCost + hotelCost + shiftRobustness;
 
             // Salary rates breakdown
             JArray salaryRates = new JArray();
@@ -191,18 +191,18 @@ namespace Thesis {
                     ["salaryDuration"] = computeSalaryRateBlock.SalaryDuration,
                     ["hourlySalaryRate"] = computeSalaryRateBlock.SalaryRate * MiscConfig.HourLength,
                     ["usesContinuingRate"] = computeSalaryRateBlock.UsesContinuingRate,
-                    ["drivingCostInRange"] = computeSalaryRateBlock.DrivingCostInRate,
+                    ["shiftCostInRange"] = computeSalaryRateBlock.MainShiftCostInRate,
                 };
                 salaryRates.Add(salaryRateJObject);
             }
 
             JObject shiftJObject = new JObject() {
                 ["activityPath"] = shiftPathJArray,
-                ["drivingTime"] = shiftInfo.DrivingTime,
-                ["administrativeDrivingTime"] = administrativeDrivingTime,
-                ["startTime"] = startTime,
-                ["administrativeEndTime"] = administrativeEndTime,
-                ["drivingCost"] = drivingCost,
+                ["mainShiftLength"] = shiftInfo.MainShiftLength,
+                ["administrativeMainShiftLength"] = administrativeMainShiftLength,
+                ["mainStartTime"] = shiftMainStartTime,
+                ["administrativeMainEndTime"] = administrativeMainShiftEndTime,
+                ["mainCostRaw"] = mainShiftCostRaw,
                 ["travelTimeBefore"] = travelTimeBefore,
                 ["travelDistanceBefore"] = travelDistanceBefore,
                 ["travelTimeAfter"] = travelTimeAfter,

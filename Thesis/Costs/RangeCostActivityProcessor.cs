@@ -148,31 +148,31 @@ namespace Thesis {
             // Get travel time before
             (int travelTimeBefore, int travelDistanceBefore) = GetTravelInfoBefore(beforeHotelActivity, shiftFirstActivity, driver, instance);
 
-            // Get driving time
-            int shiftLengthWithoutTravel = shiftInfo.DrivingTime;
-            float drivingCost = driver.DrivingCost(shiftFirstActivity, prevActivity);
-            driverInfo.WorkedTime += shiftLengthWithoutTravel;
+            // Get shift length and cost
+            int mainShiftLength = shiftInfo.MainShiftLength;
+            float mainShiftCost = driver.GetMainShiftCost(shiftFirstActivity, prevActivity);
+            driverInfo.WorkedTime += mainShiftLength;
 
             // Get travel time and shift length
             int travelTime = travelTimeBefore + travelTimeAfter;
             int travelDistance = travelDistanceBefore + travelDistanceAfter;
             driverInfo.TravelTime += travelTime;
-            int shiftLengthWithTravel = shiftLengthWithoutTravel + travelTime;
+            int fullShiftLength = mainShiftLength + travelTime;
 
             // Get shift cost
             float travelCost = driver.GetPaidTravelCost(travelTime, travelDistance);
-            float shiftCost = drivingCost + travelCost;
-            driverInfo.Stats.RawCost += shiftCost;
+            float fullShiftCost = mainShiftCost + travelCost;
+            driverInfo.Stats.RawCost += fullShiftCost;
 
             // Get shared car costs to pick up personal car
             int sharedCarTravelDistance = travelDistanceBefore + sharedCarTravelDistanceAfter;
             driverInfo.Stats.Cost += sharedCarTravelDistance * SalaryConfig.SharedCarCostsPerKilometer;
 
             // Check shift length
-            driverInfo.PenaltyInfo.AddPossibleShiftLengthViolation(shiftLengthWithoutTravel, shiftLengthWithTravel, shiftInfo.MaxShiftLengthWithoutTravel, shiftInfo.MaxShiftLengthWithTravel);
+            driverInfo.PenaltyInfo.AddPossibleShiftLengthViolation(mainShiftLength, fullShiftLength, shiftInfo.MaxMainShiftLength, shiftInfo.MaxFullShiftLength);
 
             // Determine ideal shift length score
-            driverInfo.IdealShiftLengthScore += Math.Max(0, shiftLengthWithoutTravel - RulesConfig.IdealShiftLength);
+            driverInfo.IdealShiftLengthScore += Math.Max(0, mainShiftLength - RulesConfig.IdealShiftLength);
 
             // Update night and weekend counts
             if (shiftInfo.IsNightShiftByCompanyRules) driverInfo.NightShiftCountByCompanyRules++;
@@ -180,7 +180,7 @@ namespace Thesis {
 
             #if DEBUG
             if (AppConfig.DebugCheckOperations) {
-                SaDebugger.GetCurrentStageInfo().EndShiftPart2(shiftInfo, shiftLengthWithTravel, travelTimeBefore, travelTimeAfter);
+                SaDebugger.GetCurrentStageInfo().EndShiftPart2(shiftInfo, fullShiftLength, travelTimeBefore, travelTimeAfter);
             }
             #endif
         }

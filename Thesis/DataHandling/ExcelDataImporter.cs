@@ -52,7 +52,7 @@ namespace Thesis {
                 int duration = endTime - startTime;
 
                 // Temp: skip activities longer than max shift length
-                if (duration > RulesConfig.NormalShiftMaxLengthWithoutTravel) return;
+                if (duration > RulesConfig.NormalMaxMainShiftLength) return;
 
                 // Get company and employee assigned in data
                 string assignedCompanyName = activitiesSheet.GetStringValue(activityRow, "EmployeeWorksFor");
