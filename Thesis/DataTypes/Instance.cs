@@ -26,14 +26,14 @@ namespace Thesis {
             XSSFWorkbook stationAddressesBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "stationAddresses.xlsx"));
             XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "settings.xlsx"));
 
-            (StationNames, plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances) = DataProcessor.GetStationNamesAndExpectedCarTravelInfo();
-            StationCountries = DataProcessor.GetStationCountries(stationAddressesBook, StationNames);
-            (Activities, activitySuccession, activitySuccessionRobustness, activitiesAreSameShift, timeframeLength, UniqueSharedRouteCount) = DataProcessor.ProcessRawActivities(stationAddressesBook, rawActivities, StationNames, expectedCarTravelTimes);
-            shiftInfos = DataProcessor.GetShiftInfos(Activities, timeframeLength);
-            InternalDrivers = DataProcessor.CreateInternalDrivers(settingsBook, StationCountries);
+            (StationNames, plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances) = DataMiscProcessor.GetStationNamesAndExpectedCarTravelInfo();
+            StationCountries = DataMiscProcessor.GetStationCountries(stationAddressesBook, StationNames);
+            (Activities, activitySuccession, activitySuccessionRobustness, activitiesAreSameShift, timeframeLength, UniqueSharedRouteCount) = DataActivityProcessor.ProcessRawActivities(stationAddressesBook, rawActivities, StationNames, expectedCarTravelTimes);
+            shiftInfos = DataShiftProcessor.GetShiftInfos(Activities, timeframeLength);
+            InternalDrivers = DataDriverProcessor.CreateInternalDrivers(settingsBook, StationCountries);
             Dictionary<(string, bool), ExternalDriver[]> externalDriversByTypeDict;
-            (ExternalDriverTypes, ExternalDriversByType, externalDriversByTypeDict) = DataProcessor.CreateExternalDrivers(settingsBook, StationCountries, InternalDrivers.Length);
-            DataAssignment = DataProcessor.GetDataAssignment(settingsBook, Activities, InternalDrivers, externalDriversByTypeDict);
+            (ExternalDriverTypes, ExternalDriversByType, externalDriversByTypeDict) = DataDriverProcessor.CreateExternalDrivers(settingsBook, StationCountries, InternalDrivers.Length);
+            DataAssignment = DataMiscProcessor.GetDataAssignment(settingsBook, Activities, InternalDrivers, externalDriversByTypeDict);
 
             // Create all drivers array
             List<Driver> allDriversList = new List<Driver>();
