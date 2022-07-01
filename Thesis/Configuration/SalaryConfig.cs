@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     class SalaryConfig {
-        // Hotels (TODO: move into SalarySettings?)
-        public const float HotelCosts = 130f;
+        // Misc costs (TODO: move into SalarySettings?)
+        public const float HotelCosts = 180f;
+        public const float SharedCarCostsPerKilometer = 0.35f; // Additional costs for travel by pool car: includes intra-shift car travel, travel to pick up personal car, and travel to/from hotel
 
         // Salary rates for driver types
         public static readonly InternalSalarySettings InternalNationalSalaryInfo = InternalSalarySettings.CreateByHours(

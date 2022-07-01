@@ -38,5 +38,6 @@ namespace Thesis {
         public const double InternalShiftCountViolationPenaltyPerShift = 2000;
         public const double ExternalShiftCountPenaltyPerShift = 4000;
         public const double InvalidHotelPenalty = 4000;
+        public const double QualificationViolationPenalty = 4000;
     }
 }

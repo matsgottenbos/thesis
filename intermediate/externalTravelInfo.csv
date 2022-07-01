@@ -6,6 +6,7 @@ Machinext B.V.,"Amersfoort, remise Strukton",89,125
 Machinext B.V.,Amsterdam Centraal,83,115
 Machinext B.V.,Amsterdam Westhaven,78,112
 Machinext B.V.,Amsterdam Westhaven West,75,110
+Machinext B.V.,APMT,10,4
 Machinext B.V.,"Arnhem, goederenemplacement",105,154
 Machinext B.V.,"Bad Bentheim, empl. / staalfabriek",166,258
 Machinext B.V.,"Bad Bentheim, Hilgenstiege sp.25",165,259
@@ -21,6 +22,7 @@ Machinext B.V.,"Dordrecht, dok",41,58
 Machinext B.V.,"Dortmund Obereving, emplacement",189,297
 Machinext B.V.,Duisburg Ruhrorthafen,156,238
 Machinext B.V.,"Duisburg, Hochfeld Süd Vorbahnhof",158,244
+Machinext B.V.,ECT,13,7
 Machinext B.V.,"Eindhoven, emplacement",103,154
 Machinext B.V.,"Eindhoven, emplacement Acht",98,146
 Machinext B.V.,Eltville Ost,312,480
@@ -63,6 +65,7 @@ Machinext B.V.,"Pernis, emplacement",28,34
 Machinext B.V.,Rheine,181,279
 Machinext B.V.,"Rheinhausen, emplacement",158,241
 Machinext B.V.,"Roosendaal, emplacement",65,93
+Machinext B.V.,RWG,13,5
 Machinext B.V.,"Sittard, emplacement",145,217
 Machinext B.V.,Sloehaven empl.,84,100
 Machinext B.V.,Steinweg Amsterdam,75,110
@@ -86,6 +89,7 @@ Aeterno Rail Service B.V.,"Amersfoort, remise Strukton",89,125
 Aeterno Rail Service B.V.,Amsterdam Centraal,83,115
 Aeterno Rail Service B.V.,Amsterdam Westhaven,78,112
 Aeterno Rail Service B.V.,Amsterdam Westhaven West,75,110
+Aeterno Rail Service B.V.,APMT,10,4
 Aeterno Rail Service B.V.,"Arnhem, goederenemplacement",105,154
 Aeterno Rail Service B.V.,"Bad Bentheim, empl. / staalfabriek",166,258
 Aeterno Rail Service B.V.,"Bad Bentheim, Hilgenstiege sp.25",165,259
@@ -101,6 +105,7 @@ Aeterno Rail Service B.V.,"Dordrecht, dok",41,58
 Aeterno Rail Service B.V.,"Dortmund Obereving, emplacement",189,297
 Aeterno Rail Service B.V.,Duisburg Ruhrorthafen,156,238
 Aeterno Rail Service B.V.,"Duisburg, Hochfeld Süd Vorbahnhof",158,244
+Aeterno Rail Service B.V.,ECT,13,7
 Aeterno Rail Service B.V.,"Eindhoven, emplacement",103,154
 Aeterno Rail Service B.V.,"Eindhoven, emplacement Acht",98,146
 Aeterno Rail Service B.V.,Eltville Ost,312,480
@@ -143,6 +148,7 @@ Aeterno Rail Service B.V.,"Pernis, emplacement",28,34
 Aeterno Rail Service B.V.,Rheine,181,279
 Aeterno Rail Service B.V.,"Rheinhausen, emplacement",158,241
 Aeterno Rail Service B.V.,"Roosendaal, emplacement",65,93
+Aeterno Rail Service B.V.,RWG,13,5
 Aeterno Rail Service B.V.,"Sittard, emplacement",145,217
 Aeterno Rail Service B.V.,Sloehaven empl.,84,100
 Aeterno Rail Service B.V.,Steinweg Amsterdam,75,110
@@ -166,6 +172,7 @@ SpoorLutions,"Amersfoort, remise Strukton",89,125
 SpoorLutions,Amsterdam Centraal,83,115
 SpoorLutions,Amsterdam Westhaven,78,112
 SpoorLutions,Amsterdam Westhaven West,75,110
+SpoorLutions,APMT,10,4
 SpoorLutions,"Arnhem, goederenemplacement",105,154
 SpoorLutions,"Bad Bentheim, empl. / staalfabriek",166,258
 SpoorLutions,"Bad Bentheim, Hilgenstiege sp.25",165,259
@@ -181,6 +188,7 @@ SpoorLutions,"Dordrecht, dok",41,58
 SpoorLutions,"Dortmund Obereving, emplacement",189,297
 SpoorLutions,Duisburg Ruhrorthafen,156,238
 SpoorLutions,"Duisburg, Hochfeld Süd Vorbahnhof",158,244
+SpoorLutions,ECT,13,7
 SpoorLutions,"Eindhoven, emplacement",103,154
 SpoorLutions,"Eindhoven, emplacement Acht",98,146
 SpoorLutions,Eltville Ost,312,480
@@ -223,6 +231,7 @@ SpoorLutions,"Pernis, emplacement",28,34
 SpoorLutions,Rheine,181,279
 SpoorLutions,"Rheinhausen, emplacement",158,241
 SpoorLutions,"Roosendaal, emplacement",65,93
+SpoorLutions,RWG,13,5
 SpoorLutions,"Sittard, emplacement",145,217
 SpoorLutions,Sloehaven empl.,84,100
 SpoorLutions,Steinweg Amsterdam,75,110
@@ -246,6 +255,7 @@ Logisticle B.V,"Amersfoort, remise Strukton",89,125
 Logisticle B.V,Amsterdam Centraal,83,115
 Logisticle B.V,Amsterdam Westhaven,78,112
 Logisticle B.V,Amsterdam Westhaven West,75,110
+Logisticle B.V,APMT,10,4
 Logisticle B.V,"Arnhem, goederenemplacement",105,154
 Logisticle B.V,"Bad Bentheim, empl. / staalfabriek",166,258
 Logisticle B.V,"Bad Bentheim, Hilgenstiege sp.25",165,259
@@ -261,6 +271,7 @@ Logisticle B.V,"Dordrecht, dok",41,58
 Logisticle B.V,"Dortmund Obereving, emplacement",189,297
 Logisticle B.V,Duisburg Ruhrorthafen,156,238
 Logisticle B.V,"Duisburg, Hochfeld Süd Vorbahnhof",158,244
+Logisticle B.V,ECT,13,7
 Logisticle B.V,"Eindhoven, emplacement",103,154
 Logisticle B.V,"Eindhoven, emplacement Acht",98,146
 Logisticle B.V,Eltville Ost,312,480
@@ -303,6 +314,7 @@ Logisticle B.V,"Pernis, emplacement",28,34
 Logisticle B.V,Rheine,181,279
 Logisticle B.V,"Rheinhausen, emplacement",158,241
 Logisticle B.V,"Roosendaal, emplacement",65,93
+Logisticle B.V,RWG,13,5
 Logisticle B.V,"Sittard, emplacement",145,217
 Logisticle B.V,Sloehaven empl.,84,100
 Logisticle B.V,Steinweg Amsterdam,75,110

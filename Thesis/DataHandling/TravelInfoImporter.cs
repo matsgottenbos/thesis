@@ -100,6 +100,12 @@ namespace Thesis {
                 }
             }
 
+            // Set time and distance to self to 0
+            for (int locationIndex = 0; locationIndex < locations.Count; locationIndex++) {
+                partialTravelTimes[locationIndex, locationIndex] = 0;
+                partialTravelDistances[locationIndex, locationIndex] = 0;
+            }
+
             // Get list of missing locations
             List<LocationInfo> missingLocations = new List<LocationInfo>(locations);
             missingLocations.RemoveAll(location => importedLocations.Contains(location));

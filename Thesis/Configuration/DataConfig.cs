@@ -23,7 +23,6 @@ namespace Thesis {
             "Exchange staff",
             "Locomotive Exchange",
             "Locomotive movement",
-            "Parking",
             "Shunting",
             "Terminal Process",
             "Vertrekcontrole (VKC)",

@@ -170,7 +170,7 @@ namespace Thesis {
             float drivingCost = driver.DrivingCost(shiftFirstActivity, shiftLastActivity);
 
             (int travelTimeBefore, int travelDistanceBefore) = RangeCostActivityProcessor.GetTravelInfoBefore(activityBeforeHotel, shiftFirstActivity, driver, info.Instance);
-            (int travelTimeAfter, int travelDistanceAfter) = RangeCostActivityProcessor.GetTravelInfoAfter(shiftLastActivity, activityAfterHotel, parkingActivity, activityAfterHotel != null, driver, info.Instance);
+            (int travelTimeAfter, int travelDistanceAfter, _) = RangeCostActivityProcessor.GetTravelInfoAfter(shiftLastActivity, activityAfterHotel, parkingActivity, activityAfterHotel != null, driver, info.Instance);
 
             int travelTime = travelTimeBefore + travelTimeAfter;
             int travelDistance = travelDistanceBefore + travelDistanceAfter;

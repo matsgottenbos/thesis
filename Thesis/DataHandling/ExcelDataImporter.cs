@@ -37,10 +37,10 @@ namespace Thesis {
 
                 // Get start and end stations
                 string startStationDataName = activitiesSheet.GetStringValue(activityRow, "OriginLocationName");
-                if (startStationDataName == null) return; // Skip row if start location is empty
-
                 string endStationDataName = activitiesSheet.GetStringValue(activityRow, "DestinationLocationName");
-                if (endStationDataName == null) return; // Skip row if end location is empty
+                string startStationCountry = activitiesSheet.GetStringValue(activityRow, "OriginCountry");
+                string endStationCountry = activitiesSheet.GetStringValue(activityRow, "DestinationCountry");
+                if (startStationDataName == null || endStationDataName == null) return;
 
                 // Get start and end time
                 DateTime? startTimeRaw = activitiesSheet.GetDateValue(activityRow, "PlannedStart");
@@ -58,7 +58,7 @@ namespace Thesis {
                 string assignedCompanyName = activitiesSheet.GetStringValue(activityRow, "EmployeeWorksFor");
                 string assignedEmployeeName = activitiesSheet.GetStringValue(activityRow, "EmployeeName");
 
-                rawActivities.Add(new RawActivity(dutyName, activityName, dutyId, projectName, trainNumber, startStationDataName, endStationDataName, startTime, endTime, duration, assignedCompanyName, assignedEmployeeName));
+                rawActivities.Add(new RawActivity(dutyName, activityName, dutyId, projectName, trainNumber, startStationDataName, endStationDataName, startStationCountry, endStationCountry, startTime, endTime, duration, assignedCompanyName, assignedEmployeeName));
             });
 
             if (rawActivities.Count == 0) {

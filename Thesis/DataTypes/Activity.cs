@@ -9,7 +9,7 @@ namespace Thesis {
         public int Index;
         public readonly int StartStationAddressIndex, EndStationAddressIndex, StartTime, EndTime, Duration;
         public int? SharedRouteIndex;
-        public readonly string DutyName, ActivityName, DutyId, ProjectName, TrainNumber, StartStationName, EndStationName, DataAssignedCompanyName, DataAssignedEmployeeName;
+        public readonly string DutyName, ActivityName, DutyId, ProjectName, TrainNumber, StartStationName, EndStationName, StartStationCountry, EndStationCountry, DataAssignedCompanyName, DataAssignedEmployeeName;
         public readonly List<Activity> Successors;
 
         public Activity(RawActivity rawActivity, int index, int startStationAddressIndex, int endStationAddressIndex) {
@@ -21,6 +21,8 @@ namespace Thesis {
             TrainNumber = rawActivity.TrainNumber;
             StartStationName = rawActivity.StartStationName;
             EndStationName = rawActivity.EndStationName;
+            StartStationCountry = rawActivity.StartStationCountry;
+            EndStationCountry = rawActivity.EndStationCountry;
             StartStationAddressIndex = startStationAddressIndex;
             EndStationAddressIndex = endStationAddressIndex;
             Successors = new List<Activity>();

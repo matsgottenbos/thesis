@@ -13,10 +13,10 @@ namespace Thesis {
         /* Determine specific travel info */
 
         public static void DetermineAndExportAllTravelInfos() {
-            XSSFWorkbook addressesBook = ExcelHelper.ReadExcelFile(System.IO.Path.Combine(AppConfig.InputFolder, "stationAddresses.xlsx"));
+            XSSFWorkbook addressesBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "stationAddresses.xlsx"));
             ExcelSheet stationAddressesSheet = new ExcelSheet("Station addresses", addressesBook);
 
-            XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(System.IO.Path.Combine(AppConfig.InputFolder, "settings.xlsx"));
+            XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "settings.xlsx"));
             ExcelSheet internalAddressesSheet = new ExcelSheet("Internal drivers", settingsBook);
             ExcelSheet externalAddressesSheet = new ExcelSheet("External driver companies", settingsBook);
 

@@ -2,7 +2,7 @@
 
 namespace Thesis {
     class SaDriverPenaltyInfo {
-        public int OverlapViolationCount, ShiftLengthViolationCount, ShiftLengthViolationAmount, RestTimeViolationCount, RestTimeViolationAmount, ShiftCountViolationAmount, InvalidHotelCount;
+        public int OverlapViolationCount, ShiftLengthViolationCount, ShiftLengthViolationAmount, RestTimeViolationCount, RestTimeViolationAmount, ShiftCountViolationAmount, InvalidHotelCount, QualificationViolationCount;
 
         /* Adding violations */
 
@@ -37,6 +37,12 @@ namespace Thesis {
             InvalidHotelCount++;
         }
 
+        public void AddPotentialQualificationViolation(Activity activity, Driver driver) {
+           if (!driver.IsQualifiedForActivity(activity)) {
+                QualificationViolationCount++;
+            }
+        }
+
 
         /* Calculating penalty */
 
@@ -47,6 +53,7 @@ namespace Thesis {
             penalty += RestTimeViolationCount * SaConfig.RestTimeViolationPenalty + RestTimeViolationAmount * SaConfig.RestTimeViolationPenaltyPerMin;
             penalty += ShiftCountViolationAmount * SaConfig.InternalShiftCountViolationPenaltyPerShift;
             penalty += InvalidHotelCount * SaConfig.InvalidHotelPenalty;
+            penalty += QualificationViolationCount * SaConfig.QualificationViolationPenalty;
             return penalty;
         }
 
@@ -62,6 +69,7 @@ namespace Thesis {
                 RestTimeViolationAmount = -a.RestTimeViolationAmount,
                 ShiftCountViolationAmount = -a.ShiftCountViolationAmount,
                 InvalidHotelCount = -a.InvalidHotelCount,
+                QualificationViolationCount = -a.QualificationViolationCount,
             };
         }
         public static SaDriverPenaltyInfo operator +(SaDriverPenaltyInfo a, SaDriverPenaltyInfo b) {
@@ -73,6 +81,7 @@ namespace Thesis {
                 RestTimeViolationAmount = a.RestTimeViolationAmount + b.RestTimeViolationAmount,
                 ShiftCountViolationAmount = a.ShiftCountViolationAmount + b.ShiftCountViolationAmount,
                 InvalidHotelCount = a.InvalidHotelCount + b.InvalidHotelCount,
+                QualificationViolationCount= a.QualificationViolationCount + b.QualificationViolationCount,
             };
         }
         public static SaDriverPenaltyInfo operator -(SaDriverPenaltyInfo a, SaDriverPenaltyInfo b) => a + -b;
@@ -85,7 +94,8 @@ namespace Thesis {
                 a.RestTimeViolationCount == b.RestTimeViolationCount &&
                 a.RestTimeViolationAmount == b.RestTimeViolationAmount &&
                 a.ShiftCountViolationAmount == b.ShiftCountViolationAmount &&
-                a.InvalidHotelCount == b.InvalidHotelCount
+                a.InvalidHotelCount == b.InvalidHotelCount &&
+                a.QualificationViolationCount == b.QualificationViolationCount
             );
         }
 
@@ -100,6 +110,7 @@ namespace Thesis {
             ParseHelper.LogDebugValue(RestTimeViolationAmount, "Rest time violation", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(ShiftCountViolationAmount, "Shift count violation amount", isDiff, shouldLogZeros);
             ParseHelper.LogDebugValue(InvalidHotelCount, "Invalid hotel count", isDiff, shouldLogZeros);
+            ParseHelper.LogDebugValue(QualificationViolationCount, "Qualification violation count", isDiff, shouldLogZeros);
         }
     }
 }
