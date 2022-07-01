@@ -48,8 +48,10 @@ namespace Thesis {
             }
 
             // Simulated annealing
-            SaMultithreadHandler saMultithreadHandler = new SaMultithreadHandler();
-            saMultithreadHandler.Run(instance, appRand);
+            for (int i = 0; i < AppConfig.DebugRunSaCount; i++) {
+                SaMultithreadHandler saMultithreadHandler = new SaMultithreadHandler();
+                saMultithreadHandler.Run(instance, appRand);
+            }
         }
 
         static Instance GetInstance(XorShiftRandom appRand) {

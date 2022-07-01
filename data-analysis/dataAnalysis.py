@@ -152,22 +152,42 @@ def plotSimulatedAnnealingProgress():
     iterationNums = np.linspace(20000000, 2000000000, 99)
 
     costProgress = [79, 66, 63, 59, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 57, 57, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54]
-    costProgress = [1000 * cost for cost in costProgress]
 
     satisfactionProgress = [60, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63]
 
-    formatter = FuncFormatter(lambda x, pos: '%1.2fB' % (x * 1e-9))
+    iterationTicks = [0, 500000000, 1000000000, 1500000000, 2000000000]
+
+    iterationFormatter = FuncFormatter(lambda x, pos: '%1.1fB' % (x * 1e-9))
+    costFormatter = FuncFormatter(lambda x, pos: '%1.0fk' % x)
+    satisfactionFormatter = FuncFormatter(lambda x, pos: str(x) + '%')
 
     _, ax1 = beforePlot(xLabel='Iterations', yLabel='Cost')
-    ax1.xaxis.set_major_formatter(formatter)
+    ax1.xaxis.set_major_formatter(iterationFormatter)
+    ax1.yaxis.set_major_formatter(costFormatter)
     plt.plot(iterationNums, costProgress, color=(0, 0.5, 1, 1))
+    plt.xticks(iterationTicks)
     afterPlot(plotName='sa-progress-cost')
 
-    _, ax2 = beforePlot(xLabel='Iterations', yLabel='Satisfaction (%)')
-    ax2.xaxis.set_major_formatter(formatter)
+    _, ax2 = beforePlot(xLabel='Iterations', yLabel='Satisfaction')
+    ax2.xaxis.set_major_formatter(iterationFormatter)
+    ax2.yaxis.set_major_formatter(satisfactionFormatter)
     plt.plot(iterationNums, satisfactionProgress, color=(0, 0.5, 1, 1))
+    plt.xticks(iterationTicks)
+    plt.yticks([60, 61, 62, 63])
     afterPlot(plotName='sa-progress-satisfaction')
 
+def plotSimulatedAnnealingParetoFront():
+    costs = [53699, 54619, 55537, 56315, 58113, 59028]
+    satisfactions = [36, 45, 49, 54, 61, 63]
+
+    costFormatter = FuncFormatter(lambda x, pos: '%1.0fk' % (x / 1000))
+    satisfactionFormatter = FuncFormatter(lambda x, pos: str(x) + '%')
+
+    _, ax1 = beforePlot(xLabel='Cost', yLabel='Satisfaction')
+    ax1.xaxis.set_major_formatter(costFormatter)
+    ax1.yaxis.set_major_formatter(satisfactionFormatter)
+    plt.plot(costs, satisfactions, 'o-', color=(0, 0.5, 1, 1))
+    afterPlot(plotName='sa-pareto-front')
 
 ### Run
 
@@ -225,5 +245,6 @@ def run(durationIndexSize):
     # fitMeanDelayFunction(allPositiveDelaysFrequentDurations, allPositiveDelaysFrequent)
     # showStdScatterPlot(allPositiveDelaysByDuration, durationIndexSize)
     plotSimulatedAnnealingProgress()
+    plotSimulatedAnnealingParetoFront()
 
 run(durationIndexSize=30)

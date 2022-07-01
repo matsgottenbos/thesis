@@ -21,7 +21,7 @@ namespace Thesis {
         public const int ThreadCount = 8;
 
         // Debug
-        public const bool DebugUseSeededSa = false;
+        public const bool DebugUseSeededSa = true;
         public const bool DebugCheckOperations = false;
         public const bool DebugSaLogThreads = false;
         public const bool DebugSaLogCurrentSolution = false;
@@ -32,6 +32,7 @@ namespace Thesis {
         public const bool DebugRunDelaysExporter = false;
         public const bool DebugRunTravelTimeProcesssor = false;
         public const bool DebugRunPastDataExporter = false;
+        public const int DebugRunSaCount = 1;
 
         // File structure
         public static readonly string ProjectFolder = (Environment.Is64BitProcess ? Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName : Directory.GetParent(Environment.CurrentDirectory).Parent.FullName) + @"\"; // Path to the project root folder

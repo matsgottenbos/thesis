@@ -29,7 +29,8 @@ namespace Thesis {
                 string dutyName = activitiesSheet.GetStringValue(activityRow, "DutyNo");
                 string activityName = activitiesSheet.GetStringValue(activityRow, "ActivityDescriptionEN");
                 string dutyId = activitiesSheet.GetStringValue(activityRow, "DutyID");
-                string projectName = activitiesSheet.GetStringValue(activityRow, "Project");
+                string projectName = activitiesSheet.GetStringValue(activityRow, "Project") ?? "";
+                string trainNumber = activitiesSheet.GetStringValue(activityRow, "TrainNo") ?? "";
 
                 // Filter to configured activity descriptions
                 if (!ParseHelper.DataStringInList(activityName, DataConfig.ExcelIncludedActivityDescriptions)) return;
@@ -57,7 +58,7 @@ namespace Thesis {
                 string assignedCompanyName = activitiesSheet.GetStringValue(activityRow, "EmployeeWorksFor");
                 string assignedEmployeeName = activitiesSheet.GetStringValue(activityRow, "EmployeeName");
 
-                rawActivities.Add(new RawActivity(dutyName, activityName, dutyId, projectName, startStationDataName, endStationDataName, startTime, endTime, duration, assignedCompanyName, assignedEmployeeName));
+                rawActivities.Add(new RawActivity(dutyName, activityName, dutyId, projectName, trainNumber, startStationDataName, endStationDataName, startTime, endTime, duration, assignedCompanyName, assignedEmployeeName));
             });
 
             if (rawActivities.Count == 0) {

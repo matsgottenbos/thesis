@@ -119,7 +119,7 @@ namespace Thesis {
                 if (prevActivity == null) {
                     // First activity
                     shiftFirstActivity = searchActivity;
-                    AddTravelFromHomeToPath(searchActivity, driver, shiftPathJArray);
+                    AddTravelFromHomeToPath(searchActivity, driver, shiftPathJArray, info);
                 } else {
                     if (info.Instance.AreSameShift(prevActivity, searchActivity)) {
                         // Activity in same shift
@@ -135,17 +135,17 @@ namespace Thesis {
                             AddRestToPath(prevActivity, searchActivity, parkingActivity, driver, shiftPathJArray, info);
                             AddShiftToDriverShifts(shiftFirstActivity, prevActivity, parkingActivity, activityBeforeHotelBeforeShift, null, shiftRobustness, shiftPathJArray, shiftsJArray, driver, info);
                             activityBeforeHotelBeforeShift = null;
+                            parkingActivity = searchActivity;
                         }
 
                         // Start new shift
                         shiftPathJArray = new JArray();
                         shiftFirstActivity = searchActivity;
-                        parkingActivity = searchActivity;
 
                         if (info.IsHotelStayAfterActivity[prevActivity.Index]) {
                             AddHotelStayBeforeToPath(prevActivity, searchActivity, shiftPathJArray, info);
                         } else {
-                            AddTravelFromHomeToPath(searchActivity, driver, shiftPathJArray);
+                            AddTravelFromHomeToPath(searchActivity, driver, shiftPathJArray, info);
                         }
                     }
                 }
@@ -226,6 +226,8 @@ namespace Thesis {
                 ["endTime"] = activity.EndTime,
                 ["dutyName"] = activity.DutyName,
                 ["activityName"] = activity.ActivityName,
+                ["projectName"] = activity.ProjectName,
+                ["trainNumber"] = activity.TrainNumber,
                 ["startStationName"] = info.Instance.StationNames[activity.StartStationAddressIndex],
                 ["endStationName"] = info.Instance.StationNames[activity.EndStationAddressIndex],
             };
@@ -239,6 +241,8 @@ namespace Thesis {
                     ["type"] = "travelBetween",
                     ["startTime"] = activity1.EndTime,
                     ["endTime"] = activity1.EndTime + carTravelTime,
+                    ["startStationName"] = info.Instance.StationNames[activity1.EndStationAddressIndex],
+                    ["endStationName"] = info.Instance.StationNames[activity2.StartStationAddressIndex],
                 };
                 driverPathJArray.Add(travelBetweenPathItem);
             }
@@ -270,23 +274,35 @@ namespace Thesis {
         }
 
         static void AddTravelToHomeToPath(Activity activityBeforeHome, Activity parkingActivity, Driver driver, JArray driverPathJArray, SaInfo info) {
-            int travelTimeAfterShift = info.Instance.PlannedCarTravelTime(activityBeforeHome, parkingActivity) + driver.HomeTravelTimeToStart(parkingActivity);
+            int travelTimeToCar = info.Instance.PlannedCarTravelTime(activityBeforeHome, parkingActivity);
+            int travelTimeFromCarToHome = driver.HomeTravelTimeToStart(parkingActivity);
 
-            JObject travelAfterPathItem = new JObject {
-                ["type"] = "travelAfter",
+            JObject travelToCarPathItem = new JObject {
+                ["type"] = "travelToCar",
                 ["startTime"] = activityBeforeHome.EndTime,
-                ["endTime"] = activityBeforeHome.EndTime + travelTimeAfterShift,
+                ["endTime"] = activityBeforeHome.EndTime + travelTimeToCar,
+                ["startStationName"] = info.Instance.StationNames[activityBeforeHome.EndStationAddressIndex],
+                ["endStationName"] = info.Instance.StationNames[parkingActivity.StartStationAddressIndex],
             };
-            driverPathJArray.Add(travelAfterPathItem);
+            driverPathJArray.Add(travelToCarPathItem);
+
+            JObject travelToHomePathItem = new JObject {
+                ["type"] = "travelToHome",
+                ["startTime"] = activityBeforeHome.EndTime + travelTimeToCar,
+                ["endTime"] = activityBeforeHome.EndTime + travelTimeToCar + travelTimeFromCarToHome,
+                ["startStationName"] = info.Instance.StationNames[parkingActivity.StartStationAddressIndex],
+            };
+            driverPathJArray.Add(travelToHomePathItem);
         }
 
-        static void AddTravelFromHomeToPath(Activity activityAfterHome, Driver driver, JArray driverPathJArray) {
+        static void AddTravelFromHomeToPath(Activity activityAfterHome, Driver driver, JArray driverPathJArray, SaInfo info) {
             int travelTimeBeforeShift = driver.HomeTravelTimeToStart(activityAfterHome);
 
             JObject travelBeforePathItem = new JObject {
-                ["type"] = "travelBefore",
+                ["type"] = "travelFromHome",
                 ["startTime"] = activityAfterHome.StartTime - travelTimeBeforeShift,
                 ["endTime"] = activityAfterHome.StartTime,
+                ["endStationName"] = info.Instance.StationNames[activityAfterHome.StartStationAddressIndex],
             };
             driverPathJArray.Add(travelBeforePathItem);
         }
@@ -295,9 +311,10 @@ namespace Thesis {
             int halfTravelTimeViaHotel = info.Instance.PlannedHalfTravelTimeViaHotel(activityBeforeHotel, activityAfterHotel);
 
             JObject travelBeforeHotelPathItem = new JObject {
-                ["type"] = "travelBeforeHotel",
+                ["type"] = "travelToHotel",
                 ["startTime"] = activityBeforeHotel.EndTime,
                 ["endTime"] = activityBeforeHotel.EndTime + halfTravelTimeViaHotel,
+                ["startStationName"] = info.Instance.StationNames[activityBeforeHotel.EndStationAddressIndex],
             };
             driverPathJArray.Add(travelBeforeHotelPathItem);
 
@@ -312,9 +329,10 @@ namespace Thesis {
         static void AddHotelStayBeforeToPath(Activity activityBeforeHotel, Activity activityAfterHotel, JArray driverPathJArray, SaInfo info) {
             int halfTravelTimeViaHotel = info.Instance.PlannedHalfTravelTimeViaHotel(activityBeforeHotel, activityAfterHotel);
             JObject travelAfterHotelPathItem = new JObject {
-                ["type"] = "travelAfterHotel",
+                ["type"] = "travelFromHotel",
                 ["startTime"] = activityAfterHotel.StartTime - halfTravelTimeViaHotel,
                 ["endTime"] = activityAfterHotel.StartTime,
+                ["endStationName"] = info.Instance.StationNames[activityAfterHotel.StartStationAddressIndex],
             };
             driverPathJArray.Add(travelAfterHotelPathItem);
         }
