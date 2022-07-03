@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class RangeCostActivityProcessor {
+        /* Process activities */
+
         public static void ProcessDriverActivity(Activity searchActivity, ref Activity shiftFirstActivity, ref Activity parkingActivity, ref Activity prevActivity, ref Activity beforeHotelActivity, Func<Activity, bool> isHotelAfterActivity, SaDriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
             if (instance.AreSameShift(prevActivity, searchActivity)) {
                 /* Same shift */
@@ -36,7 +38,7 @@ namespace Thesis {
                 ProcessDriverActivity(prevActivity, false, false, driverInfo);
 
                 /* Start of new shift */
-                ProcessDriverEndNonFinalShift(searchActivity, ref shiftFirstActivity, ref parkingActivity, ref prevActivity, ref beforeHotelActivity, isHotelAfterActivity, driverInfo, driver, info, instance);
+                ProcessDriverEndShift(prevActivity, searchActivity, ref shiftFirstActivity, ref parkingActivity, ref beforeHotelActivity, isHotelAfterActivity, driverInfo, driver, info, instance);
             }
 
             prevActivity = searchActivity;
@@ -49,140 +51,9 @@ namespace Thesis {
 
             // If the range is not empty, finish the last shift of the range
             if (shiftFirstActivity != null) {
-                if (activityAfterRange == null) {
-                    // This is the end of the driver path
-                    ProcessDriverEndFinalShift(ref shiftFirstActivity, ref parkingActivity, ref prevActivity, ref beforeHotelActivity, isHotelAfterActivity, driverInfo, driver, info, instance);
-                } else {
-                    // This is the end of the range, but not the driver path
-                    ProcessDriverEndNonFinalShift(activityAfterRange, ref shiftFirstActivity, ref parkingActivity, ref prevActivity, ref beforeHotelActivity, isHotelAfterActivity, driverInfo, driver, info, instance);
-                }
+                // This is the end of the range, but not the driver path
+                ProcessDriverEndShift(prevActivity, activityAfterRange, ref shiftFirstActivity, ref parkingActivity , ref beforeHotelActivity, isHotelAfterActivity, driverInfo, driver, info, instance);
             }
-        }
-
-        static void ProcessDriverEndNonFinalShift(Activity searchActivity, ref Activity shiftFirstActivity, ref Activity parkingActivity, ref Activity prevActivity, ref Activity beforeHotelActivity, Func<Activity, bool> isHotelAfterActivity, SaDriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
-            ShiftInfo shiftInfo = info.Instance.ShiftInfo(shiftFirstActivity, prevActivity);
-
-            // Get travel time after and rest time
-            bool isHotelAfter = isHotelAfterActivity(prevActivity);
-            (int travelTimeAfter, int travelDistanceAfter, int poolCarTravelDistanceAfter) = GetTravelInfoAfter(prevActivity, searchActivity, parkingActivity, isHotelAfter, driver, instance);
-            int restTimeAfter;
-            bool isInvalidHotelAfter = false; // Used for debugger
-            if (isHotelAfter) {
-                // Hotel stay after
-                driverInfo.HotelCount++;
-                restTimeAfter = instance.RestTimeViaHotel(prevActivity, searchActivity);
-                driverInfo.Stats.RawCost += SalaryConfig.HotelCosts;
-
-                // Check if the hotel stay is valid
-                if (!driver.IsHotelAllowed || restTimeAfter > RulesConfig.HotelMaxRestTime) {
-                    driverInfo.PenaltyInfo.AddInvalidHotel();
-                    isInvalidHotelAfter = true;
-                }
-
-                beforeHotelActivity = prevActivity;
-            } else {
-                // No hotel stay after
-                restTimeAfter = instance.RestTimeWithTravelTime(prevActivity, searchActivity, travelTimeAfter + driver.HomeTravelTimeToStart(searchActivity));
-
-                // Update free days
-                if (restTimeAfter > RulesConfig.DoubleFreeDayMinRestTime) {
-                    driverInfo.SingleFreeDayCount++;
-                } else if (restTimeAfter > RulesConfig.SingleFreeDayMinRestTime) {
-                    driverInfo.DoubleFreeDayCount++;
-                }
-
-                // Set new parking activity
-                parkingActivity = searchActivity;
-                beforeHotelActivity = null;
-            }
-
-            // Check rest time
-            driverInfo.PenaltyInfo.AddPossibleRestTimeViolation(restTimeAfter, shiftInfo.MinRestTimeAfter);
-
-            // Determine ideal rest time score
-            if (restTimeAfter < RulesConfig.IdealRestTime) {
-                int idealRestTimeDeficit = RulesConfig.IdealRestTime - restTimeAfter;
-                driverInfo.IdealRestingTimeScore += idealRestTimeDeficit * idealRestTimeDeficit;
-            }
-
-            #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
-                SaDebugger.GetCurrentStageInfo().EndShiftPart1(restTimeAfter, isHotelAfter, isInvalidHotelAfter);
-            }
-            #endif
-
-            // Process parts shared between final and non-final shifts
-            ProcessDriverEndAnyShift(shiftInfo, travelTimeAfter, travelDistanceAfter, poolCarTravelDistanceAfter, ref shiftFirstActivity, ref parkingActivity, ref prevActivity, ref beforeHotelActivity, isHotelAfterActivity, driverInfo, driver, info, instance);
-
-            // Start new shift
-            shiftFirstActivity = searchActivity;
-        }
-
-        static void ProcessDriverEndFinalShift(ref Activity shiftFirstActivity, ref Activity parkingActivity, ref Activity prevActivity, ref Activity beforeHotelActivity, Func<Activity, bool> isHotelAfterActivity, SaDriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
-            ShiftInfo shiftInfo = info.Instance.ShiftInfo(shiftFirstActivity, prevActivity);
-
-            // Get travel time after
-            int travelTimeAfter = instance.ExpectedCarTravelTime(prevActivity, parkingActivity) + driver.HomeTravelTimeToStart(parkingActivity);
-            int poolCarTravelDistanceAfter = instance.CarTravelDistance(prevActivity, parkingActivity);
-            int travelDistanceAfter = poolCarTravelDistanceAfter + driver.HomeTravelDistanceToStart(parkingActivity);
-
-            // Check for invalid hotel stay
-            bool isInvalidHotelAfter = isHotelAfterActivity(prevActivity);
-            if (isInvalidHotelAfter) {
-                driverInfo.PenaltyInfo.AddInvalidHotel();
-            }
-
-            #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
-                SaDebugger.GetCurrentStageInfo().EndShiftPart1(null, false, isInvalidHotelAfter);
-            }
-            #endif
-
-            // Process parts shared between final and non-final shifts
-            ProcessDriverEndAnyShift(shiftInfo, travelTimeAfter, travelDistanceAfter, poolCarTravelDistanceAfter, ref shiftFirstActivity, ref parkingActivity, ref prevActivity, ref beforeHotelActivity, isHotelAfterActivity, driverInfo, driver, info, instance);
-        }
-
-        static void ProcessDriverEndAnyShift(ShiftInfo shiftInfo, int travelTimeAfter, int travelDistanceAfter, int sharedCarTravelDistanceAfter, ref Activity shiftFirstActivity, ref Activity parkingActivity, ref Activity prevActivity, ref Activity beforeHotelActivity, Func<Activity, bool> isHotelAfterActivity, SaDriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
-            driverInfo.ShiftCount++;
-
-            // Get travel time before
-            (int travelTimeBefore, int travelDistanceBefore) = GetTravelInfoBefore(beforeHotelActivity, shiftFirstActivity, driver, instance);
-
-            // Get shift length and cost
-            int mainShiftLength = shiftInfo.MainShiftLength;
-            float mainShiftCost = driver.GetMainShiftCost(shiftFirstActivity, prevActivity);
-            driverInfo.WorkedTime += mainShiftLength;
-
-            // Get travel time and shift length
-            int travelTime = travelTimeBefore + travelTimeAfter;
-            int travelDistance = travelDistanceBefore + travelDistanceAfter;
-            driverInfo.TravelTime += travelTime;
-            int fullShiftLength = mainShiftLength + travelTime;
-
-            // Get shift cost
-            float travelCost = driver.GetPaidTravelCost(travelTime, travelDistance);
-            float fullShiftCost = mainShiftCost + travelCost;
-            driverInfo.Stats.RawCost += fullShiftCost;
-
-            // Get shared car costs to pick up personal car
-            int sharedCarTravelDistance = travelDistanceBefore + sharedCarTravelDistanceAfter;
-            driverInfo.Stats.Cost += sharedCarTravelDistance * SalaryConfig.SharedCarCostsPerKilometer;
-
-            // Check shift length
-            driverInfo.PenaltyInfo.AddPossibleShiftLengthViolation(mainShiftLength, fullShiftLength, shiftInfo.MaxMainShiftLength, shiftInfo.MaxFullShiftLength);
-
-            // Determine ideal shift length score
-            driverInfo.IdealShiftLengthScore += Math.Max(0, mainShiftLength - RulesConfig.IdealShiftLength);
-
-            // Update night and weekend counts
-            if (shiftInfo.IsNightShiftByCompanyRules) driverInfo.NightShiftCountByCompanyRules++;
-            if (shiftInfo.IsWeekendShiftByCompanyRules) driverInfo.WeekendShiftCountByCompanyRules++;
-
-            #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
-                SaDebugger.GetCurrentStageInfo().EndShiftPart2(shiftInfo, fullShiftLength, travelTimeBefore, travelTimeAfter);
-            }
-            #endif
         }
 
         static void ProcessDriverActivity(Activity activity, bool isOverlapViolation, bool isInvalidHotelAfter, SaDriverInfo driverInfo) {
@@ -200,36 +71,165 @@ namespace Thesis {
         }
 
 
-        /* Helpers */
+        /* End shifts */
 
-        public static (int, int) GetTravelInfoBefore(Activity activityBeforeHotel, Activity shiftFirstActivity, Driver driver, Instance instance) {
-            int travelTimeBefore, travelDistanceBefore;
-            if (activityBeforeHotel == null) {
-                // No hotel stay before
-                travelTimeBefore = driver.HomeTravelTimeToStart(shiftFirstActivity);
-                travelDistanceBefore = driver.HomeTravelDistanceToStart(shiftFirstActivity);
+        static void ProcessDriverEndShift(Activity shiftLastActivity, Activity nextShiftFirstActivity, ref Activity shiftFirstActivity, ref Activity parkingActivity, ref Activity beforeHotelActivity, Func<Activity, bool> isHotelAfterActivity, SaDriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
+            Activity afterHotelActivity = isHotelAfterActivity(shiftLastActivity) ? nextShiftFirstActivity : null;
+            (MainShiftInfo mainShiftInfo, DriverTypeMainShiftInfo driverTypeMainShiftInfo, int realMainShiftLength, int fullShiftLength, int ownCarTravelTime, int sharedCarTravelTimeAfter, int ownCarTravelTimeAfter, float fullShiftCost) = GetShiftDetails(shiftFirstActivity, shiftLastActivity, parkingActivity, beforeHotelActivity, afterHotelActivity, driver, info, instance);
+
+            // Store shift details
+            driverInfo.ShiftCount++;
+            driverInfo.WorkedTime += driverTypeMainShiftInfo.PaidMainShiftLength;
+            driverInfo.TravelTime += ownCarTravelTime;
+            driverInfo.Stats.RawCost += fullShiftCost;
+
+            // Check shift length
+            driverInfo.PenaltyInfo.AddPossibleShiftLengthViolation(fullShiftLength, mainShiftInfo);
+
+            // Determine ideal shift length score
+            driverInfo.IdealShiftLengthScore += Math.Max(0, realMainShiftLength - RulesConfig.IdealShiftLength);
+
+            // Update night and weekend counts
+            if (mainShiftInfo.IsNightShiftByCompanyRules) driverInfo.NightShiftCountByCompanyRules++;
+            if (mainShiftInfo.IsWeekendShiftByCompanyRules) driverInfo.WeekendShiftCountByCompanyRules++;
+
+            if (nextShiftFirstActivity == null) {
+                // This is the final shift of the driver path
+                // Any hotel stay here would be invalid
+                bool isInvalidHotelAfter = isHotelAfterActivity(shiftLastActivity);
+                if (isInvalidHotelAfter) {
+                    driverInfo.PenaltyInfo.AddInvalidHotel();
+                }
+
+                #if DEBUG
+                if (AppConfig.DebugCheckOperations) {
+                    SaDebugger.GetCurrentStageInfo().SetRestInfo(null, false, isInvalidHotelAfter);
+                }
+                #endif
             } else {
-                // Hotel stay before
-                travelTimeBefore = instance.ExpectedHalfTravelTimeViaHotel(activityBeforeHotel, shiftFirstActivity);
-                travelDistanceBefore = instance.HalfTravelDistanceViaHotel(activityBeforeHotel, shiftFirstActivity);
+                // This is a non-final shift of the driver path
+                ProcessRestTime(mainShiftInfo, shiftLastActivity, nextShiftFirstActivity, ref shiftFirstActivity, ref parkingActivity, ref beforeHotelActivity, afterHotelActivity != null, sharedCarTravelTimeAfter, ownCarTravelTimeAfter, driverInfo, driver, info, instance);
             }
-            return (travelTimeBefore, travelDistanceBefore);
         }
 
-        public static (int, int, int) GetTravelInfoAfter(Activity shiftLastActivity, Activity nextShiftFirstActivity, Activity parkingActivity, bool isHotelAfter, Driver driver, Instance instance) {
-            int travelTimeAfter, travelDistanceAfter, poolCarTravelDistanceAfter;
+        static void ProcessRestTime(MainShiftInfo mainShiftInfo, Activity shiftLastActivity, Activity nextShiftFirstActivity, ref Activity shiftFirstActivity, ref Activity parkingActivity, ref Activity beforeHotelActivity, bool isHotelAfter, int sharedCarTravelTimeAfter, int ownCarTravelTimeAfter, SaDriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
+            int restTimeAfter;
+            bool isInvalidHotelAfter = false; // Used for debugger
             if (isHotelAfter) {
                 // Hotel stay after
-                travelTimeAfter = instance.ExpectedHalfTravelTimeViaHotel(shiftLastActivity, nextShiftFirstActivity);
-                poolCarTravelDistanceAfter = instance.HalfTravelDistanceViaHotel(shiftLastActivity, nextShiftFirstActivity);
-                travelDistanceAfter = poolCarTravelDistanceAfter;
+                driverInfo.HotelCount++;
+                restTimeAfter = instance.RestTimeViaHotel(shiftLastActivity, nextShiftFirstActivity);
+                driverInfo.Stats.RawCost += SalaryConfig.HotelCosts;
+
+                // Check if the hotel stay is valid
+                if (!driver.IsHotelAllowed || restTimeAfter > RulesConfig.HotelMaxRestTime) {
+                    driverInfo.PenaltyInfo.AddInvalidHotel();
+                    isInvalidHotelAfter = true;
+                }
+
+                beforeHotelActivity = shiftLastActivity;
             } else {
                 // No hotel stay after
-                travelTimeAfter = instance.ExpectedCarTravelTime(shiftLastActivity, parkingActivity) + driver.HomeTravelTimeToStart(parkingActivity);
-                poolCarTravelDistanceAfter = instance.CarTravelDistance(shiftLastActivity, parkingActivity);
-                travelDistanceAfter = poolCarTravelDistanceAfter + driver.HomeTravelDistanceToStart(parkingActivity);
+                int travelTimeBetweenShiftAndNext = sharedCarTravelTimeAfter + ownCarTravelTimeAfter + driver.HomeTravelTimeToStart(nextShiftFirstActivity);
+                restTimeAfter = instance.RestTimeWithTravelTime(shiftLastActivity, nextShiftFirstActivity, travelTimeBetweenShiftAndNext);
+
+                // Update free days
+                if (restTimeAfter > RulesConfig.DoubleFreeDayMinRestTime) {
+                    driverInfo.SingleFreeDayCount++;
+                } else if (restTimeAfter > RulesConfig.SingleFreeDayMinRestTime) {
+                    driverInfo.DoubleFreeDayCount++;
+                }
+
+                // Set new parking activity
+                parkingActivity = nextShiftFirstActivity;
+                beforeHotelActivity = null;
             }
-            return (travelTimeAfter, travelDistanceAfter, poolCarTravelDistanceAfter);
+
+            // Check rest time
+            driverInfo.PenaltyInfo.AddPossibleRestTimeViolation(restTimeAfter, mainShiftInfo.MinRestTimeAfter);
+
+            // Determine ideal rest time score
+            if (restTimeAfter < RulesConfig.IdealRestTime) {
+                int idealRestTimeDeficit = RulesConfig.IdealRestTime - restTimeAfter;
+                driverInfo.IdealRestingTimeScore += idealRestTimeDeficit * idealRestTimeDeficit;
+            }
+
+            // Start new shift
+            shiftFirstActivity = nextShiftFirstActivity;
+
+            #if DEBUG
+            if (AppConfig.DebugCheckOperations) {
+                SaDebugger.GetCurrentStageInfo().SetRestInfo(restTimeAfter, isHotelAfter, isInvalidHotelAfter);
+            }
+            #endif
+        }
+
+
+        /* Helpers */
+
+        public static (MainShiftInfo, DriverTypeMainShiftInfo, int, int, int, int, int, float) GetShiftDetails(Activity shiftFirstActivity, Activity shiftLastActivity, Activity parkingActivity, Activity beforeHotelActivity, Activity afterHotelActivity, Driver driver, SaInfo info, Instance instance) {
+            (int sharedCarTravelTimeBefore, int sharedCarTravelDistanceBefore, int ownCarTravelTimeBefore, int ownCarTravelDistanceBefore) = GetTravelInfoBefore(beforeHotelActivity, shiftFirstActivity, driver, instance);
+            (int sharedCarTravelTimeAfter, int sharedCarTravelDistanceAfter, int ownCarTravelTimeAfter, int ownCarTravelDistanceAfter) = GetTravelInfoAfter(shiftLastActivity, afterHotelActivity, parkingActivity, driver, instance);
+
+            int shiftStartTime = shiftFirstActivity.StartTime - sharedCarTravelTimeBefore;
+            int realShiftEndTime = shiftLastActivity.EndTime + sharedCarTravelTimeAfter;
+            int realMainShiftLength = realShiftEndTime - shiftStartTime;
+
+            MainShiftInfo mainShiftInfo = info.Instance.MainShiftInfo(shiftStartTime, realShiftEndTime);
+            DriverTypeMainShiftInfo driverTypeMainShiftInfo = mainShiftInfo.ByDriver(driver);
+
+            // Get travel time and cost and shift length
+            int ownCarTravelTime = ownCarTravelTimeBefore + ownCarTravelTimeAfter;
+            int ownCarTravelDistance = ownCarTravelDistanceBefore + ownCarTravelDistanceAfter;
+            float ownCarTravelCost = driver.GetPaidTravelCost(ownCarTravelTime, ownCarTravelDistance);
+
+            // Get shared car costs to pick up personal car
+            int sharedCarTravelDistance = sharedCarTravelDistanceBefore + sharedCarTravelDistanceAfter;
+
+            // Get full shift length and cost
+            int fullShiftLength = mainShiftInfo.RealMainShiftLength + ownCarTravelTime;
+            float fullShiftCost = driverTypeMainShiftInfo.MainShiftCost + ownCarTravelCost + sharedCarTravelDistance * SalaryConfig.SharedCarCostsPerKilometer;
+
+            #if DEBUG
+            if (AppConfig.DebugCheckOperations) {
+                SaDebugger.GetCurrentStageInfo().SetShiftDetails(shiftFirstActivity, shiftLastActivity, afterHotelActivity, mainShiftInfo, driverTypeMainShiftInfo, fullShiftLength, sharedCarTravelTimeBefore, ownCarTravelTimeBefore, sharedCarTravelTimeAfter, ownCarTravelTimeAfter);
+            }
+            #endif
+
+            return (mainShiftInfo, driverTypeMainShiftInfo, realMainShiftLength, fullShiftLength, ownCarTravelTime, sharedCarTravelTimeAfter, ownCarTravelTimeAfter, fullShiftCost);
+        }
+
+        public static (int, int, int, int) GetTravelInfoBefore(Activity beforeHotelActivity, Activity shiftFirstActivity, Driver driver, Instance instance) {
+            int sharedCarTravelTimeBefore, sharedCarTravelDistanceBefore, ownCarTravelTimeBefore, ownCarTravelDistanceBefore;
+            if (beforeHotelActivity == null) {
+                // No hotel stay before
+                sharedCarTravelTimeBefore = sharedCarTravelDistanceBefore = 0;
+                ownCarTravelTimeBefore = driver.HomeTravelTimeToStart(shiftFirstActivity);
+                ownCarTravelDistanceBefore = driver.HomeTravelDistanceToStart(shiftFirstActivity);
+            } else {
+                // Hotel stay before
+                sharedCarTravelTimeBefore = instance.ExpectedHalfTravelTimeViaHotel(beforeHotelActivity, shiftFirstActivity);
+                sharedCarTravelDistanceBefore = instance.HalfTravelDistanceViaHotel(beforeHotelActivity, shiftFirstActivity);
+                ownCarTravelTimeBefore = ownCarTravelDistanceBefore = 0;
+            }
+            return (sharedCarTravelTimeBefore, sharedCarTravelDistanceBefore, ownCarTravelTimeBefore, ownCarTravelDistanceBefore);
+        }
+
+        public static (int, int, int, int) GetTravelInfoAfter(Activity shiftLastActivity, Activity afterHotelActivity, Activity parkingActivity, Driver driver, Instance instance) {
+            int sharedCarTravelTimeAfter, sharedCarTravelDistanceAfter, ownCarTravelTimeAfter, ownCarTravelDistanceAfter;
+            if (afterHotelActivity == null) {
+                // No hotel stay after
+                sharedCarTravelTimeAfter = instance.ExpectedCarTravelTime(shiftLastActivity, parkingActivity);
+                sharedCarTravelDistanceAfter = instance.CarTravelDistance(shiftLastActivity, parkingActivity);
+                ownCarTravelTimeAfter = driver.HomeTravelTimeToStart(parkingActivity);
+                ownCarTravelDistanceAfter = driver.HomeTravelDistanceToStart(parkingActivity);
+            } else {
+                // Hotel stay after
+                sharedCarTravelTimeAfter = instance.ExpectedHalfTravelTimeViaHotel(shiftLastActivity, afterHotelActivity);
+                sharedCarTravelDistanceAfter = instance.HalfTravelDistanceViaHotel(shiftLastActivity, afterHotelActivity);
+                ownCarTravelTimeAfter = ownCarTravelDistanceAfter = 0;
+            }
+            return (sharedCarTravelTimeAfter, sharedCarTravelDistanceAfter, ownCarTravelTimeAfter, ownCarTravelDistanceAfter);
         }
     }
 }

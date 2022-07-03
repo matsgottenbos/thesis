@@ -98,8 +98,8 @@ namespace Thesis {
                 LogInfo("Normal diff", normalDiff, true);
                 LogInfo("Checked diff", checkedDiff, true);
                 LogInfo("Old normal info", oldNormalInfo, false);
-                LogInfo("New normal info", newNormalInfo, false);
                 LogInfo("Old checked info", oldCheckedInfo, false);
+                LogInfo("New normal info", newNormalInfo, false);
                 LogInfo("New checked info", newCheckedInfo, false);
 
                 Console.ReadLine();
@@ -136,8 +136,8 @@ namespace Thesis {
                 LogInfo("Normal diff", normalDiff, true);
                 LogInfo("Checked diff", checkedDiff, true);
                 LogInfo("Old normal info", oldNormalInfo, false);
-                LogInfo("New normal info", newNormalInfo, false);
                 LogInfo("Old checked info", oldCheckedInfo, false);
+                LogInfo("New normal info", newNormalInfo, false);
                 LogInfo("New checked info", newCheckedInfo, false);
 
                 if (driver is ExternalDriver externalDriver) {
@@ -196,17 +196,24 @@ namespace Thesis {
             currentShift.Activities.Add(new DebugActivityInfo(activity, isOverlapViolationAfter, isInvalidHotelAfter));
         }
 
-        public void EndShiftPart1(int? restTimeAfter, bool isHotelAfter, bool isInvalidHotelAfter) {
+        public void SetRestInfo(int? restTimeAfter, bool isHotelAfter, bool isInvalidHotelAfter) {
             currentShift.RestTimeAfter = restTimeAfter;
             currentShift.IsHotelAfter = isHotelAfter;
             currentShift.IsInvalidHotelAfter = isInvalidHotelAfter;
         }
 
-        public void EndShiftPart2(ShiftInfo shiftInfo, int fullShiftLength, int travelTimeBefore, int travelTimeAfter) {
-            currentShift.ShiftInfo = shiftInfo;
+        public void SetShiftDetails(Activity shiftFirstActivity, Activity shiftLastActivity, Activity afterHotelActivity, MainShiftInfo mainShiftInfo, DriverTypeMainShiftInfo driverTypeMainShiftInfo, int fullShiftLength, int sharedCarTravelTimeBefore, int ownCarTravelTimeBefore, int sharedCarTravelTimeAfter, int ownCarTravelTimeAfter) {
+            currentShift.ShiftFirstActivity = shiftFirstActivity;
+            currentShift.ShiftLastActivity = shiftLastActivity;
+            currentShift.AfterHotelActivity = afterHotelActivity;
+            currentShift.MainShiftInfo = mainShiftInfo;
+            currentShift.DriverTypeMainShiftInfo = driverTypeMainShiftInfo;
             currentShift.FullShiftLength = fullShiftLength;
-            currentShift.TravelTimeBefore = travelTimeBefore;
-            currentShift.TravelTimeAfter = travelTimeAfter;
+            currentShift.SharedCarTravelTimeBefore = sharedCarTravelTimeBefore;
+            currentShift.OwnCarTravelTimeBefore = ownCarTravelTimeBefore;
+            currentShift.SharedCarTravelTimeAfter = sharedCarTravelTimeAfter;
+            currentShift.OwnCarTravelTimeAfter = ownCarTravelTimeAfter;
+
             shifts.Add(currentShift);
             currentShift = new DebugShiftInfo();
         }
@@ -229,10 +236,7 @@ namespace Thesis {
 
             // Log path info
             for (int shiftIndex = 0; shiftIndex < shifts.Count; shiftIndex++) {
-                DebugShiftInfo shiftInfo = shifts[shiftIndex];
-                Console.WriteLine("Shift {0}--{1} main length: {2}", shiftInfo.Activities[0].Activity.Index, shiftInfo.Activities[^1].Activity.Index, shiftInfo.FullShiftLength);
-                Console.WriteLine("Shift {0}--{1} full length: {2}", shiftInfo.Activities[0].Activity.Index, shiftInfo.Activities[^1].Activity.Index, shiftInfo.ShiftInfo.MainShiftLength);
-                if (shiftInfo.RestTimeAfter.HasValue) Console.WriteLine("Rest after shift {0}--{1}: {2}", shiftInfo.Activities[0].Activity.Index, shiftInfo.Activities[^1].Activity.Index, shiftInfo.RestTimeAfter);
+                shifts[shiftIndex].Log();
             }
         }
     }
@@ -257,13 +261,31 @@ namespace Thesis {
 
     class DebugShiftInfo {
         public List<DebugActivityInfo> Activities;
-        public ShiftInfo ShiftInfo;
-        public int FullShiftLength, TravelTimeBefore, TravelTimeAfter;
+        public Activity ShiftFirstActivity, ShiftLastActivity, AfterHotelActivity;
+        public MainShiftInfo MainShiftInfo;
+        public DriverTypeMainShiftInfo DriverTypeMainShiftInfo;
+        public int FullShiftLength, SharedCarTravelTimeBefore, OwnCarTravelTimeBefore, SharedCarTravelTimeAfter, OwnCarTravelTimeAfter;
         public int? RestTimeAfter;
         public bool IsHotelAfter, IsInvalidHotelAfter;
 
         public DebugShiftInfo() {
             Activities = new List<DebugActivityInfo>();
+        }
+
+        public void Log() {
+            Console.WriteLine("> Shift {0}--{1}", Activities[0].Activity.Index, Activities[^1].Activity.Index);
+            Console.WriteLine("Shift first activity: {0}", ShiftFirstActivity?.Index.ToString() ?? "-");
+            Console.WriteLine("Shift last activity: {0}", ShiftLastActivity?.Index.ToString() ?? "-");
+            Console.WriteLine("After hotel activity: {0}", AfterHotelActivity?.Index.ToString() ?? "-");
+            Console.WriteLine("Activity part length: {0}", Activities[^1].Activity.EndTime - Activities[0].Activity.StartTime);
+            Console.WriteLine("Real main length: {0}", MainShiftInfo.RealMainShiftLength);
+            Console.WriteLine("Paid main length: {0}", DriverTypeMainShiftInfo.PaidMainShiftLength);
+            Console.WriteLine("Shared car travel time before: {0}", SharedCarTravelTimeBefore);
+            Console.WriteLine("Own car travel time before: {0}", OwnCarTravelTimeBefore);
+            Console.WriteLine("Shared car travel time after: {0}", SharedCarTravelTimeAfter);
+            Console.WriteLine("Own car travel time after: {0}", OwnCarTravelTimeAfter);
+            Console.WriteLine("Full length: {0}", FullShiftLength);
+            Console.WriteLine("Rest time after: {0}", RestTimeAfter?.ToString() ?? "-");
         }
     }
 

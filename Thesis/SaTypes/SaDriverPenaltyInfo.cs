@@ -10,8 +10,8 @@ namespace Thesis {
             OverlapViolationCount++;
         }
 
-        public void AddPossibleShiftLengthViolation(int mainShiftLength, int fullShiftLength, int maxMainShiftLength, int maxFullShiftLength) {
-            int shiftLengthViolationAmount = Math.Max(0, mainShiftLength - maxMainShiftLength) + Math.Max(0, fullShiftLength - maxFullShiftLength);
+        public void AddPossibleShiftLengthViolation(int fullShiftLength, MainShiftInfo mainShiftInfo) {
+            int shiftLengthViolationAmount = mainShiftInfo.MainShiftLengthViolationAmount + Math.Max(0, fullShiftLength - mainShiftInfo.MaxFullShiftLength);
             if (shiftLengthViolationAmount > 0) {
                 ShiftLengthViolationCount++;
                 ShiftLengthViolationAmount += shiftLengthViolationAmount;

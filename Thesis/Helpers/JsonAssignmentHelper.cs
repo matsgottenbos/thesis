@@ -111,7 +111,7 @@ namespace Thesis {
             Activity shiftFirstActivity = null;
             Activity prevActivity = null;
             Activity parkingActivity = driverPath[0];
-            Activity activityBeforeHotelBeforeShift = null;
+            Activity beforeHotelActivity = null;
             float shiftRobustness = 0;
             for (int i = 0; i < driverPath.Count; i++) {
                 Activity searchActivity = driverPath[i];
@@ -128,13 +128,13 @@ namespace Thesis {
                         // Activity in new shift
                         if (info.IsHotelStayAfterActivity[prevActivity.Index]) {
                             AddHotelStayAfterToPath(prevActivity, searchActivity, shiftPathJArray, info);
-                            AddShiftToDriverShifts(shiftFirstActivity, prevActivity, parkingActivity, activityBeforeHotelBeforeShift, searchActivity, shiftRobustness, shiftPathJArray, shiftsJArray, driver, info);
-                            activityBeforeHotelBeforeShift = prevActivity;
+                            AddShiftToDriverShifts(shiftFirstActivity, prevActivity, parkingActivity, beforeHotelActivity, searchActivity, shiftRobustness, shiftPathJArray, shiftsJArray, driver, info);
+                            beforeHotelActivity = prevActivity;
                         } else {
                             AddTravelToHomeToPath(prevActivity, parkingActivity, driver, shiftPathJArray, info);
                             AddRestToPath(prevActivity, searchActivity, parkingActivity, driver, shiftPathJArray, info);
-                            AddShiftToDriverShifts(shiftFirstActivity, prevActivity, parkingActivity, activityBeforeHotelBeforeShift, null, shiftRobustness, shiftPathJArray, shiftsJArray, driver, info);
-                            activityBeforeHotelBeforeShift = null;
+                            AddShiftToDriverShifts(shiftFirstActivity, prevActivity, parkingActivity, beforeHotelActivity, null, shiftRobustness, shiftPathJArray, shiftsJArray, driver, info);
+                            beforeHotelActivity = null;
                             parkingActivity = searchActivity;
                         }
 
@@ -155,34 +155,34 @@ namespace Thesis {
                 prevActivity = searchActivity;
             }
             AddTravelToHomeToPath(prevActivity, parkingActivity, driver, shiftPathJArray, info);
-            AddShiftToDriverShifts(shiftFirstActivity, prevActivity, parkingActivity, activityBeforeHotelBeforeShift, null, shiftRobustness, shiftPathJArray, shiftsJArray, driver, info);
+            AddShiftToDriverShifts(shiftFirstActivity, prevActivity, parkingActivity, beforeHotelActivity, null, shiftRobustness, shiftPathJArray, shiftsJArray, driver, info);
 
             return shiftsJArray;
         }
 
-        static void AddShiftToDriverShifts(Activity shiftFirstActivity, Activity shiftLastActivity, Activity parkingActivity, Activity activityBeforeHotel, Activity activityAfterHotel, float shiftRobustness, JArray shiftPathJArray, JArray shiftsJArray, Driver driver, SaInfo info) {
-            ShiftInfo shiftInfo = info.Instance.ShiftInfo(shiftFirstActivity, shiftLastActivity);
+        static void AddShiftToDriverShifts(Activity shiftFirstActivity, Activity shiftLastActivity, Activity parkingActivity, Activity beforeHotelActivity, Activity afterHotelActivity, float shiftRobustness, JArray shiftPathJArray, JArray shiftsJArray, Driver driver, SaInfo info) {
+            (_, DriverTypeMainShiftInfo driverTypeMainShiftInfo, int realMainShiftLength, int fullShiftLength, _, _, _, float fullShiftCost) = RangeCostActivityProcessor.GetShiftDetails(shiftFirstActivity, shiftLastActivity, parkingActivity, beforeHotelActivity, afterHotelActivity, driver, info, info.Instance);
 
-            int administrativeMainShiftLength = shiftInfo.AdministrativeMainShiftLengthByDriverType[driver.SalarySettings.DriverTypeIndex];
-            int shiftMainStartTime = shiftFirstActivity.StartTime;
-            int administrativeMainShiftEndTime = shiftMainStartTime + administrativeMainShiftLength;
+            (int sharedCarTravelTimeBefore, int sharedCarTravelDistanceBefore, int ownCarTravelTimeBefore, int ownCarTravelDistanceBefore) = RangeCostActivityProcessor.GetTravelInfoBefore(beforeHotelActivity, shiftFirstActivity, driver, info.Instance);
+            (int sharedCarTravelTimeAfter, int sharedCarTravelDistanceAfter, int ownCarTravelTimeAfter, int ownCarTravelDistanceAfter) = RangeCostActivityProcessor.GetTravelInfoAfter(shiftLastActivity, afterHotelActivity, parkingActivity, driver, info.Instance);
 
-            float mainShiftCostRaw = driver.GetMainShiftCost(shiftFirstActivity, shiftLastActivity);
+            int mainShiftStartTime = shiftFirstActivity.StartTime - sharedCarTravelTimeBefore;
+            int realMainShiftEndTime = shiftLastActivity.EndTime + sharedCarTravelTimeAfter;
 
-            (int travelTimeBefore, int travelDistanceBefore) = RangeCostActivityProcessor.GetTravelInfoBefore(activityBeforeHotel, shiftFirstActivity, driver, info.Instance);
-            (int travelTimeAfter, int travelDistanceAfter, _) = RangeCostActivityProcessor.GetTravelInfoAfter(shiftLastActivity, activityAfterHotel, parkingActivity, activityAfterHotel != null, driver, info.Instance);
+            int sharedCarTravelDistance = sharedCarTravelDistanceBefore + sharedCarTravelDistanceAfter;
+            int ownCarTravelTime = ownCarTravelTimeBefore + ownCarTravelTimeAfter;
+            int ownCarTravelDistance = ownCarTravelDistanceBefore + ownCarTravelDistanceAfter;
 
-            int travelTime = travelTimeBefore + travelTimeAfter;
-            int travelDistance = travelDistanceBefore + travelDistanceAfter;
-            float travelCost = driver.GetPaidTravelCost(travelTime, travelDistance);
-            float hotelCost = activityAfterHotel == null ? 0 : SalaryConfig.HotelCosts;
-            float cost = mainShiftCostRaw + travelCost + hotelCost + shiftRobustness;
+            float travelCost = driver.GetPaidTravelCost(ownCarTravelTime, ownCarTravelDistance);
+            float sharedCarTravelCost = sharedCarTravelDistance * SalaryConfig.SharedCarCostsPerKilometer;
+            float hotelCost = afterHotelActivity == null ? 0 : SalaryConfig.HotelCosts;
+            float cost = fullShiftCost + hotelCost + shiftRobustness;
 
             // Salary rates breakdown
-            JArray salaryRates = new JArray();
-            List<ComputedSalaryRateBlock> computeSalaryRateBlocks = shiftInfo.ComputeSalaryRateBlocksByType[driver.SalarySettings.DriverTypeIndex];
-            for (int salaryRateIndex = 0; salaryRateIndex < computeSalaryRateBlocks.Count; salaryRateIndex++) {
-                ComputedSalaryRateBlock computeSalaryRateBlock = computeSalaryRateBlocks[salaryRateIndex];
+            JArray salaryBlocksJArray = new JArray();
+            List<ComputedSalaryRateBlock> mainShiftSalaryBlocks = driverTypeMainShiftInfo.MainShiftSalaryBlocks;
+            for (int salaryRateIndex = 0; salaryRateIndex < mainShiftSalaryBlocks.Count; salaryRateIndex++) {
+                ComputedSalaryRateBlock computeSalaryRateBlock = mainShiftSalaryBlocks[salaryRateIndex];
                 JObject salaryRateJObject = new JObject() {
                     ["rateStartTime"] = computeSalaryRateBlock.RateStartTime,
                     ["rateEndTime"] = computeSalaryRateBlock.RateEndTime,
@@ -191,29 +191,33 @@ namespace Thesis {
                     ["salaryDuration"] = computeSalaryRateBlock.SalaryDuration,
                     ["hourlySalaryRate"] = computeSalaryRateBlock.SalaryRate * MiscConfig.HourLength,
                     ["usesContinuingRate"] = computeSalaryRateBlock.UsesContinuingRate,
-                    ["shiftCostInRange"] = computeSalaryRateBlock.MainShiftCostInRate,
+                    ["shiftCostInRange"] = computeSalaryRateBlock.CostInRate,
                 };
-                salaryRates.Add(salaryRateJObject);
+                salaryBlocksJArray.Add(salaryRateJObject);
             }
 
             JObject shiftJObject = new JObject() {
                 ["activityPath"] = shiftPathJArray,
-                ["mainShiftLength"] = shiftInfo.MainShiftLength,
-                ["administrativeMainShiftLength"] = administrativeMainShiftLength,
-                ["mainStartTime"] = shiftMainStartTime,
-                ["administrativeMainEndTime"] = administrativeMainShiftEndTime,
-                ["mainCostRaw"] = mainShiftCostRaw,
-                ["travelTimeBefore"] = travelTimeBefore,
-                ["travelDistanceBefore"] = travelDistanceBefore,
-                ["travelTimeAfter"] = travelTimeAfter,
-                ["travelDistanceAfter"] = travelDistanceAfter,
-                ["travelTime"] = travelDistanceAfter,
-                ["travelDistance"] = travelDistanceAfter,
+                ["realMainShiftLength"] = realMainShiftLength,
+                ["paidMainShiftLength"] = driverTypeMainShiftInfo.PaidMainShiftLength,
+                ["mainShiftStartTime"] = mainShiftStartTime,
+                ["realMainShiftEndTime"] = realMainShiftEndTime,
+                ["fullShiftLength"] = fullShiftLength,
+                ["sharedCarTravelTimeBefore"] = sharedCarTravelTimeBefore,
+                ["sharedCarTravelDistanceBefore"] = sharedCarTravelDistanceBefore,
+                ["ownCarTravelTimeBefore"] = ownCarTravelTimeBefore,
+                ["ownCarTravelDistanceBefore"] = ownCarTravelDistanceBefore,
+                ["sharedCarTravelTimeAfter"] = sharedCarTravelTimeAfter,
+                ["sharedCarTravelDistanceAfter"] = sharedCarTravelDistanceAfter,
+                ["ownCarTravelTimeAfter"] = ownCarTravelTimeAfter,
+                ["ownCarTravelDistanceAfter"] = ownCarTravelDistanceAfter,
                 ["cost"] = cost,
+                ["mainShiftCost"] = driverTypeMainShiftInfo.MainShiftCost,
                 ["travelCost"] = travelCost,
+                ["sharedCarTravelCost"] = sharedCarTravelCost,
                 ["hotelCost"] = hotelCost,
                 ["robustness"] = shiftRobustness,
-                ["salaryRates"] = salaryRates,
+                ["salaryRates"] = salaryBlocksJArray,
             };
             shiftsJArray.Add(shiftJObject);
         }

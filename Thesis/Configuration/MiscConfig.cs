@@ -13,5 +13,6 @@ namespace Thesis {
         // Technical
         public const float FloatingPointMargin = 0.00001f;
         public const int PercentageFactor = 100;
+        public const int RoundedTimeStepSize = 15;
     }
 }

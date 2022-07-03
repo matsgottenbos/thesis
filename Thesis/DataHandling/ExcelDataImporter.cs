@@ -15,7 +15,7 @@ namespace Thesis {
             ExcelSheet activitiesSheet = new ExcelSheet("DutyActivities", testDataBook);
 
             RawActivity[] rawActivities = ParseRawActivities(activitiesSheet, DataConfig.ExcelPlanningStartDate, DataConfig.ExcelPlanningNextDate);
-            return new Instance(rand, rawActivities);
+            return new Instance(rawActivities);
         }
 
         static RawActivity[] ParseRawActivities(ExcelSheet activitiesSheet, DateTime planningStartDate, DateTime planningNextDate) {

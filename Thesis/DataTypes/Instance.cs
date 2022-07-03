@@ -14,7 +14,8 @@ namespace Thesis {
         readonly int[,] plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances;
         public readonly Activity[] Activities;
         public readonly string[] StationNames, StationCountries;
-        readonly ShiftInfo[,] shiftInfos;
+        readonly SalarySettings[] SalarySettingsByDriverType;
+        readonly MainShiftInfo[,] mainShiftInfos;
         readonly float[,] activitySuccessionRobustness;
         readonly bool[,] activitySuccession, activitiesAreSameShift;
         public readonly InternalDriver[] InternalDrivers;
@@ -22,14 +23,15 @@ namespace Thesis {
         public readonly ExternalDriver[][] ExternalDriversByType;
         public readonly Driver[] AllDrivers, DataAssignment;
 
-        public Instance(XorShiftRandom rand, RawActivity[] rawActivities) {
+        public Instance(RawActivity[] rawActivities) {
             XSSFWorkbook stationAddressesBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "stationAddresses.xlsx"));
             XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "settings.xlsx"));
 
             (StationNames, plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances) = DataMiscProcessor.GetStationNamesAndExpectedCarTravelInfo();
             StationCountries = DataMiscProcessor.GetStationCountries(stationAddressesBook, StationNames);
             (Activities, activitySuccession, activitySuccessionRobustness, activitiesAreSameShift, timeframeLength, UniqueSharedRouteCount) = DataActivityProcessor.ProcessRawActivities(stationAddressesBook, rawActivities, StationNames, expectedCarTravelTimes);
-            shiftInfos = DataShiftProcessor.GetShiftInfos(Activities, timeframeLength);
+            SalarySettingsByDriverType = DataSalaryProcessor.GetSalarySettingsByDriverType(timeframeLength);
+            mainShiftInfos = DataShiftProcessor.GetMainShiftInfos(SalarySettingsByDriverType, timeframeLength);
             InternalDrivers = DataDriverProcessor.CreateInternalDrivers(settingsBook, StationCountries);
             Dictionary<(string, bool), ExternalDriver[]> externalDriversByTypeDict;
             (ExternalDriverTypes, ExternalDriversByType, externalDriversByTypeDict) = DataDriverProcessor.CreateExternalDrivers(settingsBook, StationCountries, InternalDrivers.Length);
@@ -52,8 +54,10 @@ namespace Thesis {
 
         /* Helper methods */
 
-        public ShiftInfo ShiftInfo(Activity activity1, Activity activity2) {
-            return shiftInfos[activity1.Index, activity2.Index];
+        public MainShiftInfo MainShiftInfo(int mainShiftStartTime, int realMainShiftEndTime) {
+            int roundedStartTime = (int)Math.Round((float)mainShiftStartTime / MiscConfig.RoundedTimeStepSize);
+            int roundedEndTime = (int)Math.Round((float)realMainShiftEndTime / MiscConfig.RoundedTimeStepSize);
+            return mainShiftInfos[roundedStartTime, roundedEndTime];
         }
 
         public bool IsValidSuccession(Activity activity1, Activity activity2) {
@@ -112,7 +116,7 @@ namespace Thesis {
 
     class ComputedSalaryRateBlock {
         public int RateStartTime, RateEndTime, SalaryStartTime, SalaryEndTime, SalaryDuration;
-        public float SalaryRate, MainShiftCostInRate;
+        public float SalaryRate, CostInRate;
         public bool UsesContinuingRate;
 
         public ComputedSalaryRateBlock(int rateStartTime, int rateEndTime, int salaryStartTime, int salaryEndTime, int salaryDuration, float salaryRate, bool usesContinuingRate, float mainSshiftCostInRate) {
@@ -123,7 +127,7 @@ namespace Thesis {
             SalaryDuration = salaryDuration;
             SalaryRate = salaryRate;
             UsesContinuingRate = usesContinuingRate;
-            MainShiftCostInRate = mainSshiftCostInRate;
+            CostInRate = mainSshiftCostInRate;
         }
     }
 }

@@ -5,28 +5,43 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    class ShiftInfo {
-        public readonly int MainShiftLength, MaxMainShiftLength, MaxFullShiftLength, MinRestTimeAfter;
-        public readonly int[] AdministrativeMainShiftLengthByDriverType;
-        public readonly float[] MainShiftCostByDriverType;
-        public readonly bool IsNightShiftByLaw, IsNightShiftByCompanyRules, IsWeekendShiftByCompanyRules;
-        public readonly List<ComputedSalaryRateBlock>[] ComputeSalaryRateBlocksByType;
+    /*
+    Terminology:
+    Work shift: from first to last activity
+    Main shift: work shift + pickup / hotel travel
+    Full shift: main shift + home travel
+    */
 
-        public ShiftInfo(int mainShiftLength, int maxMainShiftLength, int maxFullShiftLength, int minRestTimeAfter, int[] administrativeMainShiftLengthByDriverType, float[] mainShiftCostByDriverType, List<ComputedSalaryRateBlock>[] computeSalaryRateBlocksByType, bool isNightShiftByLaw, bool isNightShiftByCompanyRules, bool isWeekendShiftByCompanyRules) {
-            MainShiftLength = mainShiftLength;
-            AdministrativeMainShiftLengthByDriverType = administrativeMainShiftLengthByDriverType;
-            MaxMainShiftLength = maxMainShiftLength;
+    class MainShiftInfo {
+        public readonly int RealMainShiftLength, MaxFullShiftLength, MinRestTimeAfter, MainShiftLengthViolationAmount;
+        public readonly bool IsNightShiftByLaw, IsNightShiftByCompanyRules, IsWeekendShiftByCompanyRules;
+        readonly DriverTypeMainShiftInfo[] mainShiftInfoByDriverType;
+
+        public MainShiftInfo(int realMainShiftLength, int maxFullShiftLength, int minRestTimeAfter, int mainShiftLengthViolationAmount, bool isNightShiftByLaw, bool isNightShiftByCompanyRules, bool isWeekendShiftByCompanyRules, DriverTypeMainShiftInfo[] mainShiftInfoByDriverType) {
+            RealMainShiftLength = realMainShiftLength;
             MaxFullShiftLength = maxFullShiftLength;
             MinRestTimeAfter = minRestTimeAfter;
-            MainShiftCostByDriverType = mainShiftCostByDriverType;
-            ComputeSalaryRateBlocksByType = computeSalaryRateBlocksByType;
+            MainShiftLengthViolationAmount = mainShiftLengthViolationAmount;
             IsNightShiftByLaw = isNightShiftByLaw;
             IsNightShiftByCompanyRules = isNightShiftByCompanyRules;
             IsWeekendShiftByCompanyRules = isWeekendShiftByCompanyRules;
+            this.mainShiftInfoByDriverType = mainShiftInfoByDriverType;
         }
 
-        public float GetMainShiftCost(int driverTypeIndex) {
-            return MainShiftCostByDriverType[driverTypeIndex];
+        public DriverTypeMainShiftInfo ByDriver(Driver driver) {
+            return mainShiftInfoByDriverType[driver.SalarySettings.DriverTypeIndex];
+        }
+    }
+
+    class DriverTypeMainShiftInfo {
+        public readonly int PaidMainShiftLength;
+        public readonly float MainShiftCost;
+        public readonly List<ComputedSalaryRateBlock> MainShiftSalaryBlocks;
+
+        public DriverTypeMainShiftInfo(int paidMainShiftLength, float mainShiftCost, List<ComputedSalaryRateBlock> mainShiftSalaryBlocks) {
+            PaidMainShiftLength = paidMainShiftLength;
+            MainShiftCost = mainShiftCost;
+            MainShiftSalaryBlocks = mainShiftSalaryBlocks;
         }
     }
 }

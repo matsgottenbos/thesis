@@ -89,7 +89,7 @@ namespace Thesis {
             string penaltyString = string.Format("{0,6}", "-");
             if (penalty > 0) {
                 List<string> penaltyTypes = new List<string>();
-                if (penaltyInfo.OverlapViolationCount > 0) penaltyTypes.Add("Pr" + penaltyInfo.OverlapViolationCount);
+                if (penaltyInfo.OverlapViolationCount > 0) penaltyTypes.Add("Ov" + penaltyInfo.OverlapViolationCount);
                 if (penaltyInfo.ShiftLengthViolationCount > 0) penaltyTypes.Add("Sl" + penaltyInfo.ShiftLengthViolationCount);
                 if (penaltyInfo.RestTimeViolationCount > 0) penaltyTypes.Add("Rt" + penaltyInfo.RestTimeViolationCount);
                 if (penaltyInfo.ShiftCountViolationAmount > 0) penaltyTypes.Add("Sc" + penaltyInfo.ShiftCountViolationAmount);
