@@ -1,333 +1,596 @@
 location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
-Machinext B.V.,Acht,97,143
-Machinext B.V.,"Almelo, emplacement",151,229
-Machinext B.V.,"Amersfoort, emplacement sp.12",91,128
-Machinext B.V.,"Amersfoort, remise Strukton",89,125
-Machinext B.V.,Amsterdam Centraal,83,115
-Machinext B.V.,Amsterdam Westhaven,78,112
-Machinext B.V.,Amsterdam Westhaven West,75,110
-Machinext B.V.,APMT,10,4
-Machinext B.V.,"Arnhem, goederenemplacement",105,154
-Machinext B.V.,"Bad Bentheim, empl. / staalfabriek",166,258
-Machinext B.V.,"Bad Bentheim, Hilgenstiege sp.25",165,259
-Machinext B.V.,"Beverwijk, emplacement",79,118
-Machinext B.V.,"Blerick, emplacement en werkplaats",135,202
-Machinext B.V.,"Born, emplacement",138,212
-Machinext B.V.,"Botlek, emplacement",24,28
-Machinext B.V.,Bottrop,165,254
-Machinext B.V.,"Coevorden, euroterminal",165,246
-Machinext B.V.,Deventer goed. empl.,125,187
-Machinext B.V.,"Deventer, goederenemplacement",125,187
-Machinext B.V.,"Dordrecht, dok",41,58
-Machinext B.V.,"Dortmund Obereving, emplacement",189,297
-Machinext B.V.,Duisburg Ruhrorthafen,156,238
-Machinext B.V.,"Duisburg, Hochfeld Süd Vorbahnhof",158,244
-Machinext B.V.,ECT,13,7
-Machinext B.V.,"Eindhoven, emplacement",103,154
-Machinext B.V.,"Eindhoven, emplacement Acht",98,146
-Machinext B.V.,Eltville Ost,312,480
-Machinext B.V.,"Emmerich, station",129,190
-Machinext B.V.,Euromax,18,16
-Machinext B.V.,"Europoort, emplacement",17,19
-Machinext B.V.,"Gekkengraaf, emplacement",131,198
-Machinext B.V.,Germersheim,346,544
-Machinext B.V.,Goes,77,87
-Machinext B.V.,"Hengelo, emplacement",152,230
-Machinext B.V.,"Herzogenrath, station",167,249
-Machinext B.V.,Holland Cargo Terminal,77,111
-Machinext B.V.,"Houtrakpolder, emplacement",72,108
-Machinext B.V.,"IJsselmonde, emplacement",37,47
-Machinext B.V.,"Kaldenkirchen, station",139,210
-Machinext B.V.,"Kijfhoek, emplacement",39,56
-Machinext B.V.,"Köln Eifeltor, emplacement",196,302
-Machinext B.V.,Koole Vondelingenweg,30,36
-Machinext B.V.,"Krefeld Linn, emplacement",161,240
-Machinext B.V.,"Lage Zwaluwe, emplacement",51,73
-Machinext B.V.,"Leusden, PON",86,126
-Machinext B.V.,Ludwigshafen-Oggersheim,327,512
-Machinext B.V.,"Maasvlakte, emplacement",0,0
-Machinext B.V.,Magdeburg Hbf,367,598
-Machinext B.V.,"Marl-Sinsen, emplacement",178,282
-Machinext B.V.,Matrans Rotterdam Terminal,45,43
-Machinext B.V.,"Moerdijk, emplacement",54,76
-Machinext B.V.,Moers,152,228
-Machinext B.V.,"Neuss, guterbahnhof",169,257
-Machinext B.V.,"Nijmegen, emplacement",104,146
-Machinext B.V.,NWB terminal,79,112
-Machinext B.V.,OBA,79,113
-Machinext B.V.,"Oberhausen West, emplacement",155,239
-Machinext B.V.,"Oldenzaal, emplacement",156,241
-Machinext B.V.,"Onnen, emplacement noordingang",186,289
-Machinext B.V.,"Onnen, emplacement zuidingang",183,286
-Machinext B.V.,Opladen,190,292
-Machinext B.V.,"Oss, terminal OOC",96,140
-Machinext B.V.,"Pernis, emplacement",28,34
-Machinext B.V.,Rheine,181,279
-Machinext B.V.,"Rheinhausen, emplacement",158,241
-Machinext B.V.,"Roosendaal, emplacement",65,93
-Machinext B.V.,RWG,13,5
-Machinext B.V.,"Sittard, emplacement",145,217
-Machinext B.V.,Sloehaven empl.,84,100
-Machinext B.V.,Steinweg Amsterdam,75,110
-Machinext B.V.,Stroe,99,150
-Machinext B.V.,"Tilburg, industrie",80,117
-Machinext B.V.,"Uitgeest, emplacement",84,125
-Machinext B.V.,"Valburg, emplacement CUP",95,142
-Machinext B.V.,"Venlo, emplacement",139,204
-Machinext B.V.,"Viersen, guterbahnhof",158,230
-Machinext B.V.,"Vlissingen Sloe, emplacement",84,101
-Machinext B.V.,Vopak-Sloe,84,100
-Machinext B.V.,"Waalhaven, emplacement",30,39
-Machinext B.V.,"Waalhaven, kantoor RFO",34,41
-Machinext B.V.,"Westhaven, emplacement",77,112
-Machinext B.V.,Zevenaar grens,115,174
-Machinext B.V.,"Zutphen, emplacement",129,185
-Aeterno Rail Service B.V.,Acht,97,143
-Aeterno Rail Service B.V.,"Almelo, emplacement",151,229
-Aeterno Rail Service B.V.,"Amersfoort, emplacement sp.12",91,128
-Aeterno Rail Service B.V.,"Amersfoort, remise Strukton",89,125
-Aeterno Rail Service B.V.,Amsterdam Centraal,83,115
-Aeterno Rail Service B.V.,Amsterdam Westhaven,78,112
-Aeterno Rail Service B.V.,Amsterdam Westhaven West,75,110
-Aeterno Rail Service B.V.,APMT,10,4
-Aeterno Rail Service B.V.,"Arnhem, goederenemplacement",105,154
-Aeterno Rail Service B.V.,"Bad Bentheim, empl. / staalfabriek",166,258
-Aeterno Rail Service B.V.,"Bad Bentheim, Hilgenstiege sp.25",165,259
-Aeterno Rail Service B.V.,"Beverwijk, emplacement",79,118
-Aeterno Rail Service B.V.,"Blerick, emplacement en werkplaats",135,202
-Aeterno Rail Service B.V.,"Born, emplacement",138,212
-Aeterno Rail Service B.V.,"Botlek, emplacement",24,28
-Aeterno Rail Service B.V.,Bottrop,165,254
-Aeterno Rail Service B.V.,"Coevorden, euroterminal",165,246
-Aeterno Rail Service B.V.,Deventer goed. empl.,125,187
-Aeterno Rail Service B.V.,"Deventer, goederenemplacement",125,187
-Aeterno Rail Service B.V.,"Dordrecht, dok",41,58
-Aeterno Rail Service B.V.,"Dortmund Obereving, emplacement",189,297
-Aeterno Rail Service B.V.,Duisburg Ruhrorthafen,156,238
-Aeterno Rail Service B.V.,"Duisburg, Hochfeld Süd Vorbahnhof",158,244
-Aeterno Rail Service B.V.,ECT,13,7
-Aeterno Rail Service B.V.,"Eindhoven, emplacement",103,154
-Aeterno Rail Service B.V.,"Eindhoven, emplacement Acht",98,146
-Aeterno Rail Service B.V.,Eltville Ost,312,480
-Aeterno Rail Service B.V.,"Emmerich, station",129,190
-Aeterno Rail Service B.V.,Euromax,18,16
-Aeterno Rail Service B.V.,"Europoort, emplacement",17,19
-Aeterno Rail Service B.V.,"Gekkengraaf, emplacement",131,198
-Aeterno Rail Service B.V.,Germersheim,346,544
-Aeterno Rail Service B.V.,Goes,77,87
-Aeterno Rail Service B.V.,"Hengelo, emplacement",152,230
-Aeterno Rail Service B.V.,"Herzogenrath, station",167,249
-Aeterno Rail Service B.V.,Holland Cargo Terminal,77,111
-Aeterno Rail Service B.V.,"Houtrakpolder, emplacement",72,108
-Aeterno Rail Service B.V.,"IJsselmonde, emplacement",37,47
-Aeterno Rail Service B.V.,"Kaldenkirchen, station",139,210
-Aeterno Rail Service B.V.,"Kijfhoek, emplacement",39,56
-Aeterno Rail Service B.V.,"Köln Eifeltor, emplacement",196,302
-Aeterno Rail Service B.V.,Koole Vondelingenweg,30,36
-Aeterno Rail Service B.V.,"Krefeld Linn, emplacement",161,240
-Aeterno Rail Service B.V.,"Lage Zwaluwe, emplacement",51,73
-Aeterno Rail Service B.V.,"Leusden, PON",86,126
-Aeterno Rail Service B.V.,Ludwigshafen-Oggersheim,327,512
-Aeterno Rail Service B.V.,"Maasvlakte, emplacement",0,0
-Aeterno Rail Service B.V.,Magdeburg Hbf,367,598
-Aeterno Rail Service B.V.,"Marl-Sinsen, emplacement",178,282
-Aeterno Rail Service B.V.,Matrans Rotterdam Terminal,45,43
-Aeterno Rail Service B.V.,"Moerdijk, emplacement",54,76
-Aeterno Rail Service B.V.,Moers,152,228
-Aeterno Rail Service B.V.,"Neuss, guterbahnhof",169,257
-Aeterno Rail Service B.V.,"Nijmegen, emplacement",104,146
-Aeterno Rail Service B.V.,NWB terminal,79,112
-Aeterno Rail Service B.V.,OBA,79,113
-Aeterno Rail Service B.V.,"Oberhausen West, emplacement",155,239
-Aeterno Rail Service B.V.,"Oldenzaal, emplacement",156,241
-Aeterno Rail Service B.V.,"Onnen, emplacement noordingang",186,289
-Aeterno Rail Service B.V.,"Onnen, emplacement zuidingang",183,286
-Aeterno Rail Service B.V.,Opladen,190,292
-Aeterno Rail Service B.V.,"Oss, terminal OOC",96,140
-Aeterno Rail Service B.V.,"Pernis, emplacement",28,34
-Aeterno Rail Service B.V.,Rheine,181,279
-Aeterno Rail Service B.V.,"Rheinhausen, emplacement",158,241
-Aeterno Rail Service B.V.,"Roosendaal, emplacement",65,93
-Aeterno Rail Service B.V.,RWG,13,5
-Aeterno Rail Service B.V.,"Sittard, emplacement",145,217
-Aeterno Rail Service B.V.,Sloehaven empl.,84,100
-Aeterno Rail Service B.V.,Steinweg Amsterdam,75,110
-Aeterno Rail Service B.V.,Stroe,99,150
-Aeterno Rail Service B.V.,"Tilburg, industrie",80,117
-Aeterno Rail Service B.V.,"Uitgeest, emplacement",84,125
-Aeterno Rail Service B.V.,"Valburg, emplacement CUP",95,142
-Aeterno Rail Service B.V.,"Venlo, emplacement",139,204
-Aeterno Rail Service B.V.,"Viersen, guterbahnhof",158,230
-Aeterno Rail Service B.V.,"Vlissingen Sloe, emplacement",84,101
-Aeterno Rail Service B.V.,Vopak-Sloe,84,100
-Aeterno Rail Service B.V.,"Waalhaven, emplacement",30,39
-Aeterno Rail Service B.V.,"Waalhaven, kantoor RFO",34,41
-Aeterno Rail Service B.V.,"Westhaven, emplacement",77,112
-Aeterno Rail Service B.V.,Zevenaar grens,115,174
-Aeterno Rail Service B.V.,"Zutphen, emplacement",129,185
-SpoorLutions,Acht,97,143
-SpoorLutions,"Almelo, emplacement",151,229
-SpoorLutions,"Amersfoort, emplacement sp.12",91,128
-SpoorLutions,"Amersfoort, remise Strukton",89,125
-SpoorLutions,Amsterdam Centraal,83,115
-SpoorLutions,Amsterdam Westhaven,78,112
-SpoorLutions,Amsterdam Westhaven West,75,110
-SpoorLutions,APMT,10,4
-SpoorLutions,"Arnhem, goederenemplacement",105,154
-SpoorLutions,"Bad Bentheim, empl. / staalfabriek",166,258
-SpoorLutions,"Bad Bentheim, Hilgenstiege sp.25",165,259
-SpoorLutions,"Beverwijk, emplacement",79,118
-SpoorLutions,"Blerick, emplacement en werkplaats",135,202
-SpoorLutions,"Born, emplacement",138,212
-SpoorLutions,"Botlek, emplacement",24,28
-SpoorLutions,Bottrop,165,254
-SpoorLutions,"Coevorden, euroterminal",165,246
-SpoorLutions,Deventer goed. empl.,125,187
-SpoorLutions,"Deventer, goederenemplacement",125,187
-SpoorLutions,"Dordrecht, dok",41,58
-SpoorLutions,"Dortmund Obereving, emplacement",189,297
-SpoorLutions,Duisburg Ruhrorthafen,156,238
-SpoorLutions,"Duisburg, Hochfeld Süd Vorbahnhof",158,244
-SpoorLutions,ECT,13,7
-SpoorLutions,"Eindhoven, emplacement",103,154
-SpoorLutions,"Eindhoven, emplacement Acht",98,146
-SpoorLutions,Eltville Ost,312,480
-SpoorLutions,"Emmerich, station",129,190
-SpoorLutions,Euromax,18,16
-SpoorLutions,"Europoort, emplacement",17,19
-SpoorLutions,"Gekkengraaf, emplacement",131,198
-SpoorLutions,Germersheim,346,544
-SpoorLutions,Goes,77,87
-SpoorLutions,"Hengelo, emplacement",152,230
-SpoorLutions,"Herzogenrath, station",167,249
-SpoorLutions,Holland Cargo Terminal,77,111
-SpoorLutions,"Houtrakpolder, emplacement",72,108
-SpoorLutions,"IJsselmonde, emplacement",37,47
-SpoorLutions,"Kaldenkirchen, station",139,210
-SpoorLutions,"Kijfhoek, emplacement",39,56
-SpoorLutions,"Köln Eifeltor, emplacement",196,302
-SpoorLutions,Koole Vondelingenweg,30,36
-SpoorLutions,"Krefeld Linn, emplacement",161,240
-SpoorLutions,"Lage Zwaluwe, emplacement",51,73
-SpoorLutions,"Leusden, PON",86,126
-SpoorLutions,Ludwigshafen-Oggersheim,327,512
-SpoorLutions,"Maasvlakte, emplacement",0,0
-SpoorLutions,Magdeburg Hbf,367,598
-SpoorLutions,"Marl-Sinsen, emplacement",178,282
-SpoorLutions,Matrans Rotterdam Terminal,45,43
-SpoorLutions,"Moerdijk, emplacement",54,76
-SpoorLutions,Moers,152,228
-SpoorLutions,"Neuss, guterbahnhof",169,257
-SpoorLutions,"Nijmegen, emplacement",104,146
-SpoorLutions,NWB terminal,79,112
-SpoorLutions,OBA,79,113
-SpoorLutions,"Oberhausen West, emplacement",155,239
-SpoorLutions,"Oldenzaal, emplacement",156,241
-SpoorLutions,"Onnen, emplacement noordingang",186,289
-SpoorLutions,"Onnen, emplacement zuidingang",183,286
-SpoorLutions,Opladen,190,292
-SpoorLutions,"Oss, terminal OOC",96,140
-SpoorLutions,"Pernis, emplacement",28,34
-SpoorLutions,Rheine,181,279
-SpoorLutions,"Rheinhausen, emplacement",158,241
-SpoorLutions,"Roosendaal, emplacement",65,93
-SpoorLutions,RWG,13,5
-SpoorLutions,"Sittard, emplacement",145,217
-SpoorLutions,Sloehaven empl.,84,100
-SpoorLutions,Steinweg Amsterdam,75,110
-SpoorLutions,Stroe,99,150
-SpoorLutions,"Tilburg, industrie",80,117
-SpoorLutions,"Uitgeest, emplacement",84,125
-SpoorLutions,"Valburg, emplacement CUP",95,142
-SpoorLutions,"Venlo, emplacement",139,204
-SpoorLutions,"Viersen, guterbahnhof",158,230
-SpoorLutions,"Vlissingen Sloe, emplacement",84,101
-SpoorLutions,Vopak-Sloe,84,100
-SpoorLutions,"Waalhaven, emplacement",30,39
-SpoorLutions,"Waalhaven, kantoor RFO",34,41
-SpoorLutions,"Westhaven, emplacement",77,112
-SpoorLutions,Zevenaar grens,115,174
-SpoorLutions,"Zutphen, emplacement",129,185
-Logisticle B.V,Acht,97,143
-Logisticle B.V,"Almelo, emplacement",151,229
-Logisticle B.V,"Amersfoort, emplacement sp.12",91,128
-Logisticle B.V,"Amersfoort, remise Strukton",89,125
-Logisticle B.V,Amsterdam Centraal,83,115
-Logisticle B.V,Amsterdam Westhaven,78,112
-Logisticle B.V,Amsterdam Westhaven West,75,110
-Logisticle B.V,APMT,10,4
-Logisticle B.V,"Arnhem, goederenemplacement",105,154
-Logisticle B.V,"Bad Bentheim, empl. / staalfabriek",166,258
-Logisticle B.V,"Bad Bentheim, Hilgenstiege sp.25",165,259
-Logisticle B.V,"Beverwijk, emplacement",79,118
-Logisticle B.V,"Blerick, emplacement en werkplaats",135,202
-Logisticle B.V,"Born, emplacement",138,212
-Logisticle B.V,"Botlek, emplacement",24,28
-Logisticle B.V,Bottrop,165,254
-Logisticle B.V,"Coevorden, euroterminal",165,246
-Logisticle B.V,Deventer goed. empl.,125,187
-Logisticle B.V,"Deventer, goederenemplacement",125,187
-Logisticle B.V,"Dordrecht, dok",41,58
-Logisticle B.V,"Dortmund Obereving, emplacement",189,297
-Logisticle B.V,Duisburg Ruhrorthafen,156,238
-Logisticle B.V,"Duisburg, Hochfeld Süd Vorbahnhof",158,244
-Logisticle B.V,ECT,13,7
-Logisticle B.V,"Eindhoven, emplacement",103,154
-Logisticle B.V,"Eindhoven, emplacement Acht",98,146
-Logisticle B.V,Eltville Ost,312,480
-Logisticle B.V,"Emmerich, station",129,190
-Logisticle B.V,Euromax,18,16
-Logisticle B.V,"Europoort, emplacement",17,19
-Logisticle B.V,"Gekkengraaf, emplacement",131,198
-Logisticle B.V,Germersheim,346,544
-Logisticle B.V,Goes,77,87
-Logisticle B.V,"Hengelo, emplacement",152,230
-Logisticle B.V,"Herzogenrath, station",167,249
-Logisticle B.V,Holland Cargo Terminal,77,111
-Logisticle B.V,"Houtrakpolder, emplacement",72,108
-Logisticle B.V,"IJsselmonde, emplacement",37,47
-Logisticle B.V,"Kaldenkirchen, station",139,210
-Logisticle B.V,"Kijfhoek, emplacement",39,56
-Logisticle B.V,"Köln Eifeltor, emplacement",196,302
-Logisticle B.V,Koole Vondelingenweg,30,36
-Logisticle B.V,"Krefeld Linn, emplacement",161,240
-Logisticle B.V,"Lage Zwaluwe, emplacement",51,73
-Logisticle B.V,"Leusden, PON",86,126
-Logisticle B.V,Ludwigshafen-Oggersheim,327,512
-Logisticle B.V,"Maasvlakte, emplacement",0,0
-Logisticle B.V,Magdeburg Hbf,367,598
-Logisticle B.V,"Marl-Sinsen, emplacement",178,282
-Logisticle B.V,Matrans Rotterdam Terminal,45,43
-Logisticle B.V,"Moerdijk, emplacement",54,76
-Logisticle B.V,Moers,152,228
-Logisticle B.V,"Neuss, guterbahnhof",169,257
-Logisticle B.V,"Nijmegen, emplacement",104,146
-Logisticle B.V,NWB terminal,79,112
-Logisticle B.V,OBA,79,113
-Logisticle B.V,"Oberhausen West, emplacement",155,239
-Logisticle B.V,"Oldenzaal, emplacement",156,241
-Logisticle B.V,"Onnen, emplacement noordingang",186,289
-Logisticle B.V,"Onnen, emplacement zuidingang",183,286
-Logisticle B.V,Opladen,190,292
-Logisticle B.V,"Oss, terminal OOC",96,140
-Logisticle B.V,"Pernis, emplacement",28,34
-Logisticle B.V,Rheine,181,279
-Logisticle B.V,"Rheinhausen, emplacement",158,241
-Logisticle B.V,"Roosendaal, emplacement",65,93
-Logisticle B.V,RWG,13,5
-Logisticle B.V,"Sittard, emplacement",145,217
-Logisticle B.V,Sloehaven empl.,84,100
-Logisticle B.V,Steinweg Amsterdam,75,110
-Logisticle B.V,Stroe,99,150
-Logisticle B.V,"Tilburg, industrie",80,117
-Logisticle B.V,"Uitgeest, emplacement",84,125
-Logisticle B.V,"Valburg, emplacement CUP",95,142
-Logisticle B.V,"Venlo, emplacement",139,204
-Logisticle B.V,"Viersen, guterbahnhof",158,230
-Logisticle B.V,"Vlissingen Sloe, emplacement",84,101
-Logisticle B.V,Vopak-Sloe,84,100
-Logisticle B.V,"Waalhaven, emplacement",30,39
-Logisticle B.V,"Waalhaven, kantoor RFO",34,41
-Logisticle B.V,"Westhaven, emplacement",77,112
-Logisticle B.V,Zevenaar grens,115,174
-Logisticle B.V,"Zutphen, emplacement",129,185
+Machinext national,Acht,97,143
+Machinext national,"Almelo, emplacement",151,229
+Machinext national,"Amersfoort, emplacement sp.12",91,128
+Machinext national,"Amersfoort, remise Strukton",89,125
+Machinext national,Amsterdam Centraal,83,115
+Machinext national,Amsterdam Westhaven,78,112
+Machinext national,Amsterdam Westhaven West,75,110
+Machinext national,APMT,10,4
+Machinext national,"Arnhem, goederenemplacement",105,154
+Machinext national,"Bad Bentheim, empl. / staalfabriek",166,258
+Machinext national,"Bad Bentheim, Hilgenstiege sp.25",165,259
+Machinext national,"Beverwijk, emplacement",79,118
+Machinext national,Bietigheim-Bissingen,404,648
+Machinext national,"Blerick, emplacement en werkplaats",135,202
+Machinext national,"Born, emplacement",138,212
+Machinext national,"Botlek, emplacement",24,28
+Machinext national,Bottrop,165,254
+Machinext national,"Coevorden, euroterminal",165,246
+Machinext national,Deventer goed. empl.,125,187
+Machinext national,"Deventer, goederenemplacement",125,187
+Machinext national,"Dordrecht, dok",41,58
+Machinext national,"Dortmund Obereving, emplacement",189,297
+Machinext national,Duisburg Ruhrorthafen,156,238
+Machinext national,"Duisburg, Hochfeld Süd Vorbahnhof",158,244
+Machinext national,ECT,13,7
+Machinext national,"Eindhoven, emplacement",103,154
+Machinext national,"Eindhoven, emplacement Acht",98,146
+Machinext national,Eltville Ost,312,480
+Machinext national,"Emmerich, station",129,190
+Machinext national,Euromax,18,16
+Machinext national,"Europoort, emplacement",17,19
+Machinext national,"Gekkengraaf, emplacement",131,198
+Machinext national,Germersheim,346,544
+Machinext national,Goes,77,87
+Machinext national,"Hengelo, emplacement",152,230
+Machinext national,"Herzogenrath, station",167,249
+Machinext national,Holland Cargo Terminal,77,111
+Machinext national,"Houtrakpolder, emplacement",72,108
+Machinext national,"IJsselmonde, emplacement",37,47
+Machinext national,"Kaldenkirchen, station",139,210
+Machinext national,"Kijfhoek, emplacement",39,56
+Machinext national,"Köln Eifeltor, emplacement",196,302
+Machinext national,Koole Vondelingenweg,30,36
+Machinext national,"Krefeld Linn, emplacement",161,240
+Machinext national,"Lage Zwaluwe, emplacement",51,73
+Machinext national,"Leusden, PON",86,126
+Machinext national,Ludwigshafen-Oggersheim,327,512
+Machinext national,"Maasvlakte, emplacement",0,0
+Machinext national,Magdeburg Hbf,367,598
+Machinext national,"Marl-Sinsen, emplacement",178,282
+Machinext national,Matrans Rotterdam Terminal,45,43
+Machinext national,"Moerdijk, emplacement",54,76
+Machinext national,Moers,152,228
+Machinext national,"Neuss, guterbahnhof",169,257
+Machinext national,"Nijmegen, emplacement",104,146
+Machinext national,NWB terminal,79,112
+Machinext national,OBA,79,113
+Machinext national,"Oberhausen West, emplacement",155,239
+Machinext national,"Oldenzaal, emplacement",156,241
+Machinext national,"Onnen, emplacement noordingang",186,289
+Machinext national,"Onnen, emplacement zuidingang",183,286
+Machinext national,Opladen,190,292
+Machinext national,"Oss, terminal OOC",96,140
+Machinext national,"Pernis, emplacement",28,34
+Machinext national,Rheine,181,279
+Machinext national,"Rheinhausen, emplacement",158,241
+Machinext national,"Roosendaal, emplacement",65,93
+Machinext national,RWG,13,5
+Machinext national,"Sittard, emplacement",145,217
+Machinext national,Sloehaven empl.,84,100
+Machinext national,Steinweg Amsterdam,75,110
+Machinext national,Stroe,99,150
+Machinext national,Stuttgart,418,662
+Machinext national,"Tilburg, industrie",80,117
+Machinext national,"Uitgeest, emplacement",84,125
+Machinext national,"Valburg, emplacement CUP",95,142
+Machinext national,"Venlo, emplacement",139,204
+Machinext national,"Viersen, guterbahnhof",158,230
+Machinext national,"Vlissingen Sloe, emplacement",84,101
+Machinext national,Vopak-Sloe,84,100
+Machinext national,"Waalhaven, emplacement",30,39
+Machinext national,"Waalhaven, kantoor RFO",34,41
+Machinext national,"Westhaven, emplacement",77,112
+Machinext national,Zevenaar grens,115,174
+Machinext national,"Zutphen, emplacement",129,185
+Machinext international,Acht,97,143
+Machinext international,"Almelo, emplacement",151,229
+Machinext international,"Amersfoort, emplacement sp.12",91,128
+Machinext international,"Amersfoort, remise Strukton",89,125
+Machinext international,Amsterdam Centraal,83,115
+Machinext international,Amsterdam Westhaven,78,112
+Machinext international,Amsterdam Westhaven West,75,110
+Machinext international,APMT,10,4
+Machinext international,"Arnhem, goederenemplacement",105,154
+Machinext international,"Bad Bentheim, empl. / staalfabriek",166,258
+Machinext international,"Bad Bentheim, Hilgenstiege sp.25",165,259
+Machinext international,"Beverwijk, emplacement",79,118
+Machinext international,Bietigheim-Bissingen,404,648
+Machinext international,"Blerick, emplacement en werkplaats",135,202
+Machinext international,"Born, emplacement",138,212
+Machinext international,"Botlek, emplacement",24,28
+Machinext international,Bottrop,165,254
+Machinext international,"Coevorden, euroterminal",165,246
+Machinext international,Deventer goed. empl.,125,187
+Machinext international,"Deventer, goederenemplacement",125,187
+Machinext international,"Dordrecht, dok",41,58
+Machinext international,"Dortmund Obereving, emplacement",189,297
+Machinext international,Duisburg Ruhrorthafen,156,238
+Machinext international,"Duisburg, Hochfeld Süd Vorbahnhof",158,244
+Machinext international,ECT,13,7
+Machinext international,"Eindhoven, emplacement",103,154
+Machinext international,"Eindhoven, emplacement Acht",98,146
+Machinext international,Eltville Ost,312,480
+Machinext international,"Emmerich, station",129,190
+Machinext international,Euromax,18,16
+Machinext international,"Europoort, emplacement",17,19
+Machinext international,"Gekkengraaf, emplacement",131,198
+Machinext international,Germersheim,346,544
+Machinext international,Goes,77,87
+Machinext international,"Hengelo, emplacement",152,230
+Machinext international,"Herzogenrath, station",167,249
+Machinext international,Holland Cargo Terminal,77,111
+Machinext international,"Houtrakpolder, emplacement",72,108
+Machinext international,"IJsselmonde, emplacement",37,47
+Machinext international,"Kaldenkirchen, station",139,210
+Machinext international,"Kijfhoek, emplacement",39,56
+Machinext international,"Köln Eifeltor, emplacement",196,302
+Machinext international,Koole Vondelingenweg,30,36
+Machinext international,"Krefeld Linn, emplacement",161,240
+Machinext international,"Lage Zwaluwe, emplacement",51,73
+Machinext international,"Leusden, PON",86,126
+Machinext international,Ludwigshafen-Oggersheim,327,512
+Machinext international,"Maasvlakte, emplacement",0,0
+Machinext international,Magdeburg Hbf,367,598
+Machinext international,"Marl-Sinsen, emplacement",178,282
+Machinext international,Matrans Rotterdam Terminal,45,43
+Machinext international,"Moerdijk, emplacement",54,76
+Machinext international,Moers,152,228
+Machinext international,"Neuss, guterbahnhof",169,257
+Machinext international,"Nijmegen, emplacement",104,146
+Machinext international,NWB terminal,79,112
+Machinext international,OBA,79,113
+Machinext international,"Oberhausen West, emplacement",155,239
+Machinext international,"Oldenzaal, emplacement",156,241
+Machinext international,"Onnen, emplacement noordingang",186,289
+Machinext international,"Onnen, emplacement zuidingang",183,286
+Machinext international,Opladen,190,292
+Machinext international,"Oss, terminal OOC",96,140
+Machinext international,"Pernis, emplacement",28,34
+Machinext international,Rheine,181,279
+Machinext international,"Rheinhausen, emplacement",158,241
+Machinext international,"Roosendaal, emplacement",65,93
+Machinext international,RWG,13,5
+Machinext international,"Sittard, emplacement",145,217
+Machinext international,Sloehaven empl.,84,100
+Machinext international,Steinweg Amsterdam,75,110
+Machinext international,Stroe,99,150
+Machinext international,Stuttgart,418,662
+Machinext international,"Tilburg, industrie",80,117
+Machinext international,"Uitgeest, emplacement",84,125
+Machinext international,"Valburg, emplacement CUP",95,142
+Machinext international,"Venlo, emplacement",139,204
+Machinext international,"Viersen, guterbahnhof",158,230
+Machinext international,"Vlissingen Sloe, emplacement",84,101
+Machinext international,Vopak-Sloe,84,100
+Machinext international,"Waalhaven, emplacement",30,39
+Machinext international,"Waalhaven, kantoor RFO",34,41
+Machinext international,"Westhaven, emplacement",77,112
+Machinext international,Zevenaar grens,115,174
+Machinext international,"Zutphen, emplacement",129,185
+Aeterno national,Acht,97,143
+Aeterno national,"Almelo, emplacement",151,229
+Aeterno national,"Amersfoort, emplacement sp.12",91,128
+Aeterno national,"Amersfoort, remise Strukton",89,125
+Aeterno national,Amsterdam Centraal,83,115
+Aeterno national,Amsterdam Westhaven,78,112
+Aeterno national,Amsterdam Westhaven West,75,110
+Aeterno national,APMT,10,4
+Aeterno national,"Arnhem, goederenemplacement",105,154
+Aeterno national,"Bad Bentheim, empl. / staalfabriek",166,258
+Aeterno national,"Bad Bentheim, Hilgenstiege sp.25",165,259
+Aeterno national,"Beverwijk, emplacement",79,118
+Aeterno national,Bietigheim-Bissingen,404,648
+Aeterno national,"Blerick, emplacement en werkplaats",135,202
+Aeterno national,"Born, emplacement",138,212
+Aeterno national,"Botlek, emplacement",24,28
+Aeterno national,Bottrop,165,254
+Aeterno national,"Coevorden, euroterminal",165,246
+Aeterno national,Deventer goed. empl.,125,187
+Aeterno national,"Deventer, goederenemplacement",125,187
+Aeterno national,"Dordrecht, dok",41,58
+Aeterno national,"Dortmund Obereving, emplacement",189,297
+Aeterno national,Duisburg Ruhrorthafen,156,238
+Aeterno national,"Duisburg, Hochfeld Süd Vorbahnhof",158,244
+Aeterno national,ECT,13,7
+Aeterno national,"Eindhoven, emplacement",103,154
+Aeterno national,"Eindhoven, emplacement Acht",98,146
+Aeterno national,Eltville Ost,312,480
+Aeterno national,"Emmerich, station",129,190
+Aeterno national,Euromax,18,16
+Aeterno national,"Europoort, emplacement",17,19
+Aeterno national,"Gekkengraaf, emplacement",131,198
+Aeterno national,Germersheim,346,544
+Aeterno national,Goes,77,87
+Aeterno national,"Hengelo, emplacement",152,230
+Aeterno national,"Herzogenrath, station",167,249
+Aeterno national,Holland Cargo Terminal,77,111
+Aeterno national,"Houtrakpolder, emplacement",72,108
+Aeterno national,"IJsselmonde, emplacement",37,47
+Aeterno national,"Kaldenkirchen, station",139,210
+Aeterno national,"Kijfhoek, emplacement",39,56
+Aeterno national,"Köln Eifeltor, emplacement",196,302
+Aeterno national,Koole Vondelingenweg,30,36
+Aeterno national,"Krefeld Linn, emplacement",161,240
+Aeterno national,"Lage Zwaluwe, emplacement",51,73
+Aeterno national,"Leusden, PON",86,126
+Aeterno national,Ludwigshafen-Oggersheim,327,512
+Aeterno national,"Maasvlakte, emplacement",0,0
+Aeterno national,Magdeburg Hbf,367,598
+Aeterno national,"Marl-Sinsen, emplacement",178,282
+Aeterno national,Matrans Rotterdam Terminal,45,43
+Aeterno national,"Moerdijk, emplacement",54,76
+Aeterno national,Moers,152,228
+Aeterno national,"Neuss, guterbahnhof",169,257
+Aeterno national,"Nijmegen, emplacement",104,146
+Aeterno national,NWB terminal,79,112
+Aeterno national,OBA,79,113
+Aeterno national,"Oberhausen West, emplacement",155,239
+Aeterno national,"Oldenzaal, emplacement",156,241
+Aeterno national,"Onnen, emplacement noordingang",186,289
+Aeterno national,"Onnen, emplacement zuidingang",183,286
+Aeterno national,Opladen,190,292
+Aeterno national,"Oss, terminal OOC",96,140
+Aeterno national,"Pernis, emplacement",28,34
+Aeterno national,Rheine,181,279
+Aeterno national,"Rheinhausen, emplacement",158,241
+Aeterno national,"Roosendaal, emplacement",65,93
+Aeterno national,RWG,13,5
+Aeterno national,"Sittard, emplacement",145,217
+Aeterno national,Sloehaven empl.,84,100
+Aeterno national,Steinweg Amsterdam,75,110
+Aeterno national,Stroe,99,150
+Aeterno national,Stuttgart,418,662
+Aeterno national,"Tilburg, industrie",80,117
+Aeterno national,"Uitgeest, emplacement",84,125
+Aeterno national,"Valburg, emplacement CUP",95,142
+Aeterno national,"Venlo, emplacement",139,204
+Aeterno national,"Viersen, guterbahnhof",158,230
+Aeterno national,"Vlissingen Sloe, emplacement",84,101
+Aeterno national,Vopak-Sloe,84,100
+Aeterno national,"Waalhaven, emplacement",30,39
+Aeterno national,"Waalhaven, kantoor RFO",34,41
+Aeterno national,"Westhaven, emplacement",77,112
+Aeterno national,Zevenaar grens,115,174
+Aeterno national,"Zutphen, emplacement",129,185
+Aeterno international,Acht,97,143
+Aeterno international,"Almelo, emplacement",151,229
+Aeterno international,"Amersfoort, emplacement sp.12",91,128
+Aeterno international,"Amersfoort, remise Strukton",89,125
+Aeterno international,Amsterdam Centraal,83,115
+Aeterno international,Amsterdam Westhaven,78,112
+Aeterno international,Amsterdam Westhaven West,75,110
+Aeterno international,APMT,10,4
+Aeterno international,"Arnhem, goederenemplacement",105,154
+Aeterno international,"Bad Bentheim, empl. / staalfabriek",166,258
+Aeterno international,"Bad Bentheim, Hilgenstiege sp.25",165,259
+Aeterno international,"Beverwijk, emplacement",79,118
+Aeterno international,Bietigheim-Bissingen,404,648
+Aeterno international,"Blerick, emplacement en werkplaats",135,202
+Aeterno international,"Born, emplacement",138,212
+Aeterno international,"Botlek, emplacement",24,28
+Aeterno international,Bottrop,165,254
+Aeterno international,"Coevorden, euroterminal",165,246
+Aeterno international,Deventer goed. empl.,125,187
+Aeterno international,"Deventer, goederenemplacement",125,187
+Aeterno international,"Dordrecht, dok",41,58
+Aeterno international,"Dortmund Obereving, emplacement",189,297
+Aeterno international,Duisburg Ruhrorthafen,156,238
+Aeterno international,"Duisburg, Hochfeld Süd Vorbahnhof",158,244
+Aeterno international,ECT,13,7
+Aeterno international,"Eindhoven, emplacement",103,154
+Aeterno international,"Eindhoven, emplacement Acht",98,146
+Aeterno international,Eltville Ost,312,480
+Aeterno international,"Emmerich, station",129,190
+Aeterno international,Euromax,18,16
+Aeterno international,"Europoort, emplacement",17,19
+Aeterno international,"Gekkengraaf, emplacement",131,198
+Aeterno international,Germersheim,346,544
+Aeterno international,Goes,77,87
+Aeterno international,"Hengelo, emplacement",152,230
+Aeterno international,"Herzogenrath, station",167,249
+Aeterno international,Holland Cargo Terminal,77,111
+Aeterno international,"Houtrakpolder, emplacement",72,108
+Aeterno international,"IJsselmonde, emplacement",37,47
+Aeterno international,"Kaldenkirchen, station",139,210
+Aeterno international,"Kijfhoek, emplacement",39,56
+Aeterno international,"Köln Eifeltor, emplacement",196,302
+Aeterno international,Koole Vondelingenweg,30,36
+Aeterno international,"Krefeld Linn, emplacement",161,240
+Aeterno international,"Lage Zwaluwe, emplacement",51,73
+Aeterno international,"Leusden, PON",86,126
+Aeterno international,Ludwigshafen-Oggersheim,327,512
+Aeterno international,"Maasvlakte, emplacement",0,0
+Aeterno international,Magdeburg Hbf,367,598
+Aeterno international,"Marl-Sinsen, emplacement",178,282
+Aeterno international,Matrans Rotterdam Terminal,45,43
+Aeterno international,"Moerdijk, emplacement",54,76
+Aeterno international,Moers,152,228
+Aeterno international,"Neuss, guterbahnhof",169,257
+Aeterno international,"Nijmegen, emplacement",104,146
+Aeterno international,NWB terminal,79,112
+Aeterno international,OBA,79,113
+Aeterno international,"Oberhausen West, emplacement",155,239
+Aeterno international,"Oldenzaal, emplacement",156,241
+Aeterno international,"Onnen, emplacement noordingang",186,289
+Aeterno international,"Onnen, emplacement zuidingang",183,286
+Aeterno international,Opladen,190,292
+Aeterno international,"Oss, terminal OOC",96,140
+Aeterno international,"Pernis, emplacement",28,34
+Aeterno international,Rheine,181,279
+Aeterno international,"Rheinhausen, emplacement",158,241
+Aeterno international,"Roosendaal, emplacement",65,93
+Aeterno international,RWG,13,5
+Aeterno international,"Sittard, emplacement",145,217
+Aeterno international,Sloehaven empl.,84,100
+Aeterno international,Steinweg Amsterdam,75,110
+Aeterno international,Stroe,99,150
+Aeterno international,Stuttgart,418,662
+Aeterno international,"Tilburg, industrie",80,117
+Aeterno international,"Uitgeest, emplacement",84,125
+Aeterno international,"Valburg, emplacement CUP",95,142
+Aeterno international,"Venlo, emplacement",139,204
+Aeterno international,"Viersen, guterbahnhof",158,230
+Aeterno international,"Vlissingen Sloe, emplacement",84,101
+Aeterno international,Vopak-Sloe,84,100
+Aeterno international,"Waalhaven, emplacement",30,39
+Aeterno international,"Waalhaven, kantoor RFO",34,41
+Aeterno international,"Westhaven, emplacement",77,112
+Aeterno international,Zevenaar grens,115,174
+Aeterno international,"Zutphen, emplacement",129,185
+Spoorlutions national,Acht,97,143
+Spoorlutions national,"Almelo, emplacement",151,229
+Spoorlutions national,"Amersfoort, emplacement sp.12",91,128
+Spoorlutions national,"Amersfoort, remise Strukton",89,125
+Spoorlutions national,Amsterdam Centraal,83,115
+Spoorlutions national,Amsterdam Westhaven,78,112
+Spoorlutions national,Amsterdam Westhaven West,75,110
+Spoorlutions national,APMT,10,4
+Spoorlutions national,"Arnhem, goederenemplacement",105,154
+Spoorlutions national,"Bad Bentheim, empl. / staalfabriek",166,258
+Spoorlutions national,"Bad Bentheim, Hilgenstiege sp.25",165,259
+Spoorlutions national,"Beverwijk, emplacement",79,118
+Spoorlutions national,Bietigheim-Bissingen,404,648
+Spoorlutions national,"Blerick, emplacement en werkplaats",135,202
+Spoorlutions national,"Born, emplacement",138,212
+Spoorlutions national,"Botlek, emplacement",24,28
+Spoorlutions national,Bottrop,165,254
+Spoorlutions national,"Coevorden, euroterminal",165,246
+Spoorlutions national,Deventer goed. empl.,125,187
+Spoorlutions national,"Deventer, goederenemplacement",125,187
+Spoorlutions national,"Dordrecht, dok",41,58
+Spoorlutions national,"Dortmund Obereving, emplacement",189,297
+Spoorlutions national,Duisburg Ruhrorthafen,156,238
+Spoorlutions national,"Duisburg, Hochfeld Süd Vorbahnhof",158,244
+Spoorlutions national,ECT,13,7
+Spoorlutions national,"Eindhoven, emplacement",103,154
+Spoorlutions national,"Eindhoven, emplacement Acht",98,146
+Spoorlutions national,Eltville Ost,312,480
+Spoorlutions national,"Emmerich, station",129,190
+Spoorlutions national,Euromax,18,16
+Spoorlutions national,"Europoort, emplacement",17,19
+Spoorlutions national,"Gekkengraaf, emplacement",131,198
+Spoorlutions national,Germersheim,346,544
+Spoorlutions national,Goes,77,87
+Spoorlutions national,"Hengelo, emplacement",152,230
+Spoorlutions national,"Herzogenrath, station",167,249
+Spoorlutions national,Holland Cargo Terminal,77,111
+Spoorlutions national,"Houtrakpolder, emplacement",72,108
+Spoorlutions national,"IJsselmonde, emplacement",37,47
+Spoorlutions national,"Kaldenkirchen, station",139,210
+Spoorlutions national,"Kijfhoek, emplacement",39,56
+Spoorlutions national,"Köln Eifeltor, emplacement",196,302
+Spoorlutions national,Koole Vondelingenweg,30,36
+Spoorlutions national,"Krefeld Linn, emplacement",161,240
+Spoorlutions national,"Lage Zwaluwe, emplacement",51,73
+Spoorlutions national,"Leusden, PON",86,126
+Spoorlutions national,Ludwigshafen-Oggersheim,327,512
+Spoorlutions national,"Maasvlakte, emplacement",0,0
+Spoorlutions national,Magdeburg Hbf,367,598
+Spoorlutions national,"Marl-Sinsen, emplacement",178,282
+Spoorlutions national,Matrans Rotterdam Terminal,45,43
+Spoorlutions national,"Moerdijk, emplacement",54,76
+Spoorlutions national,Moers,152,228
+Spoorlutions national,"Neuss, guterbahnhof",169,257
+Spoorlutions national,"Nijmegen, emplacement",104,146
+Spoorlutions national,NWB terminal,79,112
+Spoorlutions national,OBA,79,113
+Spoorlutions national,"Oberhausen West, emplacement",155,239
+Spoorlutions national,"Oldenzaal, emplacement",156,241
+Spoorlutions national,"Onnen, emplacement noordingang",186,289
+Spoorlutions national,"Onnen, emplacement zuidingang",183,286
+Spoorlutions national,Opladen,190,292
+Spoorlutions national,"Oss, terminal OOC",96,140
+Spoorlutions national,"Pernis, emplacement",28,34
+Spoorlutions national,Rheine,181,279
+Spoorlutions national,"Rheinhausen, emplacement",158,241
+Spoorlutions national,"Roosendaal, emplacement",65,93
+Spoorlutions national,RWG,13,5
+Spoorlutions national,"Sittard, emplacement",145,217
+Spoorlutions national,Sloehaven empl.,84,100
+Spoorlutions national,Steinweg Amsterdam,75,110
+Spoorlutions national,Stroe,99,150
+Spoorlutions national,Stuttgart,418,662
+Spoorlutions national,"Tilburg, industrie",80,117
+Spoorlutions national,"Uitgeest, emplacement",84,125
+Spoorlutions national,"Valburg, emplacement CUP",95,142
+Spoorlutions national,"Venlo, emplacement",139,204
+Spoorlutions national,"Viersen, guterbahnhof",158,230
+Spoorlutions national,"Vlissingen Sloe, emplacement",84,101
+Spoorlutions national,Vopak-Sloe,84,100
+Spoorlutions national,"Waalhaven, emplacement",30,39
+Spoorlutions national,"Waalhaven, kantoor RFO",34,41
+Spoorlutions national,"Westhaven, emplacement",77,112
+Spoorlutions national,Zevenaar grens,115,174
+Spoorlutions national,"Zutphen, emplacement",129,185
+Logisticle national,Acht,97,143
+Logisticle national,"Almelo, emplacement",151,229
+Logisticle national,"Amersfoort, emplacement sp.12",91,128
+Logisticle national,"Amersfoort, remise Strukton",89,125
+Logisticle national,Amsterdam Centraal,83,115
+Logisticle national,Amsterdam Westhaven,78,112
+Logisticle national,Amsterdam Westhaven West,75,110
+Logisticle national,APMT,10,4
+Logisticle national,"Arnhem, goederenemplacement",105,154
+Logisticle national,"Bad Bentheim, empl. / staalfabriek",166,258
+Logisticle national,"Bad Bentheim, Hilgenstiege sp.25",165,259
+Logisticle national,"Beverwijk, emplacement",79,118
+Logisticle national,Bietigheim-Bissingen,404,648
+Logisticle national,"Blerick, emplacement en werkplaats",135,202
+Logisticle national,"Born, emplacement",138,212
+Logisticle national,"Botlek, emplacement",24,28
+Logisticle national,Bottrop,165,254
+Logisticle national,"Coevorden, euroterminal",165,246
+Logisticle national,Deventer goed. empl.,125,187
+Logisticle national,"Deventer, goederenemplacement",125,187
+Logisticle national,"Dordrecht, dok",41,58
+Logisticle national,"Dortmund Obereving, emplacement",189,297
+Logisticle national,Duisburg Ruhrorthafen,156,238
+Logisticle national,"Duisburg, Hochfeld Süd Vorbahnhof",158,244
+Logisticle national,ECT,13,7
+Logisticle national,"Eindhoven, emplacement",103,154
+Logisticle national,"Eindhoven, emplacement Acht",98,146
+Logisticle national,Eltville Ost,312,480
+Logisticle national,"Emmerich, station",129,190
+Logisticle national,Euromax,18,16
+Logisticle national,"Europoort, emplacement",17,19
+Logisticle national,"Gekkengraaf, emplacement",131,198
+Logisticle national,Germersheim,346,544
+Logisticle national,Goes,77,87
+Logisticle national,"Hengelo, emplacement",152,230
+Logisticle national,"Herzogenrath, station",167,249
+Logisticle national,Holland Cargo Terminal,77,111
+Logisticle national,"Houtrakpolder, emplacement",72,108
+Logisticle national,"IJsselmonde, emplacement",37,47
+Logisticle national,"Kaldenkirchen, station",139,210
+Logisticle national,"Kijfhoek, emplacement",39,56
+Logisticle national,"Köln Eifeltor, emplacement",196,302
+Logisticle national,Koole Vondelingenweg,30,36
+Logisticle national,"Krefeld Linn, emplacement",161,240
+Logisticle national,"Lage Zwaluwe, emplacement",51,73
+Logisticle national,"Leusden, PON",86,126
+Logisticle national,Ludwigshafen-Oggersheim,327,512
+Logisticle national,"Maasvlakte, emplacement",0,0
+Logisticle national,Magdeburg Hbf,367,598
+Logisticle national,"Marl-Sinsen, emplacement",178,282
+Logisticle national,Matrans Rotterdam Terminal,45,43
+Logisticle national,"Moerdijk, emplacement",54,76
+Logisticle national,Moers,152,228
+Logisticle national,"Neuss, guterbahnhof",169,257
+Logisticle national,"Nijmegen, emplacement",104,146
+Logisticle national,NWB terminal,79,112
+Logisticle national,OBA,79,113
+Logisticle national,"Oberhausen West, emplacement",155,239
+Logisticle national,"Oldenzaal, emplacement",156,241
+Logisticle national,"Onnen, emplacement noordingang",186,289
+Logisticle national,"Onnen, emplacement zuidingang",183,286
+Logisticle national,Opladen,190,292
+Logisticle national,"Oss, terminal OOC",96,140
+Logisticle national,"Pernis, emplacement",28,34
+Logisticle national,Rheine,181,279
+Logisticle national,"Rheinhausen, emplacement",158,241
+Logisticle national,"Roosendaal, emplacement",65,93
+Logisticle national,RWG,13,5
+Logisticle national,"Sittard, emplacement",145,217
+Logisticle national,Sloehaven empl.,84,100
+Logisticle national,Steinweg Amsterdam,75,110
+Logisticle national,Stroe,99,150
+Logisticle national,Stuttgart,418,662
+Logisticle national,"Tilburg, industrie",80,117
+Logisticle national,"Uitgeest, emplacement",84,125
+Logisticle national,"Valburg, emplacement CUP",95,142
+Logisticle national,"Venlo, emplacement",139,204
+Logisticle national,"Viersen, guterbahnhof",158,230
+Logisticle national,"Vlissingen Sloe, emplacement",84,101
+Logisticle national,Vopak-Sloe,84,100
+Logisticle national,"Waalhaven, emplacement",30,39
+Logisticle national,"Waalhaven, kantoor RFO",34,41
+Logisticle national,"Westhaven, emplacement",77,112
+Logisticle national,Zevenaar grens,115,174
+Logisticle national,"Zutphen, emplacement",129,185
+Logisticle international,Acht,97,143
+Logisticle international,"Almelo, emplacement",151,229
+Logisticle international,"Amersfoort, emplacement sp.12",91,128
+Logisticle international,"Amersfoort, remise Strukton",89,125
+Logisticle international,Amsterdam Centraal,83,115
+Logisticle international,Amsterdam Westhaven,78,112
+Logisticle international,Amsterdam Westhaven West,75,110
+Logisticle international,APMT,10,4
+Logisticle international,"Arnhem, goederenemplacement",105,154
+Logisticle international,"Bad Bentheim, empl. / staalfabriek",166,258
+Logisticle international,"Bad Bentheim, Hilgenstiege sp.25",165,259
+Logisticle international,"Beverwijk, emplacement",79,118
+Logisticle international,Bietigheim-Bissingen,404,648
+Logisticle international,"Blerick, emplacement en werkplaats",135,202
+Logisticle international,"Born, emplacement",138,212
+Logisticle international,"Botlek, emplacement",24,28
+Logisticle international,Bottrop,165,254
+Logisticle international,"Coevorden, euroterminal",165,246
+Logisticle international,Deventer goed. empl.,125,187
+Logisticle international,"Deventer, goederenemplacement",125,187
+Logisticle international,"Dordrecht, dok",41,58
+Logisticle international,"Dortmund Obereving, emplacement",189,297
+Logisticle international,Duisburg Ruhrorthafen,156,238
+Logisticle international,"Duisburg, Hochfeld Süd Vorbahnhof",158,244
+Logisticle international,ECT,13,7
+Logisticle international,"Eindhoven, emplacement",103,154
+Logisticle international,"Eindhoven, emplacement Acht",98,146
+Logisticle international,Eltville Ost,312,480
+Logisticle international,"Emmerich, station",129,190
+Logisticle international,Euromax,18,16
+Logisticle international,"Europoort, emplacement",17,19
+Logisticle international,"Gekkengraaf, emplacement",131,198
+Logisticle international,Germersheim,346,544
+Logisticle international,Goes,77,87
+Logisticle international,"Hengelo, emplacement",152,230
+Logisticle international,"Herzogenrath, station",167,249
+Logisticle international,Holland Cargo Terminal,77,111
+Logisticle international,"Houtrakpolder, emplacement",72,108
+Logisticle international,"IJsselmonde, emplacement",37,47
+Logisticle international,"Kaldenkirchen, station",139,210
+Logisticle international,"Kijfhoek, emplacement",39,56
+Logisticle international,"Köln Eifeltor, emplacement",196,302
+Logisticle international,Koole Vondelingenweg,30,36
+Logisticle international,"Krefeld Linn, emplacement",161,240
+Logisticle international,"Lage Zwaluwe, emplacement",51,73
+Logisticle international,"Leusden, PON",86,126
+Logisticle international,Ludwigshafen-Oggersheim,327,512
+Logisticle international,"Maasvlakte, emplacement",0,0
+Logisticle international,Magdeburg Hbf,367,598
+Logisticle international,"Marl-Sinsen, emplacement",178,282
+Logisticle international,Matrans Rotterdam Terminal,45,43
+Logisticle international,"Moerdijk, emplacement",54,76
+Logisticle international,Moers,152,228
+Logisticle international,"Neuss, guterbahnhof",169,257
+Logisticle international,"Nijmegen, emplacement",104,146
+Logisticle international,NWB terminal,79,112
+Logisticle international,OBA,79,113
+Logisticle international,"Oberhausen West, emplacement",155,239
+Logisticle international,"Oldenzaal, emplacement",156,241
+Logisticle international,"Onnen, emplacement noordingang",186,289
+Logisticle international,"Onnen, emplacement zuidingang",183,286
+Logisticle international,Opladen,190,292
+Logisticle international,"Oss, terminal OOC",96,140
+Logisticle international,"Pernis, emplacement",28,34
+Logisticle international,Rheine,181,279
+Logisticle international,"Rheinhausen, emplacement",158,241
+Logisticle international,"Roosendaal, emplacement",65,93
+Logisticle international,RWG,13,5
+Logisticle international,"Sittard, emplacement",145,217
+Logisticle international,Sloehaven empl.,84,100
+Logisticle international,Steinweg Amsterdam,75,110
+Logisticle international,Stroe,99,150
+Logisticle international,Stuttgart,418,662
+Logisticle international,"Tilburg, industrie",80,117
+Logisticle international,"Uitgeest, emplacement",84,125
+Logisticle international,"Valburg, emplacement CUP",95,142
+Logisticle international,"Venlo, emplacement",139,204
+Logisticle international,"Viersen, guterbahnhof",158,230
+Logisticle international,"Vlissingen Sloe, emplacement",84,101
+Logisticle international,Vopak-Sloe,84,100
+Logisticle international,"Waalhaven, emplacement",30,39
+Logisticle international,"Waalhaven, kantoor RFO",34,41
+Logisticle international,"Westhaven, emplacement",77,112
+Logisticle international,Zevenaar grens,115,174
+Logisticle international,"Zutphen, emplacement",129,185

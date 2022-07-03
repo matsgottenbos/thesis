@@ -49,16 +49,15 @@ namespace Thesis {
                 DateTime? endTimeRaw = activitiesSheet.GetDateValue(activityRow, "PlannedEnd");
                 if (endTimeRaw == null) return; // Skip row if required values are empty
                 int endTime = (int)Math.Round((endTimeRaw - planningStartDate).Value.TotalMinutes);
-                int duration = endTime - startTime;
 
                 // Temp: skip activities longer than max shift length
-                if (duration > RulesConfig.NormalMaxMainShiftLength) return;
+                if (endTime - startTime > RulesConfig.NormalMaxMainShiftLength) return;
 
                 // Get company and employee assigned in data
                 string assignedCompanyName = activitiesSheet.GetStringValue(activityRow, "EmployeeWorksFor");
                 string assignedEmployeeName = activitiesSheet.GetStringValue(activityRow, "EmployeeName");
 
-                rawActivities.Add(new RawActivity(dutyName, activityName, dutyId, projectName, trainNumber, startStationDataName, endStationDataName, startStationCountry, endStationCountry, startTime, endTime, duration, assignedCompanyName, assignedEmployeeName));
+                rawActivities.Add(new RawActivity(dutyName, activityName, dutyId, projectName, trainNumber, startStationDataName, endStationDataName, startStationCountry, endStationCountry, startTime, endTime, assignedCompanyName, assignedEmployeeName));
             });
 
             if (rawActivities.Count == 0) {

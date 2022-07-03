@@ -81,7 +81,7 @@ namespace Thesis {
             rangeDriverInfo.Stats.Penalty = rangeDriverInfo.PenaltyInfo.GetPenalty();
 
             // Driver satisfaction
-            rangeDriverInfo.Stats.DriverSatisfaction = driver.GetSatisfaction(fullDriverInfo, info);
+            rangeDriverInfo.Stats.DriverSatisfaction = driver.GetSatisfaction(fullDriverInfo);
 
             // Cost
             rangeDriverInfo.Stats.Cost = rangeDriverInfo.Stats.RawCost + rangeDriverInfo.Stats.Robustness + rangeDriverInfo.Stats.Penalty;

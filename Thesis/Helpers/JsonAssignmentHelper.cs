@@ -61,6 +61,7 @@ namespace Thesis {
             };
             if (driver is InternalDriver internalDriver) {
                 driverJObject["contractTime"] = internalDriver.ContractTime;
+                driverJObject["isOptional"] = internalDriver.IsOptional;
             }
             return driverJObject;
         }
@@ -223,17 +224,29 @@ namespace Thesis {
         }
 
         static void AddActivityToPath(Activity activity, JArray driverPathJArray, SaInfo info) {
+            if (activity.OriginalRawActivities == null) {
+                // This is an original activity, add it
+                AddRawActivityToPath(activity.Index, activity, driverPathJArray, info);
+            } else {
+                // This is a combined activity, add each original activity
+                for (int i = 0; i < activity.OriginalRawActivities.Length; i++) {
+                    AddRawActivityToPath(activity.Index, activity.OriginalRawActivities[i], driverPathJArray, info);
+                }
+            }
+        }
+
+        static void AddRawActivityToPath(int activityIndex, RawActivity rawActivity, JArray driverPathJArray, SaInfo info) {
             JObject activityPathItem = new JObject {
                 ["type"] = "activity",
-                ["activityIndex"] = activity.Index,
-                ["startTime"] = activity.StartTime,
-                ["endTime"] = activity.EndTime,
-                ["dutyName"] = activity.DutyName,
-                ["activityName"] = activity.ActivityName,
-                ["projectName"] = activity.ProjectName,
-                ["trainNumber"] = activity.TrainNumber,
-                ["startStationName"] = info.Instance.StationNames[activity.StartStationAddressIndex],
-                ["endStationName"] = info.Instance.StationNames[activity.EndStationAddressIndex],
+                ["activityIndex"] = activityIndex,
+                ["startTime"] = rawActivity.StartTime,
+                ["endTime"] = rawActivity.EndTime,
+                ["dutyName"] = rawActivity.DutyName,
+                ["activityName"] = rawActivity.ActivityName,
+                ["projectName"] = rawActivity.ProjectName,
+                ["trainNumber"] = rawActivity.TrainNumber,
+                ["startStationName"] = rawActivity.StartStationName,
+                ["endStationName"] = rawActivity.EndStationName,
             };
             driverPathJArray.Add(activityPathItem);
         }
@@ -245,8 +258,8 @@ namespace Thesis {
                     ["type"] = "travelBetween",
                     ["startTime"] = activity1.EndTime,
                     ["endTime"] = activity1.EndTime + carTravelTime,
-                    ["startStationName"] = info.Instance.StationNames[activity1.EndStationAddressIndex],
-                    ["endStationName"] = info.Instance.StationNames[activity2.StartStationAddressIndex],
+                    ["startStationName"] = activity1.EndStationName,
+                    ["endStationName"] = activity2.StartStationName,
                 };
                 driverPathJArray.Add(travelBetweenPathItem);
             }
@@ -285,8 +298,8 @@ namespace Thesis {
                 ["type"] = "travelToCar",
                 ["startTime"] = activityBeforeHome.EndTime,
                 ["endTime"] = activityBeforeHome.EndTime + travelTimeToCar,
-                ["startStationName"] = info.Instance.StationNames[activityBeforeHome.EndStationAddressIndex],
-                ["endStationName"] = info.Instance.StationNames[parkingActivity.StartStationAddressIndex],
+                ["startStationName"] = activityBeforeHome.EndStationName,
+                ["endStationName"] = parkingActivity.StartStationName,
             };
             driverPathJArray.Add(travelToCarPathItem);
 
@@ -294,7 +307,7 @@ namespace Thesis {
                 ["type"] = "travelToHome",
                 ["startTime"] = activityBeforeHome.EndTime + travelTimeToCar,
                 ["endTime"] = activityBeforeHome.EndTime + travelTimeToCar + travelTimeFromCarToHome,
-                ["startStationName"] = info.Instance.StationNames[parkingActivity.StartStationAddressIndex],
+                ["startStationName"] = parkingActivity.StartStationName,
             };
             driverPathJArray.Add(travelToHomePathItem);
         }
@@ -306,7 +319,7 @@ namespace Thesis {
                 ["type"] = "travelFromHome",
                 ["startTime"] = activityAfterHome.StartTime - travelTimeBeforeShift,
                 ["endTime"] = activityAfterHome.StartTime,
-                ["endStationName"] = info.Instance.StationNames[activityAfterHome.StartStationAddressIndex],
+                ["endStationName"] = activityAfterHome.StartStationName,
             };
             driverPathJArray.Add(travelBeforePathItem);
         }
@@ -318,7 +331,7 @@ namespace Thesis {
                 ["type"] = "travelToHotel",
                 ["startTime"] = activityBeforeHotel.EndTime,
                 ["endTime"] = activityBeforeHotel.EndTime + halfTravelTimeViaHotel,
-                ["startStationName"] = info.Instance.StationNames[activityBeforeHotel.EndStationAddressIndex],
+                ["startStationName"] = activityBeforeHotel.EndStationName,
             };
             driverPathJArray.Add(travelBeforeHotelPathItem);
 
@@ -336,7 +349,7 @@ namespace Thesis {
                 ["type"] = "travelFromHotel",
                 ["startTime"] = activityAfterHotel.StartTime - halfTravelTimeViaHotel,
                 ["endTime"] = activityAfterHotel.StartTime,
-                ["endStationName"] = info.Instance.StationNames[activityAfterHotel.StartStationAddressIndex],
+                ["endStationName"] = activityAfterHotel.StartStationName,
             };
             driverPathJArray.Add(travelAfterHotelPathItem);
         }

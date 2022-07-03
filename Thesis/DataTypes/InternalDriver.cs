@@ -3,14 +3,18 @@
 namespace Thesis {
     class InternalDriver : Driver {
         public readonly int InternalIndex, ContractTime;
+        public readonly AbstractSatisfactionCriterion<float> SatCriterionContractTimeAccuracy;
         readonly string InternalDriverName;
+        public readonly bool IsOptional;
         readonly InternalSalarySettings internalSalarySettings;
 
-        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, bool isInternational, int[] homeTravelTimes, int[] homeTravelDistances, bool[,] trackProficiencies, int contractTime, InternalSalarySettings internalSalarySettings) : base(allDriversIndex, isInternational, true, homeTravelTimes, homeTravelDistances, trackProficiencies, internalSalarySettings) {
+        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, bool isInternational, bool isOptional, int[] homeTravelTimes, int[] homeTravelDistances, bool[,] trackProficiencies, int contractTime, InternalSalarySettings internalSalarySettings) : base(allDriversIndex, isInternational, true, homeTravelTimes, homeTravelDistances, trackProficiencies, internalSalarySettings) {
             InternalIndex = internalIndex;
             InternalDriverName = internalDriverName;
+            IsOptional = isOptional;
             ContractTime = contractTime;
             this.internalSalarySettings = internalSalarySettings;
+            SatCriterionContractTimeAccuracy = isOptional ? RulesConfig.SatCriterionContractTimeAccuracyOptionalDriver : RulesConfig.SatCriterionContractTimeAccuracyRequiredDriver;
         }
 
         public override string GetId() {
@@ -22,8 +26,8 @@ namespace Thesis {
             return string.Format("Driver {0}", InternalIndex + 1);
         }
 
-        public override double GetSatisfaction(SaDriverInfo driverInfo, SaInfo info) {
-            return SatisfactionCalculator.GetDriverSatisfaction(this, driverInfo, info);
+        public override double GetSatisfaction(SaDriverInfo driverInfo) {
+            return SatisfactionCalculator.GetDriverSatisfaction(this, driverInfo);
         }
 
         int GetPaidTravelTime(int travelTime) {

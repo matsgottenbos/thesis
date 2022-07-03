@@ -46,7 +46,8 @@ namespace Thesis {
         public const int IdealRestTime = 14 * 60;
         public static readonly RangeSatisfactionCriterion SatCriterionRouteVariation = new RangeSatisfactionCriterion(10, 0, 0.2f, 0.2f);
         public static readonly RangeSatisfactionCriterion SatCriterionTravelTime = new RangeSatisfactionCriterion(40 * 60, 0, 0.1f, 0.2f);
-        public static readonly TargetSatisfactionCriterion SatCriterionContractTimeAccuracy = new TargetSatisfactionCriterion(driver => driver.ContractTime, driver => 0.4f * driver.ContractTime, 0.2f, 0.2f);
+        public static readonly MatchContractTimeSatisfactionCriterion SatCriterionContractTimeAccuracyRequiredDriver = new MatchContractTimeSatisfactionCriterion(0.4f, 0.2f, 0.2f);
+        public static readonly MaxContractTimeSatisfactionCriterion SatCriterionContractTimeAccuracyOptionalDriver = new MaxContractTimeSatisfactionCriterion(0.4f, 0.2f, 0.2f);
         public static readonly RangeSatisfactionCriterion SatCriterionShiftLengths = new RangeSatisfactionCriterion(10 * 60, 0, 0.05f, 0.2f);
         public static readonly RangeSatisfactionCriterion SatCriterionRobustness = new RangeSatisfactionCriterion(800, 0, 0.05f, 0.2f);
         public static readonly RangeSatisfactionCriterion SatCriterionNightShifts = new RangeSatisfactionCriterion(5, 0, 0.05f, 0.2f);

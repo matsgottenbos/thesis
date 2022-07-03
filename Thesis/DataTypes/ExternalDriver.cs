@@ -22,7 +22,7 @@ namespace Thesis {
             return string.Format("{0} {1}", ExternalDriverTypeName, actualIndexInType + 1);
         }
 
-        public override double GetSatisfaction(SaDriverInfo driverInfo, SaInfo info) {
+        public override double GetSatisfaction(SaDriverInfo driverInfo) {
             return 0;
         }
 

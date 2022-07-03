@@ -16,9 +16,10 @@ namespace Thesis {
             List<InternalDriver> internalDrivers = new List<InternalDriver>();
             internalDriverSettingsSheet.ForEachRow(internalDriverSettingsRow => {
                 string driverName = internalDriverSettingsSheet.GetStringValue(internalDriverSettingsRow, "Internal driver name");
-                int? contractTime = internalDriverSettingsSheet.GetIntValue(internalDriverSettingsRow, "Hours per week") * MiscConfig.HourLength;
                 string countryQualificationsStr = internalDriverSettingsSheet.GetStringValue(internalDriverSettingsRow, "Country qualifications");
-                if (driverName == null || !contractTime.HasValue || countryQualificationsStr == null) return;
+                int? contractTime = internalDriverSettingsSheet.GetIntValue(internalDriverSettingsRow, "Contract hours per week") * MiscConfig.HourLength;
+                bool? isOptional = internalDriverSettingsSheet.GetBoolValue(internalDriverSettingsRow, "Is optional?");
+                if (driverName == null || countryQualificationsStr == null || !contractTime.HasValue || !isOptional.HasValue) return;
                 if (contractTime.Value == 0) return;
 
                 string[] countryQualifications = countryQualificationsStr.Split(", ");
@@ -38,7 +39,7 @@ namespace Thesis {
                 InternalSalarySettings salaryInfo = isInternational ? SalaryConfig.InternalInternationalSalaryInfo : SalaryConfig.InternalNationalSalaryInfo;
 
                 int internalDriverIndex = internalDrivers.Count;
-                internalDrivers.Add(new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, isInternational, homeTravelTimes, homeTravelDistance, trackProficiencies, contractTime.Value, salaryInfo));
+                internalDrivers.Add(new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, isInternational, isOptional.Value, homeTravelTimes, homeTravelDistance, trackProficiencies, contractTime.Value, salaryInfo));
             });
             return internalDrivers.ToArray();
         }
@@ -97,9 +98,9 @@ namespace Thesis {
                 string[] countryQualifications = countryQualificationsStr.Split(", ");
                 bool isInternational = countryQualifications.Length > 1;
 
-                int travelInfoExternalCompanyIndex = Array.IndexOf(travelInfoExternalCompanyNames, companyName);
+                int travelInfoExternalCompanyIndex = Array.IndexOf(travelInfoExternalCompanyNames, externalDriverTypeName);
                 if (travelInfoExternalCompanyIndex == -1) {
-                    throw new Exception(string.Format("Could not find external company `{0}` in external travel info", companyName));
+                    throw new Exception(string.Format("Could not find external driver type `{0}` in external travel info", externalDriverTypeName));
                 }
                 int[] homeTravelTimes = externalDriversHomeTravelTimes[travelInfoExternalCompanyIndex];
                 int[] homeTravelDistances = externalDriversHomeTravelDistances[travelInfoExternalCompanyIndex];
@@ -108,8 +109,7 @@ namespace Thesis {
                 bool[,] trackProficiencies = DetermineTrackProficienciesFromCountryQualifications(countryQualifications, stationCountries);
 
                 // Add external driver type
-                string typeName = string.Format("{0}", companyName);
-                externalDriverTypes.Add(new ExternalDriverType(typeName, isInternational, isHotelAllowed.Value, minShiftCount.Value, maxShiftCount.Value));
+                externalDriverTypes.Add(new ExternalDriverType(externalDriverTypeName, isInternational, isHotelAllowed.Value, minShiftCount.Value, maxShiftCount.Value));
 
                 // Add drivers of this type
                 ExternalDriver[] currentTypeNationalDrivers = new ExternalDriver[maxShiftCount.Value];

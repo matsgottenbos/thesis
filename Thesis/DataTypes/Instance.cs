@@ -29,7 +29,8 @@ namespace Thesis {
 
             (StationNames, plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances) = DataMiscProcessor.GetStationNamesAndExpectedCarTravelInfo();
             StationCountries = DataMiscProcessor.GetStationCountries(stationAddressesBook, StationNames);
-            (Activities, activitySuccession, activitySuccessionRobustness, activitiesAreSameShift, timeframeLength, UniqueSharedRouteCount) = DataActivityProcessor.ProcessRawActivities(stationAddressesBook, rawActivities, StationNames, expectedCarTravelTimes);
+            string[] stationNamesWithoutSwitching = DataMiscProcessor.GetDataStationNamesWithoutSwitching(stationAddressesBook);
+            (Activities, activitySuccession, activitySuccessionRobustness, activitiesAreSameShift, timeframeLength, UniqueSharedRouteCount) = DataActivityProcessor.ProcessRawActivities(stationAddressesBook, rawActivities, StationNames, stationNamesWithoutSwitching, expectedCarTravelTimes);
             SalarySettingsByDriverType = DataSalaryProcessor.GetSalarySettingsByDriverType(timeframeLength);
             mainShiftInfos = DataShiftProcessor.GetMainShiftInfos(SalarySettingsByDriverType, timeframeLength);
             InternalDrivers = DataDriverProcessor.CreateInternalDrivers(settingsBook, StationCountries);

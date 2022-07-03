@@ -39,17 +39,29 @@ namespace Thesis {
         }
     }
 
-    class TargetSatisfactionCriterion : AbstractSatisfactionCriterion<float> {
-        readonly Func<InternalDriver, float> targetFunc, worstDeviationFunc;
+    class MatchContractTimeSatisfactionCriterion : AbstractSatisfactionCriterion<float> {
+        readonly float worstDeviationFaction;
 
-        public TargetSatisfactionCriterion(Func<InternalDriver, float> targetFunc, Func<InternalDriver, float> worstDeviationFunc, float weight, float maxWeight) : base(weight, maxWeight) {
-            this.targetFunc = targetFunc;
-            this.worstDeviationFunc = worstDeviationFunc;
+        public MatchContractTimeSatisfactionCriterion(float worstDeviationFaction, float weight, float maxWeight) : base(weight, maxWeight) {
+            this.worstDeviationFaction = worstDeviationFaction;
         }
 
         public override double GetUnweightedSatisfaction(float value, InternalDriver driver) {
-            float deviation = Math.Abs(value - targetFunc(driver));
-            return Math.Max(0, 1 - deviation / worstDeviationFunc(driver));
+            float deviationFraction = Math.Abs(value / driver.ContractTime - 1);
+            return Math.Max(0, 1 - deviationFraction / worstDeviationFaction);
+        }
+    }
+
+    class MaxContractTimeSatisfactionCriterion : AbstractSatisfactionCriterion<float> {
+        readonly float worstDeviationFaction;
+
+        public MaxContractTimeSatisfactionCriterion(float worstDeviationFaction, float weight, float maxWeight) : base(weight, maxWeight) {
+            this.worstDeviationFaction = worstDeviationFaction;
+        }
+
+        public override double GetUnweightedSatisfaction(float value, InternalDriver driver) {
+            float excessFraction = Math.Max(0, value / driver.ContractTime - 1);
+            return Math.Max(0, 1 - excessFraction / worstDeviationFaction);
         }
     }
 }

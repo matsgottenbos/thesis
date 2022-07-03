@@ -55,7 +55,7 @@ namespace Thesis {
         static bool DetermineAndExportExternalTravelInfo(ExcelSheet externalAddressesSheet, List<LocationInfo> stationLocations) {
             List<LocationInfo> externalLocations = new List<LocationInfo>();
             externalAddressesSheet.ForEachRow(internalAddressRow => {
-                string name = externalAddressesSheet.GetStringValue(internalAddressRow, "External company name");
+                string name = externalAddressesSheet.GetStringValue(internalAddressRow, "External driver type name"); // TODO: column has changed
                 string address = externalAddressesSheet.GetStringValue(internalAddressRow, "Driver starting address");
                 externalLocations.Add(new LocationInfo(name, address, externalLocations.Count));
             });

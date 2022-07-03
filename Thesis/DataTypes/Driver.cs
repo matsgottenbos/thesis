@@ -44,6 +44,6 @@ namespace Thesis {
         public abstract float GetPaidTravelCost(int travelTime, int travelDistance);
 
 
-        public abstract double GetSatisfaction(SaDriverInfo driverInfo, SaInfo info);
+        public abstract double GetSatisfaction(SaDriverInfo driverInfo);
     }
 }

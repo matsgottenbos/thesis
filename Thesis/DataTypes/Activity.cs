@@ -5,30 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    class Activity {
+    class Activity : RawActivity {
         public int Index;
-        public readonly int StartStationAddressIndex, EndStationAddressIndex, StartTime, EndTime, Duration;
+        public readonly int StartStationAddressIndex, EndStationAddressIndex;
         public int? SharedRouteIndex;
-        public readonly string DutyName, ActivityName, DutyId, ProjectName, TrainNumber, StartStationName, EndStationName, StartStationCountry, EndStationCountry, DataAssignedCompanyName, DataAssignedEmployeeName;
 
-        public Activity(RawActivity rawActivity, int index, int startStationAddressIndex, int endStationAddressIndex) {
+        public Activity(RawActivity rawActivity, int index, int startStationAddressIndex, int endStationAddressIndex) : base(rawActivity.DutyName, rawActivity.ActivityName, rawActivity.DutyId, rawActivity.ProjectName, rawActivity.TrainNumber, rawActivity.StartStationName, rawActivity.EndStationName, rawActivity.StartStationCountry, rawActivity.EndStationCountry, rawActivity.StartTime, rawActivity.EndTime, rawActivity.DataAssignedCompanyName, rawActivity.DataAssignedEmployeeName) {
             Index = index;
-            DutyName = rawActivity.DutyName;
-            ActivityName = rawActivity.ActivityName;
-            DutyId = rawActivity.DutyId;
-            ProjectName = rawActivity.ProjectName;
-            TrainNumber = rawActivity.TrainNumber;
-            StartStationName = rawActivity.StartStationName;
-            EndStationName = rawActivity.EndStationName;
-            StartStationCountry = rawActivity.StartStationCountry;
-            EndStationCountry = rawActivity.EndStationCountry;
             StartStationAddressIndex = startStationAddressIndex;
             EndStationAddressIndex = endStationAddressIndex;
-            StartTime = rawActivity.StartTime;
-            EndTime = rawActivity.EndTime;
-            Duration = rawActivity.Duration;
-            DataAssignedCompanyName = rawActivity.DataAssignedCompanyName;
-            DataAssignedEmployeeName = rawActivity.DataAssignedEmployeeName;
         }
 
         public void SetSharedRouteIndex(int sharedRouteIndex) {

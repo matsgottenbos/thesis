@@ -29,8 +29,6 @@ namespace Thesis {
             "Vorbereitungsdienst",
             "Wagon technical inspection"
         };
-        public static readonly string[] ExcelIncludedJobTitlesNational = new string[] { "Machinist VB nationaal", "Rangeerder" }; // TODO: rangeerders wel of niet meenemen?
-        public static readonly string[] ExcelIncludedJobTitlesInternational = new string[] { "Machinist VB Internationaal NL-D" };
 
 
         /* Generator */

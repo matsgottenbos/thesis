@@ -37,12 +37,26 @@ namespace Thesis {
             stationAddressesSheet.ForEachRow(stationAddressesRow => {
                 string stationName = stationAddressesSheet.GetStringValue(stationAddressesRow, "Station name");
                 int stationIndex = Array.IndexOf(stationNames, stationName);
+                if (stationIndex == -1) throw new Exception(string.Format("Station `{0}` not found in travel info", stationName));
 
                 string country = stationAddressesSheet.GetStringValue(stationAddressesRow, "Country");
                 stationCountries[stationIndex] = country;
             });
-
             return stationCountries;
+        }
+
+        public static string[] GetDataStationNamesWithoutSwitching(XSSFWorkbook stationAddressesBook) {
+            ExcelSheet linkingStationNamesSheet = new ExcelSheet("Linking station names", stationAddressesBook);
+
+            List<string> dataStationNamesWithoutSwitching = new List<string>();
+            linkingStationNamesSheet.ForEachRow(linkingStationNamesRow => {
+                string stationName = linkingStationNamesSheet.GetStringValue(linkingStationNamesRow, "Station name in data");
+                bool? canSwitchDrivers = linkingStationNamesSheet.GetBoolValue(linkingStationNamesRow, "Can switch drivers?");
+                if (canSwitchDrivers.HasValue && !canSwitchDrivers.Value) {
+                    dataStationNamesWithoutSwitching.Add(stationName);
+                }
+            });
+            return dataStationNamesWithoutSwitching.ToArray();
         }
 
         public static Driver[] GetDataAssignment(XSSFWorkbook settingsBook, Activity[] activities, InternalDriver[] internalDrivers, Dictionary<(string, bool), ExternalDriver[]> externalDriversByTypeDict) {
@@ -87,6 +101,11 @@ namespace Thesis {
                     if (externalDriverIndexInType == -1) {
                         externalDriverIndexInType = externalDriverNamesOfType.Count;
                         externalDriverNamesOfType.Add(activity.DataAssignedEmployeeName);
+                    }
+
+                    if (!externalDriversByTypeDict.ContainsKey((activity.DataAssignedCompanyName, isInternational))) {
+                        // Assigned to unknown company
+                        continue;
                     }
 
                     ExternalDriver[] externalDriversOfType = externalDriversByTypeDict[(activity.DataAssignedCompanyName, isInternational)];

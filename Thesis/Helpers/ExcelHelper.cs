@@ -21,6 +21,7 @@ namespace Thesis {
         readonly string sheetName;
         readonly ISheet sheet;
         readonly Dictionary<string, int> columnNamesToIndices;
+        readonly int firstContentRowIndex;
 
         public ExcelSheet(string sheetName, XSSFWorkbook excelBook) {
             this.sheetName = sheetName;
@@ -29,11 +30,31 @@ namespace Thesis {
 
             // Parse column headers
             IRow headerRow = sheet.GetRow(0);
+            IRow headerRow2 = sheet.GetRow(1);
             columnNamesToIndices = new Dictionary<string, int>();
+            bool hasSecondHeaderRow = false;
             for (int colIndex = 0; colIndex < headerRow.LastCellNum; colIndex++) {
-                string headerName = headerRow.GetCell(colIndex).StringCellValue;
+                ICell headerCell1 = headerRow.GetCell(colIndex);
+                ICell headerCell2 = headerRow2.GetCell(colIndex);
+                string headerName;
+                if (headerCell1.IsMergedCell && headerCell2.StringCellValue != "") {
+                    hasSecondHeaderRow = true;
+
+                    // Get origin cell of merged cell
+                    int headerCell1MergeOriginColIndex = colIndex;
+                    while (headerCell1.StringCellValue == "") {
+                        headerCell1MergeOriginColIndex--;
+                        headerCell1 = headerRow.GetCell(headerCell1MergeOriginColIndex);
+                    }
+
+                    // Header row is a merged cell, so combine it with the second header row
+                    headerName = string.Format("{0} | {1}", headerCell1.StringCellValue, headerCell2.StringCellValue);
+                } else {
+                    headerName = headerCell1.StringCellValue;
+                }
                 columnNamesToIndices.Add(headerName, colIndex);
             }
+            firstContentRowIndex = hasSecondHeaderRow ? 2 : 1;
         }
 
         int GetColumnIndex(string columnName) {
@@ -44,7 +65,7 @@ namespace Thesis {
         }
 
         public void ForEachRow(Action<IRow> rowFunc) {
-            for (int rowIndex = 1; rowIndex <= sheet.LastRowNum; rowIndex++) {
+            for (int rowIndex = firstContentRowIndex; rowIndex <= sheet.LastRowNum; rowIndex++) {
                 IRow row = sheet.GetRow(rowIndex);
                 if (row == null || row.Cells.All(cell => cell.CellType == CellType.Blank)) continue; // Skip empty rows
 
