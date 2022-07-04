@@ -9,17 +9,17 @@ namespace Thesis {
         public readonly bool IsInternational;
         public readonly bool IsHotelAllowed;
         public readonly int[] homeTravelTimes, homeTravelDistances;
-        readonly bool[,] trackProficiencies;
+        readonly bool[] activityQualifications;
         protected Instance instance;
         public readonly SalarySettings SalarySettings;
 
-        public Driver(int allDriversIndex, bool isInternational, bool isHotelAllowed, int[] homeTravelTimes, int[] homeTravelDistances, bool[,] trackProficiencies, SalarySettings salarySettings) {
+        public Driver(int allDriversIndex, bool isInternational, bool isHotelAllowed, int[] homeTravelTimes, int[] homeTravelDistances, bool[] activityQualifications, SalarySettings salarySettings) {
             AllDriversIndex = allDriversIndex;
             IsInternational = isInternational;
             IsHotelAllowed = isHotelAllowed;
             this.homeTravelTimes = homeTravelTimes;
             this.homeTravelDistances = homeTravelDistances;
-            this.trackProficiencies = trackProficiencies;
+            this.activityQualifications = activityQualifications;
             SalarySettings = salarySettings;
         }
 
@@ -38,7 +38,7 @@ namespace Thesis {
         }
 
         public bool IsQualifiedForActivity(Activity activity) {
-            return trackProficiencies[activity.StartStationAddressIndex, activity.EndStationAddressIndex];
+            return activityQualifications[activity.Index];
         }
 
         public abstract float GetPaidTravelCost(int travelTime, int travelDistance);

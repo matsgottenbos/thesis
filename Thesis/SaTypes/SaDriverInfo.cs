@@ -30,7 +30,7 @@ namespace Thesis {
                 DoubleFreeDayCount = -a.DoubleFreeDayCount,
                 IdealShiftLengthScore = -a.IdealShiftLengthScore,
                 IdealRestingTimeScore = -a.IdealRestingTimeScore,
-                SharedRouteCounts = InvertArray(a.SharedRouteCounts),
+                SharedRouteCounts = ArrayHelper.InvertArray(a.SharedRouteCounts),
             };
         }
         public static SaDriverInfo operator +(SaDriverInfo a, SaDriverInfo b) {
@@ -47,7 +47,7 @@ namespace Thesis {
                 DoubleFreeDayCount = a.DoubleFreeDayCount + b.DoubleFreeDayCount,
                 IdealShiftLengthScore = a.IdealShiftLengthScore + b.IdealShiftLengthScore,
                 IdealRestingTimeScore = a.IdealRestingTimeScore + b.IdealRestingTimeScore,
-                SharedRouteCounts = AddArrays(a.SharedRouteCounts, b.SharedRouteCounts),
+                SharedRouteCounts = ArrayHelper.AddArrays(a.SharedRouteCounts, b.SharedRouteCounts),
             };
         }
         public static SaDriverInfo operator -(SaDriverInfo a, SaDriverInfo b) => a + -b;
@@ -66,31 +66,8 @@ namespace Thesis {
                 a.DoubleFreeDayCount == b.DoubleFreeDayCount &&
                 a.IdealShiftLengthScore == b.IdealShiftLengthScore &&
                 a.IdealRestingTimeScore == b.IdealRestingTimeScore &&
-                AreArraysEqual(a.SharedRouteCounts, b.SharedRouteCounts)
+                ArrayHelper.AreArraysEqual(a.SharedRouteCounts, b.SharedRouteCounts)
             );
-        }
-
-        static int[] InvertArray(int[] array) {
-            int[] invertedArray = new int[array.Length];
-            for (int i = 0; i < array.Length; i++) {
-                invertedArray[i] = -array[i];
-            }
-            return invertedArray;
-        }
-
-        static int[] AddArrays(int[] array1, int[] array2) {
-            int[] addedArray = new int[array1.Length];
-            for (int i = 0; i < array1.Length; i++) {
-                addedArray[i] = array1[i] + array2[i];
-            }
-            return addedArray;
-        }
-
-        static bool AreArraysEqual(int[] array1, int[] array2) {
-            for (int i = 0; i < array1.Length; i++) {
-                if (array1[i] != array2[i]) return false;
-            }
-            return true;
         }
 
         public void DebugLog(bool isDiff, bool shouldLogZeros = true) {

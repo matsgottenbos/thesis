@@ -6,7 +6,7 @@ namespace Thesis {
         public readonly string CompanyName, ExternalDriverTypeName;
         readonly ExternalSalarySettings externalSalarySettings;
 
-        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, string companyName, string externalDriverTypeName, bool isInternational, bool isHotelAllowed, int[] homeTravelTimes, bool[,] trackProficiencies, int[] homeTravelDistances, ExternalSalarySettings externalSalarySettings) : base(allDriversIndex, isInternational, isHotelAllowed, homeTravelTimes, homeTravelDistances, trackProficiencies, externalSalarySettings) {
+        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, string companyName, string externalDriverTypeName, bool isInternational, bool isHotelAllowed, int[] homeTravelTimes, bool[] activityQualifications, int[] homeTravelDistances, ExternalSalarySettings externalSalarySettings) : base(allDriversIndex, isInternational, isHotelAllowed, homeTravelTimes, homeTravelDistances, activityQualifications, externalSalarySettings) {
             ExternalDriverTypeIndex = externalDriverTypeIndex;
             IndexInType = indexInType;
             CompanyName = companyName;

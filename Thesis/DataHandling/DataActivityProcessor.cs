@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class DataActivityProcessor {
-        public static (Activity[], bool[,], float[,], bool[,], int, int) ProcessRawActivities(XSSFWorkbook stationAddressesBook, RawActivity[] rawActivities, string[] stationNames, string[] stationNamesWithoutSwitching, int[,] expectedCarTravelTimes) {
+        public static (Activity[], bool[,], float[,], bool[,], int, int) ProcessRawActivities(XSSFWorkbook stationAddressesBook, RawActivity[] rawActivities, string[] stationNames, string[] borderStationNames, string[] borderRegionStationNames, int[,] expectedCarTravelTimes) {
             if (rawActivities.Length == 0) {
                 throw new Exception("No activities found in timeframe");
             }
@@ -20,8 +20,7 @@ namespace Thesis {
 
             // Remove duplicate activities
             rawActivities = RemoveDuplicateRawActivities(rawActivities);
-            rawActivities = CombineNonSwitchingRawActivities(rawActivities, stationNamesWithoutSwitching);
-            //rawActivities = CombineSameDriverActivities(rawActivities); // TODO: complete or remove method
+            rawActivities = CombineBorderRawActivities(rawActivities, borderStationNames, borderRegionStationNames);
 
             // Get dictionary mapping station names in data to their index in the address list
             Dictionary<string, int> stationDataNameToAddressIndex = GetStationDataNameToAddressIndexDict(stationAddressesBook, stationNames);
@@ -86,29 +85,51 @@ namespace Thesis {
             return rawActivitiesWithoutDuplicatesList.ToArray();
         }
 
-        /** Combine activities with stations where switching drivers is impossible */
-        static RawActivity[] CombineNonSwitchingRawActivities(RawActivity[] rawActivities, string[] stationNamesWithoutSwitching) {
+        /** Combine activities start/ending at border, because those locations are not actual stations */
+        static RawActivity[] CombineBorderRawActivities(RawActivity[] rawActivities, string[] borderStationNames, string[] borderRegionStationNames) {
             if (AppConfig.DebugLogDataRepairs) Console.WriteLine();
-            List<RawActivity> rawActivitiesCombinedOnStationsList = new List<RawActivity>();
-            List<RawActivity> unmatchedOnStationsRawActivitiesList = new List<RawActivity>();
+            List<RawActivity> combinedRawActivitiesList = new List<RawActivity>();
+            List<RawActivity> unmatchedRawActivitesList = new List<RawActivity>();
             int combinedCountOnStations = 0;
             for (int activityIndex = 0; activityIndex < rawActivities.Length; activityIndex++) {
                 RawActivity rawActivity = rawActivities[activityIndex];
 
-                bool cannotSwitchAtStartStation = stationNamesWithoutSwitching.Contains(rawActivity.StartStationName);
-                bool cannotSwitchAtEndStation = stationNamesWithoutSwitching.Contains(rawActivity.EndStationName);
+                bool isStartBorder = borderStationNames.Contains(rawActivity.StartStationName);
+                bool isEndBorder = borderStationNames.Contains(rawActivity.EndStationName);
 
-                if (cannotSwitchAtStartStation) {
+                if (isStartBorder) {
                     // Check if we can combine the start of this activity with an unmatched activity
-                    RawActivity rawActivityToCombine = unmatchedOnStationsRawActivitiesList.Find(unmatchedRawActivity => unmatchedRawActivity.DutyId == rawActivity.DutyId && unmatchedRawActivity.ActivityName == rawActivity.ActivityName && unmatchedRawActivity.EndStationName == rawActivity.StartStationName && unmatchedRawActivity.EndTime == rawActivity.StartTime);
+                    RawActivity rawActivityToCombine = unmatchedRawActivitesList.Find(unmatchedRawActivity => unmatchedRawActivity.DutyId == rawActivity.DutyId && unmatchedRawActivity.ActivityName == rawActivity.ActivityName && unmatchedRawActivity.EndStationName == rawActivity.StartStationName && unmatchedRawActivity.EndTime == rawActivity.StartTime);
                     if (rawActivityToCombine == null) {
-                        unmatchedOnStationsRawActivitiesList.Add(rawActivity);
+                        unmatchedRawActivitesList.Add(rawActivity);
                     } else {
-                        RawActivity combinedActivity = GetCombinedRawActivity(new RawActivity[] { rawActivityToCombine, rawActivity }, rawActivityToCombine);
+                        bool isCombinedStartBorderRegion = borderRegionStationNames.Contains(rawActivityToCombine.StartStationName);
+                        bool isCombinedEndBorderRegion = borderRegionStationNames.Contains(rawActivity.EndStationName);
 
-                        unmatchedOnStationsRawActivitiesList.Remove(rawActivityToCombine);
-                        if (cannotSwitchAtEndStation) unmatchedOnStationsRawActivitiesList.Add(combinedActivity);
-                        else rawActivitiesCombinedOnStationsList.Add(combinedActivity);
+                        string[] combinedRequiredCountryQualifications;
+                        if (isCombinedStartBorderRegion && isCombinedEndBorderRegion) {
+                            combinedRequiredCountryQualifications = Array.Empty<string>();
+                        } else if (isCombinedStartBorderRegion) {
+                            combinedRequiredCountryQualifications = rawActivity.RequiredCountryQualifications;
+                        } else if (isCombinedEndBorderRegion) {
+                            combinedRequiredCountryQualifications = rawActivityToCombine.RequiredCountryQualifications;
+                        } else {
+                            List<string> combinedRequiredCountryQualificationsList = new List<string>();
+                            combinedRequiredCountryQualificationsList.AddRange(rawActivityToCombine.RequiredCountryQualifications);
+                            for (int i = 0; i < rawActivity.RequiredCountryQualifications.Length; i++) {
+                                string countryQualification = rawActivity.RequiredCountryQualifications[i];
+                                if (!combinedRequiredCountryQualificationsList.Contains(countryQualification)) {
+                                    combinedRequiredCountryQualificationsList.Add(countryQualification);
+                                }
+                            }
+                            combinedRequiredCountryQualifications = combinedRequiredCountryQualificationsList.ToArray();
+                        }
+
+                        RawActivity combinedActivity = new RawActivity(rawActivityToCombine.DutyName, rawActivityToCombine.ActivityName, rawActivityToCombine.DutyId, rawActivityToCombine.ProjectName, rawActivityToCombine.TrainNumber, rawActivityToCombine.StartStationName, rawActivity.EndStationName, combinedRequiredCountryQualifications, rawActivityToCombine.StartTime, rawActivity.EndTime, rawActivityToCombine.DataAssignedCompanyName, rawActivityToCombine.DataAssignedEmployeeName, new RawActivity[] { rawActivityToCombine, rawActivity });
+
+                        unmatchedRawActivitesList.Remove(rawActivityToCombine);
+                        if (isEndBorder) unmatchedRawActivitesList.Add(combinedActivity);
+                        else combinedRawActivitiesList.Add(combinedActivity);
                         combinedCountOnStations++;
 
                         if (AppConfig.DebugLogDataRepairs) {
@@ -116,92 +137,21 @@ namespace Thesis {
                             DebugLogRawActivity("Combined part 2", rawActivity);
                         }
                     }
-                } else if (cannotSwitchAtEndStation) {
-                    unmatchedOnStationsRawActivitiesList.Add(rawActivity);
+                } else if (isEndBorder) {
+                    unmatchedRawActivitesList.Add(rawActivity);
                 } else {
-                    rawActivitiesCombinedOnStationsList.Add(rawActivity);
+                    combinedRawActivitiesList.Add(rawActivity);
                 }
             }
 
-            Console.WriteLine("Combined {0} pairs of activities with stations where switching is impossible", combinedCountOnStations);
+            Console.WriteLine("Combined {0} pairs of activities starting/ending at borders", combinedCountOnStations);
             if (AppConfig.DebugLogDataRepairs) {
                 Console.WriteLine();
-                DebugLogRawActivities("Not combined", unmatchedOnStationsRawActivitiesList);
+                DebugLogRawActivities("Not combined", unmatchedRawActivitesList);
             }
-            Console.WriteLine("Ignoring {0} activities with stations where switching is impossible and that could not be combined", unmatchedOnStationsRawActivitiesList.Count);
+            Console.WriteLine("Ignoring {0} activities starting/ending at borders that could not be combined", unmatchedRawActivitesList.Count);
 
-            return rawActivitiesCombinedOnStationsList.OrderBy(activity => activity.StartTime).ToArray();
-        }
-
-        /** Combine activities that must be performed by the same driver */
-        static RawActivity[] CombineSameDriverActivities(RawActivity[] rawActivities) {
-            // TODO: move to config
-            string activityTypeToLinkFrom = "Daily Check locomotive";
-            string activityTypeToLinkIntermediary = "Wagon technical inspection";
-            string activityTypeToLinkTo = "Drive train";
-
-            // Combine activities that must be performed by the same driver
-            if (AppConfig.DebugLogDataRepairs) Console.WriteLine();
-            List<RawActivity> rawActivitiesCombinedOnActivityTypesList = new List<RawActivity>();
-            List<RawActivity> unmatchedActivitiesToLinkFrom = new List<RawActivity>();
-            List<RawActivity> unmatchedActivitiesToLinkIntermediary = new List<RawActivity>();
-            List<RawActivity> unmatchedActivitiesToLinkTo = new List<RawActivity>();
-            int duplicateCountOnActivityTypes = 0;
-            for (int activityIndex = 0; activityIndex < rawActivities.Length; activityIndex++) {
-                RawActivity rawActivity = rawActivities[activityIndex];
-
-                if (rawActivity.ActivityName == activityTypeToLinkFrom) {
-                    unmatchedActivitiesToLinkFrom.Add(rawActivity);
-                } else if (rawActivity.ActivityName == activityTypeToLinkIntermediary) {
-                    unmatchedActivitiesToLinkIntermediary.Add(rawActivity);
-                } else if (rawActivity.ActivityName == activityTypeToLinkTo) {
-                    for (int linkFromIndex = 0; linkFromIndex < unmatchedActivitiesToLinkFrom.Count; linkFromIndex++) {
-                        RawActivity activityToLinkFrom = unmatchedActivitiesToLinkFrom[linkFromIndex];
-                        if (activityToLinkFrom.DutyId != rawActivity.DutyId) continue;
-                        RawActivity activityToLinkIntermediary = unmatchedActivitiesToLinkIntermediary.Find(intermediary => intermediary.DutyId == rawActivity.DutyId && activityToLinkFrom.EndTime == intermediary.StartTime && intermediary.EndTime == rawActivity.StartTime);
-                        if (activityToLinkIntermediary != null) {
-                            RawActivity combinedActivity = GetCombinedRawActivity(new RawActivity[] { activityToLinkFrom, rawActivity }, rawActivity);
-                            unmatchedActivitiesToLinkFrom.Remove(activityToLinkFrom);
-                            unmatchedActivitiesToLinkIntermediary.Remove(activityToLinkIntermediary);
-                            duplicateCountOnActivityTypes++;
-                            break;
-                        }
-                    }
-                    unmatchedActivitiesToLinkTo.Add(rawActivity);
-                } else {
-                    rawActivitiesCombinedOnActivityTypesList.Add(rawActivity);
-                }
-            }
-            rawActivitiesCombinedOnActivityTypesList.AddRange(unmatchedActivitiesToLinkIntermediary);
-            rawActivitiesCombinedOnActivityTypesList.AddRange(unmatchedActivitiesToLinkTo);
-            Console.WriteLine("Combined {0} sets of activities with activity types that should be linked", duplicateCountOnActivityTypes);
-
-            if (AppConfig.DebugLogDataRepairs) {
-                Console.WriteLine();
-                DebugLogRawActivities("Not combined", unmatchedActivitiesToLinkFrom);
-            }
-            Console.WriteLine("Ignoring {0} activities that should start a link", unmatchedActivitiesToLinkFrom.Count);
-
-            // Debug
-            Console.WriteLine("\nDebug, intermediary:");
-            DebugLogRawActivities("Intermediary", unmatchedActivitiesToLinkIntermediary);
-            Console.WriteLine("\nDebug, link to:");
-            DebugLogRawActivities("Link to", unmatchedActivitiesToLinkTo);
-
-            throw new NotImplementedException();
-            return rawActivitiesCombinedOnActivityTypesList.OrderBy(activity => activity.StartTime).ToArray();
-        }
-
-        static RawActivity GetCombinedRawActivity(RawActivity[] rawActivitiesToCombine, RawActivity mainRawActivity) {
-            RawActivity firstRawActivity = rawActivitiesToCombine[0];
-            RawActivity lastRawActivity = rawActivitiesToCombine[^1];
-
-            // Skip activities longer than max shift length
-            if (lastRawActivity.EndTime - firstRawActivity.StartTime > RulesConfig.NightMaxMainShiftLength) {
-                throw new Exception("Debug");
-            }
-
-            return new RawActivity(mainRawActivity.DutyName, mainRawActivity.ActivityName, mainRawActivity.DutyId, mainRawActivity.ProjectName, mainRawActivity.TrainNumber, firstRawActivity.StartStationName, lastRawActivity.EndStationName, firstRawActivity.StartStationCountry, lastRawActivity.EndStationCountry, firstRawActivity.StartTime, lastRawActivity.EndTime, mainRawActivity.DataAssignedCompanyName, mainRawActivity.DataAssignedEmployeeName, rawActivitiesToCombine);
+            return combinedRawActivitiesList.OrderBy(activity => activity.StartTime).ToArray();
         }
 
         static void DebugLogRawActivities(string comment, List<RawActivity> rawActivitiesList) {

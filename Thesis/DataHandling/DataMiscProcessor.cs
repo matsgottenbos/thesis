@@ -30,34 +30,23 @@ namespace Thesis {
             return (stationNames, plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances);
         }
 
-        public static string[][] GetStationCountryQualifications(XSSFWorkbook stationAddressesBook, string[] stationNames) {
-            ExcelSheet stationAddressesSheet = new ExcelSheet("Station addresses", stationAddressesBook);
-
-            string[][] stationCountryQualifications = new string[stationNames.Length][];
-            stationAddressesSheet.ForEachRow(stationAddressesRow => {
-                string stationName = stationAddressesSheet.GetStringValue(stationAddressesRow, "Station name");
-                int stationIndex = Array.IndexOf(stationNames, stationName);
-                if (stationIndex == -1) throw new Exception(string.Format("Station `{0}` not found in travel info", stationName));
-
-                string countryQualificationsStr = stationAddressesSheet.GetStringValue(stationAddressesRow, "Country qualifications");
-                string[] countryQualifications = countryQualificationsStr.Split(", ");
-                stationCountryQualifications[stationIndex] = countryQualifications;
-            });
-            return stationCountryQualifications;
-        }
-
-        public static string[] GetDataStationNamesWithoutSwitching(XSSFWorkbook stationAddressesBook) {
+        public static (string[], string[]) GetBorderAndBorderRegionStationNames(XSSFWorkbook stationAddressesBook) {
             ExcelSheet linkingStationNamesSheet = new ExcelSheet("Linking station names", stationAddressesBook);
 
-            List<string> dataStationNamesWithoutSwitching = new List<string>();
+            List<string> borderStationNamesList = new List<string>();
+            List<string> borderRegionStationNamesList = new List<string>();
             linkingStationNamesSheet.ForEachRow(linkingStationNamesRow => {
                 string stationName = linkingStationNamesSheet.GetStringValue(linkingStationNamesRow, "Station name in data");
-                bool? canSwitchDrivers = linkingStationNamesSheet.GetBoolValue(linkingStationNamesRow, "Can switch drivers?");
-                if (canSwitchDrivers.HasValue && !canSwitchDrivers.Value) {
-                    dataStationNamesWithoutSwitching.Add(stationName);
+                bool? isBorder = linkingStationNamesSheet.GetBoolValue(linkingStationNamesRow, "Is border?");
+                bool? isBorderRegion = linkingStationNamesSheet.GetBoolValue(linkingStationNamesRow, "Is in border region?");
+                if (isBorder.HasValue && isBorder.Value) {
+                    borderStationNamesList.Add(stationName);
+                }
+                if (isBorderRegion.HasValue && isBorderRegion.Value) {
+                    borderRegionStationNamesList.Add(stationName);
                 }
             });
-            return dataStationNamesWithoutSwitching.ToArray();
+            return (borderStationNamesList.ToArray(), borderRegionStationNamesList.ToArray());
         }
 
         public static Driver[] GetDataAssignment(XSSFWorkbook settingsBook, Activity[] activities, InternalDriver[] internalDrivers, Dictionary<(string, bool), ExternalDriver[]> externalDriversByDataTypeDict) {

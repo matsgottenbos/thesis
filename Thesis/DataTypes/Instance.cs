@@ -14,7 +14,6 @@ namespace Thesis {
         readonly int[,] plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances;
         public readonly Activity[] Activities;
         public readonly string[] StationNames;
-        public readonly string[][] StationCountryQualifications;
         readonly SalarySettings[] SalarySettingsByDriverType;
         readonly MainShiftInfo[,] mainShiftInfos;
         readonly float[,] activitySuccessionRobustness;
@@ -29,14 +28,13 @@ namespace Thesis {
             XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "settings.xlsx"));
 
             (StationNames, plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances) = DataMiscProcessor.GetStationNamesAndExpectedCarTravelInfo();
-            StationCountryQualifications = DataMiscProcessor.GetStationCountryQualifications(stationAddressesBook, StationNames);
-            string[] stationNamesWithoutSwitching = DataMiscProcessor.GetDataStationNamesWithoutSwitching(stationAddressesBook);
-            (Activities, activitySuccession, activitySuccessionRobustness, activitiesAreSameShift, timeframeLength, UniqueSharedRouteCount) = DataActivityProcessor.ProcessRawActivities(stationAddressesBook, rawActivities, StationNames, stationNamesWithoutSwitching, expectedCarTravelTimes);
+            (string[] borderStationNames, string[] borderRegionStationNames) = DataMiscProcessor.GetBorderAndBorderRegionStationNames(stationAddressesBook);
+            (Activities, activitySuccession, activitySuccessionRobustness, activitiesAreSameShift, timeframeLength, UniqueSharedRouteCount) = DataActivityProcessor.ProcessRawActivities(stationAddressesBook, rawActivities, StationNames, borderStationNames, borderRegionStationNames, expectedCarTravelTimes);
             SalarySettingsByDriverType = DataSalaryProcessor.GetSalarySettingsByDriverType(timeframeLength);
             mainShiftInfos = DataShiftProcessor.GetMainShiftInfos(SalarySettingsByDriverType, timeframeLength);
-            (InternalDrivers, RequiredInternalDriverCount) = DataDriverProcessor.CreateInternalDrivers(settingsBook, StationCountryQualifications);
+            (InternalDrivers, RequiredInternalDriverCount) = DataDriverProcessor.CreateInternalDrivers(settingsBook, Activities);
             Dictionary<(string, bool), ExternalDriver[]> externalDriversByDataTypeDict;
-            (ExternalDriverTypes, ExternalDriversByType, externalDriversByDataTypeDict) = DataDriverProcessor.CreateExternalDrivers(settingsBook, StationCountryQualifications, InternalDrivers.Length);
+            (ExternalDriverTypes, ExternalDriversByType, externalDriversByDataTypeDict) = DataDriverProcessor.CreateExternalDrivers(settingsBook, Activities, InternalDrivers.Length);
             DataAssignment = DataMiscProcessor.GetDataAssignment(settingsBook, Activities, InternalDrivers, externalDriversByDataTypeDict);
 
             // Create all drivers array

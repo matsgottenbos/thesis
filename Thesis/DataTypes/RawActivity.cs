@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 namespace Thesis {
     class RawActivity {
         public readonly int StartTime, EndTime;
-        public readonly string DutyName, ActivityName, DutyId, ProjectName, TrainNumber, StartStationName, EndStationName, StartStationCountry, EndStationCountry, DataAssignedCompanyName, DataAssignedEmployeeName;
+        public readonly string DutyName, ActivityName, DutyId, ProjectName, TrainNumber, StartStationName, EndStationName, DataAssignedCompanyName, DataAssignedEmployeeName;
+        public readonly string[] RequiredCountryQualifications;
         public readonly RawActivity[] OriginalRawActivities;
 
-        public RawActivity(string dutyName, string activityName, string dutyId, string projectName, string trainNumber, string startStationName, string endStationName, string startStationCountry, string endStationCountry, int startTime, int endTime, string dataAssignedCompanyName, string dataAssignedEmployeeName, RawActivity[] originalRawActivities = null) {
+        public RawActivity(string dutyName, string activityName, string dutyId, string projectName, string trainNumber, string startStationName, string endStationName, string[] requiredCountryQualifications, int startTime, int endTime, string dataAssignedCompanyName, string dataAssignedEmployeeName, RawActivity[] originalRawActivities = null) {
             DutyName = dutyName;
             ActivityName = activityName;
             DutyId = dutyId;
@@ -18,8 +19,7 @@ namespace Thesis {
             TrainNumber = trainNumber;
             StartStationName = startStationName;
             EndStationName = endStationName;
-            StartStationCountry = startStationCountry;
-            EndStationCountry = endStationCountry;
+            RequiredCountryQualifications = requiredCountryQualifications;
             StartTime = startTime;
             EndTime = endTime;
             DataAssignedCompanyName = dataAssignedCompanyName;
@@ -39,8 +39,7 @@ namespace Thesis {
                 a.TrainNumber == b.TrainNumber &&
                 a.StartStationName == b.StartStationName &&
                 a.EndStationName == b.EndStationName &&
-                a.StartStationCountry == b.StartStationCountry &&
-                a.EndStationCountry == b.EndStationCountry
+                ArrayHelper.AreArraysEqual(a.RequiredCountryQualifications, b.RequiredCountryQualifications)
             );
         }
     }

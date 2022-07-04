@@ -42,6 +42,11 @@ namespace Thesis {
                 string endStationCountry = activitiesSheet.GetStringValue(activityRow, "DestinationCountry");
                 if (startStationDataName == null || endStationDataName == null) return;
 
+                // Get required country qualifications
+                string[] requiredCountryQualifications;
+                if (startStationCountry == endStationCountry) requiredCountryQualifications = new string[] { startStationCountry };
+                else requiredCountryQualifications = new string[] { startStationCountry, endStationCountry };
+
                 // Get start and end time
                 DateTime? startTimeRaw = activitiesSheet.GetDateValue(activityRow, "PlannedStart");
                 if (startTimeRaw == null || startTimeRaw < planningStartDate || startTimeRaw > planningNextDate) return; // Skip activities outside planning timeframe
@@ -58,16 +63,14 @@ namespace Thesis {
                 string assignedEmployeeName = activitiesSheet.GetStringValue(activityRow, "EmployeeName");
 
 
-                // Temp
+                // Temp; TODO: make cleaner
                 string[] stationsToSkip = new string[] { "Stuttgart Hbf", "Stuttgart Hafen", "Germersheim", "Bietigheim-Bissingen" };
-                if (stationsToSkip.Contains(startStationDataName) || stationsToSkip.Contains(endStationDataName)) {
-                    return;
-                }
-                if (endTime - startTime > 6 * 60) return; // Temp
+                if (stationsToSkip.Contains(startStationDataName) || stationsToSkip.Contains(endStationDataName)) return;
+                if (endTime - startTime > 6 * 60) return;
 
 
 
-                rawActivities.Add(new RawActivity(dutyName, activityName, dutyId, projectName, trainNumber, startStationDataName, endStationDataName, startStationCountry, endStationCountry, startTime, endTime, assignedCompanyName, assignedEmployeeName));
+                rawActivities.Add(new RawActivity(dutyName, activityName, dutyId, projectName, trainNumber, startStationDataName, endStationDataName, requiredCountryQualifications, startTime, endTime, assignedCompanyName, assignedEmployeeName));
             });
 
             if (rawActivities.Count == 0) {
