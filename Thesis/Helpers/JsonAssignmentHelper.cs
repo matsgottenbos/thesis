@@ -167,6 +167,8 @@ namespace Thesis {
             (int sharedCarTravelTimeBefore, int sharedCarTravelDistanceBefore, int ownCarTravelTimeBefore, int ownCarTravelDistanceBefore) = RangeCostActivityProcessor.GetTravelInfoBefore(beforeHotelActivity, shiftFirstActivity, driver, info.Instance);
             (int sharedCarTravelTimeAfter, int sharedCarTravelDistanceAfter, int ownCarTravelTimeAfter, int ownCarTravelDistanceAfter) = RangeCostActivityProcessor.GetTravelInfoAfter(shiftLastActivity, afterHotelActivity, parkingActivity, driver, info.Instance);
 
+            var temp = info.Instance.ExpectedCarTravelTime(shiftLastActivity, parkingActivity);
+
             int mainShiftStartTime = shiftFirstActivity.StartTime - sharedCarTravelTimeBefore;
             int realMainShiftEndTime = shiftLastActivity.EndTime + sharedCarTravelTimeAfter;
 
@@ -252,7 +254,7 @@ namespace Thesis {
         }
 
         static float AddTravelAndWaitBetweenActivitiesToPath(Activity activity1, Activity activity2, JArray driverPathJArray, SaInfo info) {
-            int carTravelTime = info.Instance.PlannedCarTravelTime(activity1, activity2);
+            int carTravelTime = info.Instance.ExpectedCarTravelTime(activity1, activity2);
             if (carTravelTime > 0) {
                 JObject travelBetweenPathItem = new JObject {
                     ["type"] = "travelBetween",
@@ -279,7 +281,7 @@ namespace Thesis {
         }
 
         static void AddRestToPath(Activity activityBeforeRest, Activity activityAfterRest, Activity parkingActivity, Driver driver, JArray driverPathJArray, SaInfo info) {
-            int travelTimeAfterShift = info.Instance.PlannedCarTravelTime(activityBeforeRest, parkingActivity) + driver.HomeTravelTimeToStart(parkingActivity);
+            int travelTimeAfterShift = info.Instance.ExpectedCarTravelTime(activityBeforeRest, parkingActivity) + driver.HomeTravelTimeToStart(parkingActivity);
             int travelTimeBeforeShift = driver.HomeTravelTimeToStart(activityAfterRest);
 
             JObject restPathItem = new JObject {
@@ -291,7 +293,7 @@ namespace Thesis {
         }
 
         static void AddTravelToHomeToPath(Activity activityBeforeHome, Activity parkingActivity, Driver driver, JArray driverPathJArray, SaInfo info) {
-            int travelTimeToCar = info.Instance.PlannedCarTravelTime(activityBeforeHome, parkingActivity);
+            int travelTimeToCar = info.Instance.ExpectedCarTravelTime(activityBeforeHome, parkingActivity);
             int travelTimeFromCarToHome = driver.HomeTravelTimeToStart(parkingActivity);
 
             JObject travelToCarPathItem = new JObject {
@@ -325,7 +327,7 @@ namespace Thesis {
         }
 
         static void AddHotelStayAfterToPath(Activity activityBeforeHotel, Activity activityAfterHotel, JArray driverPathJArray, SaInfo info) {
-            int halfTravelTimeViaHotel = info.Instance.PlannedHalfTravelTimeViaHotel(activityBeforeHotel, activityAfterHotel);
+            int halfTravelTimeViaHotel = info.Instance.ExpectedHalfTravelTimeViaHotel(activityBeforeHotel, activityAfterHotel);
 
             JObject travelBeforeHotelPathItem = new JObject {
                 ["type"] = "travelToHotel",
@@ -344,7 +346,7 @@ namespace Thesis {
         }
 
         static void AddHotelStayBeforeToPath(Activity activityBeforeHotel, Activity activityAfterHotel, JArray driverPathJArray, SaInfo info) {
-            int halfTravelTimeViaHotel = info.Instance.PlannedHalfTravelTimeViaHotel(activityBeforeHotel, activityAfterHotel);
+            int halfTravelTimeViaHotel = info.Instance.ExpectedHalfTravelTimeViaHotel(activityBeforeHotel, activityAfterHotel);
             JObject travelAfterHotelPathItem = new JObject {
                 ["type"] = "travelFromHotel",
                 ["startTime"] = activityAfterHotel.StartTime - halfTravelTimeViaHotel,

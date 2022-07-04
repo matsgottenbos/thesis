@@ -30,12 +30,9 @@ namespace Thesis {
                     driverInfo.PenaltyInfo.AddInvalidHotel();
                 }
 
-                // Check for qualification violation
-                driverInfo.PenaltyInfo.AddPotentialQualificationViolation(prevActivity, driver);
-
-                ProcessDriverActivity(prevActivity, isOverlapViolation, isInvalidHotelAfter, driverInfo);
+                ProcessDriverActivity(prevActivity, isOverlapViolation, isInvalidHotelAfter, driverInfo, driver);
             } else {
-                ProcessDriverActivity(prevActivity, false, false, driverInfo);
+                ProcessDriverActivity(prevActivity, false, false, driverInfo, driver);
 
                 /* Start of new shift */
                 ProcessDriverEndShift(prevActivity, searchActivity, ref shiftFirstActivity, ref parkingActivity, ref beforeHotelActivity, isHotelAfterActivity, driverInfo, driver, info, instance);
@@ -46,7 +43,7 @@ namespace Thesis {
 
         public static void ProcessDriverEndRange(Activity activityAfterRange, ref Activity shiftFirstActivity, ref Activity parkingActivity, ref Activity prevActivity, ref Activity beforeHotelActivity, Func<Activity, bool> isHotelAfterActivity, SaDriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
             if (prevActivity != null) {
-                ProcessDriverActivity(prevActivity, false, false, driverInfo);
+                ProcessDriverActivity(prevActivity, false, false, driverInfo, driver);
             }
 
             // If the range is not empty, finish the last shift of the range
@@ -56,7 +53,10 @@ namespace Thesis {
             }
         }
 
-        static void ProcessDriverActivity(Activity activity, bool isOverlapViolation, bool isInvalidHotelAfter, SaDriverInfo driverInfo) {
+        static void ProcessDriverActivity(Activity activity, bool isOverlapViolation, bool isInvalidHotelAfter, SaDriverInfo driverInfo, Driver driver) {
+            // Check for qualification violation
+            driverInfo.PenaltyInfo.AddPotentialQualificationViolation(activity, driver);
+
             // Update shared route counts
             int? sharedRouteIndex = activity.SharedRouteIndex;
             if (sharedRouteIndex.HasValue) {

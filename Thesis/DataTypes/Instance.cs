@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Thesis {
     class Instance {
         readonly int timeframeLength;
-        public readonly int UniqueSharedRouteCount;
+        public readonly int UniqueSharedRouteCount, RequiredInternalDriverCount;
         readonly int[,] plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances;
         public readonly Activity[] Activities;
         public readonly string[] StationNames, StationCountries;
@@ -33,10 +33,10 @@ namespace Thesis {
             (Activities, activitySuccession, activitySuccessionRobustness, activitiesAreSameShift, timeframeLength, UniqueSharedRouteCount) = DataActivityProcessor.ProcessRawActivities(stationAddressesBook, rawActivities, StationNames, stationNamesWithoutSwitching, expectedCarTravelTimes);
             SalarySettingsByDriverType = DataSalaryProcessor.GetSalarySettingsByDriverType(timeframeLength);
             mainShiftInfos = DataShiftProcessor.GetMainShiftInfos(SalarySettingsByDriverType, timeframeLength);
-            InternalDrivers = DataDriverProcessor.CreateInternalDrivers(settingsBook, StationCountries);
-            Dictionary<(string, bool), ExternalDriver[]> externalDriversByTypeDict;
-            (ExternalDriverTypes, ExternalDriversByType, externalDriversByTypeDict) = DataDriverProcessor.CreateExternalDrivers(settingsBook, StationCountries, InternalDrivers.Length);
-            DataAssignment = DataMiscProcessor.GetDataAssignment(settingsBook, Activities, InternalDrivers, externalDriversByTypeDict);
+            (InternalDrivers, RequiredInternalDriverCount) = DataDriverProcessor.CreateInternalDrivers(settingsBook, StationCountries);
+            Dictionary<(string, bool), ExternalDriver[]> externalDriversByDataTypeDict;
+            (ExternalDriverTypes, ExternalDriversByType, externalDriversByDataTypeDict) = DataDriverProcessor.CreateExternalDrivers(settingsBook, StationCountries, InternalDrivers.Length);
+            DataAssignment = DataMiscProcessor.GetDataAssignment(settingsBook, Activities, InternalDrivers, externalDriversByDataTypeDict);
 
             // Create all drivers array
             List<Driver> allDriversList = new List<Driver>();

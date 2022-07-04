@@ -71,11 +71,14 @@ namespace Thesis {
 
         public static double GetSatisfactionScore(SaInfo info) {
             // Average satisfaction
-            double averageDriverSatisfaction = info.TotalInfo.Stats.DriverSatisfaction / info.Instance.InternalDrivers.Length;
+            double averageDriverSatisfaction = info.TotalInfo.Stats.DriverSatisfaction / info.Instance.RequiredInternalDriverCount;
 
             // Minimum driver satisfaction
             double minDriverSatisfaction = double.MaxValue;
             for (int driverIndex = 0; driverIndex < info.Instance.InternalDrivers.Length; driverIndex++) {
+                // Skip optional drivers
+                if (info.Instance.InternalDrivers[driverIndex].IsOptional) continue;
+
                 SaDriverInfo driverInfo = info.DriverInfos[driverIndex];
                 if (driverInfo.Stats.DriverSatisfaction < minDriverSatisfaction) minDriverSatisfaction = driverInfo.Stats.DriverSatisfaction;
             }
@@ -87,12 +90,15 @@ namespace Thesis {
 
         public static double GetSatisfactionScoreDiff(SaTotalInfo totalInfoDiff, Driver driver1, SaDriverInfo driver1InfoDiff, Driver driver2, SaDriverInfo driver2InfoDiff, SaInfo info) {
             // Average satisfaction
-            double averageDriverSatisfactionDiff = totalInfoDiff.Stats.DriverSatisfaction / info.Instance.InternalDrivers.Length;
+            double averageDriverSatisfactionDiff = totalInfoDiff.Stats.DriverSatisfaction / info.Instance.RequiredInternalDriverCount;
 
             // Minimum driver satisfaction
             double oldMinDriverSatisfaction = double.MaxValue;
             double newMinDriverSatisfaction = double.MaxValue;
             for (int driverIndex = 0; driverIndex < info.Instance.InternalDrivers.Length; driverIndex++) {
+                // Skip optional drivers
+                if (info.Instance.InternalDrivers[driverIndex].IsOptional) continue;
+
                 SaDriverInfo oldDriverInfo = info.DriverInfos[driverIndex];
 
                 // Get new minimum

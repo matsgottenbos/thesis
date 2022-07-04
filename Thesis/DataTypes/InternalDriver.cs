@@ -27,6 +27,7 @@ namespace Thesis {
         }
 
         public override double GetSatisfaction(SaDriverInfo driverInfo) {
+            if (IsOptional) return 0;
             return SatisfactionCalculator.GetDriverSatisfaction(this, driverInfo);
         }
 

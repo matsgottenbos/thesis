@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class DataDriverProcessor {
-        public static InternalDriver[] CreateInternalDrivers(XSSFWorkbook settingsBook, string[] stationCountries) {
+        public static (InternalDriver[], int) CreateInternalDrivers(XSSFWorkbook settingsBook, string[] stationCountries) {
             ExcelSheet internalDriverSettingsSheet = new ExcelSheet("Internal drivers", settingsBook);
 
             (int[][] internalDriversHomeTravelTimes, int[][] internalDriversHomeTravelDistances, string[] travelInfoInternalDriverNames, _) = TravelInfoImporter.ImportBipartiteTravelInfo(Path.Combine(AppConfig.IntermediateFolder, "internalTravelInfo.csv"));
 
             List<InternalDriver> internalDrivers = new List<InternalDriver>();
+            int requiredInternalDriverCount = 0;
             internalDriverSettingsSheet.ForEachRow(internalDriverSettingsRow => {
                 string driverName = internalDriverSettingsSheet.GetStringValue(internalDriverSettingsRow, "Internal driver name");
                 string countryQualificationsStr = internalDriverSettingsSheet.GetStringValue(internalDriverSettingsRow, "Country qualifications");
@@ -24,6 +25,10 @@ namespace Thesis {
 
                 string[] countryQualifications = countryQualificationsStr.Split(", ");
                 bool isInternational = countryQualifications.Length > 1;
+
+                if (!isOptional.Value) {
+                    requiredInternalDriverCount++;
+                }
 
                 int travelInfoInternalDriverIndex = Array.IndexOf(travelInfoInternalDriverNames, driverName);
                 if (travelInfoInternalDriverIndex == -1) {
@@ -41,7 +46,7 @@ namespace Thesis {
                 int internalDriverIndex = internalDrivers.Count;
                 internalDrivers.Add(new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, isInternational, isOptional.Value, homeTravelTimes, homeTravelDistance, trackProficiencies, contractTime.Value, salaryInfo));
             });
-            return internalDrivers.ToArray();
+            return (internalDrivers.ToArray(), requiredInternalDriverCount);
         }
 
         // TODO: use this when route knowledge data is available
@@ -94,6 +99,7 @@ namespace Thesis {
                 int? minShiftCount = externalDriverCompanySettingsSheet.GetIntValue(externalDriverCompanySettingsRow, "Minimum shift count");
                 int? maxShiftCount = externalDriverCompanySettingsSheet.GetIntValue(externalDriverCompanySettingsRow, "Maximum shift count");
                 if (companyName == null || externalDriverTypeName == null || countryQualificationsStr == null || !isHotelAllowed.HasValue || !minShiftCount.HasValue || !maxShiftCount.HasValue) return;
+                if (maxShiftCount.Value == 0) return;
 
                 string[] countryQualifications = countryQualificationsStr.Split(", ");
                 bool isInternational = countryQualifications.Length > 1;

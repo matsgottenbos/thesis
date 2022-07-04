@@ -2294,3 +2294,428 @@ German dummy 5,"Waalhaven, kantoor RFO",104,154
 German dummy 5,"Westhaven, emplacement",93,138
 German dummy 5,Zevenaar grens,22,19
 German dummy 5,"Zutphen, emplacement",45,54
+German dummy 6,Acht,83,123
+German dummy 6,"Almelo, emplacement",79,111
+German dummy 6,"Amersfoort, emplacement sp.12",67,89
+German dummy 6,"Amersfoort, remise Strukton",68,87
+German dummy 6,Amsterdam Centraal,96,136
+German dummy 6,Amsterdam Westhaven,94,140
+German dummy 6,Amsterdam Westhaven West,95,143
+German dummy 6,APMT,127,189
+German dummy 6,"Arnhem, goederenemplacement",32,33
+German dummy 6,"Bad Bentheim, empl. / staalfabriek",79,112
+German dummy 6,"Bad Bentheim, Hilgenstiege sp.25",81,113
+German dummy 6,"Beverwijk, emplacement",101,154
+German dummy 6,Bietigheim-Bissingen,293,475
+German dummy 6,"Blerick, emplacement en werkplaats",68,83
+German dummy 6,"Born, emplacement",98,132
+German dummy 6,"Botlek, emplacement",109,164
+German dummy 6,Bottrop,51,68
+German dummy 6,"Coevorden, euroterminal",108,164
+German dummy 6,Deventer goed. empl.,52,70
+German dummy 6,"Deventer, goederenemplacement",53,70
+German dummy 6,"Dordrecht, dok",98,148
+German dummy 6,"Dortmund Obereving, emplacement",75,112
+German dummy 6,Duisburg Ruhrorthafen,50,69
+German dummy 6,"Duisburg, Hochfeld Süd Vorbahnhof",51,78
+German dummy 6,ECT,130,191
+German dummy 6,"Eindhoven, emplacement",82,120
+German dummy 6,"Eindhoven, emplacement Acht",84,124
+German dummy 6,Eltville Ost,202,312
+German dummy 6,"Emmerich, station",6,1
+German dummy 6,Euromax,132,199
+German dummy 6,"Europoort, emplacement",114,175
+German dummy 6,"Gekkengraaf, emplacement",67,81
+German dummy 6,Germersheim,250,410
+German dummy 6,Goes,150,227
+German dummy 6,"Hengelo, emplacement",71,82
+German dummy 6,"Herzogenrath, station",120,183
+German dummy 6,Holland Cargo Terminal,98,146
+German dummy 6,"Houtrakpolder, emplacement",94,143
+German dummy 6,"IJsselmonde, emplacement",99,147
+German dummy 6,"Kaldenkirchen, station",72,91
+German dummy 6,"Kijfhoek, emplacement",96,145
+German dummy 6,"Köln Eifeltor, emplacement",95,146
+German dummy 6,Koole Vondelingenweg,107,160
+German dummy 6,"Krefeld Linn, emplacement",70,94
+German dummy 6,"Lage Zwaluwe, emplacement",100,152
+German dummy 6,"Leusden, PON",60,79
+German dummy 6,Ludwigshafen-Oggersheim,232,376
+German dummy 6,"Maasvlakte, emplacement",126,190
+German dummy 6,Magdeburg Hbf,276,451
+German dummy 6,"Marl-Sinsen, emplacement",64,97
+German dummy 6,Matrans Rotterdam Terminal,117,158
+German dummy 6,"Moerdijk, emplacement",107,156
+German dummy 6,Moers,58,80
+German dummy 6,"Neuss, guterbahnhof",76,105
+German dummy 6,"Nijmegen, emplacement",46,40
+German dummy 6,NWB terminal,95,140
+German dummy 6,OBA,95,141
+German dummy 6,"Oberhausen West, emplacement",43,66
+German dummy 6,"Oldenzaal, emplacement",80,99
+German dummy 6,"Onnen, emplacement noordingang",125,191
+German dummy 6,"Onnen, emplacement zuidingang",122,188
+German dummy 6,Opladen,78,119
+German dummy 6,"Oss, terminal OOC",60,81
+German dummy 6,"Pernis, emplacement",104,157
+German dummy 6,Rheine,92,134
+German dummy 6,"Rheinhausen, emplacement",62,83
+German dummy 6,"Roosendaal, emplacement",118,173
+German dummy 6,RWG,131,190
+German dummy 6,"Sittard, emplacement",105,138
+German dummy 6,Sloehaven empl.,155,238
+German dummy 6,Steinweg Amsterdam,96,143
+German dummy 6,Stroe,55,80
+German dummy 6,Stuttgart,306,489
+German dummy 6,"Tilburg, industrie",86,121
+German dummy 6,"Uitgeest, emplacement",105,153
+German dummy 6,"Valburg, emplacement CUP",39,46
+German dummy 6,"Venlo, emplacement",72,85
+German dummy 6,"Viersen, guterbahnhof",82,122
+German dummy 6,"Vlissingen Sloe, emplacement",156,239
+German dummy 6,Vopak-Sloe,156,237
+German dummy 6,"Waalhaven, emplacement",102,154
+German dummy 6,"Waalhaven, kantoor RFO",104,154
+German dummy 6,"Westhaven, emplacement",93,138
+German dummy 6,Zevenaar grens,22,19
+German dummy 6,"Zutphen, emplacement",45,54
+German dummy 7,Acht,83,123
+German dummy 7,"Almelo, emplacement",79,111
+German dummy 7,"Amersfoort, emplacement sp.12",67,89
+German dummy 7,"Amersfoort, remise Strukton",68,87
+German dummy 7,Amsterdam Centraal,96,136
+German dummy 7,Amsterdam Westhaven,94,140
+German dummy 7,Amsterdam Westhaven West,95,143
+German dummy 7,APMT,127,189
+German dummy 7,"Arnhem, goederenemplacement",32,33
+German dummy 7,"Bad Bentheim, empl. / staalfabriek",79,112
+German dummy 7,"Bad Bentheim, Hilgenstiege sp.25",81,113
+German dummy 7,"Beverwijk, emplacement",101,154
+German dummy 7,Bietigheim-Bissingen,293,475
+German dummy 7,"Blerick, emplacement en werkplaats",68,83
+German dummy 7,"Born, emplacement",98,132
+German dummy 7,"Botlek, emplacement",109,164
+German dummy 7,Bottrop,51,68
+German dummy 7,"Coevorden, euroterminal",108,164
+German dummy 7,Deventer goed. empl.,52,70
+German dummy 7,"Deventer, goederenemplacement",53,70
+German dummy 7,"Dordrecht, dok",98,148
+German dummy 7,"Dortmund Obereving, emplacement",75,112
+German dummy 7,Duisburg Ruhrorthafen,50,69
+German dummy 7,"Duisburg, Hochfeld Süd Vorbahnhof",51,78
+German dummy 7,ECT,130,191
+German dummy 7,"Eindhoven, emplacement",82,120
+German dummy 7,"Eindhoven, emplacement Acht",84,124
+German dummy 7,Eltville Ost,202,312
+German dummy 7,"Emmerich, station",6,1
+German dummy 7,Euromax,132,199
+German dummy 7,"Europoort, emplacement",114,175
+German dummy 7,"Gekkengraaf, emplacement",67,81
+German dummy 7,Germersheim,250,410
+German dummy 7,Goes,150,227
+German dummy 7,"Hengelo, emplacement",71,82
+German dummy 7,"Herzogenrath, station",120,183
+German dummy 7,Holland Cargo Terminal,98,146
+German dummy 7,"Houtrakpolder, emplacement",94,143
+German dummy 7,"IJsselmonde, emplacement",99,147
+German dummy 7,"Kaldenkirchen, station",72,91
+German dummy 7,"Kijfhoek, emplacement",96,145
+German dummy 7,"Köln Eifeltor, emplacement",95,146
+German dummy 7,Koole Vondelingenweg,107,160
+German dummy 7,"Krefeld Linn, emplacement",70,94
+German dummy 7,"Lage Zwaluwe, emplacement",100,152
+German dummy 7,"Leusden, PON",60,79
+German dummy 7,Ludwigshafen-Oggersheim,232,376
+German dummy 7,"Maasvlakte, emplacement",126,190
+German dummy 7,Magdeburg Hbf,276,451
+German dummy 7,"Marl-Sinsen, emplacement",64,97
+German dummy 7,Matrans Rotterdam Terminal,117,158
+German dummy 7,"Moerdijk, emplacement",107,156
+German dummy 7,Moers,58,80
+German dummy 7,"Neuss, guterbahnhof",76,105
+German dummy 7,"Nijmegen, emplacement",46,40
+German dummy 7,NWB terminal,95,140
+German dummy 7,OBA,95,141
+German dummy 7,"Oberhausen West, emplacement",43,66
+German dummy 7,"Oldenzaal, emplacement",80,99
+German dummy 7,"Onnen, emplacement noordingang",125,191
+German dummy 7,"Onnen, emplacement zuidingang",122,188
+German dummy 7,Opladen,78,119
+German dummy 7,"Oss, terminal OOC",60,81
+German dummy 7,"Pernis, emplacement",104,157
+German dummy 7,Rheine,92,134
+German dummy 7,"Rheinhausen, emplacement",62,83
+German dummy 7,"Roosendaal, emplacement",118,173
+German dummy 7,RWG,131,190
+German dummy 7,"Sittard, emplacement",105,138
+German dummy 7,Sloehaven empl.,155,238
+German dummy 7,Steinweg Amsterdam,96,143
+German dummy 7,Stroe,55,80
+German dummy 7,Stuttgart,306,489
+German dummy 7,"Tilburg, industrie",86,121
+German dummy 7,"Uitgeest, emplacement",105,153
+German dummy 7,"Valburg, emplacement CUP",39,46
+German dummy 7,"Venlo, emplacement",72,85
+German dummy 7,"Viersen, guterbahnhof",82,122
+German dummy 7,"Vlissingen Sloe, emplacement",156,239
+German dummy 7,Vopak-Sloe,156,237
+German dummy 7,"Waalhaven, emplacement",102,154
+German dummy 7,"Waalhaven, kantoor RFO",104,154
+German dummy 7,"Westhaven, emplacement",93,138
+German dummy 7,Zevenaar grens,22,19
+German dummy 7,"Zutphen, emplacement",45,54
+German dummy 8,Acht,83,123
+German dummy 8,"Almelo, emplacement",79,111
+German dummy 8,"Amersfoort, emplacement sp.12",67,89
+German dummy 8,"Amersfoort, remise Strukton",68,87
+German dummy 8,Amsterdam Centraal,96,136
+German dummy 8,Amsterdam Westhaven,94,140
+German dummy 8,Amsterdam Westhaven West,95,143
+German dummy 8,APMT,127,189
+German dummy 8,"Arnhem, goederenemplacement",32,33
+German dummy 8,"Bad Bentheim, empl. / staalfabriek",79,112
+German dummy 8,"Bad Bentheim, Hilgenstiege sp.25",81,113
+German dummy 8,"Beverwijk, emplacement",101,154
+German dummy 8,Bietigheim-Bissingen,293,475
+German dummy 8,"Blerick, emplacement en werkplaats",68,83
+German dummy 8,"Born, emplacement",98,132
+German dummy 8,"Botlek, emplacement",109,164
+German dummy 8,Bottrop,51,68
+German dummy 8,"Coevorden, euroterminal",108,164
+German dummy 8,Deventer goed. empl.,52,70
+German dummy 8,"Deventer, goederenemplacement",53,70
+German dummy 8,"Dordrecht, dok",98,148
+German dummy 8,"Dortmund Obereving, emplacement",75,112
+German dummy 8,Duisburg Ruhrorthafen,50,69
+German dummy 8,"Duisburg, Hochfeld Süd Vorbahnhof",51,78
+German dummy 8,ECT,130,191
+German dummy 8,"Eindhoven, emplacement",82,120
+German dummy 8,"Eindhoven, emplacement Acht",84,124
+German dummy 8,Eltville Ost,202,312
+German dummy 8,"Emmerich, station",6,1
+German dummy 8,Euromax,132,199
+German dummy 8,"Europoort, emplacement",114,175
+German dummy 8,"Gekkengraaf, emplacement",67,81
+German dummy 8,Germersheim,250,410
+German dummy 8,Goes,150,227
+German dummy 8,"Hengelo, emplacement",71,82
+German dummy 8,"Herzogenrath, station",120,183
+German dummy 8,Holland Cargo Terminal,98,146
+German dummy 8,"Houtrakpolder, emplacement",94,143
+German dummy 8,"IJsselmonde, emplacement",99,147
+German dummy 8,"Kaldenkirchen, station",72,91
+German dummy 8,"Kijfhoek, emplacement",96,145
+German dummy 8,"Köln Eifeltor, emplacement",95,146
+German dummy 8,Koole Vondelingenweg,107,160
+German dummy 8,"Krefeld Linn, emplacement",70,94
+German dummy 8,"Lage Zwaluwe, emplacement",100,152
+German dummy 8,"Leusden, PON",60,79
+German dummy 8,Ludwigshafen-Oggersheim,232,376
+German dummy 8,"Maasvlakte, emplacement",126,190
+German dummy 8,Magdeburg Hbf,276,451
+German dummy 8,"Marl-Sinsen, emplacement",64,97
+German dummy 8,Matrans Rotterdam Terminal,117,158
+German dummy 8,"Moerdijk, emplacement",107,156
+German dummy 8,Moers,58,80
+German dummy 8,"Neuss, guterbahnhof",76,105
+German dummy 8,"Nijmegen, emplacement",46,40
+German dummy 8,NWB terminal,95,140
+German dummy 8,OBA,95,141
+German dummy 8,"Oberhausen West, emplacement",43,66
+German dummy 8,"Oldenzaal, emplacement",80,99
+German dummy 8,"Onnen, emplacement noordingang",125,191
+German dummy 8,"Onnen, emplacement zuidingang",122,188
+German dummy 8,Opladen,78,119
+German dummy 8,"Oss, terminal OOC",60,81
+German dummy 8,"Pernis, emplacement",104,157
+German dummy 8,Rheine,92,134
+German dummy 8,"Rheinhausen, emplacement",62,83
+German dummy 8,"Roosendaal, emplacement",118,173
+German dummy 8,RWG,131,190
+German dummy 8,"Sittard, emplacement",105,138
+German dummy 8,Sloehaven empl.,155,238
+German dummy 8,Steinweg Amsterdam,96,143
+German dummy 8,Stroe,55,80
+German dummy 8,Stuttgart,306,489
+German dummy 8,"Tilburg, industrie",86,121
+German dummy 8,"Uitgeest, emplacement",105,153
+German dummy 8,"Valburg, emplacement CUP",39,46
+German dummy 8,"Venlo, emplacement",72,85
+German dummy 8,"Viersen, guterbahnhof",82,122
+German dummy 8,"Vlissingen Sloe, emplacement",156,239
+German dummy 8,Vopak-Sloe,156,237
+German dummy 8,"Waalhaven, emplacement",102,154
+German dummy 8,"Waalhaven, kantoor RFO",104,154
+German dummy 8,"Westhaven, emplacement",93,138
+German dummy 8,Zevenaar grens,22,19
+German dummy 8,"Zutphen, emplacement",45,54
+German dummy 9,Acht,83,123
+German dummy 9,"Almelo, emplacement",79,111
+German dummy 9,"Amersfoort, emplacement sp.12",67,89
+German dummy 9,"Amersfoort, remise Strukton",68,87
+German dummy 9,Amsterdam Centraal,96,136
+German dummy 9,Amsterdam Westhaven,94,140
+German dummy 9,Amsterdam Westhaven West,95,143
+German dummy 9,APMT,127,189
+German dummy 9,"Arnhem, goederenemplacement",32,33
+German dummy 9,"Bad Bentheim, empl. / staalfabriek",79,112
+German dummy 9,"Bad Bentheim, Hilgenstiege sp.25",81,113
+German dummy 9,"Beverwijk, emplacement",101,154
+German dummy 9,Bietigheim-Bissingen,293,475
+German dummy 9,"Blerick, emplacement en werkplaats",68,83
+German dummy 9,"Born, emplacement",98,132
+German dummy 9,"Botlek, emplacement",109,164
+German dummy 9,Bottrop,51,68
+German dummy 9,"Coevorden, euroterminal",108,164
+German dummy 9,Deventer goed. empl.,52,70
+German dummy 9,"Deventer, goederenemplacement",53,70
+German dummy 9,"Dordrecht, dok",98,148
+German dummy 9,"Dortmund Obereving, emplacement",75,112
+German dummy 9,Duisburg Ruhrorthafen,50,69
+German dummy 9,"Duisburg, Hochfeld Süd Vorbahnhof",51,78
+German dummy 9,ECT,130,191
+German dummy 9,"Eindhoven, emplacement",82,120
+German dummy 9,"Eindhoven, emplacement Acht",84,124
+German dummy 9,Eltville Ost,202,312
+German dummy 9,"Emmerich, station",6,1
+German dummy 9,Euromax,132,199
+German dummy 9,"Europoort, emplacement",114,175
+German dummy 9,"Gekkengraaf, emplacement",67,81
+German dummy 9,Germersheim,250,410
+German dummy 9,Goes,150,227
+German dummy 9,"Hengelo, emplacement",71,82
+German dummy 9,"Herzogenrath, station",120,183
+German dummy 9,Holland Cargo Terminal,98,146
+German dummy 9,"Houtrakpolder, emplacement",94,143
+German dummy 9,"IJsselmonde, emplacement",99,147
+German dummy 9,"Kaldenkirchen, station",72,91
+German dummy 9,"Kijfhoek, emplacement",96,145
+German dummy 9,"Köln Eifeltor, emplacement",95,146
+German dummy 9,Koole Vondelingenweg,107,160
+German dummy 9,"Krefeld Linn, emplacement",70,94
+German dummy 9,"Lage Zwaluwe, emplacement",100,152
+German dummy 9,"Leusden, PON",60,79
+German dummy 9,Ludwigshafen-Oggersheim,232,376
+German dummy 9,"Maasvlakte, emplacement",126,190
+German dummy 9,Magdeburg Hbf,276,451
+German dummy 9,"Marl-Sinsen, emplacement",64,97
+German dummy 9,Matrans Rotterdam Terminal,117,158
+German dummy 9,"Moerdijk, emplacement",107,156
+German dummy 9,Moers,58,80
+German dummy 9,"Neuss, guterbahnhof",76,105
+German dummy 9,"Nijmegen, emplacement",46,40
+German dummy 9,NWB terminal,95,140
+German dummy 9,OBA,95,141
+German dummy 9,"Oberhausen West, emplacement",43,66
+German dummy 9,"Oldenzaal, emplacement",80,99
+German dummy 9,"Onnen, emplacement noordingang",125,191
+German dummy 9,"Onnen, emplacement zuidingang",122,188
+German dummy 9,Opladen,78,119
+German dummy 9,"Oss, terminal OOC",60,81
+German dummy 9,"Pernis, emplacement",104,157
+German dummy 9,Rheine,92,134
+German dummy 9,"Rheinhausen, emplacement",62,83
+German dummy 9,"Roosendaal, emplacement",118,173
+German dummy 9,RWG,131,190
+German dummy 9,"Sittard, emplacement",105,138
+German dummy 9,Sloehaven empl.,155,238
+German dummy 9,Steinweg Amsterdam,96,143
+German dummy 9,Stroe,55,80
+German dummy 9,Stuttgart,306,489
+German dummy 9,"Tilburg, industrie",86,121
+German dummy 9,"Uitgeest, emplacement",105,153
+German dummy 9,"Valburg, emplacement CUP",39,46
+German dummy 9,"Venlo, emplacement",72,85
+German dummy 9,"Viersen, guterbahnhof",82,122
+German dummy 9,"Vlissingen Sloe, emplacement",156,239
+German dummy 9,Vopak-Sloe,156,237
+German dummy 9,"Waalhaven, emplacement",102,154
+German dummy 9,"Waalhaven, kantoor RFO",104,154
+German dummy 9,"Westhaven, emplacement",93,138
+German dummy 9,Zevenaar grens,22,19
+German dummy 9,"Zutphen, emplacement",45,54
+German dummy 10,Acht,83,123
+German dummy 10,"Almelo, emplacement",79,111
+German dummy 10,"Amersfoort, emplacement sp.12",67,89
+German dummy 10,"Amersfoort, remise Strukton",68,87
+German dummy 10,Amsterdam Centraal,96,136
+German dummy 10,Amsterdam Westhaven,94,140
+German dummy 10,Amsterdam Westhaven West,95,143
+German dummy 10,APMT,127,189
+German dummy 10,"Arnhem, goederenemplacement",32,33
+German dummy 10,"Bad Bentheim, empl. / staalfabriek",79,112
+German dummy 10,"Bad Bentheim, Hilgenstiege sp.25",81,113
+German dummy 10,"Beverwijk, emplacement",101,154
+German dummy 10,Bietigheim-Bissingen,293,475
+German dummy 10,"Blerick, emplacement en werkplaats",68,83
+German dummy 10,"Born, emplacement",98,132
+German dummy 10,"Botlek, emplacement",109,164
+German dummy 10,Bottrop,51,68
+German dummy 10,"Coevorden, euroterminal",108,164
+German dummy 10,Deventer goed. empl.,52,70
+German dummy 10,"Deventer, goederenemplacement",53,70
+German dummy 10,"Dordrecht, dok",98,148
+German dummy 10,"Dortmund Obereving, emplacement",75,112
+German dummy 10,Duisburg Ruhrorthafen,50,69
+German dummy 10,"Duisburg, Hochfeld Süd Vorbahnhof",51,78
+German dummy 10,ECT,130,191
+German dummy 10,"Eindhoven, emplacement",82,120
+German dummy 10,"Eindhoven, emplacement Acht",84,124
+German dummy 10,Eltville Ost,202,312
+German dummy 10,"Emmerich, station",6,1
+German dummy 10,Euromax,132,199
+German dummy 10,"Europoort, emplacement",114,175
+German dummy 10,"Gekkengraaf, emplacement",67,81
+German dummy 10,Germersheim,250,410
+German dummy 10,Goes,150,227
+German dummy 10,"Hengelo, emplacement",71,82
+German dummy 10,"Herzogenrath, station",120,183
+German dummy 10,Holland Cargo Terminal,98,146
+German dummy 10,"Houtrakpolder, emplacement",94,143
+German dummy 10,"IJsselmonde, emplacement",99,147
+German dummy 10,"Kaldenkirchen, station",72,91
+German dummy 10,"Kijfhoek, emplacement",96,145
+German dummy 10,"Köln Eifeltor, emplacement",95,146
+German dummy 10,Koole Vondelingenweg,107,160
+German dummy 10,"Krefeld Linn, emplacement",70,94
+German dummy 10,"Lage Zwaluwe, emplacement",100,152
+German dummy 10,"Leusden, PON",60,79
+German dummy 10,Ludwigshafen-Oggersheim,232,376
+German dummy 10,"Maasvlakte, emplacement",126,190
+German dummy 10,Magdeburg Hbf,276,451
+German dummy 10,"Marl-Sinsen, emplacement",64,97
+German dummy 10,Matrans Rotterdam Terminal,117,158
+German dummy 10,"Moerdijk, emplacement",107,156
+German dummy 10,Moers,58,80
+German dummy 10,"Neuss, guterbahnhof",76,105
+German dummy 10,"Nijmegen, emplacement",46,40
+German dummy 10,NWB terminal,95,140
+German dummy 10,OBA,95,141
+German dummy 10,"Oberhausen West, emplacement",43,66
+German dummy 10,"Oldenzaal, emplacement",80,99
+German dummy 10,"Onnen, emplacement noordingang",125,191
+German dummy 10,"Onnen, emplacement zuidingang",122,188
+German dummy 10,Opladen,78,119
+German dummy 10,"Oss, terminal OOC",60,81
+German dummy 10,"Pernis, emplacement",104,157
+German dummy 10,Rheine,92,134
+German dummy 10,"Rheinhausen, emplacement",62,83
+German dummy 10,"Roosendaal, emplacement",118,173
+German dummy 10,RWG,131,190
+German dummy 10,"Sittard, emplacement",105,138
+German dummy 10,Sloehaven empl.,155,238
+German dummy 10,Steinweg Amsterdam,96,143
+German dummy 10,Stroe,55,80
+German dummy 10,Stuttgart,306,489
+German dummy 10,"Tilburg, industrie",86,121
+German dummy 10,"Uitgeest, emplacement",105,153
+German dummy 10,"Valburg, emplacement CUP",39,46
+German dummy 10,"Venlo, emplacement",72,85
+German dummy 10,"Viersen, guterbahnhof",82,122
+German dummy 10,"Vlissingen Sloe, emplacement",156,239
+German dummy 10,Vopak-Sloe,156,237
+German dummy 10,"Waalhaven, emplacement",102,154
+German dummy 10,"Waalhaven, kantoor RFO",104,154
+German dummy 10,"Westhaven, emplacement",93,138
+German dummy 10,Zevenaar grens,22,19
+German dummy 10,"Zutphen, emplacement",45,54

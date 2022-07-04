@@ -59,7 +59,7 @@ namespace Thesis {
             return dataStationNamesWithoutSwitching.ToArray();
         }
 
-        public static Driver[] GetDataAssignment(XSSFWorkbook settingsBook, Activity[] activities, InternalDriver[] internalDrivers, Dictionary<(string, bool), ExternalDriver[]> externalDriversByTypeDict) {
+        public static Driver[] GetDataAssignment(XSSFWorkbook settingsBook, Activity[] activities, InternalDriver[] internalDrivers, Dictionary<(string, bool), ExternalDriver[]> externalDriversByDataTypeDict) {
             ExcelSheet externalDriversSettingsSheet = new ExcelSheet("External drivers", settingsBook);
             List<(string, string)> externalInternationalDriverNames = new List<(string, string)>();
             externalDriversSettingsSheet.ForEachRow(externalDriverSettingsRow => {
@@ -103,12 +103,12 @@ namespace Thesis {
                         externalDriverNamesOfType.Add(activity.DataAssignedEmployeeName);
                     }
 
-                    if (!externalDriversByTypeDict.ContainsKey((activity.DataAssignedCompanyName, isInternational))) {
+                    if (!externalDriversByDataTypeDict.ContainsKey((activity.DataAssignedCompanyName, isInternational))) {
                         // Assigned to unknown company
                         continue;
                     }
 
-                    ExternalDriver[] externalDriversOfType = externalDriversByTypeDict[(activity.DataAssignedCompanyName, isInternational)];
+                    ExternalDriver[] externalDriversOfType = externalDriversByDataTypeDict[(activity.DataAssignedCompanyName, isInternational)];
                     dataAssignment[activityIndex] = externalDriversOfType[externalDriverIndexInType];
                 }
             }

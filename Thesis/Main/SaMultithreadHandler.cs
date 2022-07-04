@@ -33,35 +33,34 @@ namespace Thesis {
             // Start stopwatch
             stopwatch.Start();
 
-            if (!AppConfig.EnableMultithreading) {
+            if (AppConfig.EnableMultithreading) {
+                ManualResetEvent[] handles = new ManualResetEvent[AppConfig.ThreadCount];
+                for (int threadIndex = 0; threadIndex < AppConfig.ThreadCount; threadIndex++) {
+                    ulong seed = appRand.NextUInt64();
+                    XorShiftRandom saRand = new XorShiftRandom(seed);
+
+                    SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, saRand, HandleThreadCallback);
+                    saThreads[threadIndex] = simulatedAnnealing;
+
+                    (CancellationTokenSource cts, ManualResetEvent handle) = ThreadHandler.ExecuteInThreadWithCancellation(saRand, (CancellationToken cancellationToken, XorShiftRandom threadRand) => {
+                        simulatedAnnealing.Run(cancellationToken);
+                    });
+
+                    threadCancellationTokens[threadIndex] = cts;
+                    handles[threadIndex] = handle;
+                }
+
+                // Wait for the SA threads to exit
+                WaitHandle.WaitAll(handles);
+            } else {
                 SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, appRand, HandleThreadCallback);
                 saThreads[0] = simulatedAnnealing;
 
                 CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                 CancellationToken cancellationToken = cancellationTokenSource.Token;
-                simulatedAnnealing.Run(cancellationToken);
                 threadCancellationTokens[0] = cancellationTokenSource;
-                return;
+                simulatedAnnealing.Run(cancellationToken);
             }
-
-            ManualResetEvent[] handles = new ManualResetEvent[AppConfig.ThreadCount];
-            for (int threadIndex = 0; threadIndex < AppConfig.ThreadCount; threadIndex++) {
-                ulong seed = appRand.NextUInt64();
-                XorShiftRandom saRand = new XorShiftRandom(seed);
-
-                SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, saRand, HandleThreadCallback);
-                saThreads[threadIndex] = simulatedAnnealing;
-
-                (CancellationTokenSource cts, ManualResetEvent handle) = ThreadHandler.ExecuteInThreadWithCancellation(saRand, (CancellationToken cancellationToken, XorShiftRandom threadRand) => {
-                    simulatedAnnealing.Run(cancellationToken);
-                });
-
-                threadCancellationTokens[threadIndex] = cts;
-                handles[threadIndex] = handle;
-            }
-
-            // Wait for the SA threads to exit
-            WaitHandle.WaitAll(handles);
 
             stopwatch.Stop();
             float saDuration = stopwatch.ElapsedMilliseconds / 1000f;
@@ -220,11 +219,11 @@ namespace Thesis {
             double logCost = saThread.Info.TotalInfo.Stats.RawCost + saThread.Info.TotalInfo.Stats.Robustness;
 
             // Log basic info
-            Console.WriteLine("{0}:    # {1,4}    Last.impr: {2,4}    Cycle: {3,2}    Cost: {4,6} ({5,2}%)    Raw: {6,6}    Temp: {7,5}    Sat.f: {8,4}   Penalty: {9,-33}    {10}{11}", threadIndex, ParseHelper.LargeNumToString(saThread.Info.IterationNum), lastImprovementIterationStr, saThread.Info.CycleNum, ParseHelper.LargeNumToString(logCost, "0.0"), ParseHelper.ToString(saThread.Info.TotalInfo.Stats.SatisfactionScore.Value * 100, "0"), ParseHelper.LargeNumToString(saThread.Info.TotalInfo.Stats.RawCost, "0.0"), ParseHelper.LargeNumToString(saThread.Info.Temperature, "0.0"), ParseHelper.ToString(saThread.Info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(saThread.Info.TotalInfo), paretoFrontStr, hasImprovementStr);
+            Console.WriteLine("{0}:    # {1,6}    Last.impr: {2,4}    Cycle: {3,2}    Cost: {4,6} ({5,2}%)    Raw: {6,6}    Temp: {7,5}    Sat.f: {8,4}   Penalty: {9,-33}    {10}{11}", threadIndex, ParseHelper.LargeNumToString(saThread.Info.IterationNum, "0.#"), lastImprovementIterationStr, saThread.Info.CycleNum, ParseHelper.LargeNumToString(logCost, "0.0"), ParseHelper.ToString(saThread.Info.TotalInfo.Stats.SatisfactionScore.Value * 100, "0"), ParseHelper.LargeNumToString(saThread.Info.TotalInfo.Stats.RawCost, "0.0"), ParseHelper.LargeNumToString(saThread.Info.Temperature, "0.0"), ParseHelper.ToString(saThread.Info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(saThread.Info.TotalInfo), paretoFrontStr, hasImprovementStr);
 
             if (AppConfig.DebugSaLogAdditionalInfo) {
-                Console.WriteLine("Worked times: {0}", ParseHelper.ToString(saThread.Info.DriverInfos.Select(driverInfo => driverInfo.WorkedTime).ToArray()));
-                Console.WriteLine("Contract time factors: {0}", ParseHelper.ToString(saThread.Info.Instance.InternalDrivers.Select(driver => (double)saThread.Info.DriverInfos[driver.AllDriversIndex].WorkedTime / driver.ContractTime).ToArray()));
+                //Console.WriteLine("Worked times: {0}", ParseHelper.ToString(saThread.Info.DriverInfos.Select(driverInfo => driverInfo.WorkedTime).ToArray()));
+                //Console.WriteLine("Contract time factors: {0}", ParseHelper.ToString(saThread.Info.Instance.InternalDrivers.Select(driver => (double)saThread.Info.DriverInfos[driver.AllDriversIndex].WorkedTime / driver.ContractTime).ToArray()));
                 Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(saThread.Info.DriverInfos.Select(driverInfo => driverInfo.ShiftCount).ToArray()));
                 Console.WriteLine("External type shift counts: {0}", ParseHelper.ToString(saThread.Info.ExternalDriverTypeInfos.Select(externalDriverTypeInfo => externalDriverTypeInfo.ExternalShiftCount).ToArray()));
             }

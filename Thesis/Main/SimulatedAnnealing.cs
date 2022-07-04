@@ -251,7 +251,7 @@ namespace Thesis {
             return assignment;
         }
 
-        static double GetAdjustedCost(double cost, double satisfaction, float satisfactionFactor) {
+        public static double GetAdjustedCost(double cost, double satisfaction, float satisfactionFactor) {
             return cost * (1 + (1 - satisfaction) * satisfactionFactor);
         }
 

@@ -8,7 +8,7 @@ namespace Thesis {
         public readonly int AllDriversIndex;
         public readonly bool IsInternational;
         public readonly bool IsHotelAllowed;
-        readonly int[] homeTravelTimes, homeTravelDistances;
+        public readonly int[] homeTravelTimes, homeTravelDistances;
         readonly bool[,] trackProficiencies;
         protected Instance instance;
         public readonly SalarySettings SalarySettings;

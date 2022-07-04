@@ -195,6 +195,12 @@ namespace Thesis {
         static RawActivity GetCombinedRawActivity(RawActivity[] rawActivitiesToCombine, RawActivity mainRawActivity) {
             RawActivity firstRawActivity = rawActivitiesToCombine[0];
             RawActivity lastRawActivity = rawActivitiesToCombine[^1];
+
+            // Skip activities longer than max shift length
+            if (lastRawActivity.EndTime - firstRawActivity.StartTime > RulesConfig.NightMaxMainShiftLength) {
+                throw new Exception("Debug");
+            }
+
             return new RawActivity(mainRawActivity.DutyName, mainRawActivity.ActivityName, mainRawActivity.DutyId, mainRawActivity.ProjectName, mainRawActivity.TrainNumber, firstRawActivity.StartStationName, lastRawActivity.EndStationName, firstRawActivity.StartStationCountry, lastRawActivity.EndStationCountry, firstRawActivity.StartTime, lastRawActivity.EndTime, mainRawActivity.DataAssignedCompanyName, mainRawActivity.DataAssignedEmployeeName, rawActivitiesToCombine);
         }
 
