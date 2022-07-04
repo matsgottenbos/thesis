@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class DataDriverProcessor {
-        public static (InternalDriver[], int) CreateInternalDrivers(XSSFWorkbook settingsBook, string[] stationCountries) {
+        public static (InternalDriver[], int) CreateInternalDrivers(XSSFWorkbook settingsBook, string[][] stationCountryQualifications) {
             ExcelSheet internalDriverSettingsSheet = new ExcelSheet("Internal drivers", settingsBook);
 
             (int[][] internalDriversHomeTravelTimes, int[][] internalDriversHomeTravelDistances, string[] travelInfoInternalDriverNames, _) = TravelInfoImporter.ImportBipartiteTravelInfo(Path.Combine(AppConfig.IntermediateFolder, "internalTravelInfo.csv"));
@@ -39,7 +39,7 @@ namespace Thesis {
 
                 // Determine track proficiencies
                 // Temp: use country knowledge while route knowledge is not available
-                bool[,] trackProficiencies = DetermineTrackProficienciesFromCountryQualifications(countryQualifications, stationCountries);
+                bool[,] trackProficiencies = DetermineTrackProficienciesFromCountryQualifications(countryQualifications, stationCountryQualifications);
 
                 InternalSalarySettings salaryInfo = isInternational ? SalaryConfig.InternalInternationalSalaryInfo : SalaryConfig.InternalNationalSalaryInfo;
 
@@ -81,7 +81,7 @@ namespace Thesis {
             return internalDriverProficiencies;
         }
 
-        public static (ExternalDriverType[], ExternalDriver[][], Dictionary<(string, bool), ExternalDriver[]>) CreateExternalDrivers(XSSFWorkbook settingsBook, string[] stationCountries, int internalDriverCount) {
+        public static (ExternalDriverType[], ExternalDriver[][], Dictionary<(string, bool), ExternalDriver[]>) CreateExternalDrivers(XSSFWorkbook settingsBook, string[][] stationCountryQualifications, int internalDriverCount) {
             ExcelSheet externalDriverCompanySettingsSheet = new ExcelSheet("External driver companies", settingsBook);
 
             (int[][] externalDriversHomeTravelTimes, int[][] externalDriversHomeTravelDistances, string[] travelInfoExternalCompanyNames, _) = TravelInfoImporter.ImportBipartiteTravelInfo(Path.Combine(AppConfig.IntermediateFolder, "externalTravelInfo.csv"));
@@ -112,7 +112,7 @@ namespace Thesis {
                 int[] homeTravelDistances = externalDriversHomeTravelDistances[travelInfoExternalCompanyIndex];
 
                 // Determine track proficiencies
-                bool[,] trackProficiencies = DetermineTrackProficienciesFromCountryQualifications(countryQualifications, stationCountries);
+                bool[,] trackProficiencies = DetermineTrackProficienciesFromCountryQualifications(countryQualifications, stationCountryQualifications);
 
                 // Add external driver type
                 externalDriverTypes.Add(new ExternalDriverType(externalDriverTypeName, isInternational, isHotelAllowed.Value, minShiftCount.Value, maxShiftCount.Value));
@@ -130,14 +130,17 @@ namespace Thesis {
                 // Add to dictionary
                 externalDriversByTypeDict.Add((companyName, isInternational), currentTypeNationalDrivers);
             });
+
             return (externalDriverTypes.ToArray(), externalDriversByType.ToArray(), externalDriversByTypeDict);
         }
 
-        static bool[,] DetermineTrackProficienciesFromCountryQualifications(string[] countryQualifications, string[] stationCountries) {
-            bool[,] trackProficiencies = new bool[stationCountries.Length, stationCountries.Length];
-            for (int station1Index = 0; station1Index < stationCountries.Length; station1Index++) {
-                for (int station2Index = 0; station2Index < stationCountries.Length; station2Index++) {
-                    trackProficiencies[station1Index, station2Index] = countryQualifications.Contains(stationCountries[station1Index]) && countryQualifications.Contains(stationCountries[station2Index]);
+        static bool[,] DetermineTrackProficienciesFromCountryQualifications(string[] driverCountryQualifications, string[][] stationCountryQualifications) {
+            bool[,] trackProficiencies = new bool[stationCountryQualifications.Length, stationCountryQualifications.Length];
+            for (int station1Index = 0; station1Index < stationCountryQualifications.Length; station1Index++) {
+                for (int station2Index = 0; station2Index < stationCountryQualifications.Length; station2Index++) {
+                    bool qualifiedForStation1 = stationCountryQualifications[station1Index].Any(stationCountryQualification => driverCountryQualifications.Contains(stationCountryQualification));
+                    bool qualifiedForStation2 = stationCountryQualifications[station2Index].Any(stationCountryQualification => driverCountryQualifications.Contains(stationCountryQualification));
+                    trackProficiencies[station1Index, station2Index] = qualifiedForStation1 && qualifiedForStation2;
                 }
             }
             return trackProficiencies;

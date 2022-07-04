@@ -30,19 +30,20 @@ namespace Thesis {
             return (stationNames, plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances);
         }
 
-        public static string[] GetStationCountries(XSSFWorkbook stationAddressesBook, string[] stationNames) {
+        public static string[][] GetStationCountryQualifications(XSSFWorkbook stationAddressesBook, string[] stationNames) {
             ExcelSheet stationAddressesSheet = new ExcelSheet("Station addresses", stationAddressesBook);
 
-            string[] stationCountries = new string[stationNames.Length];
+            string[][] stationCountryQualifications = new string[stationNames.Length][];
             stationAddressesSheet.ForEachRow(stationAddressesRow => {
                 string stationName = stationAddressesSheet.GetStringValue(stationAddressesRow, "Station name");
                 int stationIndex = Array.IndexOf(stationNames, stationName);
                 if (stationIndex == -1) throw new Exception(string.Format("Station `{0}` not found in travel info", stationName));
 
-                string country = stationAddressesSheet.GetStringValue(stationAddressesRow, "Country");
-                stationCountries[stationIndex] = country;
+                string countryQualificationsStr = stationAddressesSheet.GetStringValue(stationAddressesRow, "Country qualifications");
+                string[] countryQualifications = countryQualificationsStr.Split(", ");
+                stationCountryQualifications[stationIndex] = countryQualifications;
             });
-            return stationCountries;
+            return stationCountryQualifications;
         }
 
         public static string[] GetDataStationNamesWithoutSwitching(XSSFWorkbook stationAddressesBook) {
