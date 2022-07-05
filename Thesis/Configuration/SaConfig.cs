@@ -8,8 +8,8 @@ namespace Thesis {
     class SaConfig {
         /* Simulated annealing */
         // SA parameters
-        public const int SaIterationCount = 500000000;
-        public const int SaLogFrequency = 2000000;
+        public const long SaIterationCount = 1000000000;
+        public const int SaLogFrequency = 10000000;
         public const int SaThreadCallbackFrequency = 500000;
         public const int SaParameterUpdateFrequency = 100000;
         public const float SaInitialTemperature = 2000f;
@@ -26,7 +26,7 @@ namespace Thesis {
         // Operation probabilities
         public const float AssignInternalProbCumulative = 0.7f;
         public const float AssignExternalProbCumulative = 0.8f;
-        public const float SwapProbCumulative = 0.999f;
+        public const float SwapProbCumulative = 0.99f;
         public const float ToggleHotelProbCumulative = 1f;
 
         // Penalties

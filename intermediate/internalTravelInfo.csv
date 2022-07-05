@@ -10,6 +10,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Bos, Joel","Arnhem, goederenemplacement",33,42
 "Bos, Joel","Bad Bentheim, empl. / staalfabriek",86,132
 "Bos, Joel","Bad Bentheim, Hilgenstiege sp.25",85,132
+"Bos, Joel",Beatrixhaven,79,116
 "Bos, Joel","Beverwijk, emplacement",64,97
 "Bos, Joel",Bietigheim-Bissingen,328,535
 "Bos, Joel","Blerick, emplacement en werkplaats",75,113
@@ -67,6 +68,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Bos, Joel","Rheinhausen, emplacement",97,143
 "Bos, Joel","Roosendaal, emplacement",90,131
 "Bos, Joel",RWG,100,144
+"Bos, Joel",'s-Hertogenbosch,61,77
 "Bos, Joel","Sittard, emplacement",111,167
 "Bos, Joel",Sloehaven empl.,129,196
 "Bos, Joel",Steinweg Amsterdam,56,83
@@ -95,6 +97,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Broere, Sam","Arnhem, goederenemplacement",52,70
 "Broere, Sam","Bad Bentheim, empl. / staalfabriek",104,158
 "Broere, Sam","Bad Bentheim, Hilgenstiege sp.25",104,158
+"Broere, Sam",Beatrixhaven,52,71
 "Broere, Sam","Beverwijk, emplacement",48,67
 "Broere, Sam",Bietigheim-Bissingen,347,563
 "Broere, Sam","Blerick, emplacement en werkplaats",94,141
@@ -152,6 +155,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Broere, Sam","Rheinhausen, emplacement",116,171
 "Broere, Sam","Roosendaal, emplacement",69,92
 "Broere, Sam",RWG,77,103
+"Broere, Sam",'s-Hertogenbosch,40,51
 "Broere, Sam","Sittard, emplacement",107,157
 "Broere, Sam",Sloehaven empl.,108,158
 "Broere, Sam",Steinweg Amsterdam,43,54
@@ -180,6 +184,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "de Kleijn, T.","Arnhem, goederenemplacement",77,110
 "de Kleijn, T.","Bad Bentheim, empl. / staalfabriek",139,218
 "de Kleijn, T.","Bad Bentheim, Hilgenstiege sp.25",139,219
+"de Kleijn, T.",Beatrixhaven,16,16
 "de Kleijn, T.","Beverwijk, emplacement",66,96
 "de Kleijn, T.",Bietigheim-Bissingen,377,605
 "de Kleijn, T.","Blerick, emplacement en werkplaats",108,158
@@ -237,6 +242,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "de Kleijn, T.","Rheinhausen, emplacement",130,198
 "de Kleijn, T.","Roosendaal, emplacement",37,50
 "de Kleijn, T.",RWG,44,52
+"de Kleijn, T.",'s-Hertogenbosch,52,73
 "de Kleijn, T.","Sittard, emplacement",117,174
 "de Kleijn, T.",Sloehaven empl.,75,113
 "de Kleijn, T.",Steinweg Amsterdam,61,88
@@ -265,6 +271,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "de Koning, Mark","Arnhem, goederenemplacement",24,14
 "de Koning, Mark","Bad Bentheim, empl. / staalfabriek",82,125
 "de Koning, Mark","Bad Bentheim, Hilgenstiege sp.25",82,126
+"de Koning, Mark",Beatrixhaven,74,109
 "de Koning, Mark","Beverwijk, emplacement",79,112
 "de Koning, Mark",Bietigheim-Bissingen,320,521
 "de Koning, Mark","Blerick, emplacement en werkplaats",58,84
@@ -322,6 +329,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "de Koning, Mark","Rheinhausen, emplacement",81,123
 "de Koning, Mark","Roosendaal, emplacement",88,128
 "de Koning, Mark",RWG,101,145
+"de Koning, Mark",'s-Hertogenbosch,42,55
 "de Koning, Mark","Sittard, emplacement",94,138
 "de Koning, Mark",Sloehaven empl.,127,193
 "de Koning, Mark",Steinweg Amsterdam,73,101
@@ -350,6 +358,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Dijkema, Stefan","Arnhem, goederenemplacement",45,58
 "Dijkema, Stefan","Bad Bentheim, empl. / staalfabriek",87,130
 "Dijkema, Stefan","Bad Bentheim, Hilgenstiege sp.25",86,130
+"Dijkema, Stefan",Beatrixhaven,77,107
 "Dijkema, Stefan","Beverwijk, emplacement",61,85
 "Dijkema, Stefan",Bietigheim-Bissingen,341,551
 "Dijkema, Stefan","Blerick, emplacement en werkplaats",87,129
@@ -407,6 +416,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Dijkema, Stefan","Rheinhausen, emplacement",109,159
 "Dijkema, Stefan","Roosendaal, emplacement",91,126
 "Dijkema, Stefan",RWG,102,139
+"Dijkema, Stefan",'s-Hertogenbosch,62,84
 "Dijkema, Stefan","Sittard, emplacement",124,183
 "Dijkema, Stefan",Sloehaven empl.,130,191
 "Dijkema, Stefan",Steinweg Amsterdam,52,71
@@ -435,6 +445,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Hagens, Rien","Arnhem, goederenemplacement",24,14
 "Hagens, Rien","Bad Bentheim, empl. / staalfabriek",82,125
 "Hagens, Rien","Bad Bentheim, Hilgenstiege sp.25",82,126
+"Hagens, Rien",Beatrixhaven,74,109
 "Hagens, Rien","Beverwijk, emplacement",79,112
 "Hagens, Rien",Bietigheim-Bissingen,320,521
 "Hagens, Rien","Blerick, emplacement en werkplaats",58,84
@@ -492,6 +503,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Hagens, Rien","Rheinhausen, emplacement",81,123
 "Hagens, Rien","Roosendaal, emplacement",88,128
 "Hagens, Rien",RWG,101,145
+"Hagens, Rien",'s-Hertogenbosch,42,55
 "Hagens, Rien","Sittard, emplacement",94,138
 "Hagens, Rien",Sloehaven empl.,127,193
 "Hagens, Rien",Steinweg Amsterdam,73,101
@@ -520,6 +532,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Jonker, R.M.J.","Arnhem, goederenemplacement",62,88
 "Jonker, R.M.J.","Bad Bentheim, empl. / staalfabriek",28,35
 "Jonker, R.M.J.","Bad Bentheim, Hilgenstiege sp.25",27,35
+"Jonker, R.M.J.",Beatrixhaven,128,195
 "Jonker, R.M.J.","Beverwijk, emplacement",111,173
 "Jonker, R.M.J.",Bietigheim-Bissingen,329,533
 "Jonker, R.M.J.","Blerick, emplacement en werkplaats",113,173
@@ -577,6 +590,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Jonker, R.M.J.","Rheinhausen, emplacement",105,132
 "Jonker, R.M.J.","Roosendaal, emplacement",142,214
 "Jonker, R.M.J.",RWG,152,227
+"Jonker, R.M.J.",'s-Hertogenbosch,97,144
 "Jonker, R.M.J.","Sittard, emplacement",150,228
 "Jonker, R.M.J.",Sloehaven empl.,181,279
 "Jonker, R.M.J.",Steinweg Amsterdam,103,159
@@ -594,91 +608,93 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Jonker, R.M.J.","Westhaven, emplacement",101,156
 "Jonker, R.M.J.",Zevenaar grens,65,94
 "Jonker, R.M.J.","Zutphen, emplacement",42,54
-"Okhuijsen, A.T.T.",Acht,60,84
-"Okhuijsen, A.T.T.","Almelo, emplacement",68,93
-"Okhuijsen, A.T.T.","Amersfoort, emplacement sp.12",56,70
-"Okhuijsen, A.T.T.","Amersfoort, remise Strukton",57,68
-"Okhuijsen, A.T.T.",Amsterdam Centraal,84,117
-"Okhuijsen, A.T.T.",Amsterdam Westhaven,83,122
-"Okhuijsen, A.T.T.",Amsterdam Westhaven West,84,124
-"Okhuijsen, A.T.T.",APMT,103,151
-"Okhuijsen, A.T.T.","Arnhem, goederenemplacement",10,5
-"Okhuijsen, A.T.T.","Bad Bentheim, empl. / staalfabriek",82,123
-"Okhuijsen, A.T.T.","Bad Bentheim, Hilgenstiege sp.25",82,123
-"Okhuijsen, A.T.T.","Beverwijk, emplacement",90,135
-"Okhuijsen, A.T.T.",Bietigheim-Bissingen,312,506
-"Okhuijsen, A.T.T.","Blerick, emplacement en werkplaats",65,82
-"Okhuijsen, A.T.T.","Born, emplacement",94,132
-"Okhuijsen, A.T.T.","Botlek, emplacement",85,125
-"Okhuijsen, A.T.T.",Bottrop,69,99
-"Okhuijsen, A.T.T.","Coevorden, euroterminal",97,133
-"Okhuijsen, A.T.T.",Deventer goed. empl.,41,52
-"Okhuijsen, A.T.T.","Deventer, goederenemplacement",41,52
-"Okhuijsen, A.T.T.","Dordrecht, dok",74,109
-"Okhuijsen, A.T.T.","Dortmund Obereving, emplacement",94,142
-"Okhuijsen, A.T.T.",Duisburg Ruhrorthafen,68,100
-"Okhuijsen, A.T.T.","Duisburg, Hochfeld Süd Vorbahnhof",69,109
-"Okhuijsen, A.T.T.",ECT,106,153
-"Okhuijsen, A.T.T.","Eindhoven, emplacement",58,81
-"Okhuijsen, A.T.T.","Eindhoven, emplacement Acht",60,85
-"Okhuijsen, A.T.T.",Eltville Ost,220,342
-"Okhuijsen, A.T.T.","Emmerich, station",34,35
-"Okhuijsen, A.T.T.",Euromax,109,160
-"Okhuijsen, A.T.T.","Europoort, emplacement",91,136
-"Okhuijsen, A.T.T.","Gekkengraaf, emplacement",63,81
-"Okhuijsen, A.T.T.",Germersheim,269,441
-"Okhuijsen, A.T.T.",Goes,127,189
-"Okhuijsen, A.T.T.","Hengelo, emplacement",69,94
-"Okhuijsen, A.T.T.","Herzogenrath, station",124,169
-"Okhuijsen, A.T.T.",Holland Cargo Terminal,87,128
-"Okhuijsen, A.T.T.","Houtrakpolder, emplacement",82,124
-"Okhuijsen, A.T.T.","IJsselmonde, emplacement",76,108
-"Okhuijsen, A.T.T.","Kaldenkirchen, station",68,91
-"Okhuijsen, A.T.T.","Kijfhoek, emplacement",71,107
-"Okhuijsen, A.T.T.","Köln Eifeltor, emplacement",114,177
-"Okhuijsen, A.T.T.",Koole Vondelingenweg,83,122
-"Okhuijsen, A.T.T.","Krefeld Linn, emplacement",86,108
-"Okhuijsen, A.T.T.","Lage Zwaluwe, emplacement",77,113
-"Okhuijsen, A.T.T.","Leusden, PON",49,60
-"Okhuijsen, A.T.T.",Ludwigshafen-Oggersheim,250,406
-"Okhuijsen, A.T.T.","Maasvlakte, emplacement",103,151
-"Okhuijsen, A.T.T.",Magdeburg Hbf,283,462
-"Okhuijsen, A.T.T.","Marl-Sinsen, emplacement",83,128
-"Okhuijsen, A.T.T.",Matrans Rotterdam Terminal,92,119
-"Okhuijsen, A.T.T.","Moerdijk, emplacement",83,117
-"Okhuijsen, A.T.T.",Moers,77,111
-"Okhuijsen, A.T.T.","Neuss, guterbahnhof",94,136
-"Okhuijsen, A.T.T.","Nijmegen, emplacement",23,17
-"Okhuijsen, A.T.T.",NWB terminal,83,122
-"Okhuijsen, A.T.T.",OBA,84,122
-"Okhuijsen, A.T.T.","Oberhausen West, emplacement",62,97
-"Okhuijsen, A.T.T.","Oldenzaal, emplacement",73,105
-"Okhuijsen, A.T.T.","Onnen, emplacement noordingang",118,174
-"Okhuijsen, A.T.T.","Onnen, emplacement zuidingang",114,170
-"Okhuijsen, A.T.T.",Opladen,97,150
-"Okhuijsen, A.T.T.","Oss, terminal OOC",36,42
-"Okhuijsen, A.T.T.","Pernis, emplacement",80,119
-"Okhuijsen, A.T.T.",Rheine,98,144
-"Okhuijsen, A.T.T.","Rheinhausen, emplacement",81,113
-"Okhuijsen, A.T.T.","Roosendaal, emplacement",94,135
-"Okhuijsen, A.T.T.",RWG,107,151
-"Okhuijsen, A.T.T.","Sittard, emplacement",101,137
-"Okhuijsen, A.T.T.",Sloehaven empl.,133,200
-"Okhuijsen, A.T.T.",Steinweg Amsterdam,84,125
-"Okhuijsen, A.T.T.",Stroe,43,35
-"Okhuijsen, A.T.T.",Stuttgart,325,520
-"Okhuijsen, A.T.T.","Tilburg, industrie",62,82
-"Okhuijsen, A.T.T.","Uitgeest, emplacement",94,135
-"Okhuijsen, A.T.T.","Valburg, emplacement CUP",14,13
-"Okhuijsen, A.T.T.","Venlo, emplacement",68,84
-"Okhuijsen, A.T.T.","Viersen, guterbahnhof",87,110
-"Okhuijsen, A.T.T.","Vlissingen Sloe, emplacement",133,201
-"Okhuijsen, A.T.T.",Vopak-Sloe,134,200
-"Okhuijsen, A.T.T.","Waalhaven, emplacement",78,115
-"Okhuijsen, A.T.T.","Waalhaven, kantoor RFO",80,116
-"Okhuijsen, A.T.T.","Westhaven, emplacement",82,120
-"Okhuijsen, A.T.T.",Zevenaar grens,20,19
-"Okhuijsen, A.T.T.","Zutphen, emplacement",33,35
+"Okhuijsen, Thijmen",Acht,60,84
+"Okhuijsen, Thijmen","Almelo, emplacement",68,93
+"Okhuijsen, Thijmen","Amersfoort, emplacement sp.12",56,70
+"Okhuijsen, Thijmen","Amersfoort, remise Strukton",57,68
+"Okhuijsen, Thijmen",Amsterdam Centraal,84,117
+"Okhuijsen, Thijmen",Amsterdam Westhaven,83,122
+"Okhuijsen, Thijmen",Amsterdam Westhaven West,84,124
+"Okhuijsen, Thijmen",APMT,103,151
+"Okhuijsen, Thijmen","Arnhem, goederenemplacement",10,5
+"Okhuijsen, Thijmen","Bad Bentheim, empl. / staalfabriek",82,123
+"Okhuijsen, Thijmen","Bad Bentheim, Hilgenstiege sp.25",82,123
+"Okhuijsen, Thijmen",Beatrixhaven,79,115
+"Okhuijsen, Thijmen","Beverwijk, emplacement",90,135
+"Okhuijsen, Thijmen",Bietigheim-Bissingen,312,506
+"Okhuijsen, Thijmen","Blerick, emplacement en werkplaats",65,82
+"Okhuijsen, Thijmen","Born, emplacement",94,132
+"Okhuijsen, Thijmen","Botlek, emplacement",85,125
+"Okhuijsen, Thijmen",Bottrop,69,99
+"Okhuijsen, Thijmen","Coevorden, euroterminal",97,133
+"Okhuijsen, Thijmen",Deventer goed. empl.,41,52
+"Okhuijsen, Thijmen","Deventer, goederenemplacement",41,52
+"Okhuijsen, Thijmen","Dordrecht, dok",74,109
+"Okhuijsen, Thijmen","Dortmund Obereving, emplacement",94,142
+"Okhuijsen, Thijmen",Duisburg Ruhrorthafen,68,100
+"Okhuijsen, Thijmen","Duisburg, Hochfeld Süd Vorbahnhof",69,109
+"Okhuijsen, Thijmen",ECT,106,153
+"Okhuijsen, Thijmen","Eindhoven, emplacement",58,81
+"Okhuijsen, Thijmen","Eindhoven, emplacement Acht",60,85
+"Okhuijsen, Thijmen",Eltville Ost,220,342
+"Okhuijsen, Thijmen","Emmerich, station",34,35
+"Okhuijsen, Thijmen",Euromax,109,160
+"Okhuijsen, Thijmen","Europoort, emplacement",91,136
+"Okhuijsen, Thijmen","Gekkengraaf, emplacement",63,81
+"Okhuijsen, Thijmen",Germersheim,269,441
+"Okhuijsen, Thijmen",Goes,127,189
+"Okhuijsen, Thijmen","Hengelo, emplacement",69,94
+"Okhuijsen, Thijmen","Herzogenrath, station",124,169
+"Okhuijsen, Thijmen",Holland Cargo Terminal,87,128
+"Okhuijsen, Thijmen","Houtrakpolder, emplacement",82,124
+"Okhuijsen, Thijmen","IJsselmonde, emplacement",76,108
+"Okhuijsen, Thijmen","Kaldenkirchen, station",68,91
+"Okhuijsen, Thijmen","Kijfhoek, emplacement",71,107
+"Okhuijsen, Thijmen","Köln Eifeltor, emplacement",114,177
+"Okhuijsen, Thijmen",Koole Vondelingenweg,83,122
+"Okhuijsen, Thijmen","Krefeld Linn, emplacement",86,108
+"Okhuijsen, Thijmen","Lage Zwaluwe, emplacement",77,113
+"Okhuijsen, Thijmen","Leusden, PON",49,60
+"Okhuijsen, Thijmen",Ludwigshafen-Oggersheim,250,406
+"Okhuijsen, Thijmen","Maasvlakte, emplacement",103,151
+"Okhuijsen, Thijmen",Magdeburg Hbf,283,462
+"Okhuijsen, Thijmen","Marl-Sinsen, emplacement",83,128
+"Okhuijsen, Thijmen",Matrans Rotterdam Terminal,92,119
+"Okhuijsen, Thijmen","Moerdijk, emplacement",83,117
+"Okhuijsen, Thijmen",Moers,77,111
+"Okhuijsen, Thijmen","Neuss, guterbahnhof",94,136
+"Okhuijsen, Thijmen","Nijmegen, emplacement",23,17
+"Okhuijsen, Thijmen",NWB terminal,83,122
+"Okhuijsen, Thijmen",OBA,84,122
+"Okhuijsen, Thijmen","Oberhausen West, emplacement",62,97
+"Okhuijsen, Thijmen","Oldenzaal, emplacement",73,105
+"Okhuijsen, Thijmen","Onnen, emplacement noordingang",118,174
+"Okhuijsen, Thijmen","Onnen, emplacement zuidingang",114,170
+"Okhuijsen, Thijmen",Opladen,97,150
+"Okhuijsen, Thijmen","Oss, terminal OOC",36,42
+"Okhuijsen, Thijmen","Pernis, emplacement",80,119
+"Okhuijsen, Thijmen",Rheine,98,144
+"Okhuijsen, Thijmen","Rheinhausen, emplacement",81,113
+"Okhuijsen, Thijmen","Roosendaal, emplacement",94,135
+"Okhuijsen, Thijmen",RWG,107,151
+"Okhuijsen, Thijmen",'s-Hertogenbosch,48,61
+"Okhuijsen, Thijmen","Sittard, emplacement",101,137
+"Okhuijsen, Thijmen",Sloehaven empl.,133,200
+"Okhuijsen, Thijmen",Steinweg Amsterdam,84,125
+"Okhuijsen, Thijmen",Stroe,43,35
+"Okhuijsen, Thijmen",Stuttgart,325,520
+"Okhuijsen, Thijmen","Tilburg, industrie",62,82
+"Okhuijsen, Thijmen","Uitgeest, emplacement",94,135
+"Okhuijsen, Thijmen","Valburg, emplacement CUP",14,13
+"Okhuijsen, Thijmen","Venlo, emplacement",68,84
+"Okhuijsen, Thijmen","Viersen, guterbahnhof",87,110
+"Okhuijsen, Thijmen","Vlissingen Sloe, emplacement",133,201
+"Okhuijsen, Thijmen",Vopak-Sloe,134,200
+"Okhuijsen, Thijmen","Waalhaven, emplacement",78,115
+"Okhuijsen, Thijmen","Waalhaven, kantoor RFO",80,116
+"Okhuijsen, Thijmen","Westhaven, emplacement",82,120
+"Okhuijsen, Thijmen",Zevenaar grens,20,19
+"Okhuijsen, Thijmen","Zutphen, emplacement",33,35
 "Ritsma, Niels",Acht,105,161
 "Ritsma, Niels","Almelo, emplacement",65,81
 "Ritsma, Niels","Amersfoort, emplacement sp.12",58,79
@@ -690,6 +706,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Ritsma, Niels","Arnhem, goederenemplacement",58,81
 "Ritsma, Niels","Bad Bentheim, empl. / staalfabriek",88,112
 "Ritsma, Niels","Bad Bentheim, Hilgenstiege sp.25",87,113
+"Ritsma, Niels",Beatrixhaven,110,155
 "Ritsma, Niels","Beverwijk, emplacement",80,115
 "Ritsma, Niels",Bietigheim-Bissingen,353,575
 "Ritsma, Niels","Blerick, emplacement en werkplaats",109,167
@@ -747,6 +764,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Ritsma, Niels","Rheinhausen, emplacement",122,183
 "Ritsma, Niels","Roosendaal, emplacement",124,175
 "Ritsma, Niels",RWG,135,194
+"Ritsma, Niels",'s-Hertogenbosch,93,138
 "Ritsma, Niels","Sittard, emplacement",146,222
 "Ritsma, Niels",Sloehaven empl.,163,240
 "Ritsma, Niels",Steinweg Amsterdam,71,101
@@ -775,6 +793,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Sabelis, Tim","Arnhem, goederenemplacement",92,137
 "Sabelis, Tim","Bad Bentheim, empl. / staalfabriek",133,201
 "Sabelis, Tim","Bad Bentheim, Hilgenstiege sp.25",132,201
+"Sabelis, Tim",Beatrixhaven,64,93
 "Sabelis, Tim","Beverwijk, emplacement",10,9
 "Sabelis, Tim",Bietigheim-Bissingen,387,631
 "Sabelis, Tim","Blerick, emplacement en werkplaats",132,199
@@ -832,6 +851,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Sabelis, Tim","Rheinhausen, emplacement",155,238
 "Sabelis, Tim","Roosendaal, emplacement",95,142
 "Sabelis, Tim",RWG,87,122
+"Sabelis, Tim",'s-Hertogenbosch,76,114
 "Sabelis, Tim","Sittard, emplacement",143,220
 "Sabelis, Tim",Sloehaven empl.,130,202
 "Sabelis, Tim",Steinweg Amsterdam,25,31
@@ -860,6 +880,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Schneider, Harry","Arnhem, goederenemplacement",88,122
 "Schneider, Harry","Bad Bentheim, empl. / staalfabriek",142,223
 "Schneider, Harry","Bad Bentheim, Hilgenstiege sp.25",141,223
+"Schneider, Harry",Beatrixhaven,38,40
 "Schneider, Harry","Beverwijk, emplacement",40,57
 "Schneider, Harry",Bietigheim-Bissingen,383,615
 "Schneider, Harry","Blerick, emplacement en werkplaats",128,184
@@ -917,6 +938,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Schneider, Harry","Rheinhausen, emplacement",152,223
 "Schneider, Harry","Roosendaal, emplacement",69,89
 "Schneider, Harry",RWG,61,69
+"Schneider, Harry",'s-Hertogenbosch,72,98
 "Schneider, Harry","Sittard, emplacement",140,205
 "Schneider, Harry",Sloehaven empl.,104,149
 "Schneider, Harry",Steinweg Amsterdam,36,49
@@ -945,6 +967,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Suk, Dustin","Arnhem, goederenemplacement",101,151
 "Suk, Dustin","Bad Bentheim, empl. / staalfabriek",141,215
 "Suk, Dustin","Bad Bentheim, Hilgenstiege sp.25",140,215
+"Suk, Dustin",Beatrixhaven,73,106
 "Suk, Dustin","Beverwijk, emplacement",19,22
 "Suk, Dustin",Bietigheim-Bissingen,396,644
 "Suk, Dustin","Blerick, emplacement en werkplaats",141,212
@@ -1002,6 +1025,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Suk, Dustin","Rheinhausen, emplacement",163,252
 "Suk, Dustin","Roosendaal, emplacement",104,156
 "Suk, Dustin",RWG,96,135
+"Suk, Dustin",'s-Hertogenbosch,85,127
 "Suk, Dustin","Sittard, emplacement",152,233
 "Suk, Dustin",Sloehaven empl.,139,215
 "Suk, Dustin",Steinweg Amsterdam,33,44
@@ -1030,6 +1054,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Suk, Boyd","Arnhem, goederenemplacement",101,151
 "Suk, Boyd","Bad Bentheim, empl. / staalfabriek",141,215
 "Suk, Boyd","Bad Bentheim, Hilgenstiege sp.25",140,215
+"Suk, Boyd",Beatrixhaven,73,106
 "Suk, Boyd","Beverwijk, emplacement",19,22
 "Suk, Boyd",Bietigheim-Bissingen,396,644
 "Suk, Boyd","Blerick, emplacement en werkplaats",141,212
@@ -1087,6 +1112,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Suk, Boyd","Rheinhausen, emplacement",163,252
 "Suk, Boyd","Roosendaal, emplacement",104,156
 "Suk, Boyd",RWG,96,135
+"Suk, Boyd",'s-Hertogenbosch,85,127
 "Suk, Boyd","Sittard, emplacement",152,233
 "Suk, Boyd",Sloehaven empl.,139,215
 "Suk, Boyd",Steinweg Amsterdam,33,44
@@ -1115,6 +1141,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "ten Boden, Robin","Arnhem, goederenemplacement",56,66
 "ten Boden, Robin","Bad Bentheim, empl. / staalfabriek",97,137
 "ten Boden, Robin","Bad Bentheim, Hilgenstiege sp.25",96,137
+"ten Boden, Robin",Beatrixhaven,72,97
 "ten Boden, Robin","Beverwijk, emplacement",57,77
 "ten Boden, Robin",Bietigheim-Bissingen,351,559
 "ten Boden, Robin","Blerick, emplacement en werkplaats",98,137
@@ -1172,6 +1199,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "ten Boden, Robin","Rheinhausen, emplacement",120,167
 "ten Boden, Robin","Roosendaal, emplacement",87,116
 "ten Boden, Robin",RWG,98,129
+"ten Boden, Robin",'s-Hertogenbosch,58,74
 "ten Boden, Robin","Sittard, emplacement",125,180
 "ten Boden, Robin",Sloehaven empl.,126,181
 "ten Boden, Robin",Steinweg Amsterdam,49,63
@@ -1200,6 +1228,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Uenk, Jesse","Arnhem, goederenemplacement",42,44
 "Uenk, Jesse","Bad Bentheim, empl. / staalfabriek",64,90
 "Uenk, Jesse","Bad Bentheim, Hilgenstiege sp.25",64,90
+"Uenk, Jesse",Beatrixhaven,107,153
 "Uenk, Jesse","Beverwijk, emplacement",90,131
 "Uenk, Jesse",Bietigheim-Bissingen,337,538
 "Uenk, Jesse","Blerick, emplacement en werkplaats",92,130
@@ -1257,6 +1286,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Uenk, Jesse","Rheinhausen, emplacement",106,145
 "Uenk, Jesse","Roosendaal, emplacement",121,172
 "Uenk, Jesse",RWG,132,185
+"Uenk, Jesse",'s-Hertogenbosch,76,101
 "Uenk, Jesse","Sittard, emplacement",129,185
 "Uenk, Jesse",Sloehaven empl.,160,237
 "Uenk, Jesse",Steinweg Amsterdam,82,117
@@ -1285,6 +1315,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Amerongen, Mark","Arnhem, goederenemplacement",76,109
 "van Amerongen, Mark","Bad Bentheim, empl. / staalfabriek",129,201
 "van Amerongen, Mark","Bad Bentheim, Hilgenstiege sp.25",129,201
+"van Amerongen, Mark",Beatrixhaven,45,55
 "van Amerongen, Mark","Beverwijk, emplacement",33,43
 "van Amerongen, Mark",Bietigheim-Bissingen,371,603
 "van Amerongen, Mark","Blerick, emplacement en werkplaats",116,171
@@ -1342,6 +1373,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Amerongen, Mark","Rheinhausen, emplacement",140,210
 "van Amerongen, Mark","Roosendaal, emplacement",65,91
 "van Amerongen, Mark",RWG,68,85
+"van Amerongen, Mark",'s-Hertogenbosch,60,86
 "van Amerongen, Mark","Sittard, emplacement",127,192
 "van Amerongen, Mark",Sloehaven empl.,103,155
 "van Amerongen, Mark",Steinweg Amsterdam,29,35
@@ -1370,6 +1402,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van de Velde, Jan","Arnhem, goederenemplacement",79,113
 "van de Velde, Jan","Bad Bentheim, empl. / staalfabriek",143,221
 "van de Velde, Jan","Bad Bentheim, Hilgenstiege sp.25",142,222
+"van de Velde, Jan",Beatrixhaven,13,10
 "van de Velde, Jan","Beverwijk, emplacement",64,94
 "van de Velde, Jan",Bietigheim-Bissingen,379,607
 "van de Velde, Jan","Blerick, emplacement en werkplaats",110,161
@@ -1427,6 +1460,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van de Velde, Jan","Rheinhausen, emplacement",133,200
 "van de Velde, Jan","Roosendaal, emplacement",39,51
 "van de Velde, Jan",RWG,41,46
+"van de Velde, Jan",'s-Hertogenbosch,55,76
 "van de Velde, Jan","Sittard, emplacement",119,176
 "van de Velde, Jan",Sloehaven empl.,72,107
 "van de Velde, Jan",Steinweg Amsterdam,60,86
@@ -1455,6 +1489,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van der Heul, Rutger","Arnhem, goederenemplacement",89,130
 "van der Heul, Rutger","Bad Bentheim, empl. / staalfabriek",153,238
 "van der Heul, Rutger","Bad Bentheim, Hilgenstiege sp.25",152,239
+"van der Heul, Rutger",Beatrixhaven,24,28
 "van der Heul, Rutger","Beverwijk, emplacement",75,112
 "van der Heul, Rutger",Bietigheim-Bissingen,382,609
 "van der Heul, Rutger","Blerick, emplacement en werkplaats",112,167
@@ -1512,6 +1547,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van der Heul, Rutger","Rheinhausen, emplacement",142,217
 "van der Heul, Rutger","Roosendaal, emplacement",30,37
 "van der Heul, Rutger",RWG,51,64
+"van der Heul, Rutger",'s-Hertogenbosch,61,88
 "van der Heul, Rutger","Sittard, emplacement",122,182
 "van der Heul, Rutger",Sloehaven empl.,62,93
 "van der Heul, Rutger",Steinweg Amsterdam,71,105
@@ -1540,6 +1576,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Dijk, Nick","Arnhem, goederenemplacement",27,30
 "van Dijk, Nick","Bad Bentheim, empl. / staalfabriek",93,143
 "van Dijk, Nick","Bad Bentheim, Hilgenstiege sp.25",92,143
+"van Dijk, Nick",Beatrixhaven,64,93
 "van Dijk, Nick","Beverwijk, emplacement",79,120
 "van Dijk, Nick",Bietigheim-Bissingen,328,532
 "van Dijk, Nick","Blerick, emplacement en werkplaats",59,85
@@ -1597,6 +1634,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Dijk, Nick","Rheinhausen, emplacement",82,125
 "van Dijk, Nick","Roosendaal, emplacement",78,112
 "van Dijk, Nick",RWG,91,129
+"van Dijk, Nick",'s-Hertogenbosch,40,55
 "van Dijk, Nick","Sittard, emplacement",95,140
 "van Dijk, Nick",Sloehaven empl.,117,177
 "van Dijk, Nick",Steinweg Amsterdam,74,107
@@ -1625,6 +1663,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Kleij, Silvester","Arnhem, goederenemplacement",93,131
 "van Kleij, Silvester","Bad Bentheim, empl. / staalfabriek",154,236
 "van Kleij, Silvester","Bad Bentheim, Hilgenstiege sp.25",154,236
+"van Kleij, Silvester",Beatrixhaven,21,17
 "van Kleij, Silvester","Beverwijk, emplacement",68,96
 "van Kleij, Silvester",Bietigheim-Bissingen,393,626
 "van Kleij, Silvester","Blerick, emplacement en werkplaats",124,179
@@ -1682,6 +1721,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Kleij, Silvester","Rheinhausen, emplacement",147,219
 "van Kleij, Silvester","Roosendaal, emplacement",53,71
 "van Kleij, Silvester",RWG,41,39
+"van Kleij, Silvester",'s-Hertogenbosch,69,94
 "van Kleij, Silvester","Sittard, emplacement",133,195
 "van Kleij, Silvester",Sloehaven empl.,86,126
 "van Kleij, Silvester",Steinweg Amsterdam,64,88
@@ -1710,6 +1750,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Kleij, M.B.","Arnhem, goederenemplacement",89,126
 "van Kleij, M.B.","Bad Bentheim, empl. / staalfabriek",131,199
 "van Kleij, M.B.","Bad Bentheim, Hilgenstiege sp.25",130,200
+"van Kleij, M.B.",Beatrixhaven,61,82
 "van Kleij, M.B.","Beverwijk, emplacement",12,10
 "van Kleij, M.B.",Bietigheim-Bissingen,384,620
 "van Kleij, M.B.","Blerick, emplacement en werkplaats",129,188
@@ -1767,6 +1808,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Kleij, M.B.","Rheinhausen, emplacement",152,227
 "van Kleij, M.B.","Roosendaal, emplacement",92,131
 "van Kleij, M.B.",RWG,84,111
+"van Kleij, M.B.",'s-Hertogenbosch,73,103
 "van Kleij, M.B.","Sittard, emplacement",141,209
 "van Kleij, M.B.",Sloehaven empl.,127,191
 "van Kleij, M.B.",Steinweg Amsterdam,23,17
@@ -1795,6 +1837,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Leijden, Niels","Arnhem, goederenemplacement",102,149
 "van Leijden, Niels","Bad Bentheim, empl. / staalfabriek",143,220
 "van Leijden, Niels","Bad Bentheim, Hilgenstiege sp.25",142,220
+"van Leijden, Niels",Beatrixhaven,85,122
 "van Leijden, Niels","Beverwijk, emplacement",45,50
 "van Leijden, Niels",Bietigheim-Bissingen,397,642
 "van Leijden, Niels","Blerick, emplacement en werkplaats",144,219
@@ -1852,6 +1895,7 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Leijden, Niels","Rheinhausen, emplacement",166,250
 "van Leijden, Niels","Roosendaal, emplacement",117,172
 "van Leijden, Niels",RWG,108,152
+"van Leijden, Niels",'s-Hertogenbosch,92,135
 "van Leijden, Niels","Sittard, emplacement",159,241
 "van Leijden, Niels",Sloehaven empl.,151,231
 "van Leijden, Niels",Steinweg Amsterdam,37,46
@@ -1880,6 +1924,7 @@ German dummy 1,APMT,127,189
 German dummy 1,"Arnhem, goederenemplacement",32,33
 German dummy 1,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 1,"Bad Bentheim, Hilgenstiege sp.25",81,113
+German dummy 1,Beatrixhaven,104,154
 German dummy 1,"Beverwijk, emplacement",101,154
 German dummy 1,Bietigheim-Bissingen,293,475
 German dummy 1,"Blerick, emplacement en werkplaats",68,83
@@ -1937,6 +1982,7 @@ German dummy 1,Rheine,92,134
 German dummy 1,"Rheinhausen, emplacement",62,83
 German dummy 1,"Roosendaal, emplacement",118,173
 German dummy 1,RWG,131,190
+German dummy 1,'s-Hertogenbosch,72,100
 German dummy 1,"Sittard, emplacement",105,138
 German dummy 1,Sloehaven empl.,155,238
 German dummy 1,Steinweg Amsterdam,96,143
@@ -1965,6 +2011,7 @@ German dummy 2,APMT,127,189
 German dummy 2,"Arnhem, goederenemplacement",32,33
 German dummy 2,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 2,"Bad Bentheim, Hilgenstiege sp.25",81,113
+German dummy 2,Beatrixhaven,104,154
 German dummy 2,"Beverwijk, emplacement",101,154
 German dummy 2,Bietigheim-Bissingen,293,475
 German dummy 2,"Blerick, emplacement en werkplaats",68,83
@@ -2022,6 +2069,7 @@ German dummy 2,Rheine,92,134
 German dummy 2,"Rheinhausen, emplacement",62,83
 German dummy 2,"Roosendaal, emplacement",118,173
 German dummy 2,RWG,131,190
+German dummy 2,'s-Hertogenbosch,72,100
 German dummy 2,"Sittard, emplacement",105,138
 German dummy 2,Sloehaven empl.,155,238
 German dummy 2,Steinweg Amsterdam,96,143
@@ -2050,6 +2098,7 @@ German dummy 3,APMT,127,189
 German dummy 3,"Arnhem, goederenemplacement",32,33
 German dummy 3,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 3,"Bad Bentheim, Hilgenstiege sp.25",81,113
+German dummy 3,Beatrixhaven,104,154
 German dummy 3,"Beverwijk, emplacement",101,154
 German dummy 3,Bietigheim-Bissingen,293,475
 German dummy 3,"Blerick, emplacement en werkplaats",68,83
@@ -2107,6 +2156,7 @@ German dummy 3,Rheine,92,134
 German dummy 3,"Rheinhausen, emplacement",62,83
 German dummy 3,"Roosendaal, emplacement",118,173
 German dummy 3,RWG,131,190
+German dummy 3,'s-Hertogenbosch,72,100
 German dummy 3,"Sittard, emplacement",105,138
 German dummy 3,Sloehaven empl.,155,238
 German dummy 3,Steinweg Amsterdam,96,143
@@ -2135,6 +2185,7 @@ German dummy 4,APMT,127,189
 German dummy 4,"Arnhem, goederenemplacement",32,33
 German dummy 4,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 4,"Bad Bentheim, Hilgenstiege sp.25",81,113
+German dummy 4,Beatrixhaven,104,154
 German dummy 4,"Beverwijk, emplacement",101,154
 German dummy 4,Bietigheim-Bissingen,293,475
 German dummy 4,"Blerick, emplacement en werkplaats",68,83
@@ -2192,6 +2243,7 @@ German dummy 4,Rheine,92,134
 German dummy 4,"Rheinhausen, emplacement",62,83
 German dummy 4,"Roosendaal, emplacement",118,173
 German dummy 4,RWG,131,190
+German dummy 4,'s-Hertogenbosch,72,100
 German dummy 4,"Sittard, emplacement",105,138
 German dummy 4,Sloehaven empl.,155,238
 German dummy 4,Steinweg Amsterdam,96,143
@@ -2220,6 +2272,7 @@ German dummy 5,APMT,127,189
 German dummy 5,"Arnhem, goederenemplacement",32,33
 German dummy 5,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 5,"Bad Bentheim, Hilgenstiege sp.25",81,113
+German dummy 5,Beatrixhaven,104,154
 German dummy 5,"Beverwijk, emplacement",101,154
 German dummy 5,Bietigheim-Bissingen,293,475
 German dummy 5,"Blerick, emplacement en werkplaats",68,83
@@ -2277,6 +2330,7 @@ German dummy 5,Rheine,92,134
 German dummy 5,"Rheinhausen, emplacement",62,83
 German dummy 5,"Roosendaal, emplacement",118,173
 German dummy 5,RWG,131,190
+German dummy 5,'s-Hertogenbosch,72,100
 German dummy 5,"Sittard, emplacement",105,138
 German dummy 5,Sloehaven empl.,155,238
 German dummy 5,Steinweg Amsterdam,96,143
@@ -2305,6 +2359,7 @@ German dummy 6,APMT,127,189
 German dummy 6,"Arnhem, goederenemplacement",32,33
 German dummy 6,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 6,"Bad Bentheim, Hilgenstiege sp.25",81,113
+German dummy 6,Beatrixhaven,104,154
 German dummy 6,"Beverwijk, emplacement",101,154
 German dummy 6,Bietigheim-Bissingen,293,475
 German dummy 6,"Blerick, emplacement en werkplaats",68,83
@@ -2362,6 +2417,7 @@ German dummy 6,Rheine,92,134
 German dummy 6,"Rheinhausen, emplacement",62,83
 German dummy 6,"Roosendaal, emplacement",118,173
 German dummy 6,RWG,131,190
+German dummy 6,'s-Hertogenbosch,72,100
 German dummy 6,"Sittard, emplacement",105,138
 German dummy 6,Sloehaven empl.,155,238
 German dummy 6,Steinweg Amsterdam,96,143
@@ -2390,6 +2446,7 @@ German dummy 7,APMT,127,189
 German dummy 7,"Arnhem, goederenemplacement",32,33
 German dummy 7,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 7,"Bad Bentheim, Hilgenstiege sp.25",81,113
+German dummy 7,Beatrixhaven,104,154
 German dummy 7,"Beverwijk, emplacement",101,154
 German dummy 7,Bietigheim-Bissingen,293,475
 German dummy 7,"Blerick, emplacement en werkplaats",68,83
@@ -2447,6 +2504,7 @@ German dummy 7,Rheine,92,134
 German dummy 7,"Rheinhausen, emplacement",62,83
 German dummy 7,"Roosendaal, emplacement",118,173
 German dummy 7,RWG,131,190
+German dummy 7,'s-Hertogenbosch,72,100
 German dummy 7,"Sittard, emplacement",105,138
 German dummy 7,Sloehaven empl.,155,238
 German dummy 7,Steinweg Amsterdam,96,143
@@ -2475,6 +2533,7 @@ German dummy 8,APMT,127,189
 German dummy 8,"Arnhem, goederenemplacement",32,33
 German dummy 8,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 8,"Bad Bentheim, Hilgenstiege sp.25",81,113
+German dummy 8,Beatrixhaven,104,154
 German dummy 8,"Beverwijk, emplacement",101,154
 German dummy 8,Bietigheim-Bissingen,293,475
 German dummy 8,"Blerick, emplacement en werkplaats",68,83
@@ -2532,6 +2591,7 @@ German dummy 8,Rheine,92,134
 German dummy 8,"Rheinhausen, emplacement",62,83
 German dummy 8,"Roosendaal, emplacement",118,173
 German dummy 8,RWG,131,190
+German dummy 8,'s-Hertogenbosch,72,100
 German dummy 8,"Sittard, emplacement",105,138
 German dummy 8,Sloehaven empl.,155,238
 German dummy 8,Steinweg Amsterdam,96,143
@@ -2560,6 +2620,7 @@ German dummy 9,APMT,127,189
 German dummy 9,"Arnhem, goederenemplacement",32,33
 German dummy 9,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 9,"Bad Bentheim, Hilgenstiege sp.25",81,113
+German dummy 9,Beatrixhaven,104,154
 German dummy 9,"Beverwijk, emplacement",101,154
 German dummy 9,Bietigheim-Bissingen,293,475
 German dummy 9,"Blerick, emplacement en werkplaats",68,83
@@ -2617,6 +2678,7 @@ German dummy 9,Rheine,92,134
 German dummy 9,"Rheinhausen, emplacement",62,83
 German dummy 9,"Roosendaal, emplacement",118,173
 German dummy 9,RWG,131,190
+German dummy 9,'s-Hertogenbosch,72,100
 German dummy 9,"Sittard, emplacement",105,138
 German dummy 9,Sloehaven empl.,155,238
 German dummy 9,Steinweg Amsterdam,96,143
@@ -2645,6 +2707,7 @@ German dummy 10,APMT,127,189
 German dummy 10,"Arnhem, goederenemplacement",32,33
 German dummy 10,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 10,"Bad Bentheim, Hilgenstiege sp.25",81,113
+German dummy 10,Beatrixhaven,104,154
 German dummy 10,"Beverwijk, emplacement",101,154
 German dummy 10,Bietigheim-Bissingen,293,475
 German dummy 10,"Blerick, emplacement en werkplaats",68,83
@@ -2702,6 +2765,7 @@ German dummy 10,Rheine,92,134
 German dummy 10,"Rheinhausen, emplacement",62,83
 German dummy 10,"Roosendaal, emplacement",118,173
 German dummy 10,RWG,131,190
+German dummy 10,'s-Hertogenbosch,72,100
 German dummy 10,"Sittard, emplacement",105,138
 German dummy 10,Sloehaven empl.,155,238
 German dummy 10,Steinweg Amsterdam,96,143

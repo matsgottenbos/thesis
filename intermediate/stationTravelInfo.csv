@@ -9,6 +9,7 @@ Acht,APMT,98,142
 Acht,"Arnhem, goederenemplacement",62,87
 Acht,"Bad Bentheim, empl. / staalfabriek",129,200
 Acht,"Bad Bentheim, Hilgenstiege sp.25",129,201
+Acht,Beatrixhaven,74,107
 Acht,"Beverwijk, emplacement",92,142
 Acht,Bietigheim-Bissingen,317,496
 Acht,"Blerick, emplacement en werkplaats",47,63
@@ -66,6 +67,7 @@ Acht,Rheine,144,221
 Acht,"Rheinhausen, emplacement",77,109
 Acht,"Roosendaal, emplacement",62,86
 Acht,RWG,102,144
+Acht,'s-Hertogenbosch,28,33
 Acht,"Sittard, emplacement",57,79
 Acht,Sloehaven empl.,95,144
 Acht,Steinweg Amsterdam,89,135
@@ -92,6 +94,7 @@ Acht,"Zutphen, emplacement",87,118
 "Almelo, emplacement","Arnhem, goederenemplacement",65,85
 "Almelo, emplacement","Bad Bentheim, empl. / staalfabriek",38,47
 "Almelo, emplacement","Bad Bentheim, Hilgenstiege sp.25",38,47
+"Almelo, emplacement",Beatrixhaven,131,197
 "Almelo, emplacement","Beverwijk, emplacement",115,175
 "Almelo, emplacement",Bietigheim-Bissingen,340,543
 "Almelo, emplacement","Blerick, emplacement en werkplaats",116,174
@@ -149,6 +152,7 @@ Acht,"Zutphen, emplacement",87,118
 "Almelo, emplacement","Rheinhausen, emplacement",108,149
 "Almelo, emplacement","Roosendaal, emplacement",143,215
 "Almelo, emplacement",RWG,156,231
+"Almelo, emplacement",'s-Hertogenbosch,101,146
 "Almelo, emplacement","Sittard, emplacement",153,230
 "Almelo, emplacement",Sloehaven empl.,181,279
 "Almelo, emplacement",Steinweg Amsterdam,108,162
@@ -174,6 +178,7 @@ Acht,"Zutphen, emplacement",87,118
 "Amersfoort, emplacement sp.12","Arnhem, goederenemplacement",53,62
 "Amersfoort, emplacement sp.12","Bad Bentheim, empl. / staalfabriek",94,138
 "Amersfoort, emplacement sp.12","Bad Bentheim, Hilgenstiege sp.25",94,138
+"Amersfoort, emplacement sp.12",Beatrixhaven,71,96
 "Amersfoort, emplacement sp.12","Beverwijk, emplacement",56,76
 "Amersfoort, emplacement sp.12",Bietigheim-Bissingen,351,561
 "Amersfoort, emplacement sp.12","Blerick, emplacement en werkplaats",95,138
@@ -231,6 +236,7 @@ Acht,"Zutphen, emplacement",87,118
 "Amersfoort, emplacement sp.12","Rheinhausen, emplacement",117,176
 "Amersfoort, emplacement sp.12","Roosendaal, emplacement",83,114
 "Amersfoort, emplacement sp.12",RWG,96,129
+"Amersfoort, emplacement sp.12",'s-Hertogenbosch,54,73
 "Amersfoort, emplacement sp.12","Sittard, emplacement",122,179
 "Amersfoort, emplacement sp.12",Sloehaven empl.,120,178
 "Amersfoort, emplacement sp.12",Steinweg Amsterdam,49,63
@@ -255,6 +261,7 @@ Acht,"Zutphen, emplacement",87,118
 "Amersfoort, remise Strukton","Arnhem, goederenemplacement",54,60
 "Amersfoort, remise Strukton","Bad Bentheim, empl. / staalfabriek",95,143
 "Amersfoort, remise Strukton","Bad Bentheim, Hilgenstiege sp.25",94,144
+"Amersfoort, remise Strukton",Beatrixhaven,68,95
 "Amersfoort, remise Strukton","Beverwijk, emplacement",54,76
 "Amersfoort, remise Strukton",Bietigheim-Bissingen,352,559
 "Amersfoort, remise Strukton","Blerick, emplacement en werkplaats",96,135
@@ -312,6 +319,7 @@ Acht,"Zutphen, emplacement",87,118
 "Amersfoort, remise Strukton","Rheinhausen, emplacement",118,174
 "Amersfoort, remise Strukton","Roosendaal, emplacement",81,111
 "Amersfoort, remise Strukton",RWG,94,129
+"Amersfoort, remise Strukton",'s-Hertogenbosch,52,72
 "Amersfoort, remise Strukton","Sittard, emplacement",120,177
 "Amersfoort, remise Strukton",Sloehaven empl.,118,175
 "Amersfoort, remise Strukton",Steinweg Amsterdam,47,63
@@ -335,6 +343,7 @@ Amsterdam Centraal,APMT,85,114
 Amsterdam Centraal,"Arnhem, goederenemplacement",81,109
 Amsterdam Centraal,"Bad Bentheim, empl. / staalfabriek",123,185
 Amsterdam Centraal,"Bad Bentheim, Hilgenstiege sp.25",122,186
+Amsterdam Centraal,Beatrixhaven,64,85
 Amsterdam Centraal,"Beverwijk, emplacement",32,27
 Amsterdam Centraal,Bietigheim-Bissingen,380,608
 Amsterdam Centraal,"Blerick, emplacement en werkplaats",126,181
@@ -392,6 +401,7 @@ Amsterdam Centraal,Rheine,137,206
 Amsterdam Centraal,"Rheinhausen, emplacement",148,220
 Amsterdam Centraal,"Roosendaal, emplacement",96,135
 Amsterdam Centraal,RWG,89,117
+Amsterdam Centraal,'s-Hertogenbosch,71,97
 Amsterdam Centraal,"Sittard, emplacement",138,204
 Amsterdam Centraal,Sloehaven empl.,129,193
 Amsterdam Centraal,Steinweg Amsterdam,21,11
@@ -414,6 +424,7 @@ Amsterdam Westhaven,APMT,80,112
 Amsterdam Westhaven,"Arnhem, goederenemplacement",80,114
 Amsterdam Westhaven,"Bad Bentheim, empl. / staalfabriek",121,189
 Amsterdam Westhaven,"Bad Bentheim, Hilgenstiege sp.25",121,190
+Amsterdam Westhaven,Beatrixhaven,59,82
 Amsterdam Westhaven,"Beverwijk, emplacement",25,23
 Amsterdam Westhaven,Bietigheim-Bissingen,378,613
 Amsterdam Westhaven,"Blerick, emplacement en werkplaats",121,179
@@ -471,6 +482,7 @@ Amsterdam Westhaven,Rheine,136,211
 Amsterdam Westhaven,"Rheinhausen, emplacement",143,218
 Amsterdam Westhaven,"Roosendaal, emplacement",91,132
 Amsterdam Westhaven,RWG,83,114
+Amsterdam Westhaven,'s-Hertogenbosch,65,95
 Amsterdam Westhaven,"Sittard, emplacement",133,202
 Amsterdam Westhaven,Sloehaven empl.,124,191
 Amsterdam Westhaven,Steinweg Amsterdam,14,7
@@ -492,6 +504,7 @@ Amsterdam Westhaven West,APMT,76,109
 Amsterdam Westhaven West,"Arnhem, goederenemplacement",81,116
 Amsterdam Westhaven West,"Bad Bentheim, empl. / staalfabriek",122,192
 Amsterdam Westhaven West,"Bad Bentheim, Hilgenstiege sp.25",122,192
+Amsterdam Westhaven West,Beatrixhaven,56,80
 Amsterdam Westhaven West,"Beverwijk, emplacement",20,25
 Amsterdam Westhaven West,Bietigheim-Bissingen,379,615
 Amsterdam Westhaven West,"Blerick, emplacement en werkplaats",122,180
@@ -549,6 +562,7 @@ Amsterdam Westhaven West,Rheine,137,213
 Amsterdam Westhaven West,"Rheinhausen, emplacement",145,219
 Amsterdam Westhaven West,"Roosendaal, emplacement",87,130
 Amsterdam Westhaven West,RWG,80,112
+Amsterdam Westhaven West,'s-Hertogenbosch,67,96
 Amsterdam Westhaven West,"Sittard, emplacement",135,203
 Amsterdam Westhaven West,Sloehaven empl.,120,188
 Amsterdam Westhaven West,Steinweg Amsterdam,2,1
@@ -569,6 +583,7 @@ Amsterdam Westhaven West,"Zutphen, emplacement",86,122
 APMT,"Arnhem, goederenemplacement",106,153
 APMT,"Bad Bentheim, empl. / staalfabriek",167,258
 APMT,"Bad Bentheim, Hilgenstiege sp.25",166,258
+APMT,Beatrixhaven,33,39
 APMT,"Beverwijk, emplacement",81,118
 APMT,Bietigheim-Bissingen,408,646
 APMT,"Blerick, emplacement en werkplaats",135,202
@@ -626,6 +641,7 @@ APMT,Rheine,182,279
 APMT,"Rheinhausen, emplacement",159,241
 APMT,"Roosendaal, emplacement",66,93
 APMT,RWG,13,5
+APMT,'s-Hertogenbosch,82,118
 APMT,"Sittard, emplacement",146,217
 APMT,Sloehaven empl.,85,99
 APMT,Steinweg Amsterdam,77,110
@@ -645,6 +661,7 @@ APMT,Zevenaar grens,116,173
 APMT,"Zutphen, emplacement",130,185
 "Arnhem, goederenemplacement","Bad Bentheim, empl. / staalfabriek",82,121
 "Arnhem, goederenemplacement","Bad Bentheim, Hilgenstiege sp.25",82,121
+"Arnhem, goederenemplacement",Beatrixhaven,82,118
 "Arnhem, goederenemplacement","Beverwijk, emplacement",88,132
 "Arnhem, goederenemplacement",Bietigheim-Bissingen,315,505
 "Arnhem, goederenemplacement","Blerick, emplacement en werkplaats",65,83
@@ -702,6 +719,7 @@ APMT,"Zutphen, emplacement",130,185
 "Arnhem, goederenemplacement","Rheinhausen, emplacement",81,111
 "Arnhem, goederenemplacement","Roosendaal, emplacement",94,136
 "Arnhem, goederenemplacement",RWG,110,156
+"Arnhem, goederenemplacement",'s-Hertogenbosch,50,64
 "Arnhem, goederenemplacement","Sittard, emplacement",102,140
 "Arnhem, goederenemplacement",Sloehaven empl.,132,200
 "Arnhem, goederenemplacement",Steinweg Amsterdam,82,121
@@ -720,6 +738,7 @@ APMT,"Zutphen, emplacement",130,185
 "Arnhem, goederenemplacement",Zevenaar grens,20,15
 "Arnhem, goederenemplacement","Zutphen, emplacement",33,32
 "Bad Bentheim, empl. / staalfabriek","Bad Bentheim, Hilgenstiege sp.25",3,2
+"Bad Bentheim, empl. / staalfabriek",Beatrixhaven,146,227
 "Bad Bentheim, empl. / staalfabriek","Beverwijk, emplacement",130,205
 "Bad Bentheim, empl. / staalfabriek",Bietigheim-Bissingen,319,515
 "Bad Bentheim, empl. / staalfabriek","Blerick, emplacement en werkplaats",106,162
@@ -777,6 +796,7 @@ APMT,"Zutphen, emplacement",130,185
 "Bad Bentheim, empl. / staalfabriek","Rheinhausen, emplacement",86,121
 "Bad Bentheim, empl. / staalfabriek","Roosendaal, emplacement",158,245
 "Bad Bentheim, empl. / staalfabriek",RWG,171,260
+"Bad Bentheim, empl. / staalfabriek",'s-Hertogenbosch,115,176
 "Bad Bentheim, empl. / staalfabriek","Sittard, emplacement",144,218
 "Bad Bentheim, empl. / staalfabriek",Sloehaven empl.,195,309
 "Bad Bentheim, empl. / staalfabriek",Steinweg Amsterdam,123,192
@@ -794,6 +814,7 @@ APMT,"Zutphen, emplacement",130,185
 "Bad Bentheim, empl. / staalfabriek","Westhaven, emplacement",120,189
 "Bad Bentheim, empl. / staalfabriek",Zevenaar grens,84,125
 "Bad Bentheim, empl. / staalfabriek","Zutphen, emplacement",61,86
+"Bad Bentheim, Hilgenstiege sp.25",Beatrixhaven,145,227
 "Bad Bentheim, Hilgenstiege sp.25","Beverwijk, emplacement",129,205
 "Bad Bentheim, Hilgenstiege sp.25",Bietigheim-Bissingen,321,516
 "Bad Bentheim, Hilgenstiege sp.25","Blerick, emplacement en werkplaats",108,163
@@ -851,6 +872,7 @@ APMT,"Zutphen, emplacement",130,185
 "Bad Bentheim, Hilgenstiege sp.25","Rheinhausen, emplacement",88,123
 "Bad Bentheim, Hilgenstiege sp.25","Roosendaal, emplacement",157,245
 "Bad Bentheim, Hilgenstiege sp.25",RWG,170,261
+"Bad Bentheim, Hilgenstiege sp.25",'s-Hertogenbosch,115,176
 "Bad Bentheim, Hilgenstiege sp.25","Sittard, emplacement",146,219
 "Bad Bentheim, Hilgenstiege sp.25",Sloehaven empl.,195,309
 "Bad Bentheim, Hilgenstiege sp.25",Steinweg Amsterdam,122,192
@@ -868,6 +890,81 @@ APMT,"Zutphen, emplacement",130,185
 "Bad Bentheim, Hilgenstiege sp.25","Westhaven, emplacement",120,189
 "Bad Bentheim, Hilgenstiege sp.25",Zevenaar grens,83,125
 "Bad Bentheim, Hilgenstiege sp.25","Zutphen, emplacement",60,86
+Beatrixhaven,"Beverwijk, emplacement",60,88
+Beatrixhaven,Bietigheim-Bissingen,382,613
+Beatrixhaven,"Blerick, emplacement en werkplaats",112,167
+Beatrixhaven,"Born, emplacement",115,176
+Beatrixhaven,"Botlek, emplacement",15,13
+Beatrixhaven,Bottrop,143,213
+Beatrixhaven,"Coevorden, euroterminal",145,214
+Beatrixhaven,Deventer goed. empl.,105,155
+Beatrixhaven,"Deventer, goederenemplacement",105,156
+Beatrixhaven,"Dordrecht, dok",19,23
+Beatrixhaven,"Dortmund Obereving, emplacement",168,257
+Beatrixhaven,Duisburg Ruhrorthafen,134,203
+Beatrixhaven,"Duisburg, Hochfeld Süd Vorbahnhof",135,209
+Beatrixhaven,ECT,36,41
+Beatrixhaven,"Eindhoven, emplacement",80,118
+Beatrixhaven,"Eindhoven, emplacement Acht",75,110
+Beatrixhaven,Eltville Ost,291,449
+Beatrixhaven,"Emmerich, station",108,150
+Beatrixhaven,Euromax,38,49
+Beatrixhaven,"Europoort, emplacement",20,24
+Beatrixhaven,"Gekkengraaf, emplacement",108,163
+Beatrixhaven,Germersheim,329,524
+Beatrixhaven,Goes,69,102
+Beatrixhaven,"Hengelo, emplacement",131,198
+Beatrixhaven,"Herzogenrath, station",145,214
+Beatrixhaven,Holland Cargo Terminal,58,81
+Beatrixhaven,"Houtrakpolder, emplacement",53,78
+Beatrixhaven,"IJsselmonde, emplacement",15,12
+Beatrixhaven,"Kaldenkirchen, station",116,174
+Beatrixhaven,"Kijfhoek, emplacement",17,20
+Beatrixhaven,"Köln Eifeltor, emplacement",173,266
+Beatrixhaven,Koole Vondelingenweg,13,10
+Beatrixhaven,"Krefeld Linn, emplacement",138,205
+Beatrixhaven,"Lage Zwaluwe, emplacement",29,38
+Beatrixhaven,"Leusden, PON",66,94
+Beatrixhaven,Ludwigshafen-Oggersheim,310,492
+Beatrixhaven,"Maasvlakte, emplacement",32,39
+Beatrixhaven,Magdeburg Hbf,347,566
+Beatrixhaven,"Marl-Sinsen, emplacement",157,242
+Beatrixhaven,Matrans Rotterdam Terminal,19,7
+Beatrixhaven,"Moerdijk, emplacement",31,40
+Beatrixhaven,Moers,129,193
+Beatrixhaven,"Neuss, guterbahnhof",147,222
+Beatrixhaven,"Nijmegen, emplacement",82,111
+Beatrixhaven,NWB terminal,59,82
+Beatrixhaven,OBA,60,83
+Beatrixhaven,"Oberhausen West, emplacement",132,204
+Beatrixhaven,"Oldenzaal, emplacement",136,207
+Beatrixhaven,"Onnen, emplacement noordingang",166,258
+Beatrixhaven,"Onnen, emplacement zuidingang",163,254
+Beatrixhaven,Opladen,167,257
+Beatrixhaven,"Oss, terminal OOC",73,104
+Beatrixhaven,"Pernis, emplacement",10,7
+Beatrixhaven,Rheine,161,248
+Beatrixhaven,"Rheinhausen, emplacement",135,206
+Beatrixhaven,"Roosendaal, emplacement",42,58
+Beatrixhaven,RWG,36,40
+Beatrixhaven,'s-Hertogenbosch,58,81
+Beatrixhaven,"Sittard, emplacement",122,182
+Beatrixhaven,Sloehaven empl.,74,112
+Beatrixhaven,Steinweg Amsterdam,56,80
+Beatrixhaven,Stroe,79,118
+Beatrixhaven,Stuttgart,396,627
+Beatrixhaven,"Tilburg, industrie",58,82
+Beatrixhaven,"Uitgeest, emplacement",65,95
+Beatrixhaven,"Valburg, emplacement CUP",72,107
+Beatrixhaven,"Venlo, emplacement",115,169
+Beatrixhaven,"Viersen, guterbahnhof",135,194
+Beatrixhaven,"Vlissingen Sloe, emplacement",75,113
+Beatrixhaven,Vopak-Sloe,75,112
+Beatrixhaven,"Waalhaven, emplacement",5,2
+Beatrixhaven,"Waalhaven, kantoor RFO",7,4
+Beatrixhaven,"Westhaven, emplacement",58,82
+Beatrixhaven,Zevenaar grens,93,133
+Beatrixhaven,"Zutphen, emplacement",107,150
 "Beverwijk, emplacement",Bietigheim-Bissingen,385,626
 "Beverwijk, emplacement","Blerick, emplacement en werkplaats",128,194
 "Beverwijk, emplacement","Born, emplacement",134,210
@@ -924,6 +1021,7 @@ APMT,"Zutphen, emplacement",130,185
 "Beverwijk, emplacement","Rheinhausen, emplacement",150,233
 "Beverwijk, emplacement","Roosendaal, emplacement",92,138
 "Beverwijk, emplacement",RWG,85,120
+"Beverwijk, emplacement",'s-Hertogenbosch,72,110
 "Beverwijk, emplacement","Sittard, emplacement",140,216
 "Beverwijk, emplacement",Sloehaven empl.,125,196
 "Beverwijk, emplacement",Steinweg Amsterdam,20,24
@@ -996,6 +1094,7 @@ Bietigheim-Bissingen,Rheine,332,536
 Bietigheim-Bissingen,"Rheinhausen, emplacement",267,411
 Bietigheim-Bissingen,"Roosendaal, emplacement",368,578
 Bietigheim-Bissingen,RWG,412,646
+Bietigheim-Bissingen,'s-Hertogenbosch,339,535
 Bietigheim-Bissingen,"Sittard, emplacement",282,455
 Bietigheim-Bissingen,Sloehaven empl.,383,626
 Bietigheim-Bissingen,Steinweg Amsterdam,379,615
@@ -1067,6 +1166,7 @@ Bietigheim-Bissingen,"Zutphen, emplacement",329,526
 "Blerick, emplacement en werkplaats","Rheinhausen, emplacement",41,54
 "Blerick, emplacement en werkplaats","Roosendaal, emplacement",99,146
 "Blerick, emplacement en werkplaats",RWG,139,204
+"Blerick, emplacement en werkplaats",'s-Hertogenbosch,65,91
 "Blerick, emplacement en werkplaats","Sittard, emplacement",45,60
 "Blerick, emplacement en werkplaats",Sloehaven empl.,130,204
 "Blerick, emplacement en werkplaats",Steinweg Amsterdam,125,187
@@ -1137,6 +1237,7 @@ Bietigheim-Bissingen,"Zutphen, emplacement",329,526
 "Born, emplacement","Rheinhausen, emplacement",64,92
 "Born, emplacement","Roosendaal, emplacement",103,155
 "Born, emplacement",RWG,143,214
+"Born, emplacement",'s-Hertogenbosch,69,100
 "Born, emplacement","Sittard, emplacement",11,7
 "Born, emplacement",Sloehaven empl.,119,189
 "Born, emplacement",Steinweg Amsterdam,129,202
@@ -1206,6 +1307,7 @@ Bietigheim-Bissingen,"Zutphen, emplacement",329,526
 "Botlek, emplacement","Rheinhausen, emplacement",140,215
 "Botlek, emplacement","Roosendaal, emplacement",48,68
 "Botlek, emplacement",RWG,30,30
+"Botlek, emplacement",'s-Hertogenbosch,63,92
 "Botlek, emplacement","Sittard, emplacement",127,193
 "Botlek, emplacement",Sloehaven empl.,79,97
 "Botlek, emplacement",Steinweg Amsterdam,57,83
@@ -1274,6 +1376,7 @@ Bottrop,Rheine,80,112
 Bottrop,"Rheinhausen, emplacement",37,31
 Bottrop,"Roosendaal, emplacement",146,210
 Bottrop,RWG,170,256
+Bottrop,'s-Hertogenbosch,103,148
 Bottrop,"Sittard, emplacement",94,127
 Bottrop,Sloehaven empl.,177,268
 Bottrop,Steinweg Amsterdam,135,207
@@ -1341,6 +1444,7 @@ Bottrop,"Zutphen, emplacement",86,119
 "Coevorden, euroterminal","Rheinhausen, emplacement",132,192
 "Coevorden, euroterminal","Roosendaal, emplacement",157,232
 "Coevorden, euroterminal",RWG,170,248
+"Coevorden, euroterminal",'s-Hertogenbosch,126,183
 "Coevorden, euroterminal","Sittard, emplacement",178,267
 "Coevorden, euroterminal",Sloehaven empl.,195,296
 "Coevorden, euroterminal",Steinweg Amsterdam,122,180
@@ -1407,6 +1511,7 @@ Deventer goed. empl.,Rheine,70,99
 Deventer goed. empl.,"Rheinhausen, emplacement",103,149
 Deventer goed. empl.,"Roosendaal, emplacement",117,174
 Deventer goed. empl.,RWG,130,189
+Deventer goed. empl.,'s-Hertogenbosch,74,105
 Deventer goed. empl.,"Sittard, emplacement",126,189
 Deventer goed. empl.,Sloehaven empl.,154,238
 Deventer goed. empl.,Steinweg Amsterdam,81,121
@@ -1472,6 +1577,7 @@ Deventer goed. empl.,"Zutphen, emplacement",19,14
 "Deventer, goederenemplacement","Rheinhausen, emplacement",104,149
 "Deventer, goederenemplacement","Roosendaal, emplacement",117,174
 "Deventer, goederenemplacement",RWG,130,189
+"Deventer, goederenemplacement",'s-Hertogenbosch,75,105
 "Deventer, goederenemplacement","Sittard, emplacement",126,189
 "Deventer, goederenemplacement",Sloehaven empl.,154,238
 "Deventer, goederenemplacement",Steinweg Amsterdam,82,121
@@ -1536,6 +1642,7 @@ Deventer goed. empl.,"Zutphen, emplacement",19,14
 "Dordrecht, dok","Rheinhausen, emplacement",127,192
 "Dordrecht, dok","Roosendaal, emplacement",28,37
 "Dordrecht, dok",RWG,47,60
+"Dordrecht, dok",'s-Hertogenbosch,46,66
 "Dordrecht, dok","Sittard, emplacement",107,162
 "Dordrecht, dok",Sloehaven empl.,66,101
 "Dordrecht, dok",Steinweg Amsterdam,64,95
@@ -1599,6 +1706,7 @@ Deventer goed. empl.,"Zutphen, emplacement",19,14
 "Dortmund Obereving, emplacement","Rheinhausen, emplacement",63,68
 "Dortmund Obereving, emplacement","Roosendaal, emplacement",173,248
 "Dortmund Obereving, emplacement",RWG,195,299
+"Dortmund Obereving, emplacement",'s-Hertogenbosch,131,189
 "Dortmund Obereving, emplacement","Sittard, emplacement",115,162
 "Dortmund Obereving, emplacement",Sloehaven empl.,204,306
 "Dortmund Obereving, emplacement",Steinweg Amsterdam,159,251
@@ -1661,6 +1769,7 @@ Duisburg Ruhrorthafen,Rheine,87,125
 Duisburg Ruhrorthafen,"Rheinhausen, emplacement",21,14
 Duisburg Ruhrorthafen,"Roosendaal, emplacement",132,194
 Duisburg Ruhrorthafen,RWG,161,240
+Duisburg Ruhrorthafen,'s-Hertogenbosch,92,136
 Duisburg Ruhrorthafen,"Sittard, emplacement",79,111
 Duisburg Ruhrorthafen,Sloehaven empl.,163,252
 Duisburg Ruhrorthafen,Steinweg Amsterdam,134,209
@@ -1722,6 +1831,7 @@ Duisburg Ruhrorthafen,"Zutphen, emplacement",86,120
 "Duisburg, Hochfeld Süd Vorbahnhof","Rheinhausen, emplacement",17,11
 "Duisburg, Hochfeld Süd Vorbahnhof","Roosendaal, emplacement",130,195
 "Duisburg, Hochfeld Süd Vorbahnhof",RWG,163,246
+"Duisburg, Hochfeld Süd Vorbahnhof",'s-Hertogenbosch,93,142
 "Duisburg, Hochfeld Süd Vorbahnhof","Sittard, emplacement",78,112
 "Duisburg, Hochfeld Süd Vorbahnhof",Sloehaven empl.,161,253
 "Duisburg, Hochfeld Süd Vorbahnhof",Steinweg Amsterdam,135,217
@@ -1782,6 +1892,7 @@ ECT,Rheine,184,281
 ECT,"Rheinhausen, emplacement",161,243
 ECT,"Roosendaal, emplacement",68,95
 ECT,RWG,18,9
+ECT,'s-Hertogenbosch,85,120
 ECT,"Sittard, emplacement",148,219
 ECT,Sloehaven empl.,87,102
 ECT,Steinweg Amsterdam,79,112
@@ -1841,6 +1952,7 @@ ECT,"Zutphen, emplacement",133,187
 "Eindhoven, emplacement","Rheinhausen, emplacement",73,100
 "Eindhoven, emplacement","Roosendaal, emplacement",68,96
 "Eindhoven, emplacement",RWG,108,156
+"Eindhoven, emplacement",'s-Hertogenbosch,31,37
 "Eindhoven, emplacement","Sittard, emplacement",54,70
 "Eindhoven, emplacement",Sloehaven empl.,101,154
 "Eindhoven, emplacement",Steinweg Amsterdam,92,139
@@ -1899,6 +2011,7 @@ ECT,"Zutphen, emplacement",133,187
 "Eindhoven, emplacement Acht","Rheinhausen, emplacement",77,110
 "Eindhoven, emplacement Acht","Roosendaal, emplacement",63,89
 "Eindhoven, emplacement Acht",RWG,103,148
+"Eindhoven, emplacement Acht",'s-Hertogenbosch,30,31
 "Eindhoven, emplacement Acht","Sittard, emplacement",58,80
 "Eindhoven, emplacement Acht",Sloehaven empl.,96,147
 "Eindhoven, emplacement Acht",Steinweg Amsterdam,90,133
@@ -1956,6 +2069,7 @@ Eltville Ost,Rheine,239,368
 Eltville Ost,"Rheinhausen, emplacement",173,247
 Eltville Ost,"Roosendaal, emplacement",277,424
 Eltville Ost,RWG,317,482
+Eltville Ost,'s-Hertogenbosch,249,384
 Eltville Ost,"Sittard, emplacement",187,281
 Eltville Ost,Sloehaven empl.,288,454
 Eltville Ost,Steinweg Amsterdam,286,451
@@ -2012,6 +2126,7 @@ Eltville Ost,"Zutphen, emplacement",237,362
 "Emmerich, station","Rheinhausen, emplacement",66,84
 "Emmerich, station","Roosendaal, emplacement",120,168
 "Emmerich, station",RWG,135,192
+"Emmerich, station",'s-Hertogenbosch,75,101
 "Emmerich, station","Sittard, emplacement",108,138
 "Emmerich, station",Sloehaven empl.,157,232
 "Emmerich, station",Steinweg Amsterdam,99,144
@@ -2067,6 +2182,7 @@ Euromax,Rheine,189,291
 Euromax,"Rheinhausen, emplacement",164,250
 Euromax,"Roosendaal, emplacement",72,103
 Euromax,RWG,26,21
+Euromax,'s-Hertogenbosch,87,127
 Euromax,"Sittard, emplacement",151,228
 Euromax,Sloehaven empl.,91,110
 Euromax,Steinweg Amsterdam,81,119
@@ -2121,6 +2237,7 @@ Euromax,"Zutphen, emplacement",136,194
 "Europoort, emplacement","Rheinhausen, emplacement",146,226
 "Europoort, emplacement","Roosendaal, emplacement",54,79
 "Europoort, emplacement",RWG,22,21
+"Europoort, emplacement",'s-Hertogenbosch,69,103
 "Europoort, emplacement","Sittard, emplacement",133,204
 "Europoort, emplacement",Sloehaven empl.,72,90
 "Europoort, emplacement",Steinweg Amsterdam,63,94
@@ -2174,6 +2291,7 @@ Euromax,"Zutphen, emplacement",136,194
 "Gekkengraaf, emplacement","Rheinhausen, emplacement",41,56
 "Gekkengraaf, emplacement","Roosendaal, emplacement",96,141
 "Gekkengraaf, emplacement",RWG,136,200
+"Gekkengraaf, emplacement",'s-Hertogenbosch,62,87
 "Gekkengraaf, emplacement","Sittard, emplacement",48,66
 "Gekkengraaf, emplacement",Sloehaven empl.,127,200
 "Gekkengraaf, emplacement",Steinweg Amsterdam,122,189
@@ -2226,6 +2344,7 @@ Germersheim,Rheine,288,466
 Germersheim,"Rheinhausen, emplacement",213,334
 Germersheim,"Roosendaal, emplacement",310,488
 Germersheim,RWG,350,546
+Germersheim,'s-Hertogenbosch,282,448
 Germersheim,"Sittard, emplacement",221,345
 Germersheim,Sloehaven empl.,321,518
 Germersheim,Steinweg Amsterdam,335,529
@@ -2277,6 +2396,7 @@ Goes,Rheine,209,322
 Goes,"Rheinhausen, emplacement",156,241
 Goes,"Roosendaal, emplacement",42,56
 Goes,RWG,83,89
+Goes,'s-Hertogenbosch,86,130
 Goes,"Sittard, emplacement",113,176
 Goes,Sloehaven empl.,15,17
 Goes,Steinweg Amsterdam,115,178
@@ -2327,6 +2447,7 @@ Goes,"Zutphen, emplacement",154,222
 "Hengelo, emplacement","Rheinhausen, emplacement",98,136
 "Hengelo, emplacement","Roosendaal, emplacement",144,216
 "Hengelo, emplacement",RWG,156,232
+"Hengelo, emplacement",'s-Hertogenbosch,101,148
 "Hengelo, emplacement","Sittard, emplacement",154,232
 "Hengelo, emplacement",Sloehaven empl.,182,280
 "Hengelo, emplacement",Steinweg Amsterdam,109,164
@@ -2376,6 +2497,7 @@ Goes,"Zutphen, emplacement",154,222
 "Herzogenrath, station","Rheinhausen, emplacement",69,96
 "Herzogenrath, station","Roosendaal, emplacement",127,186
 "Herzogenrath, station",RWG,172,251
+"Herzogenrath, station",'s-Hertogenbosch,98,138
 "Herzogenrath, station","Sittard, emplacement",31,31
 "Herzogenrath, station",Sloehaven empl.,136,207
 "Herzogenrath, station",Steinweg Amsterdam,159,240
@@ -2424,6 +2546,7 @@ Holland Cargo Terminal,Rheine,140,216
 Holland Cargo Terminal,"Rheinhausen, emplacement",148,226
 Holland Cargo Terminal,"Roosendaal, emplacement",89,131
 Holland Cargo Terminal,RWG,82,113
+Holland Cargo Terminal,'s-Hertogenbosch,70,103
 Holland Cargo Terminal,"Sittard, emplacement",138,210
 Holland Cargo Terminal,Sloehaven empl.,122,190
 Holland Cargo Terminal,Steinweg Amsterdam,10,7
@@ -2471,6 +2594,7 @@ Holland Cargo Terminal,"Zutphen, emplacement",89,126
 "Houtrakpolder, emplacement","Rheinhausen, emplacement",143,223
 "Houtrakpolder, emplacement","Roosendaal, emplacement",85,128
 "Houtrakpolder, emplacement",RWG,78,110
+"Houtrakpolder, emplacement",'s-Hertogenbosch,66,100
 "Houtrakpolder, emplacement","Sittard, emplacement",133,206
 "Houtrakpolder, emplacement",Sloehaven empl.,118,186
 "Houtrakpolder, emplacement",Steinweg Amsterdam,6,4
@@ -2517,6 +2641,7 @@ Holland Cargo Terminal,"Zutphen, emplacement",89,126
 "IJsselmonde, emplacement","Rheinhausen, emplacement",131,198
 "IJsselmonde, emplacement","Roosendaal, emplacement",39,51
 "IJsselmonde, emplacement",RWG,43,49
+"IJsselmonde, emplacement",'s-Hertogenbosch,54,75
 "IJsselmonde, emplacement","Sittard, emplacement",118,176
 "IJsselmonde, emplacement",Sloehaven empl.,72,107
 "IJsselmonde, emplacement",Steinweg Amsterdam,61,88
@@ -2562,6 +2687,7 @@ Holland Cargo Terminal,"Zutphen, emplacement",89,126
 "Kaldenkirchen, station","Rheinhausen, emplacement",38,48
 "Kaldenkirchen, station","Roosendaal, emplacement",103,154
 "Kaldenkirchen, station",RWG,144,212
+"Kaldenkirchen, station",'s-Hertogenbosch,69,99
 "Kaldenkirchen, station","Sittard, emplacement",46,62
 "Kaldenkirchen, station",Sloehaven empl.,134,212
 "Kaldenkirchen, station",Steinweg Amsterdam,128,195
@@ -2606,6 +2732,7 @@ Holland Cargo Terminal,"Zutphen, emplacement",89,126
 "Kijfhoek, emplacement","Rheinhausen, emplacement",127,194
 "Kijfhoek, emplacement","Roosendaal, emplacement",28,38
 "Kijfhoek, emplacement",RWG,44,58
+"Kijfhoek, emplacement",'s-Hertogenbosch,46,68
 "Kijfhoek, emplacement","Sittard, emplacement",107,163
 "Kijfhoek, emplacement",Sloehaven empl.,65,102
 "Kijfhoek, emplacement",Steinweg Amsterdam,62,93
@@ -2649,6 +2776,7 @@ Holland Cargo Terminal,"Zutphen, emplacement",89,126
 "Köln Eifeltor, emplacement","Rheinhausen, emplacement",55,76
 "Köln Eifeltor, emplacement","Roosendaal, emplacement",162,253
 "Köln Eifeltor, emplacement",RWG,200,304
+"Köln Eifeltor, emplacement",'s-Hertogenbosch,128,191
 "Köln Eifeltor, emplacement","Sittard, emplacement",70,101
 "Köln Eifeltor, emplacement",Sloehaven empl.,171,274
 "Köln Eifeltor, emplacement",Steinweg Amsterdam,179,285
@@ -2691,6 +2819,7 @@ Koole Vondelingenweg,Rheine,164,252
 Koole Vondelingenweg,"Rheinhausen, emplacement",138,212
 Koole Vondelingenweg,"Roosendaal, emplacement",46,64
 Koole Vondelingenweg,RWG,35,38
+Koole Vondelingenweg,'s-Hertogenbosch,61,89
 Koole Vondelingenweg,"Sittard, emplacement",125,189
 Koole Vondelingenweg,Sloehaven empl.,78,119
 Koole Vondelingenweg,Steinweg Amsterdam,55,80
@@ -2732,6 +2861,7 @@ Koole Vondelingenweg,"Zutphen, emplacement",111,155
 "Krefeld Linn, emplacement","Rheinhausen, emplacement",20,14
 "Krefeld Linn, emplacement","Roosendaal, emplacement",132,191
 "Krefeld Linn, emplacement",RWG,165,242
+"Krefeld Linn, emplacement",'s-Hertogenbosch,96,138
 "Krefeld Linn, emplacement","Sittard, emplacement",69,95
 "Krefeld Linn, emplacement",Sloehaven empl.,163,249
 "Krefeld Linn, emplacement",Steinweg Amsterdam,150,225
@@ -2772,6 +2902,7 @@ Koole Vondelingenweg,"Zutphen, emplacement",111,155
 "Lage Zwaluwe, emplacement","Rheinhausen, emplacement",118,179
 "Lage Zwaluwe, emplacement","Roosendaal, emplacement",22,27
 "Lage Zwaluwe, emplacement",RWG,56,75
+"Lage Zwaluwe, emplacement",'s-Hertogenbosch,37,53
 "Lage Zwaluwe, emplacement","Sittard, emplacement",98,148
 "Lage Zwaluwe, emplacement",Sloehaven empl.,59,91
 "Lage Zwaluwe, emplacement",Steinweg Amsterdam,74,110
@@ -2811,6 +2942,7 @@ Koole Vondelingenweg,"Zutphen, emplacement",111,155
 "Leusden, PON","Rheinhausen, emplacement",111,166
 "Leusden, PON","Roosendaal, emplacement",78,112
 "Leusden, PON",RWG,91,128
+"Leusden, PON",'s-Hertogenbosch,50,71
 "Leusden, PON","Sittard, emplacement",117,178
 "Leusden, PON",Sloehaven empl.,116,176
 "Leusden, PON",Steinweg Amsterdam,48,68
@@ -2849,6 +2981,7 @@ Ludwigshafen-Oggersheim,Rheine,269,432
 Ludwigshafen-Oggersheim,"Rheinhausen, emplacement",194,303
 Ludwigshafen-Oggersheim,"Roosendaal, emplacement",291,456
 Ludwigshafen-Oggersheim,RWG,331,514
+Ludwigshafen-Oggersheim,'s-Hertogenbosch,264,416
 Ludwigshafen-Oggersheim,"Sittard, emplacement",202,313
 Ludwigshafen-Oggersheim,Sloehaven empl.,302,486
 Ludwigshafen-Oggersheim,Steinweg Amsterdam,316,497
@@ -2886,6 +3019,7 @@ Ludwigshafen-Oggersheim,"Zutphen, emplacement",268,426
 "Maasvlakte, emplacement","Rheinhausen, emplacement",158,241
 "Maasvlakte, emplacement","Roosendaal, emplacement",66,94
 "Maasvlakte, emplacement",RWG,14,7
+"Maasvlakte, emplacement",'s-Hertogenbosch,81,118
 "Maasvlakte, emplacement","Sittard, emplacement",145,219
 "Maasvlakte, emplacement",Sloehaven empl.,85,101
 "Maasvlakte, emplacement",Steinweg Amsterdam,75,109
@@ -2922,6 +3056,7 @@ Magdeburg Hbf,Rheine,199,323
 Magdeburg Hbf,"Rheinhausen, emplacement",256,415
 Magdeburg Hbf,"Roosendaal, emplacement",359,584
 Magdeburg Hbf,RWG,372,600
+Magdeburg Hbf,'s-Hertogenbosch,316,515
 Magdeburg Hbf,"Sittard, emplacement",307,500
 Magdeburg Hbf,Sloehaven empl.,397,653
 Magdeburg Hbf,Steinweg Amsterdam,324,531
@@ -2957,6 +3092,7 @@ Magdeburg Hbf,"Zutphen, emplacement",262,425
 "Marl-Sinsen, emplacement","Rheinhausen, emplacement",52,62
 "Marl-Sinsen, emplacement","Roosendaal, emplacement",162,242
 "Marl-Sinsen, emplacement",RWG,184,284
+"Marl-Sinsen, emplacement",'s-Hertogenbosch,119,179
 "Marl-Sinsen, emplacement","Sittard, emplacement",109,159
 "Marl-Sinsen, emplacement",Sloehaven empl.,193,300
 "Marl-Sinsen, emplacement",Steinweg Amsterdam,148,236
@@ -2991,6 +3127,7 @@ Matrans Rotterdam Terminal,Rheine,175,253
 Matrans Rotterdam Terminal,"Rheinhausen, emplacement",148,209
 Matrans Rotterdam Terminal,"Roosendaal, emplacement",55,62
 Matrans Rotterdam Terminal,RWG,50,45
+Matrans Rotterdam Terminal,'s-Hertogenbosch,71,86
 Matrans Rotterdam Terminal,"Sittard, emplacement",134,187
 Matrans Rotterdam Terminal,Sloehaven empl.,87,116
 Matrans Rotterdam Terminal,Steinweg Amsterdam,69,84
@@ -3024,6 +3161,7 @@ Matrans Rotterdam Terminal,"Zutphen, emplacement",120,153
 "Moerdijk, emplacement","Rheinhausen, emplacement",125,186
 "Moerdijk, emplacement","Roosendaal, emplacement",20,22
 "Moerdijk, emplacement",RWG,59,78
+"Moerdijk, emplacement",'s-Hertogenbosch,44,60
 "Moerdijk, emplacement","Sittard, emplacement",105,156
 "Moerdijk, emplacement",Sloehaven empl.,58,86
 "Moerdijk, emplacement",Steinweg Amsterdam,77,113
@@ -3056,6 +3194,7 @@ Moers,Rheine,96,136
 Moers,"Rheinhausen, emplacement",18,10
 Moers,"Roosendaal, emplacement",125,185
 Moers,RWG,157,230
+Moers,'s-Hertogenbosch,87,126
 Moers,"Sittard, emplacement",72,102
 Moers,Sloehaven empl.,156,243
 Moers,Steinweg Amsterdam,141,213
@@ -3087,6 +3226,7 @@ Moers,"Zutphen, emplacement",94,131
 "Neuss, guterbahnhof","Rheinhausen, emplacement",29,31
 "Neuss, guterbahnhof","Roosendaal, emplacement",136,201
 "Neuss, guterbahnhof",RWG,174,259
+"Neuss, guterbahnhof",'s-Hertogenbosch,101,147
 "Neuss, guterbahnhof","Sittard, emplacement",57,76
 "Neuss, guterbahnhof",Sloehaven empl.,167,260
 "Neuss, guterbahnhof",Steinweg Amsterdam,159,242
@@ -3117,6 +3257,7 @@ Moers,"Zutphen, emplacement",94,131
 "Nijmegen, emplacement","Rheinhausen, emplacement",72,104
 "Nijmegen, emplacement","Roosendaal, emplacement",87,121
 "Nijmegen, emplacement",RWG,109,148
+"Nijmegen, emplacement",'s-Hertogenbosch,42,46
 "Nijmegen, emplacement","Sittard, emplacement",87,121
 "Nijmegen, emplacement",Sloehaven empl.,124,184
 "Nijmegen, emplacement",Steinweg Amsterdam,93,132
@@ -3146,6 +3287,7 @@ NWB terminal,Rheine,136,210
 NWB terminal,"Rheinhausen, emplacement",144,217
 NWB terminal,"Roosendaal, emplacement",91,132
 NWB terminal,RWG,84,114
+NWB terminal,'s-Hertogenbosch,66,94
 NWB terminal,"Sittard, emplacement",133,201
 NWB terminal,Sloehaven empl.,124,191
 NWB terminal,Steinweg Amsterdam,14,7
@@ -3174,6 +3316,7 @@ OBA,Rheine,137,211
 OBA,"Rheinhausen, emplacement",144,218
 OBA,"Roosendaal, emplacement",92,133
 OBA,RWG,84,115
+OBA,'s-Hertogenbosch,66,95
 OBA,"Sittard, emplacement",134,202
 OBA,Sloehaven empl.,125,191
 OBA,Steinweg Amsterdam,14,8
@@ -3201,6 +3344,7 @@ OBA,"Zutphen, emplacement",86,120
 "Oberhausen West, emplacement","Rheinhausen, emplacement",22,17
 "Oberhausen West, emplacement","Roosendaal, emplacement",132,197
 "Oberhausen West, emplacement",RWG,160,241
+"Oberhausen West, emplacement",'s-Hertogenbosch,90,137
 "Oberhausen West, emplacement","Sittard, emplacement",80,114
 "Oberhausen West, emplacement",Sloehaven empl.,163,255
 "Oberhausen West, emplacement",Steinweg Amsterdam,127,205
@@ -3227,6 +3371,7 @@ OBA,"Zutphen, emplacement",86,120
 "Oldenzaal, emplacement","Rheinhausen, emplacement",102,129
 "Oldenzaal, emplacement","Roosendaal, emplacement",148,227
 "Oldenzaal, emplacement",RWG,161,242
+"Oldenzaal, emplacement",'s-Hertogenbosch,106,157
 "Oldenzaal, emplacement","Sittard, emplacement",158,242
 "Oldenzaal, emplacement",Sloehaven empl.,186,291
 "Oldenzaal, emplacement",Steinweg Amsterdam,113,174
@@ -3252,6 +3397,7 @@ OBA,"Zutphen, emplacement",86,120
 "Onnen, emplacement noordingang","Rheinhausen, emplacement",166,254
 "Onnen, emplacement noordingang","Roosendaal, emplacement",178,276
 "Onnen, emplacement noordingang",RWG,191,291
+"Onnen, emplacement noordingang",'s-Hertogenbosch,147,226
 "Onnen, emplacement noordingang","Sittard, emplacement",199,310
 "Onnen, emplacement noordingang",Sloehaven empl.,216,340
 "Onnen, emplacement noordingang",Steinweg Amsterdam,128,200
@@ -3276,6 +3422,7 @@ OBA,"Zutphen, emplacement",86,120
 "Onnen, emplacement zuidingang","Rheinhausen, emplacement",163,250
 "Onnen, emplacement zuidingang","Roosendaal, emplacement",175,272
 "Onnen, emplacement zuidingang",RWG,188,288
+"Onnen, emplacement zuidingang",'s-Hertogenbosch,144,223
 "Onnen, emplacement zuidingang","Sittard, emplacement",196,307
 "Onnen, emplacement zuidingang",Sloehaven empl.,212,336
 "Onnen, emplacement zuidingang",Steinweg Amsterdam,130,205
@@ -3299,6 +3446,7 @@ Opladen,Rheine,116,175
 Opladen,"Rheinhausen, emplacement",50,55
 Opladen,"Roosendaal, emplacement",162,241
 Opladen,RWG,195,294
+Opladen,'s-Hertogenbosch,125,190
 Opladen,"Sittard, emplacement",79,114
 Opladen,Sloehaven empl.,184,289
 Opladen,Steinweg Amsterdam,162,258
@@ -3321,6 +3469,7 @@ Opladen,"Zutphen, emplacement",114,170
 "Oss, terminal OOC","Rheinhausen, emplacement",81,119
 "Oss, terminal OOC","Roosendaal, emplacement",72,104
 "Oss, terminal OOC",RWG,101,142
+"Oss, terminal OOC",'s-Hertogenbosch,27,28
 "Oss, terminal OOC","Sittard, emplacement",85,124
 "Oss, terminal OOC",Sloehaven empl.,109,166
 "Oss, terminal OOC",Steinweg Amsterdam,84,125
@@ -3342,6 +3491,7 @@ Opladen,"Zutphen, emplacement",114,170
 "Pernis, emplacement","Rheinhausen, emplacement",136,209
 "Pernis, emplacement","Roosendaal, emplacement",43,61
 "Pernis, emplacement",RWG,33,36
+"Pernis, emplacement",'s-Hertogenbosch,59,86
 "Pernis, emplacement","Sittard, emplacement",122,186
 "Pernis, emplacement",Sloehaven empl.,75,116
 "Pernis, emplacement",Steinweg Amsterdam,53,77
@@ -3362,6 +3512,7 @@ Opladen,"Zutphen, emplacement",114,170
 Rheine,"Rheinhausen, emplacement",99,143
 Rheine,"Roosendaal, emplacement",173,266
 Rheine,RWG,186,281
+Rheine,'s-Hertogenbosch,131,197
 Rheine,"Sittard, emplacement",157,240
 Rheine,Sloehaven empl.,210,330
 Rheine,Steinweg Amsterdam,138,213
@@ -3381,6 +3532,7 @@ Rheine,Zevenaar grens,99,146
 Rheine,"Zutphen, emplacement",76,107
 "Rheinhausen, emplacement","Roosendaal, emplacement",130,192
 "Rheinhausen, emplacement",RWG,163,243
+"Rheinhausen, emplacement",'s-Hertogenbosch,93,139
 "Rheinhausen, emplacement","Sittard, emplacement",70,101
 "Rheinhausen, emplacement",Sloehaven empl.,161,250
 "Rheinhausen, emplacement",Steinweg Amsterdam,146,222
@@ -3399,6 +3551,7 @@ Rheine,"Zutphen, emplacement",76,107
 "Rheinhausen, emplacement",Zevenaar grens,72,100
 "Rheinhausen, emplacement","Zutphen, emplacement",98,133
 "Roosendaal, emplacement",RWG,70,95
+"Roosendaal, emplacement",'s-Hertogenbosch,55,78
 "Roosendaal, emplacement","Sittard, emplacement",108,161
 "Roosendaal, emplacement",Sloehaven empl.,45,66
 "Roosendaal, emplacement",Steinweg Amsterdam,87,130
@@ -3416,6 +3569,7 @@ Rheine,"Zutphen, emplacement",76,107
 "Roosendaal, emplacement","Westhaven, emplacement",90,132
 "Roosendaal, emplacement",Zevenaar grens,108,156
 "Roosendaal, emplacement","Zutphen, emplacement",121,168
+RWG,'s-Hertogenbosch,85,118
 RWG,"Sittard, emplacement",150,219
 RWG,Sloehaven empl.,89,102
 RWG,Steinweg Amsterdam,81,112
@@ -3433,6 +3587,23 @@ RWG,"Waalhaven, kantoor RFO",39,43
 RWG,"Westhaven, emplacement",82,114
 RWG,Zevenaar grens,120,176
 RWG,"Zutphen, emplacement",134,187
+'s-Hertogenbosch,"Sittard, emplacement",75,106
+'s-Hertogenbosch,Sloehaven empl.,92,141
+'s-Hertogenbosch,Steinweg Amsterdam,68,96
+'s-Hertogenbosch,Stroe,63,95
+'s-Hertogenbosch,Stuttgart,352,550
+'s-Hertogenbosch,"Tilburg, industrie",26,23
+'s-Hertogenbosch,"Uitgeest, emplacement",77,116
+'s-Hertogenbosch,"Valburg, emplacement CUP",40,53
+'s-Hertogenbosch,"Venlo, emplacement",68,93
+'s-Hertogenbosch,"Viersen, guterbahnhof",88,119
+'s-Hertogenbosch,"Vlissingen Sloe, emplacement",92,142
+'s-Hertogenbosch,Vopak-Sloe,93,141
+'s-Hertogenbosch,"Waalhaven, emplacement",56,82
+'s-Hertogenbosch,"Waalhaven, kantoor RFO",58,83
+'s-Hertogenbosch,"Westhaven, emplacement",65,94
+'s-Hertogenbosch,Zevenaar grens,61,84
+'s-Hertogenbosch,"Zutphen, emplacement",74,95
 "Sittard, emplacement",Sloehaven empl.,120,186
 "Sittard, emplacement",Steinweg Amsterdam,136,208
 "Sittard, emplacement",Stroe,121,170

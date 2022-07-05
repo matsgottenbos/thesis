@@ -41,13 +41,6 @@ namespace Thesis {
             // Initialise
             PerformFullReset();
 
-            #if DEBUG
-            if (AppConfig.DebugSaLogOperationStats) {
-                DebugOperationCounts = new int[4];
-                DebugAcceptedOperationCounts = new int[4];
-            }
-            #endif
-
             while (!cancellationToken.IsCancellationRequested) {
                 // Pick a random operation based on the configured probabilities
                 double operationDouble = rand.NextDouble();
@@ -57,17 +50,6 @@ namespace Thesis {
                 else if (operationDouble < SaConfig.SwapProbCumulative) operation = SwapOperation.CreateRandom(Info, rand);
                 else operation = ToggleHotelOperation.CreateRandom(Info, rand);
 
-                #if DEBUG
-                int operationTypeIndex;
-                if (AppConfig.DebugSaLogOperationStats) {
-                    if (operationDouble < SaConfig.AssignInternalProbCumulative) operationTypeIndex = 0;
-                    else if (operationDouble < SaConfig.AssignExternalProbCumulative) operationTypeIndex = 1;
-                    else if (operationDouble < SaConfig.SwapProbCumulative) operationTypeIndex = 2;
-                    else operationTypeIndex = 3;
-                    DebugOperationCounts[operationTypeIndex]++;
-                }
-                #endif
-
                 SaTotalInfo totalInfoDiff = operation.GetCostDiff();
                 double oldAdjustedCost = GetAdjustedCost(Info.TotalInfo.Stats.Cost, Info.TotalInfo.Stats.SatisfactionScore.Value, Info.SatisfactionFactor);
                 double newAdjustedCost = GetAdjustedCost(Info.TotalInfo.Stats.Cost + totalInfoDiff.Stats.Cost, Info.TotalInfo.Stats.SatisfactionScore.Value + totalInfoDiff.Stats.SatisfactionScore.Value, Info.SatisfactionFactor);
@@ -76,12 +58,6 @@ namespace Thesis {
                 bool isAccepted = adjustedCostDiff < 0 || rand.NextDouble() < Math.Exp(-adjustedCostDiff / Info.Temperature);
                 if (isAccepted) {
                     operation.Execute();
-
-                    #if DEBUG
-                    if (AppConfig.DebugSaLogOperationStats) {
-                        DebugAcceptedOperationCounts[operationTypeIndex]++;
-                    }
-                    #endif
 
                     int satisfactionLevel = (int)Math.Round(Info.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor);
                     if (Info.TotalInfo.Stats.Penalty < 0.01 && Info.TotalInfo.Stats.Cost < BestInfoBySatisfaction[satisfactionLevel].TotalInfo.Stats.Cost) {

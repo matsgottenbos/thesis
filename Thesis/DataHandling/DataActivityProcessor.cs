@@ -178,7 +178,7 @@ namespace Thesis {
 
                 int addressStationIndex = Array.IndexOf(stationNames, addressStationName);
                 if (addressStationIndex == -1) {
-                    throw new Exception();
+                    throw new Exception(string.Format("Station `{0}` not found in travel info", addressStationName));
                 }
                 stationDataNameToAddressIndex.Add(dataStationName, addressStationIndex);
             });

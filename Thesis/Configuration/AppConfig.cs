@@ -21,12 +21,11 @@ namespace Thesis {
         public const int ThreadCount = 8;
 
         // Debug
-        public const bool DebugUseSeededSa = true;
+        public const bool DebugUseSeededSa = false;
         public const bool DebugCheckOperations = false;
-        public const bool DebugSaLogThreads = true;
+        public const bool DebugSaLogThreads = false;
         public const bool DebugSaLogCurrentSolution = false;
         public const bool DebugSaLogAdditionalInfo = false;
-        public const bool DebugSaLogOperationStats = false;
         public const bool DebugLogDataRepairs = false;
         public const bool DebugRunInspector = false;
         public const bool DebugRunJsonExporter = false;

@@ -10,6 +10,7 @@ Machinext national,APMT,10,4
 Machinext national,"Arnhem, goederenemplacement",105,154
 Machinext national,"Bad Bentheim, empl. / staalfabriek",166,258
 Machinext national,"Bad Bentheim, Hilgenstiege sp.25",165,259
+Machinext national,Beatrixhaven,32,40
 Machinext national,"Beverwijk, emplacement",79,118
 Machinext national,Bietigheim-Bissingen,404,648
 Machinext national,"Blerick, emplacement en werkplaats",135,202
@@ -67,6 +68,7 @@ Machinext national,Rheine,181,279
 Machinext national,"Rheinhausen, emplacement",158,241
 Machinext national,"Roosendaal, emplacement",65,93
 Machinext national,RWG,13,5
+Machinext national,'s-Hertogenbosch,80,117
 Machinext national,"Sittard, emplacement",145,217
 Machinext national,Sloehaven empl.,84,100
 Machinext national,Steinweg Amsterdam,75,110
@@ -95,6 +97,7 @@ Machinext international,APMT,10,4
 Machinext international,"Arnhem, goederenemplacement",105,154
 Machinext international,"Bad Bentheim, empl. / staalfabriek",166,258
 Machinext international,"Bad Bentheim, Hilgenstiege sp.25",165,259
+Machinext international,Beatrixhaven,32,40
 Machinext international,"Beverwijk, emplacement",79,118
 Machinext international,Bietigheim-Bissingen,404,648
 Machinext international,"Blerick, emplacement en werkplaats",135,202
@@ -152,6 +155,7 @@ Machinext international,Rheine,181,279
 Machinext international,"Rheinhausen, emplacement",158,241
 Machinext international,"Roosendaal, emplacement",65,93
 Machinext international,RWG,13,5
+Machinext international,'s-Hertogenbosch,80,117
 Machinext international,"Sittard, emplacement",145,217
 Machinext international,Sloehaven empl.,84,100
 Machinext international,Steinweg Amsterdam,75,110
@@ -180,6 +184,7 @@ Aeterno national,APMT,10,4
 Aeterno national,"Arnhem, goederenemplacement",105,154
 Aeterno national,"Bad Bentheim, empl. / staalfabriek",166,258
 Aeterno national,"Bad Bentheim, Hilgenstiege sp.25",165,259
+Aeterno national,Beatrixhaven,32,40
 Aeterno national,"Beverwijk, emplacement",79,118
 Aeterno national,Bietigheim-Bissingen,404,648
 Aeterno national,"Blerick, emplacement en werkplaats",135,202
@@ -237,6 +242,7 @@ Aeterno national,Rheine,181,279
 Aeterno national,"Rheinhausen, emplacement",158,241
 Aeterno national,"Roosendaal, emplacement",65,93
 Aeterno national,RWG,13,5
+Aeterno national,'s-Hertogenbosch,80,117
 Aeterno national,"Sittard, emplacement",145,217
 Aeterno national,Sloehaven empl.,84,100
 Aeterno national,Steinweg Amsterdam,75,110
@@ -265,6 +271,7 @@ Aeterno international,APMT,10,4
 Aeterno international,"Arnhem, goederenemplacement",105,154
 Aeterno international,"Bad Bentheim, empl. / staalfabriek",166,258
 Aeterno international,"Bad Bentheim, Hilgenstiege sp.25",165,259
+Aeterno international,Beatrixhaven,32,40
 Aeterno international,"Beverwijk, emplacement",79,118
 Aeterno international,Bietigheim-Bissingen,404,648
 Aeterno international,"Blerick, emplacement en werkplaats",135,202
@@ -322,6 +329,7 @@ Aeterno international,Rheine,181,279
 Aeterno international,"Rheinhausen, emplacement",158,241
 Aeterno international,"Roosendaal, emplacement",65,93
 Aeterno international,RWG,13,5
+Aeterno international,'s-Hertogenbosch,80,117
 Aeterno international,"Sittard, emplacement",145,217
 Aeterno international,Sloehaven empl.,84,100
 Aeterno international,Steinweg Amsterdam,75,110
@@ -350,6 +358,7 @@ Spoorlutions national,APMT,10,4
 Spoorlutions national,"Arnhem, goederenemplacement",105,154
 Spoorlutions national,"Bad Bentheim, empl. / staalfabriek",166,258
 Spoorlutions national,"Bad Bentheim, Hilgenstiege sp.25",165,259
+Spoorlutions national,Beatrixhaven,32,40
 Spoorlutions national,"Beverwijk, emplacement",79,118
 Spoorlutions national,Bietigheim-Bissingen,404,648
 Spoorlutions national,"Blerick, emplacement en werkplaats",135,202
@@ -407,6 +416,7 @@ Spoorlutions national,Rheine,181,279
 Spoorlutions national,"Rheinhausen, emplacement",158,241
 Spoorlutions national,"Roosendaal, emplacement",65,93
 Spoorlutions national,RWG,13,5
+Spoorlutions national,'s-Hertogenbosch,80,117
 Spoorlutions national,"Sittard, emplacement",145,217
 Spoorlutions national,Sloehaven empl.,84,100
 Spoorlutions national,Steinweg Amsterdam,75,110
@@ -435,6 +445,7 @@ Logisticle national,APMT,10,4
 Logisticle national,"Arnhem, goederenemplacement",105,154
 Logisticle national,"Bad Bentheim, empl. / staalfabriek",166,258
 Logisticle national,"Bad Bentheim, Hilgenstiege sp.25",165,259
+Logisticle national,Beatrixhaven,32,40
 Logisticle national,"Beverwijk, emplacement",79,118
 Logisticle national,Bietigheim-Bissingen,404,648
 Logisticle national,"Blerick, emplacement en werkplaats",135,202
@@ -492,6 +503,7 @@ Logisticle national,Rheine,181,279
 Logisticle national,"Rheinhausen, emplacement",158,241
 Logisticle national,"Roosendaal, emplacement",65,93
 Logisticle national,RWG,13,5
+Logisticle national,'s-Hertogenbosch,80,117
 Logisticle national,"Sittard, emplacement",145,217
 Logisticle national,Sloehaven empl.,84,100
 Logisticle national,Steinweg Amsterdam,75,110
@@ -520,6 +532,7 @@ Logisticle international,APMT,10,4
 Logisticle international,"Arnhem, goederenemplacement",105,154
 Logisticle international,"Bad Bentheim, empl. / staalfabriek",166,258
 Logisticle international,"Bad Bentheim, Hilgenstiege sp.25",165,259
+Logisticle international,Beatrixhaven,32,40
 Logisticle international,"Beverwijk, emplacement",79,118
 Logisticle international,Bietigheim-Bissingen,404,648
 Logisticle international,"Blerick, emplacement en werkplaats",135,202
@@ -577,6 +590,7 @@ Logisticle international,Rheine,181,279
 Logisticle international,"Rheinhausen, emplacement",158,241
 Logisticle international,"Roosendaal, emplacement",65,93
 Logisticle international,RWG,13,5
+Logisticle international,'s-Hertogenbosch,80,117
 Logisticle international,"Sittard, emplacement",145,217
 Logisticle international,Sloehaven empl.,84,100
 Logisticle international,Steinweg Amsterdam,75,110
@@ -605,6 +619,7 @@ Not driven NL dummy (Maasvlakte),APMT,10,4
 Not driven NL dummy (Maasvlakte),"Arnhem, goederenemplacement",105,154
 Not driven NL dummy (Maasvlakte),"Bad Bentheim, empl. / staalfabriek",166,258
 Not driven NL dummy (Maasvlakte),"Bad Bentheim, Hilgenstiege sp.25",165,259
+Not driven NL dummy (Maasvlakte),Beatrixhaven,32,40
 Not driven NL dummy (Maasvlakte),"Beverwijk, emplacement",79,118
 Not driven NL dummy (Maasvlakte),Bietigheim-Bissingen,404,648
 Not driven NL dummy (Maasvlakte),"Blerick, emplacement en werkplaats",135,202
@@ -662,6 +677,7 @@ Not driven NL dummy (Maasvlakte),Rheine,181,279
 Not driven NL dummy (Maasvlakte),"Rheinhausen, emplacement",158,241
 Not driven NL dummy (Maasvlakte),"Roosendaal, emplacement",65,93
 Not driven NL dummy (Maasvlakte),RWG,13,5
+Not driven NL dummy (Maasvlakte),'s-Hertogenbosch,80,117
 Not driven NL dummy (Maasvlakte),"Sittard, emplacement",145,217
 Not driven NL dummy (Maasvlakte),Sloehaven empl.,84,100
 Not driven NL dummy (Maasvlakte),Steinweg Amsterdam,75,110
@@ -690,6 +706,7 @@ Not driven NL-DE dummy (Maasvlakte),APMT,10,4
 Not driven NL-DE dummy (Maasvlakte),"Arnhem, goederenemplacement",105,154
 Not driven NL-DE dummy (Maasvlakte),"Bad Bentheim, empl. / staalfabriek",166,258
 Not driven NL-DE dummy (Maasvlakte),"Bad Bentheim, Hilgenstiege sp.25",165,259
+Not driven NL-DE dummy (Maasvlakte),Beatrixhaven,32,40
 Not driven NL-DE dummy (Maasvlakte),"Beverwijk, emplacement",79,118
 Not driven NL-DE dummy (Maasvlakte),Bietigheim-Bissingen,404,648
 Not driven NL-DE dummy (Maasvlakte),"Blerick, emplacement en werkplaats",135,202
@@ -747,6 +764,7 @@ Not driven NL-DE dummy (Maasvlakte),Rheine,181,279
 Not driven NL-DE dummy (Maasvlakte),"Rheinhausen, emplacement",158,241
 Not driven NL-DE dummy (Maasvlakte),"Roosendaal, emplacement",65,93
 Not driven NL-DE dummy (Maasvlakte),RWG,13,5
+Not driven NL-DE dummy (Maasvlakte),'s-Hertogenbosch,80,117
 Not driven NL-DE dummy (Maasvlakte),"Sittard, emplacement",145,217
 Not driven NL-DE dummy (Maasvlakte),Sloehaven empl.,84,100
 Not driven NL-DE dummy (Maasvlakte),Steinweg Amsterdam,75,110
@@ -775,6 +793,7 @@ Not driven DE dummy (Emmerich),APMT,127,189
 Not driven DE dummy (Emmerich),"Arnhem, goederenemplacement",32,33
 Not driven DE dummy (Emmerich),"Bad Bentheim, empl. / staalfabriek",79,112
 Not driven DE dummy (Emmerich),"Bad Bentheim, Hilgenstiege sp.25",81,113
+Not driven DE dummy (Emmerich),Beatrixhaven,104,154
 Not driven DE dummy (Emmerich),"Beverwijk, emplacement",101,154
 Not driven DE dummy (Emmerich),Bietigheim-Bissingen,293,475
 Not driven DE dummy (Emmerich),"Blerick, emplacement en werkplaats",68,83
@@ -832,6 +851,7 @@ Not driven DE dummy (Emmerich),Rheine,92,134
 Not driven DE dummy (Emmerich),"Rheinhausen, emplacement",62,83
 Not driven DE dummy (Emmerich),"Roosendaal, emplacement",118,173
 Not driven DE dummy (Emmerich),RWG,131,190
+Not driven DE dummy (Emmerich),'s-Hertogenbosch,72,100
 Not driven DE dummy (Emmerich),"Sittard, emplacement",105,138
 Not driven DE dummy (Emmerich),Sloehaven empl.,155,238
 Not driven DE dummy (Emmerich),Steinweg Amsterdam,96,143
@@ -860,6 +880,7 @@ Not driven NL-DE dummy (Emmerich),APMT,127,189
 Not driven NL-DE dummy (Emmerich),"Arnhem, goederenemplacement",32,33
 Not driven NL-DE dummy (Emmerich),"Bad Bentheim, empl. / staalfabriek",79,112
 Not driven NL-DE dummy (Emmerich),"Bad Bentheim, Hilgenstiege sp.25",81,113
+Not driven NL-DE dummy (Emmerich),Beatrixhaven,104,154
 Not driven NL-DE dummy (Emmerich),"Beverwijk, emplacement",101,154
 Not driven NL-DE dummy (Emmerich),Bietigheim-Bissingen,293,475
 Not driven NL-DE dummy (Emmerich),"Blerick, emplacement en werkplaats",68,83
@@ -917,6 +938,7 @@ Not driven NL-DE dummy (Emmerich),Rheine,92,134
 Not driven NL-DE dummy (Emmerich),"Rheinhausen, emplacement",62,83
 Not driven NL-DE dummy (Emmerich),"Roosendaal, emplacement",118,173
 Not driven NL-DE dummy (Emmerich),RWG,131,190
+Not driven NL-DE dummy (Emmerich),'s-Hertogenbosch,72,100
 Not driven NL-DE dummy (Emmerich),"Sittard, emplacement",105,138
 Not driven NL-DE dummy (Emmerich),Sloehaven empl.,155,238
 Not driven NL-DE dummy (Emmerich),Steinweg Amsterdam,96,143

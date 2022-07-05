@@ -14,8 +14,9 @@ namespace Thesis {
         public SaTotalInfo TotalInfo;
         public SaDriverInfo[] DriverInfos;
         public SaExternalDriverTypeInfo[] ExternalDriverTypeInfos;
-        public int IterationNum, CycleNum;
-        public int? LastImprovementIteration;
+        public long IterationNum;
+        public int CycleNum;
+        public long? LastImprovementIteration;
         public float Temperature, SatisfactionFactor;
         public bool HasImprovementSinceLog;
 
