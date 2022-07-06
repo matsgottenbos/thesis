@@ -163,7 +163,7 @@ def plotSimulatedAnnealingProgress():
     satisfactionTicks = np.linspace(64, 70, 7)
 
     iterationFormatter = FuncFormatter(lambda x, pos: '%1.1fB' % (x * 1e-9))
-    costFormatter = FuncFormatter(lambda x, pos: '%1.0fk' % x)
+    costFormatter = FuncFormatter(lambda x, pos: '%1.0fk' % (x / 1000))
     satisfactionFormatter = FuncFormatter(lambda x, pos: str(x) + '%')
 
     _, ax1 = beforePlot(xLabel='Iterations', yLabel='Cost')
@@ -185,19 +185,19 @@ def plotSimulatedAnnealingProgress():
 
 def plotSimulatedAnnealingParetoFront():
     costsInstance1Long = [50995, 51534, 52279, 53781, 55386, 56926]
-    satisfactionsInstance1Long = [0.3659, 0.4772, 0.6590, 0.6659, 0.6852, 0.6954]
+    satisfactionsInstance1Long = [36.59, 47.72, 65.90, 66.59, 68.52, 69.54]
     
-    costsInstance1 = [53727, 54478, 54981, 56944]
-    satisfactionsInstance1 = [0.6361, 0.6666, 0.6796, 0.6851]
+    costsInstance1 = [53282, 54203, 54771, 56354]
+    satisfactionsInstance1 = [63.56, 66.12, 67.94, 69.50]
 
-    costsInstance2 = [53916, 54634, 55268, 56550, 58070]
-    satisfactionsInstance2 = [0.6585, 0.6700, 0.6775, 0.6850, 0.6974]
+    costsInstance2 = [52818, 54447, 55120, 56245, 57828]
+    satisfactionsInstance2 = [55.50, 65.50, 67.20, 67.50, 69.50]
 
-    costsInstance3 = [58837, 59429, 61411, 63490]
-    satisfactionsInstance3 = [0.6313, 0.6353, 0.6721, 0.6851]
+    costsInstance3 = [59653, 60215, 61119, 62068, 63046]
+    satisfactionsInstance3 = [63.54, 64.69, 65.83, 66.57, 67.50]
 
     costFormatter = FuncFormatter(lambda x, _: '%1.0fk' % (x / 1000))
-    satisfactionFormatter = FuncFormatter(lambda x, _: str(int(x * 100)) + '%')
+    satisfactionFormatter = FuncFormatter(lambda x, _: str(x) + '%')
 
     _, ax1 = beforePlot(xLabel='Cost', yLabel='Satisfaction')
     ax1.xaxis.set_major_formatter(costFormatter)

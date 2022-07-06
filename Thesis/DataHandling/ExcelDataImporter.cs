@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class ExcelDataImporter {
-        public static Instance Import(XorShiftRandom rand) {
+        public static Instance Import(DateTime planningStartDate, DateTime planningEndDate) {
             XSSFWorkbook testDataBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "testData.xlsx"));
             ExcelSheet activitiesSheet = new ExcelSheet("DutyActivities", testDataBook);
 
-            RawActivity[] rawActivities = ParseRawActivities(activitiesSheet, DataConfig.ExcelPlanningStartDate, DataConfig.ExcelPlanningNextDate);
+            RawActivity[] rawActivities = ParseRawActivities(activitiesSheet, planningStartDate, planningEndDate);
             return new Instance(rawActivities);
         }
 

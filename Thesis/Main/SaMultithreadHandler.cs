@@ -154,6 +154,14 @@ namespace Thesis {
             return string.Format("{0}% {1}", ParseHelper.ToString(paretoPointInfo.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor, "0"), ParseHelper.LargeNumToString(paretoPointInfo.TotalInfo.Stats.Cost, "0"));
         }
 
+        static string FinalParetoFrontToString(List<SaInfo> paretoFrontInfos) {
+            return string.Join(" | ", paretoFrontInfos.Select(paretoPoint => FinalParetoPointToString(paretoPoint)));
+        }
+
+        static string FinalParetoPointToString(SaInfo paretoPointInfo) {
+            return string.Format("{0}% {1}", ParseHelper.ToString(paretoPointInfo.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor, "0.00"), ParseHelper.ToString(paretoPointInfo.TotalInfo.Stats.Cost, "0"));
+        }
+
         static void WriteOutputToFiles(List<SaInfo> paretoFrontInfos, List<List<SaInfo>> paretoFrontsOverTime, Stopwatch stopwatch) {
             // Log summary to console
             using (StreamWriter consoleStreamWriter = new StreamWriter(Console.OpenStandardOutput())) {
@@ -187,11 +195,11 @@ namespace Thesis {
             if (paretoFront.Count == 0) {
                 streamWriter.WriteLine("SA found no valid solution");
             } else {
-                streamWriter.WriteLine("Pareto-optimal front: {0}", ParetoFrontToString(paretoFront));
+                streamWriter.WriteLine("Pareto-optimal front: {0}", FinalParetoFrontToString(paretoFront));
 
                 for (int i = 0; i < paretoFront.Count; i++) {
                     SaInfo paretoPoint = paretoFront[i];
-                    streamWriter.WriteLine("\nPoint {0}\n{1}", ParetoPointToString(paretoPoint), ParseHelper.AssignmentToString(paretoPoint));
+                    streamWriter.WriteLine("\nPoint {0}\n{1}", FinalParetoPointToString(paretoPoint), ParseHelper.AssignmentToString(paretoPoint));
                 }
 
                 // Log progression of min-cost solutions

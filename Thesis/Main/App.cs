@@ -8,13 +8,15 @@ using System.Threading.Tasks;
 namespace Thesis {
     class App {
         public App() {
-            Run();
+            Run(DataConfig.ExcelPlanningStartDate, DataConfig.ExcelPlanningNextDate);
 
             Console.WriteLine("\n*** Program finished ***");
             Console.ReadLine();
         }
 
-        void Run() {
+        void Run(DateTime planningStartTime, DateTime planningEndTime) {
+            Console.WriteLine("\nRunning program with start date {0} and end date {1}", planningStartTime, planningEndTime);
+
             // Special app modes without data
             if (AppConfig.DebugRunDelaysExporter) {
                 Console.WriteLine("Running debug delays exporter");
@@ -28,7 +30,7 @@ namespace Thesis {
             }
 
             XorShiftRandom appRand = AppConfig.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
-            Instance instance = GetInstance(appRand);
+            Instance instance = GetInstance(planningStartTime, planningEndTime);
 
             // Special app modes with data
             if (AppConfig.DebugRunInspector) {
@@ -54,12 +56,12 @@ namespace Thesis {
             }
         }
 
-        static Instance GetInstance(XorShiftRandom appRand) {
+        static Instance GetInstance(DateTime planningStartTime, DateTime planningEndTime) {
             Instance instance;
             switch (AppConfig.SelectedDataSource) {
                 case DataSource.Excel:
                     Console.WriteLine("Importing data from Excel...");
-                    instance = ExcelDataImporter.Import(appRand);
+                    instance = ExcelDataImporter.Import(planningStartTime, planningEndTime);
                     break;
 
                 case DataSource.Odata:
