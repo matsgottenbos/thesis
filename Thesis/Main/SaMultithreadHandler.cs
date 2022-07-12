@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace Thesis {
     class SaMultithreadHandler {
         readonly SimulatedAnnealing[] saThreads;
+        readonly long targetIterationCount;
         long totalIterationCount, totalIterationCountSinceLastLog;
         long? lastImprovementTotalIterationCount;
         string prevParetoFrontStr;
@@ -17,7 +18,9 @@ namespace Thesis {
         readonly Stopwatch stopwatch;
         CancellationTokenSource[] threadCancellationTokens;
 
-        public SaMultithreadHandler() {
+        public SaMultithreadHandler(long targetIterationCount) {
+            this.targetIterationCount = targetIterationCount;
+
             stopwatch = new Stopwatch();
 
             paretoFrontsOverTime = new List<List<SaInfo>>();
@@ -68,14 +71,14 @@ namespace Thesis {
             List<SaInfo> paretoFront = GetCombinedParetoFront();
 
             // Perform all output
-            WriteOutputToFiles(paretoFront, paretoFrontsOverTime, stopwatch);
+            WriteOutputToFiles(paretoFront, paretoFrontsOverTime, targetIterationCount, stopwatch);
         }
 
         void HandleThreadCallback() {
             totalIterationCount += SaConfig.SaThreadCallbackFrequency;
             totalIterationCountSinceLastLog += SaConfig.SaThreadCallbackFrequency;
 
-            if (totalIterationCount >= SaConfig.SaIterationCount) {
+            if (totalIterationCount >= targetIterationCount) {
                 for (int i = 0; i < threadCancellationTokens.Length; i++) {
                     threadCancellationTokens[i].Cancel();
                 }
@@ -162,10 +165,10 @@ namespace Thesis {
             return string.Format("{0}% {1}", ParseHelper.ToString(paretoPointInfo.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor, "0.00"), ParseHelper.ToString(paretoPointInfo.TotalInfo.Stats.Cost, "0"));
         }
 
-        static void WriteOutputToFiles(List<SaInfo> paretoFrontInfos, List<List<SaInfo>> paretoFrontsOverTime, Stopwatch stopwatch) {
+        static void WriteOutputToFiles(List<SaInfo> paretoFrontInfos, List<List<SaInfo>> paretoFrontsOverTime, long targetIterationCount, Stopwatch stopwatch) {
             // Log summary to console
             using (StreamWriter consoleStreamWriter = new StreamWriter(Console.OpenStandardOutput())) {
-                LogSummaryToStream(paretoFrontInfos, paretoFrontsOverTime, stopwatch, consoleStreamWriter);
+                LogSummaryToStream(paretoFrontInfos, paretoFrontsOverTime, targetIterationCount, stopwatch, consoleStreamWriter);
             }
 
             // Create output subfolder
@@ -175,7 +178,7 @@ namespace Thesis {
 
             // Log summary to file
             using (StreamWriter summaryFileStreamWriter = new StreamWriter(Path.Combine(outputSubfolderPath, "summary.txt"))) {
-                LogSummaryToStream(paretoFrontInfos, paretoFrontsOverTime, stopwatch, summaryFileStreamWriter);
+                LogSummaryToStream(paretoFrontInfos, paretoFrontsOverTime, targetIterationCount, stopwatch, summaryFileStreamWriter);
             }
 
             // Log pareto front solutions to separate JSON files
@@ -187,10 +190,10 @@ namespace Thesis {
             }
         }
 
-        static void LogSummaryToStream(List<SaInfo> paretoFront, List<List<SaInfo>> paretoFrontsOverTime, Stopwatch stopwatch, StreamWriter streamWriter) {
+        static void LogSummaryToStream(List<SaInfo> paretoFront, List<List<SaInfo>> paretoFrontsOverTime, long targetIterationCount, Stopwatch stopwatch, StreamWriter streamWriter) {
             float saDuration = stopwatch.ElapsedMilliseconds / 1000f;
-            float saSpeed = SaConfig.SaIterationCount / saDuration;
-            streamWriter.WriteLine("SA finished {0} iterations in {1} s  |  Speed: {2} iterations/s", ParseHelper.LargeNumToString(SaConfig.SaIterationCount), ParseHelper.ToString(saDuration), ParseHelper.LargeNumToString(saSpeed));
+            float saSpeed = targetIterationCount / saDuration;
+            streamWriter.WriteLine("SA finished {0} iterations in {1} s  |  Speed: {2} iterations/s", ParseHelper.LargeNumToString(targetIterationCount), ParseHelper.ToString(saDuration), ParseHelper.LargeNumToString(saSpeed));
 
             if (paretoFront.Count == 0) {
                 streamWriter.WriteLine("SA found no valid solution");

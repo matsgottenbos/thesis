@@ -8,8 +8,8 @@ namespace Thesis {
     class SaConfig {
         /* Simulated annealing */
         // SA parameters
-        public const long SaIterationCount = 1000000000;
-        public const int SaLogFrequency = 10000000;
+        public const long SaIterationCount = 10000000000;
+        public const int SaLogFrequency = 2000000;
         public const int SaThreadCallbackFrequency = 500000;
         public const int SaParameterUpdateFrequency = 100000;
         public const float SaInitialTemperature = 2000f;

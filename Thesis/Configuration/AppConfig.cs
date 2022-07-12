@@ -23,7 +23,7 @@ namespace Thesis {
         // Debug
         public const bool DebugUseSeededSa = false;
         public const bool DebugCheckOperations = false;
-        public const bool DebugSaLogThreads = false;
+        public const bool DebugSaLogThreads = true;
         public const bool DebugSaLogCurrentSolution = false;
         public const bool DebugSaLogAdditionalInfo = false;
         public const bool DebugLogDataRepairs = false;

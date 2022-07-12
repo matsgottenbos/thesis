@@ -8,14 +8,46 @@ using System.Threading.Tasks;
 namespace Thesis {
     class App {
         public App() {
-            Run(DataConfig.ExcelPlanningStartDate, DataConfig.ExcelPlanningNextDate);
+            Run(SaConfig.SaIterationCount, DataConfig.ExcelPlanningStartDate, DataConfig.ExcelPlanningNextDate);
+
+            // Instances
+            DateTime instance1StartDate = new DateTime(2022, 6, 27);
+            DateTime instance2StartDate = new DateTime(2022, 6, 20);
+            DateTime instance3StartDate = new DateTime(2022, 6, 13);
+
+            //// Instance 1 1B
+            //Run(1000000000, instance1StartDate, instance1StartDate.AddDays(7));
+
+            //// Instance 2 1B
+            //Run(1000000000, instance2StartDate, instance2StartDate.AddDays(7));
+
+            //// Instance 3 1B
+            //Run(1000000000, instance3StartDate, instance3StartDate.AddDays(7));
+
+            //// Instance 1 4B
+            //Run(4000000000, instance1StartDate, instance1StartDate.AddDays(7));
+
+            //// Instance 2 4B
+            //Run(4000000000, instance2StartDate, instance2StartDate.AddDays(7));
+
+            //// Instance 3 4B
+            //Run(4000000000, instance3StartDate, instance3StartDate.AddDays(7));
+
+            //// Instance 1 10B
+            //Run(10000000000, instance1StartDate, instance1StartDate.AddDays(7));
+
+            //// Instance 2 10B
+            //Run(10000000000, instance2StartDate, instance2StartDate.AddDays(7));
+
+            //// Instance 3 10B
+            //Run(10000000000, instance3StartDate, instance3StartDate.AddDays(7));
 
             Console.WriteLine("\n*** Program finished ***");
             Console.ReadLine();
         }
 
-        void Run(DateTime planningStartTime, DateTime planningEndTime) {
-            Console.WriteLine("\nRunning program with start date {0} and end date {1}", planningStartTime, planningEndTime);
+        void Run(long targetIterationCount, DateTime planningStartTime, DateTime planningEndTime) {
+            Console.WriteLine("\nRunning program with start date {0} and end date {1} for {2} iterations", planningStartTime, planningEndTime, ParseHelper.LargeNumToString(targetIterationCount));
 
             // Special app modes without data
             if (AppConfig.DebugRunDelaysExporter) {
@@ -51,7 +83,7 @@ namespace Thesis {
 
             // Simulated annealing
             for (int i = 0; i < AppConfig.DebugRunSaCount; i++) {
-                SaMultithreadHandler saMultithreadHandler = new SaMultithreadHandler();
+                SaMultithreadHandler saMultithreadHandler = new SaMultithreadHandler(targetIterationCount);
                 saMultithreadHandler.Run(instance, appRand);
             }
         }
