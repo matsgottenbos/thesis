@@ -1,0 +1,326 @@
+:root {
+    --dayLength: calc(24 * 60);
+    --originalTimeframeLength: calc(7 * var(--dayLength));
+    --bufferBeforeTimeframe: calc(2 * 60);
+    --bufferAfterTimeframe: calc(8 * 60);
+    --timeframeLength: calc(var(--originalTimeframeLength) + var(--bufferBeforeTimeframe) + var(--bufferAfterTimeframe));
+
+    --scheduleDaySize: calc(100% * var(--dayLength) / var(--timeframeLength));
+    --schedulePaddingLeft: calc(100% * var(--bufferBeforeTimeframe) / var(--timeframeLength));
+    --schedulePaddingRight: calc(100% * var(--bufferAfterTimeframe) / var(--timeframeLength));
+
+    --night-start-percentage: calc(100% * 23 / 24);
+    --night-end-percentage: calc(100% * 6 / 24);
+}
+
+body {
+    font-size: 16px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.pageHeader {
+    position: relative;
+    margin-bottom: 2rem;
+    padding: 2rem;
+}
+
+.backButton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+
+.backButton:hover {
+    opacity: 0.6;
+}
+
+.pageTitle {
+    text-align: center;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+h2 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+
+/* Home */
+
+.scheduleOptions {
+    padding: 1rem;
+    display: flex;
+}
+
+.scheduleTile {
+    margin: 1rem;
+    padding: 1.5em 3.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    text-align: center;
+    line-height: 2;
+    font-size: 1.05rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.scheduleTile:hover {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+
+/* Visualise */
+
+.scheduleInfo {
+    padding: 0 2rem 2rem 2rem;
+}
+
+.scheduleVisual {
+    display: flex;
+    border-top: 2px solid black;
+}
+
+.scheduleVisual .driversColumn {
+    width: 12.5%;
+    border-right: 1px solid rgba(150, 150, 150, 1);
+}
+
+.scheduleVisual .scheduleColumn {
+    width: 87.5%;
+}
+
+.scheduleVisual .scheduleInner {
+    padding-bottom: 1rem;
+    background-image: repeating-linear-gradient(90deg, rgba(200, 200, 200, 1) 0 1px, transparent 1px 100%), repeating-linear-gradient(90deg, rgba(245, 245, 245, 1) 0 var(--night-end-percentage), transparent var(--night-end-percentage) 100%),
+         repeating-linear-gradient(90deg, transparent 0 var(--night-start-percentage), rgba(245, 245, 245, 1) var(--night-start-percentage) 100%);
+    background-size: var(--scheduleDaySize) 100%;
+    background-position: var(--schedulePaddingLeft) 0;
+}
+
+.scheduleVisual .driversHeader, .scheduleVisual .scheduleHeader {
+    height: 4rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.scheduleVisual .scheduleHeader {
+    display: flex;
+    padding-left: var(--schedulePaddingLeft);
+    padding-right: var(--schedulePaddingRight);
+}
+
+.scheduleVisual .driversHeader, .scheduleVisual .dayHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.scheduleVisual .dayHeader {
+    flex: 1;
+}
+
+.scheduleVisual .driver {
+    height: 4rem;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.scheduleVisual .driver:hover {
+    font-weight: bold;
+    background-color: rgba(245, 245, 245, 1);
+}
+
+.scheduleVisual .driverSchedule {
+    position: relative;
+    width: 100%;
+    height: 2rem;margin: 2rem 0;
+}
+
+.scheduleVisual .pathItem {
+    position: absolute;
+    height: 100%;
+    background-color: red;
+}
+.scheduleVisual .pathItem::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    border-top: 1px solid transparent;
+}
+.scheduleVisual .pathItem.activity {
+    background-color: rgba(140, 210, 255, 1);
+    border: 1px solid rgba(80, 150, 220, 1);
+}
+.scheduleVisual .pathItem.travelFromHome, .scheduleVisual .pathItem.travelBetween, .scheduleVisual .pathItem.wait, .scheduleVisual .pathItem.travelToCar, .scheduleVisual .pathItem.travelToHome, .scheduleVisual .pathItem.travelToHotel, .scheduleVisual .pathItem.travelFromHotel, .scheduleVisual .pathItem.rest, .scheduleVisual .pathItem.hotel {
+    background-color: transparent;
+}
+.scheduleVisual .pathItem.travelFromHome {
+    border-left: 1px solid rgb(94, 193, 255);
+}
+.scheduleVisual .pathItem.travelFromHotel {
+    border-left: 1px solid rgba(80, 150, 220, 1);
+}
+.scheduleVisual .pathItem.travelToHome {
+    border-right: 1px solid rgb(94, 193, 255);
+}
+.scheduleVisual .pathItem.travelBetween, .scheduleVisual .pathItem.travelToCar, .scheduleVisual .pathItem.travelToHotel {
+    border-right: 1px solid rgba(80, 150, 220, 1);
+}
+.scheduleVisual .pathItem.travelBetween, .scheduleVisual .pathItem.travelFromHome, .scheduleVisual .pathItem.travelToHome {
+    top: 30%;
+    height: 40%;
+}
+.scheduleVisual .pathItem.travelFromHome::after, .scheduleVisual .pathItem.travelToHome::after {
+    border-top-color: rgb(94, 193, 255);
+}
+.scheduleVisual .pathItem.travelBetween::after, .scheduleVisual .pathItem.travelToCar::after, .scheduleVisual .pathItem.travelToHotel::after, .scheduleVisual .pathItem.travelFromHotel::after {
+    border-top-color: rgba(80, 150, 220, 1);
+}
+.scheduleVisual .pathItem.wait::after {
+    border-top-color: rgb(200, 200, 200);
+    border-top-style: dashed;
+}
+.scheduleVisual .pathItem.hotel::after {
+    border-top-color: rgb(255, 174, 62);
+}
+
+
+/* Driver schedule */
+
+.infoRow {
+    padding: 0.4rem 0;
+}
+
+.infoRow.subRow .label {
+    padding-left: 0.5rem;
+}
+
+.infoRow.subRow .icon {
+    margin-right: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.infoRow .label {
+    width: 20rem;
+    display: inline-block;
+}
+
+
+/* Driver details */
+
+.driverDetails, .shift {
+    margin-bottom: 4rem;
+    padding-bottom: 4rem;
+    padding: 0 2rem;
+    border-bottom: 1px solid black;
+}
+
+.driverDetails .category {
+    margin-bottom: 2rem;
+}
+
+/* Driver path */
+
+.shift:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+.shift .category {
+    margin-bottom: 4rem;
+}
+
+.shift .categoryDescription {
+    margin-top: 1rem;
+    margin-bottom: 0.75rem;
+    font-style: italic;
+}
+
+.shift .row {
+    display: flex;
+}
+
+.shift .shiftHeader {
+    margin-bottom: 1.5rem;
+}
+
+.shift .shiftSalaryRatesInfoHeaderRow,
+.shift .shiftPathHeaderRow {
+    font-weight: bold;
+}
+
+.shift .cell {
+    padding: 0.75rem 0;
+    overflow-wrap: break-word;
+}
+
+.shiftSalaryRatesInfo .cell {
+    width: 12.5%;
+}
+
+.shiftPath .cell.id {
+    width: 4%;
+}
+
+.shiftPath .cell.startTime,
+.shiftPath .cell.endTime,
+.shiftPath .cell.duration {
+    width: calc(16% / 3);
+}
+
+.shiftPath .cell.duty,
+.shiftPath .cell.project {
+    width: calc(32.5% / 2);
+}
+
+.shiftPath .cell.activity {
+    width: 12.5%;
+}
+
+.shiftPath .train {
+    width: 5%;
+}
+
+.shiftPath .cell.combinedDetails {
+    width: 50%
+}
+
+.shiftPath .cell.fromLocation,
+.shiftPath .cell.toLocation {
+    width: calc(30% / 2);
+}
+
+.shiftPath .pathItem {
+    width: 100%;
+}
+
+.shiftPath .pathItem:not(.activity) {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.shiftPath .pathItem.overlapError {
+    color: rgba(240, 0, 0, 1);
+}
