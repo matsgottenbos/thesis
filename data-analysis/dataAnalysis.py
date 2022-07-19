@@ -132,6 +132,13 @@ def fitGammaDistributionToAllPositiveDelays(allPositiveDelays):
     plt.ylim([0, 0.19])
     afterPlot(plotName='gamma-fit-histogram')
 
+    # Print histogram comparison, presentation version
+    beforePlot(xLabel='Delay amount (minutes)', yLabel='Share of total')
+    plotHistogram(allPositiveDelays, binMin=0, binMax=300, binSize=5, ylim=None, color=(1, 0.8, 0, 1))
+    plotDistribution(lambda x: stats.gamma.cdf(x, alpha, 0, scale), binMin=0, binMax=300, binSize=5, ylim=None, color=(0.753, 0.035, 0.208, 1), lineWidth=3)
+    plt.ylim([0, 0.19])
+    afterPlot(plotName='gamma-fit-histogram-presentation')
+
     # Print probability plot
     _, ax = beforePlot()
     _, (_, _, r) = stats.probplot(allPositiveDelaysCapped, dist=stats.gamma, sparams=(alpha, 0, scale), plot=plt)
@@ -148,7 +155,6 @@ def fitGammaDistributionToAllPositiveDelays(allPositiveDelays):
 
 # Determine function of mean delay by duration
 def fitMeanDelayFunction(allPositiveDelaysFrequentDurations, allPositiveDelaysFrequent):
-    beforePlot(xLabel='Planned duration (minutes)', yLabel='Delay amount (minutes)')
     muXs = allPositiveDelaysFrequentDurations
     muXsModel = sorted(muXs)
     muYs = allPositiveDelaysFrequent
@@ -156,6 +162,8 @@ def fitMeanDelayFunction(allPositiveDelaysFrequentDurations, allPositiveDelaysFr
     muFunc = lambda x: muCoef[0] * x * x + muCoef[1] * x + muCoef[2]
     print('Mean delay by duration: %sx^2 + %sx + %s' % (muCoef[0], muCoef[1], muCoef[2]))
     muYsModel = [muFunc(x) for x in muXsModel]
+
+    beforePlot(xLabel='Planned duration (minutes)', yLabel='Delay amount (minutes)')
     plt.plot(muXs, muYs, 'o', color=(0, 0.5, 1, 0.1))
     plt.plot(muXsModel, muYsModel, color=(1, 0.5, 0, 1), linewidth=3)
     plt.xlim([0, 420])
@@ -286,29 +294,48 @@ def plotSimulatedAnnealingParetoFront():
     _, ax = beforePlot(xLabel='Cost', yLabel='Satisfaction')
     ax.xaxis.set_major_formatter(costFormatter)
     ax.yaxis.set_major_formatter(satisfactionFormatter)
-    plt.plot(costsInstance1_10B, satisfactionsInstance1_10B, 'o-', color=(0, 0.5, 1, 1), label='1B iterations')
+    plt.plot(costsInstance1_10B, satisfactionsInstance1_10B, 'o-', color=(0, 0.5, 1, 1), label='10B iterations')
     plt.plot(costsInstance1_4B, satisfactionsInstance1_4B, 'o-', color=(1, 0.5, 0, 1), label='4B iterations')
-    plt.plot(costsInstance1_1B, satisfactionsInstance1_1B, 'o-', color=(0.25, 0.75, 0.255, 1), label='10B iterations')
+    plt.plot(costsInstance1_1B, satisfactionsInstance1_1B, 'o-', color=(0.25, 0.75, 0.255, 1), label='1B iterations')
     plt.legend()
     afterPlot(plotName='sa-pareto-front-instance1-short-long')
 
     _, ax = beforePlot(xLabel='Cost', yLabel='Satisfaction')
     ax.xaxis.set_major_formatter(costFormatter)
     ax.yaxis.set_major_formatter(satisfactionFormatter)
-    plt.plot(costsInstance2_10B, satisfactionsInstance2_10B, 'o-', color=(0, 0.5, 1, 1), label='1B iterations')
+    plt.plot(costsInstance2_10B, satisfactionsInstance2_10B, 'o-', color=(0, 0.5, 1, 1), label='10B iterations')
     plt.plot(costsInstance2_4B, satisfactionsInstance2_4B, 'o-', color=(1, 0.5, 0, 1), label='4B iterations')
-    plt.plot(costsInstance2_1B, satisfactionsInstance2_1B, 'o-', color=(0.25, 0.75, 0.25, 1), label='10B iterations')
+    plt.plot(costsInstance2_1B, satisfactionsInstance2_1B, 'o-', color=(0.25, 0.75, 0.25, 1), label='1B iterations')
     plt.legend()
     afterPlot(plotName='sa-pareto-front-instance2-short-long')
 
     _, ax = beforePlot(xLabel='Cost', yLabel='Satisfaction')
     ax.xaxis.set_major_formatter(costFormatter)
     ax.yaxis.set_major_formatter(satisfactionFormatter)
-    plt.plot(costsInstance3_10B, satisfactionsInstance3_10B, 'o-', color=(0, 0.5, 1, 1), label='1B iterations')
+    plt.plot(costsInstance3_10B, satisfactionsInstance3_10B, 'o-', color=(0, 0.5, 1, 1), label='10B iterations')
     plt.plot(costsInstance3_4B, satisfactionsInstance3_4B, 'o-', color=(1, 0.5, 0, 1), label='4B iterations')
-    plt.plot(costsInstance3_1B, satisfactionsInstance3_1B, 'o-', color=(0.25, 0.75, 0.25, 1), label='10B iterations')
+    plt.plot(costsInstance3_1B, satisfactionsInstance3_1B, 'o-', color=(0.25, 0.75, 0.25, 1), label='1B iterations')
     plt.legend()
     afterPlot(plotName='sa-pareto-front-instance3-short-long')
+
+    # Presentation variants
+    _, ax = beforePlot(xLabel='Cost', yLabel='Satisfaction')
+    ax.xaxis.set_major_formatter(costFormatter)
+    ax.yaxis.set_major_formatter(satisfactionFormatter)
+    plt.plot(costsInstance1_4B, satisfactionsInstance1_4B, 'o-', color=(0.753, 0.035, 0.208, 1), label='4B iterations')
+    afterPlot(plotName='sa-pareto-front-instance1-presentation')
+
+    _, ax = beforePlot(xLabel='Cost', yLabel='Satisfaction')
+    ax.xaxis.set_major_formatter(costFormatter)
+    ax.yaxis.set_major_formatter(satisfactionFormatter)
+    plt.plot(costsInstance2_4B, satisfactionsInstance2_4B, 'o-', color=(0.753, 0.035, 0.208, 1), label='4B iterations')
+    afterPlot(plotName='sa-pareto-front-instance2-presentation')
+
+    _, ax = beforePlot(xLabel='Cost', yLabel='Satisfaction')
+    ax.xaxis.set_major_formatter(costFormatter)
+    ax.yaxis.set_major_formatter(satisfactionFormatter)
+    plt.plot(costsInstance3_4B, satisfactionsInstance3_4B, 'o-', color=(0.753, 0.035, 0.208, 1), label='4B iterations')
+    afterPlot(plotName='sa-pareto-front-instance3-presentation')
 
 
 ### Run
