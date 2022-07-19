@@ -3,31 +3,29 @@ import * as Helper from './helper.js';
 import * as Config from './config.js';
 
 class DriverPage {
-    data = null;
-
     async init() {
-        const urlParameters = Helper.getUrlParameters();
-
-        const selectedScheduleName = urlParameters.get('schedule');
-        if (selectedScheduleName == null) {
-            window.location = '../';
+        const selectedRunName = Helper.getUrlParameters().get('run');
+        const selectedScheduleName = Helper.getUrlParameters().get('schedule');
+        const selectedDriverStr = Helper.getUrlParameters().get('driver');
+        if (selectedRunName === null || selectedScheduleName === null) {
+            window.location = Config.homeUrl;
         }
-
-        const selectDriverStr = urlParameters.get('driver');
-        if (selectDriverStr == null) {
-            urlParameters.set('driver', 1);
-            window.location.search = '?' + urlParameters.toString();
-            return;
-        }
-
-        this.data = await Api.getData(selectedScheduleName, '../');
 
         $('.backButton').click(() => {
-            window.location = `../schedule/?schedule=${selectedScheduleName}`;
+            window.location = `${Config.homeUrl}run?run=${selectedRunName}`;
         });
 
-        const selectedDriverIndex = parseInt(selectDriverStr) - 1;
-        const driver = this.data.drivers[selectedDriverIndex];
+        const runData = await Api.getRunData(selectedRunName);
+        const scheduleData = await Api.getScheduleData(selectedRunName, selectedScheduleName);
+
+        const dataStartDate = new Date(runData.dataStartDate);
+
+        $('.backButton').click(() => {
+            window.location = `../schedule/?run=${selectedRunName}&schedule=${selectedScheduleName}`;
+        });
+
+        const selectedDriverIndex = parseInt(selectedDriverStr) - 1;
+        const driver = scheduleData.drivers[selectedDriverIndex];
 
         const name = this.showRealDriverNames ? driver.realDriverName : driver.driverName;
         $('.pageTitle').html(name);
@@ -96,9 +94,9 @@ class DriverPage {
         let currentShiftDateStr = null;
         driver.shifts.forEach(shift => {
             shift.activityPath.forEach(item => {
-                if (currentShiftDateStr === null) currentShiftDateStr = Helper.parseDate(item.startTime);
-                const startTimeStr = Helper.parseTime(item.startTime);
-                const endTimeStr = Helper.parseTime(item.endTime);
+                if (currentShiftDateStr === null) currentShiftDateStr = Helper.parseDate(item.startTime, dataStartDate);
+                const startTimeStr = Helper.parseTime(item.startTime, dataStartDate);
+                const endTimeStr = Helper.parseTime(item.endTime, dataStartDate);
                 const durationStr = Helper.parseTimeDiff(item.startTime, item.endTime);
 
                 const activityInfo = {
@@ -160,7 +158,7 @@ class DriverPage {
                 shiftHtmlParts.push(activityHtml);
             });
 
-            shiftsHtmlParts.push(this.getShiftHtml(shiftsHtmlParts.length, shift, shiftHtmlParts, currentShiftDateStr));
+            shiftsHtmlParts.push(this.getShiftHtml(shiftsHtmlParts.length, shift, shiftHtmlParts, currentShiftDateStr, dataStartDate));
             shiftHtmlParts = [];
             currentShiftDateStr = null;
         });
@@ -168,7 +166,7 @@ class DriverPage {
         $('.driverPath').html(shiftsHtmlParts.join(''));
     }
 
-    getShiftHtml(shiftIndex, shift, shiftHtmlParts, currentShiftDateStr) {
+    getShiftHtml(shiftIndex, shift, shiftHtmlParts, currentShiftDateStr, dataStartDate) {
         let shiftLengthStr = Helper.parseTimeSpan(shift.realMainShiftLength);
         if (shift.paidMainShiftLength >= shift.realMainShiftLength + 15) {
             shiftLengthStr += `, counted as minimum of ${Helper.parseTimeSpan(shift.paidMainShiftLength)}`;
@@ -182,8 +180,8 @@ class DriverPage {
             '>hotelCost': '&euro; ' + Math.round(shift.hotelCost),
             '>expectedDelayCost': '&euro; ' + Math.round(shift.robustness),
             '>penaltyCost': shift.penalty > 0 ? '&euro; ' + Math.round(shift.penalty) : null,
-            shiftStartTime: Helper.parseTime(shift.mainShiftStartTime),
-            shiftEndTime: Helper.parseTime(shift.realMainShiftEndTime),
+            shiftStartTime: Helper.parseTime(shift.mainShiftStartTime, dataStartDate),
+            shiftEndTime: Helper.parseTime(shift.realMainShiftEndTime, dataStartDate),
             shiftLength: shiftLengthStr,
             sharedCarTravelBeforeShift: this.getTimeAndDistanceStr(shift.sharedCarTravelTimeBefore, shift.sharedCarTravelDistanceBefore),
             ownCarTravelBeforeShift: this.getTimeAndDistanceStr(shift.ownCarTravelTimeBefore, shift.ownCarTravelDistanceBefore),
@@ -194,9 +192,9 @@ class DriverPage {
 
         const salaryRatesHtmlParts = shift.salaryRates.map(rate => `
             <div class="row">
-                <span class="cell activityTime">${Helper.parseDayOfWeek(rate.salaryStartTime)} ${Helper.parseTime(rate.salaryStartTime)} - ${Helper.parseTime(rate.salaryEndTime)}</span>
-                <span class="cell activityDuration">${Helper.parseTime(rate.salaryDuration)}</span>
-                <span class="cell rateBlock">${Helper.parseDayOfWeek(rate.rateStartTime)} ${Helper.parseTime(rate.rateStartTime)} - ${Helper.parseTime(rate.rateEndTime)}</span>
+                <span class="cell activityTime">${Helper.parseDayOfWeek(rate.salaryStartTime, dataStartDate)} ${Helper.parseTime(rate.salaryStartTime, dataStartDate)} - ${Helper.parseTime(rate.salaryEndTime, dataStartDate)}</span>
+                <span class="cell activityDuration">${Helper.parseTime(rate.salaryDuration, dataStartDate)}</span>
+                <span class="cell rateBlock">${Helper.parseDayOfWeek(rate.rateStartTime, dataStartDate)} ${Helper.parseTime(rate.rateStartTime, dataStartDate)} - ${Helper.parseTime(rate.rateEndTime, dataStartDate)}</span>
                 <span class="cell hourlyRate">${rate.usesContinuingRate ? 'Continuing: ' : ''}&euro; ${rate.hourlySalaryRate}</span>
                 <span class="cell salaryAmount">&euro; ${Math.round(rate.shiftCostInRange)}</span>
             </div>

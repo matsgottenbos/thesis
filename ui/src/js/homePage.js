@@ -1,33 +1,49 @@
-import * as Config from './config.js';
 import * as Api from './api.js';
+import * as Config from './config.js';
 
-class VisualisePage {
+class RunPage {
     async init() {
-        const schedules = await Promise.all(Config.scheduleNames.map(async scheduleName => {
-            const scheduleData = await Api.getData(scheduleName);
+        const runListData = await Api.getRunListData();
 
-            return {
-                name: scheduleName,
-                cost: scheduleData.cost,
-                satisfaction: scheduleData.satisfaction,
-            }
-        }));
+        const runListHtmlParts = runListData.runsByStartDate.map(dateRunList => {
+            const dateRunListHtmlParts = dateRunList.runs.map(run => `
+                <div class="runTile tile" data-run-name="${run.folderName}">
+                    <div>Completed ${run.runCompletionDate}</div>
+                    <div>${this.largeNumToString(run.iterationCount)} iterations</div>
+                    <div>${run.schedules.length} ${run.schedules.length === 1 ? 'schedule' : 'schedules'}</div>
+                </div>
+            `);
+            const dateRunListHtml = dateRunListHtmlParts.join('');
 
-        const schedulesHtmlParts = schedules.map(schedule => `
-            <div class="scheduleTile" data-name="${schedule.name}">
-                <div class="cost">&euro; ${Math.round(schedule.cost)}</div>
-                <div class="satisfaction">${Math.round(schedule.satisfaction * 100)}%</div>
-            </div>
-        `);
-        const schedulesHtml = schedulesHtmlParts.join('');
-        $('.scheduleOptions').html(schedulesHtml);
-
-        $('.scheduleTile').click(function() {
-            const name = $(this).attr('data-name');
-            window.location = `./schedule/?schedule=${name}`;
+            return `
+                <div class="dateRunList">
+                    <h2>${dateRunList.dataStartDate} - ${dateRunList.dataEndDate}</h2>
+                    <div class="runTileContainer">${dateRunListHtml}</div>
+                </div>
+            `;
         });
+        const runListHtml = runListHtmlParts.join('');
+        $('.runList').html(runListHtml);
+
+        $('.runTile').click(function() {
+            const runName = $(this).attr('data-run-name');
+            window.location = `${Config.homeUrl}run/?run=${runName}`;
+        });
+    }
+
+    largeNumToString(num, decimalCount = 0) {
+        if (num > 1000000000) {
+            return (num / 1000000000).toFixed(decimalCount) + ' billion';
+        }
+        if (num > 1000000) {
+            return (num / 1000000).toFixed(decimalCount) + ' million';
+        }
+        if (num > 1000) {
+            return (num / 1000).toFixed(decimalCount) + '.000';
+        }
+        return num;
     }
 }
 
-const app = new VisualisePage();
+const app = new RunPage();
 app.init();

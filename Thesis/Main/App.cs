@@ -10,46 +10,20 @@ namespace Thesis {
         public App() {
             Run(SaConfig.SaIterationCount, DataConfig.ExcelPlanningStartDate, DataConfig.ExcelPlanningNextDate);
 
-            // Instances
-            DateTime instance1StartDate = new DateTime(2022, 6, 27);
-            DateTime instance2StartDate = new DateTime(2022, 6, 20);
-            DateTime instance3StartDate = new DateTime(2022, 6, 13);
-
-            //// Instance 1 1B
-            //Run(1000000000, instance1StartDate, instance1StartDate.AddDays(7));
-
-            //// Instance 2 1B
-            //Run(1000000000, instance2StartDate, instance2StartDate.AddDays(7));
-
-            //// Instance 3 1B
-            //Run(1000000000, instance3StartDate, instance3StartDate.AddDays(7));
-
-            //// Instance 1 4B
-            //Run(4000000000, instance1StartDate, instance1StartDate.AddDays(7));
-
-            //// Instance 2 4B
-            //Run(4000000000, instance2StartDate, instance2StartDate.AddDays(7));
-
-            //// Instance 3 4B
-            //Run(4000000000, instance3StartDate, instance3StartDate.AddDays(7));
-
-            //// Instance 1 10B
-            //Run(10000000000, instance1StartDate, instance1StartDate.AddDays(7));
-
-            //// Instance 2 10B
-            //Run(10000000000, instance2StartDate, instance2StartDate.AddDays(7));
-
-            //// Instance 3 10B
-            //Run(10000000000, instance3StartDate, instance3StartDate.AddDays(7));
-
             Console.WriteLine("\n*** Program finished ***");
+
+            // Force garbage collection
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            for (int i = 0; i < 20; i++) GC.Collect();
+
             Console.ReadLine();
         }
 
-        void Run(long targetIterationCount, DateTime planningStartTime, DateTime planningEndTime) {
+        static void Run(long targetIterationCount, DateTime planningStartTime, DateTime planningEndTime) {
             Console.WriteLine("\nRunning program with start date {0} and end date {1} for {2} iterations", planningStartTime, planningEndTime, ParseHelper.LargeNumToString(targetIterationCount));
 
-            // Special app modes without data
+            // Special app modes without instance data
             if (AppConfig.DebugRunDelaysExporter) {
                 Console.WriteLine("Running debug delays exporter");
                 DebugDelaysExporter.Run();
@@ -60,11 +34,16 @@ namespace Thesis {
                 TravelInfoExporter.DetermineAndExportAllTravelInfos();
                 return;
             }
+            if (AppConfig.DebugRunUi) {
+                Console.WriteLine("Running UI");
+                DebugUiHandler.Run();
+                return;
+            }
 
             XorShiftRandom appRand = AppConfig.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
             Instance instance = GetInstance(planningStartTime, planningEndTime);
 
-            // Special app modes with data
+            // Special app modes with instance data
             if (AppConfig.DebugRunInspector) {
                 Console.WriteLine("Running debug inspector");
                 new DebugInspector(instance);

@@ -4,12 +4,12 @@ export function getUrlParameters() {
     return new URLSearchParams(window.location.search);
 }
 
-function dateToObj(rawTime) {
-    return new Date(Config.startDate.getTime() + rawTime * 60 * 1000);
+function dateToObj(rawTime, dataStartDate) {
+    return new Date(dataStartDate.getTime() + rawTime * 60 * 1000);
 }
 
-export function parseTime(rawTime) {
-    const dateObj = dateToObj(rawTime);
+export function parseTime(rawTime, dataStartDate) {
+    const dateObj = dateToObj(rawTime, dataStartDate);
     return dateObj.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 }
 
@@ -30,18 +30,18 @@ export function parseTimeDiff(rawTime1, rawTime2) {
     return parseTimeSpan(rawTime2 - rawTime1);
 }
 
-export function parseDate(rawTime) {
-    const dateObj = dateToObj(rawTime);
+export function parseDate(rawTime, dataStartDate) {
+    const dateObj = dateToObj(rawTime, dataStartDate);
     return dateObj.toDateString();
 }
 
-export function parseDateShort(rawTime) {
-    const dateObj = dateToObj(rawTime);
+export function parseDateShort(rawTime, dataStartDate) {
+    const dateObj = dateToObj(rawTime, dataStartDate);
     return dateObj.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'numeric' });
 }
 
-export function parseDayOfWeek(rawTime) {
-    const dateObj = dateToObj(rawTime);
+export function parseDayOfWeek(rawTime, dataStartDate) {
+    const dateObj = dateToObj(rawTime, dataStartDate);
     return dateObj.toLocaleDateString('en-GB', { weekday: 'short' });
 }
 

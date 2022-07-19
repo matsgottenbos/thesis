@@ -165,10 +165,10 @@ namespace Thesis {
             return string.Format("{0}% {1}", ParseHelper.ToString(paretoPointInfo.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor, "0.00"), ParseHelper.ToString(paretoPointInfo.TotalInfo.Stats.Cost, "0"));
         }
 
-        static void WriteOutputToFiles(List<SaInfo> paretoFrontInfos, List<List<SaInfo>> paretoFrontsOverTime, long targetIterationCount, Stopwatch stopwatch) {
+        static void WriteOutputToFiles(List<SaInfo> paretoFront, List<List<SaInfo>> paretoFrontsOverTime, long targetIterationCount, Stopwatch stopwatch) {
             // Log summary to console
             using (StreamWriter consoleStreamWriter = new StreamWriter(Console.OpenStandardOutput())) {
-                LogSummaryToStream(paretoFrontInfos, paretoFrontsOverTime, targetIterationCount, stopwatch, consoleStreamWriter);
+                LogSummaryToStream(paretoFront, paretoFrontsOverTime, targetIterationCount, stopwatch, consoleStreamWriter);
             }
 
             // Create output subfolder
@@ -176,18 +176,13 @@ namespace Thesis {
             string outputSubfolderPath = Path.Combine(AppConfig.OutputFolder, dateStr);
             Directory.CreateDirectory(outputSubfolderPath);
 
-            // Log summary to file
+            // Log summary text file to file
             using (StreamWriter summaryFileStreamWriter = new StreamWriter(Path.Combine(outputSubfolderPath, "summary.txt"))) {
-                LogSummaryToStream(paretoFrontInfos, paretoFrontsOverTime, targetIterationCount, stopwatch, summaryFileStreamWriter);
+                LogSummaryToStream(paretoFront, paretoFrontsOverTime, targetIterationCount, stopwatch, summaryFileStreamWriter);
             }
 
-            // Log pareto front solutions to separate JSON files
-            for (int i = 0; i < paretoFrontInfos.Count; i++) {
-                SaInfo paretoPoint = paretoFrontInfos[i];
-                paretoPoint.ProcessDriverPaths();
-                TotalCostCalculator.ProcessAssignmentCost(paretoPoint);
-                JsonAssignmentHelper.ExportAssignmentInfoJson(outputSubfolderPath, paretoPoint);
-            }
+            // Export JSON files
+            JsonOutputHelper.ExportRunJsonFiles(outputSubfolderPath, paretoFront);
         }
 
         static void LogSummaryToStream(List<SaInfo> paretoFront, List<List<SaInfo>> paretoFrontsOverTime, long targetIterationCount, Stopwatch stopwatch, StreamWriter streamWriter) {

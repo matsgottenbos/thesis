@@ -7,21 +7,99 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    static class JsonAssignmentHelper {
+    static class JsonOutputHelper {
+        public static void ExportRunListJsonFile() {
+            string[] runFolderPaths = Directory.GetDirectories(AppConfig.OutputFolder);
+            JArray runsByStartDateJArray = new JArray();
+            for (int i = 0; i < runFolderPaths.Length; i++) {
+                string runFolderPath = runFolderPaths[i];
+                string runJsonPath = Path.Combine(runFolderPath, "run.json");
+                if (!File.Exists(runJsonPath)) continue;
+
+                string runJsonStr = File.ReadAllText(runJsonPath);
+                JObject runJObject = JObject.Parse(runJsonStr);
+                runJObject["folderName"] = new DirectoryInfo(runFolderPath).Name;
+
+                string runStartDate = runJObject["dataStartDate"].ToString();
+                string runEndDate = runJObject["dataEndDate"].ToString();
+                JObject dateRunListJObject = runsByStartDateJArray.FirstOrDefault(searchDateRunList => searchDateRunList["dataStartDate"].ToString() == runStartDate && searchDateRunList["dataEndDate"].ToString() == runEndDate) as JObject;
+                if (dateRunListJObject == null) {
+                    runsByStartDateJArray.Add(new JObject() {
+                        ["dataStartDate"] = runStartDate,
+                        ["dataEndDate"] = runEndDate,
+                        ["runs"] = new JArray() {
+                            runJObject
+                        },
+                    });
+                } else {
+                    (dateRunListJObject["runs"] as JArray).Add(runJObject);
+                }
+            }
+
+            // Sort list and nested lists
+            runsByStartDateJArray = new JArray(runsByStartDateJArray.OrderByDescending(dateRunList => dateRunList["dataStartDate"]));
+            for (int i = 0; i < runsByStartDateJArray.Count; i++) {
+                runsByStartDateJArray[i]["runs"] = new JArray(runsByStartDateJArray[i]["runs"].OrderByDescending(dateRunList => dateRunList["runCompletionDate"]));
+            }
+
+            JObject runsListJObject = new JObject() {
+                ["runsByStartDate"] = runsByStartDateJArray,
+            };
+
+            string filePath = Path.Combine(AppConfig.OutputFolder, "runList.json");
+            ExportJsonFile(runsListJObject, filePath);
+        }
+
+        public static void ExportRunJsonFiles(string folderPath, List<SaInfo> paretoFront) {
+            // Log pareto front solutions to separate JSON files
+            JArray schedulesJArray = new JArray();
+            for (int i = 0; i < paretoFront.Count; i++) {
+                SaInfo paretoPoint = paretoFront[i];
+                paretoPoint.ProcessDriverPaths();
+                TotalCostCalculator.ProcessAssignmentCost(paretoPoint);
+
+                // Add schedule to array
+                JObject scheduleInfoJObject = GetBasicAssignmentInfoJson(paretoPoint);
+                scheduleInfoJObject["fileName"] = GetScheduleJsonFilename(paretoPoint);
+                schedulesJArray.Add(scheduleInfoJObject);
+
+                // Export separate JSON file for schedule
+                ExportAssignmentInfoJson(folderPath, paretoPoint);
+            }
+
+            // Export JSON file with basic run info
+            JObject runJObject = new JObject {
+                ["iterationCount"] = SaConfig.SaIterationCount,
+                ["dataStartDate"] = DataConfig.ExcelPlanningStartDate.ToString("yyyy/MM/dd HH:mm"),
+                ["dataEndDate"] = DataConfig.ExcelPlanningNextDate.ToString("yyyy/MM/dd HH:mm"),
+                ["runCompletionDate"] = DateTime.Now.ToString("yyyy/MM/dd HH:mm"),
+                ["schedules"] = schedulesJArray,
+            };
+            string filePath = Path.Combine(folderPath, "run.json");
+            ExportJsonFile(runJObject, filePath);
+        }
+
         public static void ExportAssignmentInfoJson(string folderPath, SaInfo info) {
-            JObject jsonObj = new JObject {
+            JObject assignmentJObject = GetBasicAssignmentInfoJson(info);
+            assignmentJObject["drivers"] = CreateDriversJArray(info.DriverPaths, info);
+
+            string fileName = GetScheduleJsonFilename(info) + ".json";
+            string filePath = Path.Combine(folderPath, fileName);
+            ExportJsonFile(assignmentJObject, filePath);
+        }
+
+        static string GetScheduleJsonFilename(SaInfo info) {
+            return string.Format("{0}k-{1}p", Math.Round(info.TotalInfo.Stats.Cost / 1000), Math.Round(info.TotalInfo.Stats.SatisfactionScore.Value * 100));
+        }
+
+        static JObject GetBasicAssignmentInfoJson(SaInfo info) {
+            return new JObject {
                 ["cost"] = info.TotalInfo.Stats.Cost,
                 ["rawCost"] = info.TotalInfo.Stats.RawCost,
                 ["robustness"] = info.TotalInfo.Stats.Robustness,
                 ["penalty"] = info.TotalInfo.Stats.Penalty,
-                ["drivers"] = CreateDriversJArray(info.DriverPaths, info),
                 ["satisfaction"] = info.TotalInfo.Stats.SatisfactionScore.Value,
             };
-
-            string jsonString = SortJTokenAlphabetically(jsonObj).ToString();
-            string fileName = string.Format("{0}k-{1}p.json", Math.Round(info.TotalInfo.Stats.Cost / 1000), Math.Round(info.TotalInfo.Stats.SatisfactionScore.Value * 100));
-            string filePath = Path.Combine(folderPath, fileName);
-            File.WriteAllText(filePath, jsonString);
         }
 
         static JArray CreateDriversJArray(List<Activity>[] driverPaths, SaInfo info) {
@@ -354,6 +432,14 @@ namespace Thesis {
                 ["endStationName"] = activityAfterHotel.StartStationName,
             };
             driverPathJArray.Add(travelAfterHotelPathItem);
+        }
+
+
+        /* Writing JSON to file */
+
+        static void ExportJsonFile(JObject jObject, string filePath) {
+            string jsonString = SortJTokenAlphabetically(jObject).ToString();
+            File.WriteAllText(filePath, jsonString);
         }
 
         static JToken SortJTokenAlphabetically(JToken token) {

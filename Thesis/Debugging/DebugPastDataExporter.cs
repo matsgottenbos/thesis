@@ -15,7 +15,7 @@ namespace Thesis {
             TotalCostCalculator.ProcessAssignmentCost(info);
 
             string outputSubfolderPath = DebugJsonExporter.CreateOutputFolder("pastData");
-            JsonAssignmentHelper.ExportAssignmentInfoJson(outputSubfolderPath, info);
+            JsonOutputHelper.ExportAssignmentInfoJson(outputSubfolderPath, info);
         }
     }
 }

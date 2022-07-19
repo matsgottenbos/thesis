@@ -16,6 +16,9 @@ namespace Thesis {
         public const DataSource SelectedDataSource = DataSource.Excel;
         //public const DataSource SelectedDataSource = DataSource.Odata;
 
+        // UI server
+        public const string UiHostUrl = "http://localhost:8000/";
+
         // Multithreading
         public const bool EnableMultithreading = true;
         public const int ThreadCount = 8;
@@ -32,6 +35,7 @@ namespace Thesis {
         public const bool DebugRunDelaysExporter = false;
         public const bool DebugRunTravelTimeProcesssor = false;
         public const bool DebugRunPastDataExporter = false;
+        public const bool DebugRunUi = false;
         public const int DebugRunSaCount = 1;
 
         // File structure
@@ -40,5 +44,6 @@ namespace Thesis {
         public static readonly string InputFolder = Path.Combine(SolutionFolder, @"input\");
         public static readonly string IntermediateFolder = Path.Combine(SolutionFolder, @"intermediate\");
         public static readonly string OutputFolder = Path.Combine(SolutionFolder, @"output\");
+        public static readonly string UiFolder = Path.Combine(SolutionFolder, @"ui\");
     }
 }

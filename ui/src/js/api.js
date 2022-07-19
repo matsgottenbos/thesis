@@ -1,6 +1,6 @@
 import * as Config from './config.js';
 
-export async function checkForErrors (response) {
+async function checkForErrors (response) {
     if (response.status === 200) return;
 
     const json = await response.json();
@@ -8,11 +8,35 @@ export async function checkForErrors (response) {
     else throw Error(`API call 'getData' returned error ${response.status}`);
 }
 
-export async function getData(selectedScheduleName, uiRootPath = './') {
-    const response = await fetch(`${uiRootPath}${Config.outputRootPath}${Config.selectedOutputFolder}/${selectedScheduleName}.json`, {
+export async function getRunListData() {
+    return getJsonData(`${Config.homeUrl}${Config.outputRootPath}/runList.json`);
+}
+
+export async function getRunData(selectedRunName) {
+    const runListData = await getRunListData();
+    return findRun(runListData.runsByStartDate, selectedRunName);
+}
+
+export async function getScheduleData(selectedRunName, selectedScheduleName) {
+    return getJsonData(`${Config.homeUrl}${Config.outputRootPath}${selectedRunName}/${selectedScheduleName}.json`);
+}
+
+async function getJsonData(filePath) {
+    const response = await fetch(filePath, {
         method: 'GET',
     });
-    this.checkForErrors(response);
+    checkForErrors(response);
+    return response.json();
+}
 
-    return await response.json();
+function findRun(runsByStartDate, selectedRunName) {
+    let foundRun = null;
+    runsByStartDate.forEach(dateRunList => {
+        dateRunList.runs.forEach(run => {
+            if (run.folderName === selectedRunName) {
+                foundRun = run;
+            }
+        });
+    });
+    return foundRun;
 }

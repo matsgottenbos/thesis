@@ -2,36 +2,40 @@ import * as Config from './config.js';
 import * as Api from './api.js';
 import * as Helper from './helper.js';
 
-class VisualisePage {
+class SchedulePage {
     async init() {
+        const selectedRunName = Helper.getUrlParameters().get('run');
         const selectedScheduleName = Helper.getUrlParameters().get('schedule');
-        if (selectedScheduleName == null) {
-            window.location = '../';
+        if (selectedRunName === null || selectedScheduleName === null) {
+            window.location = Config.homeUrl;
         }
 
-        const data = await Api.getData(selectedScheduleName, '../');
-
         $('.backButton').click(() => {
-            window.location = `../`;
+            window.location = `${Config.homeUrl}run?run=${selectedRunName}`;
         });
 
+        const runData = await Api.getRunData(selectedRunName);
+        const scheduleData = await Api.getScheduleData(selectedRunName, selectedScheduleName);
+        
+        const dataStartDate = new Date(runData.dataStartDate);
+
         const scheduleInfo = {
-            cost: '&euro; ' + Math.round(data.cost),
-            '>rawCost': '&euro; ' + Math.round(data.rawCost),
-            '>expectedDelaysCost': '&euro; ' + Math.round(data.robustness),
-            '>penaltyCost': data.penalty > 0 ? '&euro; ' + Math.round(data.penalty) : null,
-            satisfaction: Math.round(data.satisfaction * 100) + '%',
+            cost: '&euro; ' + Math.round(scheduleData.cost),
+            '>rawCost': '&euro; ' + Math.round(scheduleData.rawCost),
+            '>expectedDelaysCost': '&euro; ' + Math.round(scheduleData.robustness),
+            '>penaltyCost': scheduleData.penalty > 0 ? '&euro; ' + Math.round(scheduleData.penalty) : null,
+            satisfaction: Math.round(scheduleData.satisfaction * 100) + '%',
         };
         const scheduleInfoHtmlParts = Helper.infoObjectToRows(scheduleInfo);
         $('.scheduleInfoRows').html(scheduleInfoHtmlParts.join(''));
 
         const dayCount = Math.ceil(Config.originalTimeframeLength / (24 * 60));
         for (let i = 0; i < dayCount; i++) {
-            const dateString = Helper.parseDateShort(i * 24 * 60);
+            const dateString = Helper.parseDateShort(i * 24 * 60, dataStartDate);
             $('.scheduleHeader').append(`<div class="dayHeader">${dateString}</div>`);
         }
 
-        data.drivers.forEach((driver, i) => {
+        scheduleData.drivers.forEach((driver, i) => {
             if ((!driver.isInternal || driver.isOptional) && driver.shifts.length === 0) return;
 
             const name = Config.showRealDriverNames ? driver.realDriverName : driver.driverName;
@@ -54,10 +58,10 @@ class VisualisePage {
 
         $('.driver').click(function () {
             const driverIndex = parseInt($(this).attr('data-driver-index'));
-            window.location = `../driver/?schedule=${selectedScheduleName}&driver=${driverIndex + 1}`;
+            window.location = `../driver/?run=${selectedRunName}&schedule=${selectedScheduleName}&driver=${driverIndex + 1}`;
         });
     }
 }
 
-const app = new VisualisePage();
+const app = new SchedulePage();
 app.init();
