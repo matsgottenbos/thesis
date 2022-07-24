@@ -23,13 +23,11 @@ namespace Thesis {
                 if (driverName == null || countryQualificationsStr == null || !contractTime.HasValue || !isOptional.HasValue) return;
                 if (contractTime.Value == 0) return;
 
-                string[] countryQualifications = countryQualificationsStr.Split(", ");
-                bool isInternational = countryQualifications.Length > 1;
-
                 if (!isOptional.Value) {
                     requiredInternalDriverCount++;
                 }
 
+                // Travel info
                 int travelInfoInternalDriverIndex = Array.IndexOf(travelInfoInternalDriverNames, driverName);
                 if (travelInfoInternalDriverIndex == -1) {
                     throw new Exception(string.Format("Could not find internal driver `{0}` in internal travel info", driverName));
@@ -37,13 +35,58 @@ namespace Thesis {
                 int[] homeTravelTimes = internalDriversHomeTravelTimes[travelInfoInternalDriverIndex];
                 int[] homeTravelDistance = internalDriversHomeTravelDistances[travelInfoInternalDriverIndex];
 
-                // Determine track proficiencies
+                // Qualifications
+                string[] countryQualifications = countryQualificationsStr.Split(", ");
                 bool[] activityQualifications = DetermineActivityQualificationsFromCountryQualifications(countryQualifications, activities);
+                bool isInternational = countryQualifications.Length > 1;
 
+                // Salary info
                 InternalSalarySettings salaryInfo = isInternational ? SalaryConfig.InternalInternationalSalaryInfo : SalaryConfig.InternalNationalSalaryInfo;
 
+                // Satisfaction criteria names
+                //string[] singleModeCriterionNames = new string[] { "Travel time", "Contract time accuracy", "Expected delays", "Time off requests", "Consecutive free days", "Resting time" };
+                string[] singleModeCriterionNames = new string[] { "Travel time", "Contract time accuracy", "Expected delays", "Consecutive free days", "Resting time" };
+                string[] multipleModeCriterionNames = new string[] { "Route variation", "Shift lengths", "Night shifts", "Weekend shifts", "Hotel stays" };
+                string[] allCriterionNames = singleModeCriterionNames.Concat(multipleModeCriterionNames).ToArray();
+
+                // Satisfaction criteria
+                List<SatisfactionCriterion> satisfactionCriteriaList = new List<SatisfactionCriterion>();
+                float maxCriterionWeight = 0;
+                for (int criterionIndex = 0; criterionIndex < allCriterionNames.Length; criterionIndex++) {
+                    string criterionName = allCriterionNames[criterionIndex];
+
+                    AbstractSatisfactionCriterionInfo criterionInfo;
+                    if (multipleModeCriterionNames.Contains(criterionName)) {
+                        // Criterion with multiple mode
+                        string criterionModeColumnName = string.Format("Satisfaction criterion mode | {0}", criterionName);
+                        string criterionMode = internalDriverSettingsSheet.GetStringValue(internalDriverSettingsRow, criterionModeColumnName);
+                        criterionInfo = Array.Find(RulesConfig.SatisfactionCriterionInfos, searchCriterionInfo => searchCriterionInfo.Name == criterionName && searchCriterionInfo.Mode == criterionMode);
+                        if (criterionInfo == null) {
+                            throw new Exception(string.Format("Could not find satisfaction criterion `{0}` with mode `{1}`", criterionName, criterionMode));
+                        }
+                    } else {
+                        // Criterion with single mode
+                        criterionInfo = Array.Find(RulesConfig.SatisfactionCriterionInfos, searchCriterionInfo => searchCriterionInfo.Name == criterionName);
+                        if (criterionInfo == null) {
+                            throw new Exception(string.Format("Unknown satisfaction criterion `{0}`", criterionName));
+                        }
+                    }
+
+                    string criterionWeightColumnName = string.Format("Satisfaction criterion weight | {0}", criterionName);
+                    float criterionWeight = internalDriverSettingsSheet.GetFloatValue(internalDriverSettingsRow, criterionWeightColumnName).Value;
+                    maxCriterionWeight = Math.Max(maxCriterionWeight, criterionWeight);
+
+                    satisfactionCriteriaList.Add(new SatisfactionCriterion(criterionInfo, criterionWeight));
+                }
+                SatisfactionCriterion[] satisfactionCriteria = satisfactionCriteriaList.ToArray();
+
+                // Set satisfaction criteria max weight
+                for (int criterionIndex = 0; criterionIndex < satisfactionCriteria.Length; criterionIndex++) {
+                    satisfactionCriteria[criterionIndex].SetMaxWeight(maxCriterionWeight);
+                }
+
                 int internalDriverIndex = internalDrivers.Count;
-                internalDrivers.Add(new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, isInternational, isOptional.Value, homeTravelTimes, homeTravelDistance, activityQualifications, contractTime.Value, salaryInfo));
+                internalDrivers.Add(new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, isInternational, isOptional.Value, homeTravelTimes, homeTravelDistance, activityQualifications, contractTime.Value, salaryInfo, satisfactionCriteria));
             });
             return (internalDrivers.ToArray(), requiredInternalDriverCount);
         }

@@ -173,7 +173,7 @@ namespace Thesis {
         }
 
         static JObject CreateDriverSatisfactionCriteriaJObject(InternalDriver internalDriver, SaDriverInfo driverInfo) {
-            Dictionary<string, double> satisfactionPerCriterion = SatisfactionCalculator.GetDriverSatisfactionPerCriterion(internalDriver, driverInfo);
+            Dictionary<string, double> satisfactionPerCriterion = internalDriver.GetSatisfactionPerCriterion(driverInfo);
 
             JObject driverSatisfactionCriteriaJObject = new JObject();
             foreach (KeyValuePair<string, double> criterionKvp in satisfactionPerCriterion) {
