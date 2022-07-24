@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 namespace Thesis {
     class App {
         public App() {
-            Run(SaConfig.SaIterationCount, DataConfig.ExcelPlanningStartDate, DataConfig.ExcelPlanningNextDate);
+            ConfigHandler.InitAllConfigs();
+
+            Run(AppConfig.SaIterationCount, AppConfig.PlanningStartDate, AppConfig.PlanningNextDate);
 
             Console.WriteLine("\n*** Program finished ***");
 
@@ -24,52 +26,50 @@ namespace Thesis {
             Console.WriteLine("\nRunning program with start date {0} and end date {1} for {2} iterations", planningStartTime, planningEndTime, ParseHelper.LargeNumToString(targetIterationCount));
 
             // Special app modes without instance data
-            if (AppConfig.DebugRunDelaysExporter) {
+            if (DevConfig.DebugRunDelaysExporter) {
                 Console.WriteLine("Running debug delays exporter");
                 DebugDelaysExporter.Run();
                 return;
             }
-            if (AppConfig.DebugRunTravelTimeProcesssor) {
+            if (DevConfig.DebugRunTravelTimeProcesssor) {
                 Console.WriteLine("Running debug travel time exporter");
                 TravelInfoExporter.DetermineAndExportAllTravelInfos();
                 return;
             }
-            if (AppConfig.DebugRunUi) {
+            if (DevConfig.DebugRunUi) {
                 Console.WriteLine("Running UI");
                 DebugUiHandler.Run();
                 return;
             }
 
-            XorShiftRandom appRand = AppConfig.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
+            XorShiftRandom appRand = DevConfig.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
             Instance instance = GetInstance(planningStartTime, planningEndTime);
 
             // Special app modes with instance data
-            if (AppConfig.DebugRunInspector) {
+            if (DevConfig.DebugRunInspector) {
                 Console.WriteLine("Running debug inspector");
                 new DebugInspector(instance);
                 return;
             }
-            if (AppConfig.DebugRunJsonExporter) {
+            if (DevConfig.DebugRunJsonExporter) {
                 Console.WriteLine("Running debug JSON exporter");
                 new DebugJsonExporter(instance);
                 return;
             }
-            if (AppConfig.DebugRunPastDataExporter) {
+            if (DevConfig.DebugRunPastDataExporter) {
                 Console.WriteLine("Running debug past data exporter");
                 new DebugPastDataExporter(instance);
                 return;
             }
 
             // Simulated annealing
-            for (int i = 0; i < AppConfig.DebugRunSaCount; i++) {
-                SaMultithreadHandler saMultithreadHandler = new SaMultithreadHandler(targetIterationCount);
-                saMultithreadHandler.Run(instance, appRand);
-            }
+            SaMultithreadHandler saMultithreadHandler = new SaMultithreadHandler(targetIterationCount);
+            saMultithreadHandler.Run(instance, appRand);
         }
 
         static Instance GetInstance(DateTime planningStartTime, DateTime planningEndTime) {
             Instance instance;
-            switch (AppConfig.SelectedDataSource) {
+            switch (DevConfig.SelectedDataSource) {
                 case DataSource.Excel:
                     Console.WriteLine("Importing data from Excel...");
                     instance = ExcelDataImporter.Import(planningStartTime, planningEndTime);

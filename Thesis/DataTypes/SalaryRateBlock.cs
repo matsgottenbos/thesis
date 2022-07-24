@@ -14,9 +14,9 @@ namespace Thesis {
 
         public static SalaryRateBlock CreateByHours(float startTimeHours, float hourlySalaryRate, bool isContinuingRate = false) {
             return new SalaryRateBlock(
-                (int)Math.Round(startTimeHours * MiscConfig.HourLength),
-                hourlySalaryRate / MiscConfig.HourLength,
-                isContinuingRate ? hourlySalaryRate / MiscConfig.HourLength : 0f
+                (int)Math.Round(startTimeHours * DevConfig.HourLength),
+                hourlySalaryRate / DevConfig.HourLength,
+                isContinuingRate ? hourlySalaryRate / DevConfig.HourLength : 0f
             );
         }
     }

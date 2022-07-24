@@ -26,7 +26,7 @@ namespace Thesis {
 
         public void ReassignActivity(Activity activity, Driver oldDriver, Driver newDriver) {
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 DebugCheckDriverPaths();
             }
             #endif
@@ -55,7 +55,7 @@ namespace Thesis {
             }
 
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 DebugCheckDriverPaths();
             }
             #endif

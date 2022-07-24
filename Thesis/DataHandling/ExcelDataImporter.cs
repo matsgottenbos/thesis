@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Thesis {
     static class ExcelDataImporter {
         public static Instance Import(DateTime planningStartDate, DateTime planningEndDate) {
-            XSSFWorkbook testDataBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "testData.xlsx"));
+            XSSFWorkbook testDataBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "testData.xlsx"));
             ExcelSheet activitiesSheet = new ExcelSheet("DutyActivities", testDataBook);
 
             RawActivity[] rawActivities = ParseRawActivities(activitiesSheet, planningStartDate, planningEndDate);
@@ -23,7 +23,7 @@ namespace Thesis {
             activitiesSheet.ForEachRow(activityRow => {
                 // Skip if non-included order owner
                 string orderOwner = activitiesSheet.GetStringValue(activityRow, "RailwayUndertaking");
-                if (orderOwner == null || !DataConfig.ExcelIncludedRailwayUndertakings.Contains(orderOwner)) return;
+                if (orderOwner == null || !AppConfig.IncludedRailwayUndertakings.Contains(orderOwner)) return;
 
                 // Get duty, activity and project name name
                 string dutyName = activitiesSheet.GetStringValue(activityRow, "DutyNo");
@@ -33,7 +33,7 @@ namespace Thesis {
                 string trainNumber = activitiesSheet.GetStringValue(activityRow, "TrainNo") ?? "";
 
                 // Filter to configured activity descriptions
-                if (!ParseHelper.DataStringInList(activityName, DataConfig.ExcelIncludedActivityDescriptions)) return;
+                if (!ParseHelper.DataStringInList(activityName, AppConfig.IncludedActivityDescriptions)) return;
 
                 // Get start and end stations
                 string startStationDataName = activitiesSheet.GetStringValue(activityRow, "OriginLocationName");
@@ -56,7 +56,7 @@ namespace Thesis {
                 int endTime = (int)Math.Round((endTimeRaw - planningStartDate).Value.TotalMinutes);
 
                 // Skip activities longer than max shift length
-                if (endTime - startTime > RulesConfig.NightMaxMainShiftLength) return;
+                if (endTime - startTime > RulesConfig.MaxMainNightShiftLength) return;
 
                 // Get company and employee assigned in data
                 string assignedCompanyName = activitiesSheet.GetStringValue(activityRow, "EmployeeWorksFor");

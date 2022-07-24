@@ -8,13 +8,13 @@ namespace Thesis {
     static class DataShiftProcessor {
         public static MainShiftInfo[,] GetMainShiftInfos(SalarySettings[] salarySettingsByDriverType, int timeframeLength) {
             int timeframeLengthWithFinalTravel = timeframeLength + 24 * 60;
-            int roundedTimeStepCount = timeframeLengthWithFinalTravel / MiscConfig.RoundedTimeStepSize;
+            int roundedTimeStepCount = timeframeLengthWithFinalTravel / DevConfig.RoundedTimeStepSize;
 
             MainShiftInfo[,] mainShiftInfos = new MainShiftInfo[roundedTimeStepCount, roundedTimeStepCount];
             for (int startTimeStepIndex = 0; startTimeStepIndex < roundedTimeStepCount; startTimeStepIndex++) {
                 for (int endTimeStepIndex = startTimeStepIndex; endTimeStepIndex < roundedTimeStepCount; endTimeStepIndex++) {
-                    int mainShiftStartTime = startTimeStepIndex * MiscConfig.RoundedTimeStepSize;
-                    int realMainShiftEndTime = endTimeStepIndex * MiscConfig.RoundedTimeStepSize;
+                    int mainShiftStartTime = startTimeStepIndex * DevConfig.RoundedTimeStepSize;
+                    int realMainShiftEndTime = endTimeStepIndex * DevConfig.RoundedTimeStepSize;
                     int realMainShiftLength = realMainShiftEndTime - mainShiftStartTime;
 
                     // Determine shift info for driver types
@@ -32,13 +32,13 @@ namespace Thesis {
 
                     int maxMainShiftLength, maxFullShiftLength, minRestTimeAfter;
                     if (isNightShiftByLaw) {
-                        maxMainShiftLength = RulesConfig.NightMaxMainShiftLength;
-                        maxFullShiftLength = RulesConfig.NightMaxFullShiftLength;
-                        minRestTimeAfter = RulesConfig.NightShiftMinRestTime;
+                        maxMainShiftLength = RulesConfig.MaxMainNightShiftLength;
+                        maxFullShiftLength = RulesConfig.MaxFullNightShiftLength;
+                        minRestTimeAfter = RulesConfig.MinRestTimeAfterNightShift;
                     } else {
-                        maxMainShiftLength = RulesConfig.NormalMaxMainShiftLength;
-                        maxFullShiftLength = RulesConfig.NormalMaxFullShiftLength;
-                        minRestTimeAfter = RulesConfig.NormalShiftMinRestTime;
+                        maxMainShiftLength = RulesConfig.MaxMainDayShiftLength;
+                        maxFullShiftLength = RulesConfig.MaxFullDayShiftLength;
+                        minRestTimeAfter = RulesConfig.MinRestTimeAfterDayShift;
                     }
 
                     int maxShiftLengthViolationAmount = Math.Max(0, realMainShiftLength - maxMainShiftLength);
@@ -101,11 +101,11 @@ namespace Thesis {
 
         static (int, int) GetShiftNightWeekendTime(int mainShiftStartTime, int mainShiftEndTime, int timeframeLength) {
             // Repeat day parts for night info to cover entire week
-            int timeframeDayCount = (int)Math.Floor((float)timeframeLength / MiscConfig.DayLength) + 1;
+            int timeframeDayCount = (int)Math.Floor((float)timeframeLength / DevConfig.DayLength) + 1;
             List<TimePart> weekPartsForNight = new List<TimePart>();
             for (int dayIndex = 0; dayIndex < timeframeDayCount; dayIndex++) {
                 for (int i = 0; i < RulesConfig.DayPartsForNight.Length; i++) {
-                    int rateStartTime = dayIndex * MiscConfig.DayLength + RulesConfig.DayPartsForNight[i].StartTime;
+                    int rateStartTime = dayIndex * DevConfig.DayLength + RulesConfig.DayPartsForNight[i].StartTime;
                     weekPartsForNight.Add(new TimePart(rateStartTime, RulesConfig.DayPartsForNight[i].IsSelected));
                 }
             }

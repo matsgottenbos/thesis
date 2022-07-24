@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Thesis {
     static class JsonOutputHelper {
         public static void ExportRunListJsonFile() {
-            string[] runFolderPaths = Directory.GetDirectories(AppConfig.OutputFolder);
+            string[] runFolderPaths = Directory.GetDirectories(DevConfig.OutputFolder);
             JArray runsByStartDateJArray = new JArray();
             for (int i = 0; i < runFolderPaths.Length; i++) {
                 string runFolderPath = runFolderPaths[i];
@@ -46,7 +46,7 @@ namespace Thesis {
                 ["runsByStartDate"] = runsByStartDateJArray,
             };
 
-            string filePath = Path.Combine(AppConfig.OutputFolder, "runList.json");
+            string filePath = Path.Combine(DevConfig.OutputFolder, "runList.json");
             ExportJsonFile(runsListJObject, filePath);
         }
 
@@ -69,9 +69,9 @@ namespace Thesis {
 
             // Export JSON file with basic run info
             JObject runJObject = new JObject {
-                ["iterationCount"] = SaConfig.SaIterationCount,
-                ["dataStartDate"] = DataConfig.ExcelPlanningStartDate.ToString("yyyy/MM/dd HH:mm"),
-                ["dataEndDate"] = DataConfig.ExcelPlanningNextDate.ToString("yyyy/MM/dd HH:mm"),
+                ["iterationCount"] = AppConfig.SaIterationCount,
+                ["dataStartDate"] = AppConfig.PlanningStartDate.ToString("yyyy/MM/dd HH:mm"),
+                ["dataEndDate"] = AppConfig.PlanningNextDate.ToString("yyyy/MM/dd HH:mm"),
                 ["runCompletionDate"] = DateTime.Now.ToString("yyyy/MM/dd HH:mm"),
                 ["schedules"] = schedulesJArray,
             };
@@ -255,8 +255,8 @@ namespace Thesis {
             int ownCarTravelDistance = ownCarTravelDistanceBefore + ownCarTravelDistanceAfter;
 
             float travelCost = driver.GetPaidTravelCost(ownCarTravelTime, ownCarTravelDistance);
-            float sharedCarTravelCost = sharedCarTravelDistance * SalaryConfig.SharedCarCostsPerKilometer;
-            float hotelCost = afterHotelActivity == null ? 0 : SalaryConfig.HotelCosts;
+            float sharedCarTravelCost = sharedCarTravelDistance * RulesConfig.SharedCarCostsPerKilometer;
+            float hotelCost = afterHotelActivity == null ? 0 : RulesConfig.HotelCosts;
             float cost = fullShiftCost + hotelCost + shiftRobustness;
 
             // Salary rates breakdown
@@ -270,7 +270,7 @@ namespace Thesis {
                     ["salaryStartTime"] = computeSalaryRateBlock.SalaryStartTime,
                     ["salaryEndTime"] = computeSalaryRateBlock.SalaryEndTime,
                     ["salaryDuration"] = computeSalaryRateBlock.SalaryDuration,
-                    ["hourlySalaryRate"] = computeSalaryRateBlock.SalaryRate * MiscConfig.HourLength,
+                    ["hourlySalaryRate"] = computeSalaryRateBlock.SalaryRate * DevConfig.HourLength,
                     ["usesContinuingRate"] = computeSalaryRateBlock.UsesContinuingRate,
                     ["shiftCostInRange"] = computeSalaryRateBlock.CostInRate,
                 };

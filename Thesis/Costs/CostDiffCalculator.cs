@@ -20,7 +20,7 @@ namespace Thesis {
 
         public static SaDriverInfo GetUnassignDriverCostDiff(Activity unassignedActivity, Driver driver, SaDriverInfo oldDriverInfo, SaInfo info) {
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperation().StartPart(string.Format("Unassign activity {0} from driver {1}", unassignedActivity.Index, driver.GetId()), driver);
             }
             #endif
@@ -31,7 +31,7 @@ namespace Thesis {
             SaDriverInfo driverInfoDiff = RangeCostDiffCalculator.GetRangeCostDiffWithUnassign(firstRelevantActivity, lastRelevantActivity, oldDriverInfo, unassignedActivity, newIsHotelAfterActivity, driver, driverPath, info);
 
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 string relevantRangeInfo = GetNormalRangeInfo(firstRelevantActivity, lastRelevantActivity);
                 CheckErrors(driverInfoDiff, unassignedActivity, null, null, null, driver, info);
             }
@@ -42,7 +42,7 @@ namespace Thesis {
 
         public static SaDriverInfo GetAssignDriverCostDiff(Activity assignedActivity, Driver driver, SaDriverInfo oldDriverInfo, SaInfo info) {
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperation().StartPart(string.Format("Assign activity {0} to driver {1}", assignedActivity.Index, driver.GetId()), driver);
             }
             #endif
@@ -53,7 +53,7 @@ namespace Thesis {
             SaDriverInfo driverInfoDiff = RangeCostDiffCalculator.GetRangeCostDiffWithAssign(firstRelevantActivity, lastRelevantActivity, oldDriverInfo, assignedActivity, newIsHotelAfterActivity, driver, driverPath, info);
 
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 string relevantRangeInfo = GetNormalRangeInfo(firstRelevantActivity, lastRelevantActivity);
                 CheckErrors(driverInfoDiff, null, assignedActivity, null, null, driver, info);
             }
@@ -64,7 +64,7 @@ namespace Thesis {
 
         public static SaDriverInfo GetSwapDriverCostDiff(Activity unassignedActivity, Activity assignedActivity, Driver driver, SaDriverInfo oldDriverInfo, SaInfo info) {
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperation().StartPart(string.Format("Unassign activity {0} from and assign activity {1} to driver {2}", unassignedActivity.Index, assignedActivity.Index, driver.GetId()), driver);
             }
             #endif
@@ -75,7 +75,7 @@ namespace Thesis {
 
             #if DEBUG
             string unassignRangeString = null, assignRangeString = null;
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 unassignRangeString = GetRangeString(unassignFirstRelevantActivity, unassignLastRelevantActivity);
                 assignRangeString = GetRangeString(assignFirstRelevantActivity, assignLastRelevantActivity);
             }
@@ -90,7 +90,7 @@ namespace Thesis {
                 SaDriverInfo driverInfoDiff = RangeCostDiffCalculator.GetRangeCostDiffWithSwap(combinedFirstRelevantActivity, combinedLastRelevantActivity, oldDriverInfo, unassignedActivity, assignedActivity, combinedNewIsHotelAfterActivity, driver, driverPath, info);
 
                 #if DEBUG
-                if (AppConfig.DebugCheckOperations) {
+                if (DevConfig.DebugCheckOperations) {
                     string combinedRangeString = GetRangeString(combinedFirstRelevantActivity, combinedLastRelevantActivity);
                     string relevantRangeInfo = string.Format("Unassign relevant range: {0}; Assign relevant range: {1}; Combined relevant range: {2}", unassignRangeString, assignRangeString, combinedRangeString);
                     CheckErrors(driverInfoDiff, unassignedActivity, assignedActivity, null, null, driver, info);
@@ -113,7 +113,7 @@ namespace Thesis {
                 SaDriverInfo driverInfoDiff = unassignDriverInfoDiff + assignDriverInfoDiff;
 
                 #if DEBUG
-                if (AppConfig.DebugCheckOperations) {
+                if (DevConfig.DebugCheckOperations) {
                     string relevantRangeInfo = string.Format("Unassign relevant range: {0}; Assign relevant range: {1}; Calculated separately", unassignRangeString, assignRangeString);
                     CheckErrors(driverInfoDiff, unassignedActivity, assignedActivity, null, null, driver, info);
                 }
@@ -125,7 +125,7 @@ namespace Thesis {
 
         public static SaDriverInfo GetAddHotelDriverCostDiff(Activity addedHotelActivity, Driver driver, SaDriverInfo oldDriverInfo, SaInfo info) {
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperation().StartPart(string.Format("Add hotel after {0} for driver {1}", addedHotelActivity.Index, driver.GetId()), driver);
             }
             #endif
@@ -136,7 +136,7 @@ namespace Thesis {
             SaDriverInfo driverInfoDiff = RangeCostDiffCalculator.GetRangeCostDiff(firstRelevantActivity, lastRelevantActivity, oldDriverInfo, newIsHotelAfterActivity, driver, driverPath, info);
 
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 string relevantRangeInfo = GetNormalRangeInfo(firstRelevantActivity, lastRelevantActivity);
                 CheckErrors(driverInfoDiff, null, null, addedHotelActivity, null, driver, info);
             }
@@ -147,7 +147,7 @@ namespace Thesis {
 
         public static SaDriverInfo GetRemoveHotelDriverCostDiff(Activity removedHotelActivity, Driver driver, SaDriverInfo oldDriverInfo, SaInfo info) {
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperation().StartPart(string.Format("Remove hotel after {0} for driver {1}", removedHotelActivity.Index, driver.GetId()), driver);
             }
             #endif
@@ -158,7 +158,7 @@ namespace Thesis {
             SaDriverInfo driverInfoDiff = RangeCostDiffCalculator.GetRangeCostDiff(firstRelevantActivity, lastRelevantActivity, oldDriverInfo, newIsHotelAfterActivity, driver, driverPath, info);
 
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 string relevantRangeInfo = GetNormalRangeInfo(firstRelevantActivity, lastRelevantActivity);
                 CheckErrors(driverInfoDiff, null, null, null, removedHotelActivity, driver, info);
             }

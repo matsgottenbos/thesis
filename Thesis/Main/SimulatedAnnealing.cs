@@ -24,7 +24,7 @@ namespace Thesis {
             Info = new SaInfo(instance);
 
             // Initialise best info
-            BestInfoBySatisfaction = new SaInfo[MiscConfig.PercentageFactor];
+            BestInfoBySatisfaction = new SaInfo[DevConfig.PercentageFactor];
             for (int i = 0; i < BestInfoBySatisfaction.Length; i++) {
                 SaInfo initialBestInfo = new SaInfo(instance);
                 initialBestInfo.TotalInfo = new SaTotalInfo() {
@@ -59,7 +59,7 @@ namespace Thesis {
                 if (isAccepted) {
                     operation.Execute();
 
-                    int satisfactionLevel = (int)Math.Round(Info.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor);
+                    int satisfactionLevel = (int)Math.Round(Info.TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor);
                     if (Info.TotalInfo.Stats.Penalty < 0.01 && Info.TotalInfo.Stats.Cost < BestInfoBySatisfaction[satisfactionLevel].TotalInfo.Stats.Cost) {
                         Info.LastImprovementIteration = Info.IterationNum;
                         Info.HasImprovementSinceLog = true;
@@ -68,9 +68,9 @@ namespace Thesis {
                         TotalCostCalculator.ProcessAssignmentCost(Info);
 
                         #if DEBUG
-                        if (AppConfig.DebugCheckOperations) {
+                        if (DevConfig.DebugCheckOperations) {
                             if (Info.TotalInfo.Stats.Penalty > 0.01) throw new Exception("New best solution is invalid");
-                            if (Math.Abs(Info.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor - satisfactionLevel) > 0.6) throw new Exception("New best solution has incorrect satisfaction level");
+                            if (Math.Abs(Info.TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor - satisfactionLevel) > 0.6) throw new Exception("New best solution has incorrect satisfaction level");
                         }
                         #endif
 
@@ -92,22 +92,22 @@ namespace Thesis {
 
                 #if DEBUG
                 // Set debugger to next iteration
-                if (AppConfig.DebugCheckOperations) {
+                if (DevConfig.DebugCheckOperations) {
                     SaDebugger.NextIteration(Info);
                 }
                 #endif
 
                 // Callback
-                if (Info.IterationNum % SaConfig.SaThreadCallbackFrequency == 0) {
+                if (Info.IterationNum % SaConfig.ThreadCallbackFrequency == 0) {
                     threadCallback();
                 }
 
                 // Update temperature and penalty factor
-                if (Info.IterationNum % SaConfig.SaParameterUpdateFrequency == 0) {
-                    Info.Temperature *= SaConfig.SaTemperatureReductionFactor;
+                if (Info.IterationNum % SaConfig.ParameterUpdateFrequency == 0) {
+                    Info.Temperature *= SaConfig.TemperatureReductionFactor;
 
                     // Check if we should end the cycle
-                    if (Info.Temperature <= SaConfig.SaEndCycleTemperature) {
+                    if (Info.Temperature <= SaConfig.EndCycleTemperature) {
                         // Check if we should do a full reset
                         if (rand.NextDouble() < SaConfig.FullResetProb) {
                             // Full reset
@@ -115,8 +115,8 @@ namespace Thesis {
                         } else {
                             // Partial reset
                             Info.CycleNum++;
-                            Info.SatisfactionFactor = (float)rand.NextDouble(SaConfig.SaCycleMinSatisfactionFactor, SaConfig.SaCycleMaxSatisfactionFactor);
-                            Info.Temperature = (float)rand.NextDouble(SaConfig.SaCycleMinInitialTemperature, SaConfig.SaCycleMaxInitialTemperature);
+                            Info.SatisfactionFactor = (float)rand.NextDouble(SaConfig.CycleMinSatisfactionFactor, SaConfig.CycleMaxSatisfactionFactor);
+                            Info.Temperature = (float)rand.NextDouble(SaConfig.CycleMinInitialTemperature, SaConfig.CycleMaxInitialTemperature);
                         }
                     }
 
@@ -125,7 +125,7 @@ namespace Thesis {
 
                 #if DEBUG
                 // Reset iteration in debugger after additional checks
-                if (AppConfig.DebugCheckOperations) {
+                if (DevConfig.DebugCheckOperations) {
                     SaDebugger.ResetIteration(Info);
                 }
                 #endif
@@ -137,8 +137,8 @@ namespace Thesis {
             // Initialise info
             Info = new SaInfo(Info.Instance);
             Info.CycleNum = oldCycleNum + 1;
-            Info.Temperature = SaConfig.SaInitialTemperature;
-            Info.SatisfactionFactor = (float)rand.NextDouble(SaConfig.SaCycleMinSatisfactionFactor, SaConfig.SaCycleMaxSatisfactionFactor);
+            Info.Temperature = SaConfig.InitialTemperature;
+            Info.SatisfactionFactor = (float)rand.NextDouble(SaConfig.CycleMinSatisfactionFactor, SaConfig.CycleMaxSatisfactionFactor);
             Info.IsHotelStayAfterActivity = new bool[Info.Instance.Activities.Length];
 
             // Create a random initial assignment
@@ -147,7 +147,7 @@ namespace Thesis {
 
             #if DEBUG
             // Initialise debugger
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.ResetIteration(Info);
                 SaDebugger.GetCurrentOperation().StartPart("Initial assignment", null);
                 SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.OldChecked);
@@ -159,7 +159,7 @@ namespace Thesis {
 
             #if DEBUG
             // Reset iteration in debugger after initial assignment cost
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.ResetIteration(Info);
             }
             #endif

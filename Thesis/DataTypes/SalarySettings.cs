@@ -36,10 +36,10 @@ namespace Thesis {
         public static InternalSalarySettings CreateByHours(SalaryRateBlock[] weekdaySalaryRates, float weekendHourlySalaryRate, float travelTimeHourlySalaryRate, float minPaidShiftTimeHours, float unpaidTravelTimePerShiftHours) {
             return new InternalSalarySettings(
                 weekdaySalaryRates,
-                weekendHourlySalaryRate / MiscConfig.HourLength,
-                travelTimeHourlySalaryRate / MiscConfig.HourLength,
-                (int)Math.Round(minPaidShiftTimeHours * MiscConfig.HourLength),
-                (int)Math.Round(unpaidTravelTimePerShiftHours * MiscConfig.HourLength)
+                weekendHourlySalaryRate / DevConfig.HourLength,
+                travelTimeHourlySalaryRate / DevConfig.HourLength,
+                (int)Math.Round(minPaidShiftTimeHours * DevConfig.HourLength),
+                (int)Math.Round(unpaidTravelTimePerShiftHours * DevConfig.HourLength)
             );
         }
     }
@@ -56,9 +56,9 @@ namespace Thesis {
         public static ExternalSalarySettings CreateByHours(SalaryRateBlock[] weekdaySalaryRates, float weekendHourlySalaryRate, float travelDistanceSalaryRate, float minPaidShiftTimeHours, int unpaidTravelDistancePerShift) {
             return new ExternalSalarySettings(
                 weekdaySalaryRates,
-                weekendHourlySalaryRate / MiscConfig.HourLength,
+                weekendHourlySalaryRate / DevConfig.HourLength,
                 travelDistanceSalaryRate,
-                (int)Math.Round(minPaidShiftTimeHours * MiscConfig.HourLength),
+                (int)Math.Round(minPaidShiftTimeHours * DevConfig.HourLength),
                 unpaidTravelDistancePerShift
             );
         }

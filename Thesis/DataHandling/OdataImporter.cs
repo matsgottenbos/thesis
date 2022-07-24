@@ -37,9 +37,7 @@ namespace Thesis {
         }
 
         static void SendAuthorization(object sender, Microsoft.OData.Client.SendingRequest2EventArgs e) {
-            string username = "opsrsh01@rig";
-            string password = "Bu@maN2099a";
-            string authHeaderValue = Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", username, password)));
+            string authHeaderValue = Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", DevConfig.OdataUsername, DevConfig.OdataPassword)));
             e.RequestMessage.SetHeader("Authorization", "Basic " + authHeaderValue);
         }
 

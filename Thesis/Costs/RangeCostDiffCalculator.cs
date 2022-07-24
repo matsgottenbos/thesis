@@ -8,7 +8,7 @@ namespace Thesis {
     static class RangeCostDiffCalculator {
         public static SaDriverInfo GetRangeCostDiff(Activity rangeFirstActivity, Activity rangeLastActivity, SaDriverInfo oldDriverInfo, Func<Activity, bool> newIsHotelAfterActivity, Driver driver, List<Activity> driverPath, SaInfo info) {
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.NewNormal);
             }
             #endif
@@ -19,7 +19,7 @@ namespace Thesis {
 
         public static SaDriverInfo GetRangeCostDiffWithUnassign(Activity rangeFirstActivity, Activity rangeLastActivity, SaDriverInfo oldDriverInfo, Activity unassignedActivity, Func<Activity, bool> newIsHotelAfterActivity, Driver driver, List<Activity> driverPath, SaInfo info) {
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.NewNormal);
             }
             #endif
@@ -30,7 +30,7 @@ namespace Thesis {
 
         public static SaDriverInfo GetRangeCostDiffWithAssign(Activity rangeFirstActivity, Activity rangeLastActivity, SaDriverInfo oldDriverInfo, Activity assignedActivity, Func<Activity, bool> newIsHotelAfterActivity, Driver driver, List<Activity> driverPath, SaInfo info) {
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.NewNormal);
             }
             #endif
@@ -41,7 +41,7 @@ namespace Thesis {
 
         public static SaDriverInfo GetRangeCostDiffWithSwap(Activity rangeFirstActivity, Activity rangeLastActivity, SaDriverInfo oldDriverInfo, Activity unassignedActivity, Activity assignedActivity, Func<Activity, bool> newIsHotelAfterActivity, Driver driver, List<Activity> driverPath, SaInfo info) {
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.NewNormal);
             }
             #endif
@@ -53,7 +53,7 @@ namespace Thesis {
         public static SaDriverInfo GetRangeCostDiffFromNewCosts(Activity rangeFirstActivity, Activity rangeLastActivity, SaDriverInfo oldFullDriverInfo, SaDriverInfo newRangeDriverInfo, Driver driver, List<Activity> driverPath, SaInfo info) {
             // Old range cost
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.OldNormal);
             }
             #endif
@@ -63,7 +63,7 @@ namespace Thesis {
 
             // Finish new range cost
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.NewNormal);
             }
             #endif

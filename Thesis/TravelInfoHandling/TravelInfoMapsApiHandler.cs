@@ -39,18 +39,18 @@ namespace Thesis {
             Console.WriteLine("Performing Google Maps API requests...");
 
             // Set API key
-            GoogleSigned.AssignAllServices(new GoogleSigned(DataConfig.GoogleMapsApiKey));
+            GoogleSigned.AssignAllServices(new GoogleSigned(AppConfig.GoogleMapsApiKey));
 
             // API limits per request: max 25 origins, max 25 destinations, max 100 elements
             // Perform separate calls for each origin
             for (int missingStationIndex = 0; missingStationIndex < originLocations.Count; missingStationIndex++) {
-                int allStationsGroupCount = (int)Math.Ceiling((float)destinationLocations.Count / DataConfig.GoogleMapsMaxDestinationCountPerRequest);
+                int allStationsGroupCount = (int)Math.Ceiling((float)destinationLocations.Count / AppConfig.GoogleMapsMaxDestinationCountPerRequest);
                 List<LocationInfo> requestOriginLocations = originLocations.GetRange(missingStationIndex, 1);
 
                 // Split destinations into groups if needed to avoid exceeding request size limits
                 for (int allStationsGroupIndex = 0; allStationsGroupIndex < allStationsGroupCount; allStationsGroupIndex++) {
-                    int requestDestinationsFirstIndex = allStationsGroupIndex * DataConfig.GoogleMapsMaxDestinationCountPerRequest;
-                    int requestDestinationsNextIndex = Math.Min((allStationsGroupIndex + 1) * DataConfig.GoogleMapsMaxDestinationCountPerRequest, destinationLocations.Count);
+                    int requestDestinationsFirstIndex = allStationsGroupIndex * AppConfig.GoogleMapsMaxDestinationCountPerRequest;
+                    int requestDestinationsNextIndex = Math.Min((allStationsGroupIndex + 1) * AppConfig.GoogleMapsMaxDestinationCountPerRequest, destinationLocations.Count);
                     int requestDestinationCount = requestDestinationsNextIndex - requestDestinationsFirstIndex;
 
                     List<LocationInfo> requestDestinationLocations = destinationLocations.GetRange(requestDestinationsFirstIndex, requestDestinationCount);

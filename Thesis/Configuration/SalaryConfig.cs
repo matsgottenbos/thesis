@@ -1,68 +1,89 @@
-﻿using System.Collections.Generic;
+﻿using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
     class SalaryConfig {
-        // Misc costs (TODO: move into SalarySettings?)
-        public const float HotelCosts = 180f;
-        public const float SharedCarCostsPerKilometer = 0.35f; // Additional costs for travel by pool car: includes intra-shift car travel, travel to pick up personal car, and travel to/from hotel
+        /* Salary rates for driver types */
+        /// <summary>Internal national driver salary info.</summary>
+        public static InternalSalarySettings InternalNationalSalaryInfo;
+        /// <summary>Internal international driver salary info.</summary>
+        public static InternalSalarySettings InternalInternationalSalaryInfo;
+        /// <summary>External national driver salary info.</summary>
+        public static ExternalSalarySettings ExternalNationalSalaryInfo;
+        /// <summary>External international driver salary info.</summary>
+        public static ExternalSalarySettings ExternalInternationalSalaryInfo;
 
-        // Salary rates for driver types
-        public static readonly InternalSalarySettings InternalNationalSalaryInfo = InternalSalarySettings.CreateByHours(
-            new SalaryRateBlock[] { // Weekday salary rates
-                SalaryRateBlock.CreateByHours(0, 55, true), // Night 0-4, continuing hourly rate of 55
-                SalaryRateBlock.CreateByHours(4, 55), // Night 4-6, hourly rate of 55
-                SalaryRateBlock.CreateByHours(6, 50), // Morning 6-8, hourly rate of 50
-                SalaryRateBlock.CreateByHours(8, 45), // Day 8-19, hourly rate of 45
-                SalaryRateBlock.CreateByHours(19, 50), // Evening 19-23, hourly rate of 50
-                SalaryRateBlock.CreateByHours(23, 55, true), // Night 23-0, continuing hourly rate of 55
-            },
-            55, // Weekend rate (per hour)
-            45, // Travel time rate (per hour)
-            6, // Minimum paid shift time (hours)
-            1 // Unpaid travel time per shift (hours)
-        );
-        public static readonly InternalSalarySettings InternalInternationalSalaryInfo = InternalSalarySettings.CreateByHours(
-            new SalaryRateBlock[] { // Weekday salary rates
-                SalaryRateBlock.CreateByHours(0, 55, true), // Night 0-4, continuing hourly rate of 55
-                SalaryRateBlock.CreateByHours(4, 55), // Night 4-6, hourly rate of 55
-                SalaryRateBlock.CreateByHours(6, 50), // Morning 6-8, hourly rate of 50
-                SalaryRateBlock.CreateByHours(8, 45), // Day 8-19, hourly rate of 45
-                SalaryRateBlock.CreateByHours(19, 50), // Evening 19-23, hourly rate of 50
-                SalaryRateBlock.CreateByHours(23, 55, true), // Night 23-0, continuing hourly rate of 55
-            },
-            60, // Weekend rate (per hour)
-            50, // Travel time rate (per hour)
-            6, // Minimum paid shift time (hours)
-            1 // Unpaid travel time per shift (hours)
-        );
-        public static readonly ExternalSalarySettings ExternalNationalSalaryInfo = ExternalSalarySettings.CreateByHours(
-            new SalaryRateBlock[] {
-                SalaryRateBlock.CreateByHours(0, 75), // Night 0-6, hourly rate of 75
-                SalaryRateBlock.CreateByHours(6, 70), // Morning 6-7, hourly rate of 70
-                SalaryRateBlock.CreateByHours(7, 65), // Day 7-18, hourly rate of 65
-                SalaryRateBlock.CreateByHours(18, 70), // Evening 18-23, hourly rate of 70
-                SalaryRateBlock.CreateByHours(23, 75), // Night 23-0, hourly rate of 75
-            },
-            75, // Weekend rate (per hour)
-            0.3f, // Travel distance rate (per kilometer)
-            8, // Minimum paid shift time (hours)
-            100 // Unpaid travel time per shift (hours)
-        );
-        public static readonly ExternalSalarySettings ExternalInternationalSalaryInfo = ExternalSalarySettings.CreateByHours(
-            new SalaryRateBlock[] {
-                SalaryRateBlock.CreateByHours(0, 80), // Night 0-6, hourly rate of 80
-                SalaryRateBlock.CreateByHours(6, 75), // Morning 6-7, hourly rate of 75
-                SalaryRateBlock.CreateByHours(7, 70), // Day 7-18, hourly rate of 70
-                SalaryRateBlock.CreateByHours(18, 75), // Evening 18-23, hourly rate of 75
-                SalaryRateBlock.CreateByHours(23, 80), // Night 23-0, hourly rate of 80
-            },
-            80, // Weekend rate (per hour)
-            0.3f, // Travel distance rate (per kilometer)
-            8, // Minimum paid shift time (hours)
-            100 // Unpaid travel distance per shift (kilometers)
-        );
+        public static void Init(XSSFWorkbook settingsBook) {
+            ExcelSheet salariesSettingsSheet = new ExcelSheet("Salaries", settingsBook);
+            ExcelSheet weekdaySalaryBlocksSettingsSheet = new ExcelSheet("Weekday salary blocks", settingsBook);
+
+            InternalNationalSalaryInfo = ProcessInternalDriverTypeSalaryInfo("Internal national", salariesSettingsSheet, weekdaySalaryBlocksSettingsSheet);
+            InternalInternationalSalaryInfo = ProcessInternalDriverTypeSalaryInfo("Internal international", salariesSettingsSheet, weekdaySalaryBlocksSettingsSheet);
+            ExternalNationalSalaryInfo = ProcessExternalDriverTypeSalaryInfo("External national", salariesSettingsSheet, weekdaySalaryBlocksSettingsSheet);
+            ExternalInternationalSalaryInfo = ProcessExternalDriverTypeSalaryInfo("External international", salariesSettingsSheet, weekdaySalaryBlocksSettingsSheet);
+        }
+
+        static InternalSalarySettings ProcessInternalDriverTypeSalaryInfo(string driverType, ExcelSheet salariesSettingsSheet, ExcelSheet weekdaySalaryBlocksSettingsSheet) {
+            SalaryRateBlock[] weekdaySalaryRates = ProcessWeekdaySalaryRates(driverType, weekdaySalaryBlocksSettingsSheet);
+
+            Dictionary<string, ICell> valueCellPerDriverTypeSetting = GetDriverTypeSettingsValueCellsAsDict(driverType, salariesSettingsSheet);
+            float weekendHourlyRate = ExcelSheet.GetFloatValue(valueCellPerDriverTypeSetting["Weekend rate"]).Value;
+            float travelTimeHourlyRate = ExcelSheet.GetFloatValue(valueCellPerDriverTypeSetting["Travel time rate"]).Value;
+            float minPaidShiftTimeHours = ExcelSheet.GetFloatValue(valueCellPerDriverTypeSetting["Minimum paid shift time"]).Value;
+            float unpaidTravelTimePerShiftHours = ExcelSheet.GetFloatValue(valueCellPerDriverTypeSetting["Unpaid travel time per shift"]).Value;
+
+            return InternalSalarySettings.CreateByHours(weekdaySalaryRates, weekendHourlyRate, travelTimeHourlyRate, minPaidShiftTimeHours, unpaidTravelTimePerShiftHours);
+        }
+
+        static ExternalSalarySettings ProcessExternalDriverTypeSalaryInfo(string driverType, ExcelSheet salariesSettingsSheet, ExcelSheet weekdaySalaryBlocksSettingsSheet) {
+            SalaryRateBlock[] weekdaySalaryRates = ProcessWeekdaySalaryRates(driverType, weekdaySalaryBlocksSettingsSheet);
+
+            Dictionary<string, ICell> valueCellPerDriverTypeSetting = GetDriverTypeSettingsValueCellsAsDict(driverType, salariesSettingsSheet);
+            float weekendHourlyRate = ExcelSheet.GetFloatValue(valueCellPerDriverTypeSetting["Weekend rate"]).Value;
+            float travelDistanceRate = ExcelSheet.GetFloatValue(valueCellPerDriverTypeSetting["Travel distance rate"]).Value;
+            float minPaidShiftTimeHours = ExcelSheet.GetFloatValue(valueCellPerDriverTypeSetting["Minimum paid shift time"]).Value;
+            int unpaidTravelDistancePerShift = ExcelSheet.GetIntValue(valueCellPerDriverTypeSetting["Unpaid travel distance per shift"]).Value;
+
+            return ExternalSalarySettings.CreateByHours(weekdaySalaryRates, weekendHourlyRate, travelDistanceRate, minPaidShiftTimeHours, unpaidTravelDistancePerShift);
+        }
+
+        static SalaryRateBlock[] ProcessWeekdaySalaryRates(string driverType, ExcelSheet weekdaySalaryBlocksSettingsSheet) {
+            List<SalaryRateBlock> weekdaySalaryRatesList = new List<SalaryRateBlock>();
+
+            weekdaySalaryBlocksSettingsSheet.ForEachRow(weekdaySalaryBlocksSettingsRow => {
+                string rowDriverType = weekdaySalaryBlocksSettingsSheet.GetStringValue(weekdaySalaryBlocksSettingsRow, "Driver type");
+                if (rowDriverType != driverType) return;
+
+                float startTimeHours = weekdaySalaryBlocksSettingsSheet.GetFloatValue(weekdaySalaryBlocksSettingsRow, "Start hour of part").Value;
+                float hourlySalaryRate = weekdaySalaryBlocksSettingsSheet.GetFloatValue(weekdaySalaryBlocksSettingsRow, "Salary rate").Value;
+                bool isContinuingRate = weekdaySalaryBlocksSettingsSheet.GetBoolValue(weekdaySalaryBlocksSettingsRow, "Is continuing rate").Value;
+
+                weekdaySalaryRatesList.Add(SalaryRateBlock.CreateByHours(startTimeHours, hourlySalaryRate, isContinuingRate));
+            });
+
+            return weekdaySalaryRatesList.ToArray();
+        }
+
+        static Dictionary<string, ICell> GetDriverTypeSettingsValueCellsAsDict(string driverType, ExcelSheet sheet) {
+            Dictionary<string, ICell> valueCellPerSetting = new Dictionary<string, ICell>();
+            sheet.ForEachRow(row => {
+                string rowDriverType = sheet.GetStringValue(row, "Driver type");
+                if (rowDriverType != driverType) return;
+
+                string name = sheet.GetStringValue(row, "Salary setting");
+                if (name == null) return;
+
+                ICell valueCell = row.GetCell(sheet.GetColumnIndex("Value"));
+                if (valueCell == null) throw new Exception(string.Format("Value of setting `{0}` was empty", name));
+
+                valueCellPerSetting.Add(name, valueCell);
+            });
+            return valueCellPerSetting;
+        }
     }
 }

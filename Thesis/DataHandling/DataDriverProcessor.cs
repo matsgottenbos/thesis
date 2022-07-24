@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace Thesis {
     static class DataDriverProcessor {
-        public static (InternalDriver[], int) CreateInternalDrivers(XSSFWorkbook settingsBook, Activity[] activities) {
-            ExcelSheet internalDriverSettingsSheet = new ExcelSheet("Internal drivers", settingsBook);
+        public static (InternalDriver[], int) CreateInternalDrivers(XSSFWorkbook driversBook, Activity[] activities) {
+            ExcelSheet internalDriverSettingsSheet = new ExcelSheet("Internal drivers", driversBook);
 
-            (int[][] internalDriversHomeTravelTimes, int[][] internalDriversHomeTravelDistances, string[] travelInfoInternalDriverNames, _) = TravelInfoImporter.ImportBipartiteTravelInfo(Path.Combine(AppConfig.IntermediateFolder, "internalTravelInfo.csv"));
+            (int[][] internalDriversHomeTravelTimes, int[][] internalDriversHomeTravelDistances, string[] travelInfoInternalDriverNames, _) = TravelInfoImporter.ImportBipartiteTravelInfo(Path.Combine(DevConfig.IntermediateFolder, "internalTravelInfo.csv"));
 
             List<InternalDriver> internalDrivers = new List<InternalDriver>();
             int requiredInternalDriverCount = 0;
             internalDriverSettingsSheet.ForEachRow(internalDriverSettingsRow => {
                 string driverName = internalDriverSettingsSheet.GetStringValue(internalDriverSettingsRow, "Internal driver name");
                 string countryQualificationsStr = internalDriverSettingsSheet.GetStringValue(internalDriverSettingsRow, "Country qualifications");
-                int? contractTime = internalDriverSettingsSheet.GetIntValue(internalDriverSettingsRow, "Contract hours per week") * MiscConfig.HourLength;
+                int? contractTime = internalDriverSettingsSheet.GetIntValue(internalDriverSettingsRow, "Contract hours per week") * DevConfig.HourLength;
                 bool? isOptional = internalDriverSettingsSheet.GetBoolValue(internalDriverSettingsRow, "Is optional?");
                 if (driverName == null || countryQualificationsStr == null || !contractTime.HasValue || !isOptional.HasValue) return;
                 if (contractTime.Value == 0) return;
@@ -80,10 +80,10 @@ namespace Thesis {
             return internalDriverProficiencies;
         }
 
-        public static (ExternalDriverType[], ExternalDriver[][], Dictionary<(string, bool), ExternalDriver[]>) CreateExternalDrivers(XSSFWorkbook settingsBook, Activity[] activities, int internalDriverCount) {
-            ExcelSheet externalDriverCompanySettingsSheet = new ExcelSheet("External driver companies", settingsBook);
+        public static (ExternalDriverType[], ExternalDriver[][], Dictionary<(string, bool), ExternalDriver[]>) CreateExternalDrivers(XSSFWorkbook driversBook, Activity[] activities, int internalDriverCount) {
+            ExcelSheet externalDriverCompanySettingsSheet = new ExcelSheet("External driver companies", driversBook);
 
-            (int[][] externalDriversHomeTravelTimes, int[][] externalDriversHomeTravelDistances, string[] travelInfoExternalCompanyNames, _) = TravelInfoImporter.ImportBipartiteTravelInfo(Path.Combine(AppConfig.IntermediateFolder, "externalTravelInfo.csv"));
+            (int[][] externalDriversHomeTravelTimes, int[][] externalDriversHomeTravelDistances, string[] travelInfoExternalCompanyNames, _) = TravelInfoImporter.ImportBipartiteTravelInfo(Path.Combine(DevConfig.IntermediateFolder, "externalTravelInfo.csv"));
 
             List<ExternalDriverType> externalDriverTypes = new List<ExternalDriverType>();
             List<ExternalDriver[]> externalDriversByType = new List<ExternalDriver[]>();

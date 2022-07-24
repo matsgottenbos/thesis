@@ -22,7 +22,7 @@ namespace Thesis {
 
                 // Shared car travel costs
                 int carTravelDistance = instance.CarTravelDistance(prevActivity, searchActivity);
-                driverInfo.Stats.Cost += carTravelDistance * SalaryConfig.SharedCarCostsPerKilometer;
+                driverInfo.Stats.Cost += carTravelDistance * RulesConfig.SharedCarCostsPerKilometer;
 
                 // Check for invalid hotel stay
                 bool isInvalidHotelAfter = isHotelAfterActivity(prevActivity);
@@ -64,7 +64,7 @@ namespace Thesis {
             }
 
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentStageInfo().AddActivity(activity, isOverlapViolation, isInvalidHotelAfter);
             }
             #endif
@@ -102,7 +102,7 @@ namespace Thesis {
                 }
 
                 #if DEBUG
-                if (AppConfig.DebugCheckOperations) {
+                if (DevConfig.DebugCheckOperations) {
                     SaDebugger.GetCurrentStageInfo().SetRestInfo(null, false, isInvalidHotelAfter);
                 }
                 #endif
@@ -119,7 +119,7 @@ namespace Thesis {
                 // Hotel stay after
                 driverInfo.HotelCount++;
                 restTimeAfter = instance.RestTimeViaHotel(shiftLastActivity, nextShiftFirstActivity);
-                driverInfo.Stats.RawCost += SalaryConfig.HotelCosts;
+                driverInfo.Stats.RawCost += RulesConfig.HotelCosts;
 
                 // Check if the hotel stay is valid
                 if (!driver.IsHotelAllowed || restTimeAfter > RulesConfig.HotelMaxRestTime) {
@@ -158,7 +158,7 @@ namespace Thesis {
             shiftFirstActivity = nextShiftFirstActivity;
 
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentStageInfo().SetRestInfo(restTimeAfter, isHotelAfter, isInvalidHotelAfter);
             }
             #endif
@@ -188,10 +188,10 @@ namespace Thesis {
 
             // Get full shift length and cost
             int fullShiftLength = mainShiftInfo.RealMainShiftLength + ownCarTravelTime;
-            float fullShiftCost = driverTypeMainShiftInfo.MainShiftCost + ownCarTravelCost + sharedCarTravelDistance * SalaryConfig.SharedCarCostsPerKilometer;
+            float fullShiftCost = driverTypeMainShiftInfo.MainShiftCost + ownCarTravelCost + sharedCarTravelDistance * RulesConfig.SharedCarCostsPerKilometer;
 
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentStageInfo().SetShiftDetails(shiftFirstActivity, shiftLastActivity, afterHotelActivity, mainShiftInfo, driverTypeMainShiftInfo, fullShiftLength, sharedCarTravelTimeBefore, ownCarTravelTimeBefore, sharedCarTravelTimeAfter, ownCarTravelTimeAfter);
             }
             #endif

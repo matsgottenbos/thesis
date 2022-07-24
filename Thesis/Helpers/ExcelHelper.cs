@@ -57,7 +57,7 @@ namespace Thesis {
             firstContentRowIndex = hasSecondHeaderRow ? 2 : 1;
         }
 
-        int GetColumnIndex(string columnName) {
+        public int GetColumnIndex(string columnName) {
             if (!columnNamesToIndices.ContainsKey(columnName)) {
                 throw new Exception(string.Format("Could not find column `{0}` in Excel sheet `{1}`", columnName, sheetName));
             }
@@ -74,25 +74,43 @@ namespace Thesis {
         }
 
         public string GetStringValue(IRow row, string columnName) {
-            string stringValue = row.GetCell(GetColumnIndex(columnName))?.StringCellValue;
+            return GetStringValue(row.GetCell(GetColumnIndex(columnName)));
+        }
+        public static string GetStringValue(ICell cell) {
+            string stringValue = cell?.StringCellValue;
             if (stringValue == null || stringValue == "") return null;
             return ParseHelper.CleanDataString(stringValue);
         }
 
         public int? GetIntValue(IRow row, string columnName) {
-            ICell cell = row.GetCell(GetColumnIndex(columnName));
+            return GetIntValue(row.GetCell(GetColumnIndex(columnName)));
+        }
+        public static int? GetIntValue(ICell cell) {
             if (cell == null) return null;
-            return (int)Math.Round(row.GetCell(GetColumnIndex(columnName)).NumericCellValue);
+            return (int)Math.Round(cell.NumericCellValue);
+        }
+
+        public float? GetFloatValue(IRow row, string columnName) {
+            return GetFloatValue(row.GetCell(GetColumnIndex(columnName)));
+        }
+        public static float? GetFloatValue(ICell cell) {
+            if (cell == null) return null;
+            return (float)cell.NumericCellValue;
         }
 
         public bool? GetBoolValue(IRow row, string columnName) {
-            ICell cell = row.GetCell(GetColumnIndex(columnName));
+            return GetBoolValue(row.GetCell(GetColumnIndex(columnName)));
+        }
+        public static bool? GetBoolValue(ICell cell) {
             if (cell == null) return null;
-            return row.GetCell(GetColumnIndex(columnName)).BooleanCellValue;
+            return cell.BooleanCellValue;
         }
 
         public DateTime? GetDateValue(IRow row, string columnName) {
-            return row.GetCell(GetColumnIndex(columnName))?.DateCellValue;
+            return GetDateValue(row.GetCell(GetColumnIndex(columnName)));
+        }
+        public static DateTime? GetDateValue(ICell cell) {
+            return cell?.DateCellValue;
         }
     }
 }

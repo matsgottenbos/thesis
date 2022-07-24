@@ -22,7 +22,7 @@ namespace Thesis {
 
         public override SaTotalInfo GetCostDiff() {
             #if DEBUG
-            if (AppConfig.DebugCheckOperations) {
+            if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperation().Description = string.Format("Re-assign activity {0} from driver {1} to driver {2}", activity.Index, unassignedDriver.GetId(), assignedDriver.GetId());
             }
             #endif

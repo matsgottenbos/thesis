@@ -13,10 +13,10 @@ namespace Thesis {
         /* Determine specific travel info */
 
         public static void DetermineAndExportAllTravelInfos() {
-            XSSFWorkbook addressesBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "stationAddresses.xlsx"));
+            XSSFWorkbook addressesBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "stationAddresses.xlsx"));
             ExcelSheet stationAddressesSheet = new ExcelSheet("Station addresses", addressesBook);
 
-            XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "settings.xlsx"));
+            XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "settings.xlsx"));
             ExcelSheet internalAddressesSheet = new ExcelSheet("Internal drivers", settingsBook);
             ExcelSheet externalAddressesSheet = new ExcelSheet("External driver companies", settingsBook);
 
@@ -35,7 +35,7 @@ namespace Thesis {
                 stationLocations.Add(new LocationInfo(name, address, stationLocations.Count));
             });
 
-            string csvFilePath = Path.Combine(AppConfig.IntermediateFolder, "stationTravelInfo.csv");
+            string csvFilePath = Path.Combine(DevConfig.IntermediateFolder, "stationTravelInfo.csv");
             bool isSuccess = DetermineAndExportFullyConnectedTravelInfo(stationLocations, "station", csvFilePath);
             return (stationLocations, isSuccess);
         }
@@ -48,7 +48,7 @@ namespace Thesis {
                 internalLocations.Add(new LocationInfo(name, address, internalLocations.Count));
             });
 
-            string csvFilePath = Path.Combine(AppConfig.IntermediateFolder, "internalTravelInfo.csv");
+            string csvFilePath = Path.Combine(DevConfig.IntermediateFolder, "internalTravelInfo.csv");
             return DetermineAndExportBipartiteTravelInfo(internalLocations, stationLocations, "internal", csvFilePath);
         }
 
@@ -60,7 +60,7 @@ namespace Thesis {
                 externalLocations.Add(new LocationInfo(name, address, externalLocations.Count));
             });
 
-            string csvFilePath = Path.Combine(AppConfig.IntermediateFolder, "externalTravelInfo.csv");
+            string csvFilePath = Path.Combine(DevConfig.IntermediateFolder, "externalTravelInfo.csv");
             return DetermineAndExportBipartiteTravelInfo(externalLocations, stationLocations, "external", csvFilePath);
         }
 

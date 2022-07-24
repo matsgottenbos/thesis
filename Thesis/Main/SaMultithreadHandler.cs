@@ -25,7 +25,7 @@ namespace Thesis {
 
             paretoFrontsOverTime = new List<List<SaInfo>>();
 
-            int actualThreadCount = AppConfig.EnableMultithreading ? AppConfig.ThreadCount : 1;
+            int actualThreadCount = DevConfig.EnableMultithreading ? AppConfig.ThreadCount : 1;
             saThreads = new SimulatedAnnealing[actualThreadCount];
             threadCancellationTokens = new CancellationTokenSource[actualThreadCount];
         }
@@ -36,7 +36,7 @@ namespace Thesis {
             // Start stopwatch
             stopwatch.Start();
 
-            if (AppConfig.EnableMultithreading) {
+            if (DevConfig.EnableMultithreading) {
                 ManualResetEvent[] handles = new ManualResetEvent[AppConfig.ThreadCount];
                 for (int threadIndex = 0; threadIndex < AppConfig.ThreadCount; threadIndex++) {
                     ulong seed = appRand.NextUInt64();
@@ -75,8 +75,8 @@ namespace Thesis {
         }
 
         void HandleThreadCallback() {
-            totalIterationCount += SaConfig.SaThreadCallbackFrequency;
-            totalIterationCountSinceLastLog += SaConfig.SaThreadCallbackFrequency;
+            totalIterationCount += SaConfig.ThreadCallbackFrequency;
+            totalIterationCountSinceLastLog += SaConfig.ThreadCallbackFrequency;
 
             if (totalIterationCount >= targetIterationCount) {
                 for (int i = 0; i < threadCancellationTokens.Length; i++) {
@@ -85,7 +85,7 @@ namespace Thesis {
                 return;
             }
 
-            if (totalIterationCountSinceLastLog >= SaConfig.SaLogFrequency) {
+            if (totalIterationCountSinceLastLog >= SaConfig.LogFrequency) {
                 totalIterationCountSinceLastLog = 0;
                 PerformLog();
             }
@@ -118,7 +118,7 @@ namespace Thesis {
 
             prevParetoFrontStr = paretoFrontStr;
 
-            if (AppConfig.DebugSaLogThreads) {
+            if (DevConfig.DebugSaLogThreads) {
                 for (int threadIndex = 0; threadIndex < saThreads.Length; threadIndex++) {
                     PeformSaDebugLog(saThreads[threadIndex], threadIndex);
                 }
@@ -128,7 +128,7 @@ namespace Thesis {
         List<SaInfo> GetCombinedParetoFront() {
             List<SaInfo> paretoFront = new List<SaInfo>();
             SaInfo bestOfPrevLevel = null;
-            for (int satisfactionLevel = MiscConfig.PercentageFactor - 1; satisfactionLevel >= 0; satisfactionLevel--) {
+            for (int satisfactionLevel = DevConfig.PercentageFactor - 1; satisfactionLevel >= 0; satisfactionLevel--) {
                 // Get best info of all threads for this satisfaction level
                 SaInfo bestInfoOfLevel = saThreads[0].BestInfoBySatisfaction[satisfactionLevel];
                 for (int threadIndex = 1; threadIndex < saThreads.Length; threadIndex++) {
@@ -154,7 +154,7 @@ namespace Thesis {
         }
 
         static string ParetoPointToString(SaInfo paretoPointInfo) {
-            return string.Format("{0}% {1}", ParseHelper.ToString(paretoPointInfo.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor, "0"), ParseHelper.LargeNumToString(paretoPointInfo.TotalInfo.Stats.Cost, "0"));
+            return string.Format("{0}% {1}", ParseHelper.ToString(paretoPointInfo.TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor, "0"), ParseHelper.LargeNumToString(paretoPointInfo.TotalInfo.Stats.Cost, "0"));
         }
 
         static string FinalParetoFrontToString(List<SaInfo> paretoFrontInfos) {
@@ -162,7 +162,7 @@ namespace Thesis {
         }
 
         static string FinalParetoPointToString(SaInfo paretoPointInfo) {
-            return string.Format("{0}% {1}", ParseHelper.ToString(paretoPointInfo.TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor, "0.00"), ParseHelper.ToString(paretoPointInfo.TotalInfo.Stats.Cost, "0"));
+            return string.Format("{0}% {1}", ParseHelper.ToString(paretoPointInfo.TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor, "0.00"), ParseHelper.ToString(paretoPointInfo.TotalInfo.Stats.Cost, "0"));
         }
 
         static void WriteOutputToFiles(List<SaInfo> paretoFront, List<List<SaInfo>> paretoFrontsOverTime, long targetIterationCount, Stopwatch stopwatch) {
@@ -173,7 +173,7 @@ namespace Thesis {
 
             // Create output subfolder
             string dateStr = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
-            string outputSubfolderPath = Path.Combine(AppConfig.OutputFolder, dateStr);
+            string outputSubfolderPath = Path.Combine(DevConfig.OutputFolder, dateStr);
             Directory.CreateDirectory(outputSubfolderPath);
 
             // Log summary text file to file
@@ -206,7 +206,7 @@ namespace Thesis {
 
                 // Log progression of max-satisfaction solutions
                 streamWriter.WriteLine("\nMax satisfaction progression:");
-                streamWriter.WriteLine(string.Join(", ", paretoFrontsOverTime.Select(paretoFront => ParseHelper.ToString(paretoFront.Count > 0 ? paretoFront[^1].TotalInfo.Stats.SatisfactionScore.Value * MiscConfig.PercentageFactor : -1, "0.00"))));
+                streamWriter.WriteLine(string.Join(", ", paretoFrontsOverTime.Select(paretoFront => ParseHelper.ToString(paretoFront.Count > 0 ? paretoFront[^1].TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor : -1, "0.00"))));
             }
         }
 
@@ -229,14 +229,14 @@ namespace Thesis {
                 // Log basic info
                 Console.WriteLine("{0}:    # {1,6}    Last.impr: {2,4}    Cycle: {3,2}    Cost: {4,6} ({5,2}%)    Raw: {6,6}    Temp: {7,5}    Sat.f: {8,4}   Penalty: {9,-33}    {10}{11}", threadIndex, ParseHelper.LargeNumToString(saThread.Info.IterationNum, "0.#"), lastImprovementIterationStr, saThread.Info.CycleNum, ParseHelper.LargeNumToString(logCost, "0.0"), ParseHelper.ToString(saThread.Info.TotalInfo.Stats.SatisfactionScore.Value * 100, "0"), ParseHelper.LargeNumToString(saThread.Info.TotalInfo.Stats.RawCost, "0.0"), ParseHelper.LargeNumToString(saThread.Info.Temperature, "0.0"), ParseHelper.ToString(saThread.Info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(saThread.Info.TotalInfo), paretoFrontStr, hasImprovementStr);
 
-                if (AppConfig.DebugSaLogAdditionalInfo) {
+                if (DevConfig.DebugSaLogAdditionalInfo) {
                     //Console.WriteLine("Worked times: {0}", ParseHelper.ToString(saThread.Info.DriverInfos.Select(driverInfo => driverInfo.WorkedTime).ToArray()));
                     //Console.WriteLine("Contract time factors: {0}", ParseHelper.ToString(saThread.Info.Instance.InternalDrivers.Select(driver => (double)saThread.Info.DriverInfos[driver.AllDriversIndex].WorkedTime / driver.ContractTime).ToArray()));
                     Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(saThread.Info.DriverInfos.Select(driverInfo => driverInfo.ShiftCount).ToArray()));
                     Console.WriteLine("External type shift counts: {0}", ParseHelper.ToString(saThread.Info.ExternalDriverTypeInfos.Select(externalDriverTypeInfo => externalDriverTypeInfo.ExternalShiftCount).ToArray()));
                 }
 
-                if (AppConfig.DebugSaLogCurrentSolution) {
+                if (DevConfig.DebugSaLogCurrentSolution) {
                     Console.WriteLine("Current solution: {0}", ParseHelper.AssignmentToString(saThread.Info));
                 }
 

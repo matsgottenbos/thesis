@@ -24,18 +24,18 @@ namespace Thesis {
         public readonly Driver[] AllDrivers, DataAssignment;
 
         public Instance(RawActivity[] rawActivities) {
-            XSSFWorkbook stationAddressesBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "stationAddresses.xlsx"));
-            XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(AppConfig.InputFolder, "settings.xlsx"));
+            XSSFWorkbook stationAddressesBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "stationAddresses.xlsx"));
+            XSSFWorkbook driversBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "drivers.xlsx"));
 
             (StationNames, plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances) = DataMiscProcessor.GetStationNamesAndExpectedCarTravelInfo();
             (string[] borderStationNames, string[] borderRegionStationNames) = DataMiscProcessor.GetBorderAndBorderRegionStationNames(stationAddressesBook);
             (Activities, activitySuccession, activitySuccessionRobustness, activitiesAreSameShift, timeframeLength, UniqueSharedRouteCount) = DataActivityProcessor.ProcessRawActivities(stationAddressesBook, rawActivities, StationNames, borderStationNames, borderRegionStationNames, expectedCarTravelTimes);
             SalarySettingsByDriverType = DataSalaryProcessor.GetSalarySettingsByDriverType(timeframeLength);
             mainShiftInfos = DataShiftProcessor.GetMainShiftInfos(SalarySettingsByDriverType, timeframeLength);
-            (InternalDrivers, RequiredInternalDriverCount) = DataDriverProcessor.CreateInternalDrivers(settingsBook, Activities);
+            (InternalDrivers, RequiredInternalDriverCount) = DataDriverProcessor.CreateInternalDrivers(driversBook, Activities);
             Dictionary<(string, bool), ExternalDriver[]> externalDriversByDataTypeDict;
-            (ExternalDriverTypes, ExternalDriversByType, externalDriversByDataTypeDict) = DataDriverProcessor.CreateExternalDrivers(settingsBook, Activities, InternalDrivers.Length);
-            DataAssignment = DataMiscProcessor.GetDataAssignment(settingsBook, Activities, InternalDrivers, externalDriversByDataTypeDict);
+            (ExternalDriverTypes, ExternalDriversByType, externalDriversByDataTypeDict) = DataDriverProcessor.CreateExternalDrivers(driversBook, Activities, InternalDrivers.Length);
+            DataAssignment = DataMiscProcessor.GetDataAssignment(driversBook, Activities, InternalDrivers, externalDriversByDataTypeDict);
 
             // Create all drivers array
             List<Driver> allDriversList = new List<Driver>();
@@ -55,8 +55,8 @@ namespace Thesis {
         /* Helper methods */
 
         public MainShiftInfo MainShiftInfo(int mainShiftStartTime, int realMainShiftEndTime) {
-            int roundedStartTime = (int)Math.Round((float)mainShiftStartTime / MiscConfig.RoundedTimeStepSize);
-            int roundedEndTime = (int)Math.Round((float)realMainShiftEndTime / MiscConfig.RoundedTimeStepSize);
+            int roundedStartTime = (int)Math.Round((float)mainShiftStartTime / DevConfig.RoundedTimeStepSize);
+            int roundedEndTime = (int)Math.Round((float)realMainShiftEndTime / DevConfig.RoundedTimeStepSize);
             return mainShiftInfos[roundedStartTime, roundedEndTime];
         }
 

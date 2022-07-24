@@ -56,9 +56,9 @@ namespace Thesis {
                 string originalRequestFilePath;
                 if (req.Url.AbsolutePath.StartsWith("/output/")) {
                     // Create symlink to output folder
-                    originalRequestFilePath = Path.Combine(AppConfig.OutputFolder, "." + req.Url.AbsolutePath[7..]);
+                    originalRequestFilePath = Path.Combine(DevConfig.OutputFolder, "." + req.Url.AbsolutePath[7..]);
                 } else {
-                    originalRequestFilePath = Path.Combine(AppConfig.UiFolder, "." + req.Url.AbsolutePath);
+                    originalRequestFilePath = Path.Combine(DevConfig.UiFolder, "." + req.Url.AbsolutePath);
                 }
                 string requestFilePath = originalRequestFilePath;
 
@@ -78,7 +78,7 @@ namespace Thesis {
                 if (File.Exists(requestFilePath)) {
                     statusCode = 200;
                 } else {
-                    requestFilePath = Path.Combine(AppConfig.UiFolder, "./404.html");
+                    requestFilePath = Path.Combine(DevConfig.UiFolder, "./404.html");
                     statusCode = 404;
                 }
 
@@ -94,7 +94,7 @@ namespace Thesis {
                 }
                 if (dataStr == null) {
                     // File remains busy, use 404
-                    requestFilePath = Path.Combine(AppConfig.UiFolder, "./404.html");
+                    requestFilePath = Path.Combine(DevConfig.UiFolder, "./404.html");
                     statusCode = 404;
                     dataStr = File.ReadAllText(requestFilePath);
                 }

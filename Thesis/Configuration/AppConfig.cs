@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,44 +8,43 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Thesis {
-    enum DataSource {
-        Excel,
-        Odata,
-    }
-
     static class AppConfig {
-        // Data source
-        public const DataSource SelectedDataSource = DataSource.Excel;
-        //public const DataSource SelectedDataSource = DataSource.Odata;
+        /// <summary>Planning window start date.</summary>
+        public static DateTime PlanningStartDate;
+        /// <summary>Planning window end date.</summary>
+        public static DateTime PlanningNextDate;
+        /// <summary>Number of iterations to run the simulated annealing algorithm for.</summary>
+        public static long SaIterationCount;
+        /// <summary>Filter activities on these values of RailwayUntertaking.</summary>
+        public static string[] IncludedRailwayUndertakings;
+        /// <summary>Filter activities on these values of ActivityDescriptionEN.</summary>
+        public static string[] IncludedActivityDescriptions;
+        /// <summary>Driver assignments in past data are considered internal for these company names.</summary>
+        public static string[] InternalDriverCompanyNames;
+        /// <summary>API key to use for requests to the Google Maps API.</summary>
+        public static string GoogleMapsApiKey;
+        /// <summary>Maximum number of destinations allowed by the Google Maps API in a single request.</summary>
+        public static int GoogleMapsMaxDestinationCountPerRequest;
+        /// <summary>Number of processor threads to use for the simulated annealing algorithm.</summary>
+        public static int ThreadCount;
+        /// <summary>Local URL to run the UI HTTP server on.</summary>
+        public static string UiHostUrl;
 
-        // UI server
-        public const string UiHostUrl = "http://localhost:8000/";
+        public static void Init(XSSFWorkbook settingsBook) {
+            ExcelSheet appSettingsSheet = new ExcelSheet("App", settingsBook);
+            Dictionary<string, ICell> appSettingsCellDict = ConfigHandler.GetSettingsValueCellsAsDict(appSettingsSheet);
 
-        // Multithreading
-        public const bool EnableMultithreading = true;
-        public const int ThreadCount = 8;
-
-        // Debug
-        public const bool DebugUseSeededSa = false;
-        public const bool DebugCheckOperations = false;
-        public const bool DebugSaLogThreads = true;
-        public const bool DebugSaLogCurrentSolution = false;
-        public const bool DebugSaLogAdditionalInfo = false;
-        public const bool DebugLogDataRepairs = false;
-        public const bool DebugRunInspector = false;
-        public const bool DebugRunJsonExporter = false;
-        public const bool DebugRunDelaysExporter = false;
-        public const bool DebugRunTravelTimeProcesssor = false;
-        public const bool DebugRunPastDataExporter = false;
-        public const bool DebugRunUi = false;
-        public const int DebugRunSaCount = 1;
-
-        // File structure
-        public static readonly string ProjectFolder = (Environment.Is64BitProcess ? Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName : Directory.GetParent(Environment.CurrentDirectory).Parent.FullName) + @"\"; // Path to the project root folder
-        public static readonly string SolutionFolder = ProjectFolder + @"\..\"; // Path to the solution root folder
-        public static readonly string InputFolder = Path.Combine(SolutionFolder, @"input\");
-        public static readonly string IntermediateFolder = Path.Combine(SolutionFolder, @"intermediate\");
-        public static readonly string OutputFolder = Path.Combine(SolutionFolder, @"output\");
-        public static readonly string UiFolder = Path.Combine(SolutionFolder, @"ui\");
+            PlanningStartDate = ExcelSheet.GetDateValue(appSettingsCellDict["Planning window start date"]).Value;
+            int planningWindowNumberOfDays = ExcelSheet.GetIntValue(appSettingsCellDict["Planning window number of days"]).Value;
+            PlanningNextDate = PlanningStartDate.AddDays(planningWindowNumberOfDays);
+            SaIterationCount = ParseHelper.ParseLargeNumString(ExcelSheet.GetStringValue(appSettingsCellDict["Algorithm iteration count"]));
+            IncludedRailwayUndertakings = ParseHelper.SplitAndCleanDataStringList(ExcelSheet.GetStringValue(appSettingsCellDict["Included railway undertakings"]));
+            IncludedActivityDescriptions = ParseHelper.SplitAndCleanDataStringList(ExcelSheet.GetStringValue(appSettingsCellDict["Included activity descriptions"]));
+            InternalDriverCompanyNames = ParseHelper.SplitAndCleanDataStringList(ExcelSheet.GetStringValue(appSettingsCellDict["Internal driver company names"]));
+            GoogleMapsApiKey = ExcelSheet.GetStringValue(appSettingsCellDict["Google Maps API key"]);
+            GoogleMapsMaxDestinationCountPerRequest = ExcelSheet.GetIntValue(appSettingsCellDict["Google Maps request max destinations"]).Value;
+            ThreadCount = ExcelSheet.GetIntValue(appSettingsCellDict["Number of threads"]).Value;
+            UiHostUrl = ExcelSheet.GetStringValue(appSettingsCellDict["UI host URL"]);
+        }
     }
 }

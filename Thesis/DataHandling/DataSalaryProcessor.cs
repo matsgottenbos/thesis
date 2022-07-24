@@ -23,13 +23,13 @@ namespace Thesis {
 
         static SalaryRateBlock[] ProcessSalaryRates(SalarySettings salarySettings, int timeframeLength) {
             // Repeat salary rate to cover entire week
-            int timeframeDayCount = (int)Math.Floor((float)timeframeLength / MiscConfig.DayLength) + 1;
+            int timeframeDayCount = (int)Math.Floor((float)timeframeLength / DevConfig.DayLength) + 1;
             List<SalaryRateBlock> processedSalaryRates = new List<SalaryRateBlock>();
             int weekPartIndex = 0;
             bool isCurrentlyWeekend = RulesConfig.WeekPartsForWeekend[weekPartIndex].IsSelected;
             for (int dayIndex = 0; dayIndex < timeframeDayCount; dayIndex++) {
                 for (int salaryRateIndex = 0; salaryRateIndex < salarySettings.WeekdaySalaryRates.Length; salaryRateIndex++) {
-                    int rateStartTime = dayIndex * MiscConfig.DayLength + salarySettings.WeekdaySalaryRates[salaryRateIndex].StartTime;
+                    int rateStartTime = dayIndex * DevConfig.DayLength + salarySettings.WeekdaySalaryRates[salaryRateIndex].StartTime;
 
                     while (weekPartIndex + 1 < RulesConfig.WeekPartsForWeekend.Length && RulesConfig.WeekPartsForWeekend[weekPartIndex + 1].StartTime <= rateStartTime) {
                         weekPartIndex++;

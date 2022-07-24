@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Thesis {
     static class DataMiscProcessor {
         public static (string[], int[,], int[,], int[,]) GetStationNamesAndExpectedCarTravelInfo() {
-            (int[,] plannedCarTravelTimes, int[,] carTravelDistances, string[] stationNames) = TravelInfoImporter.ImportFullyConnectedTravelInfo(Path.Combine(AppConfig.IntermediateFolder, "stationTravelInfo.csv"));
+            (int[,] plannedCarTravelTimes, int[,] carTravelDistances, string[] stationNames) = TravelInfoImporter.ImportFullyConnectedTravelInfo(Path.Combine(DevConfig.IntermediateFolder, "stationTravelInfo.csv"));
 
             int stationCount = plannedCarTravelTimes.GetLength(0);
             int[,] expectedCarTravelTimes = new int[stationCount, stationCount];
@@ -49,8 +49,8 @@ namespace Thesis {
             return (borderStationNamesList.ToArray(), borderRegionStationNamesList.ToArray());
         }
 
-        public static Driver[] GetDataAssignment(XSSFWorkbook settingsBook, Activity[] activities, InternalDriver[] internalDrivers, Dictionary<(string, bool), ExternalDriver[]> externalDriversByDataTypeDict) {
-            ExcelSheet externalDriversSettingsSheet = new ExcelSheet("External drivers", settingsBook);
+        public static Driver[] GetDataAssignment(XSSFWorkbook driversBook, Activity[] activities, InternalDriver[] internalDrivers, Dictionary<(string, bool), ExternalDriver[]> externalDriversByDataTypeDict) {
+            ExcelSheet externalDriversSettingsSheet = new ExcelSheet("External drivers", driversBook);
             List<(string, string)> externalInternationalDriverNames = new List<(string, string)>();
             externalDriversSettingsSheet.ForEachRow(externalDriverSettingsRow => {
                 bool? isInternationalDriver = externalDriversSettingsSheet.GetBoolValue(externalDriverSettingsRow, "Is international?");
@@ -70,7 +70,7 @@ namespace Thesis {
                     continue;
                 }
 
-                if (DataConfig.ExcelInternalDriverCompanyNames.Contains(activity.DataAssignedCompanyName)) {
+                if (AppConfig.InternalDriverCompanyNames.Contains(activity.DataAssignedCompanyName)) {
                     // Assigned to internal driver
                     dataAssignment[activityIndex] = Array.Find(internalDrivers, internalDriver => internalDriver.GetInternalDriverName(true) == activity.DataAssignedEmployeeName);
                 } else {

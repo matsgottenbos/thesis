@@ -110,8 +110,40 @@ namespace Thesis {
             return rawString.Trim();
         }
 
+        public static string[] SplitAndCleanDataStringList(string dataStringList) {
+            string[] splitDataStrings = dataStringList.Split(';');
+            for (int i = 0; i < splitDataStrings.Length; i++) {
+                splitDataStrings[i] = CleanDataString(splitDataStrings[i]);
+            }
+            return splitDataStrings;
+        }
+
         public static bool DataStringInList(string rawString, string[] list) {
             return list.Contains(CleanDataString(rawString));
+        }
+
+        public static long ParseLargeNumString(string largeNumStr) {
+            Match plainMatch = Regex.Match(largeNumStr, @"^([\d\.]+)$");
+            if (plainMatch.Success) {
+                return (long)float.Parse(plainMatch.Groups[1].Value);
+            }
+
+            Match thousandMatch = Regex.Match(largeNumStr, @"^(\d+)k$");
+            if (thousandMatch.Success) {
+                return (long)(float.Parse(thousandMatch.Groups[1].Value) * 1000);
+            }
+
+            Match millionMatch = Regex.Match(largeNumStr, @"^(\d+)M$");
+            if (millionMatch.Success) {
+                return (long)(float.Parse(millionMatch.Groups[1].Value) * 1000000);
+            }
+
+            Match billionMatch = Regex.Match(largeNumStr, @"^(\d+)B$");
+            if (billionMatch.Success) {
+                return (long)(float.Parse(billionMatch.Groups[1].Value) * 1000000000);
+            }
+
+            throw new Exception(string.Format("Could not parse large number `{0}`", largeNumStr));
         }
 
         /* Parsing assignment string */
@@ -168,12 +200,12 @@ namespace Thesis {
         }
 
         public static void LogDebugValue(double value, string name, bool isDiff, bool shouldLogZeros) {
-            bool isZero = Math.Abs(value) < MiscConfig.FloatingPointMargin;
+            bool isZero = Math.Abs(value) < DevConfig.FloatingPointMargin;
             LogDebugValue(value.ToString(), name, isDiff, isZero, shouldLogZeros);
         }
         public static void LogDebugValue(double? value, string name, bool isDiff, bool shouldLogZeros) {
             string valueStr = value.HasValue ? ToString(value.Value) : "-";
-            bool isZero = !value.HasValue || Math.Abs(value.Value) < MiscConfig.FloatingPointMargin;
+            bool isZero = !value.HasValue || Math.Abs(value.Value) < DevConfig.FloatingPointMargin;
             LogDebugValue(valueStr, name, isDiff, isZero, shouldLogZeros);
         }
     }

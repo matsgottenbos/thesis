@@ -24,7 +24,7 @@ namespace Thesis {
 
         public static string CreateOutputFolder(string debugName) {
             string dateStr = string.Format("{0}-{1}", DateTime.Now.ToString("yyyy-MM-dd-HH-mm"), debugName);
-            string outputSubfolderPath = Path.Combine(AppConfig.OutputFolder, dateStr);
+            string outputSubfolderPath = Path.Combine(DevConfig.OutputFolder, dateStr);
             Directory.CreateDirectory(outputSubfolderPath);
             return outputSubfolderPath;
         }

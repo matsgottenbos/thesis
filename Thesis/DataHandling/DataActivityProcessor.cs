@@ -65,7 +65,7 @@ namespace Thesis {
         }
 
         static RawActivity[] RemoveDuplicateRawActivities(RawActivity[] rawActivities) {
-            if (AppConfig.DebugLogDataRepairs) Console.WriteLine();
+            if (DevConfig.DebugLogDataRepairs) Console.WriteLine();
             List<RawActivity> rawActivitiesWithoutDuplicatesList = new List<RawActivity>();
             int duplicateCount = 0;
             for (int activityIndex = 0; activityIndex < rawActivities.Length; activityIndex++) {
@@ -76,7 +76,7 @@ namespace Thesis {
                     rawActivitiesWithoutDuplicatesList.Add(rawActivity);
                 } else {
                     duplicateCount++;
-                    if (AppConfig.DebugLogDataRepairs) DebugLogRawActivity("Duplicate", rawActivity);
+                    if (DevConfig.DebugLogDataRepairs) DebugLogRawActivity("Duplicate", rawActivity);
                 }
             }
 
@@ -87,7 +87,7 @@ namespace Thesis {
 
         /** Combine activities start/ending at border, because those locations are not actual stations */
         static RawActivity[] CombineBorderRawActivities(RawActivity[] rawActivities, string[] borderStationNames, string[] borderRegionStationNames) {
-            if (AppConfig.DebugLogDataRepairs) Console.WriteLine();
+            if (DevConfig.DebugLogDataRepairs) Console.WriteLine();
             List<RawActivity> combinedRawActivitiesList = new List<RawActivity>();
             List<RawActivity> unmatchedRawActivitesList = new List<RawActivity>();
             int combinedCountOnStations = 0;
@@ -132,7 +132,7 @@ namespace Thesis {
                         else combinedRawActivitiesList.Add(combinedActivity);
                         combinedCountOnStations++;
 
-                        if (AppConfig.DebugLogDataRepairs) {
+                        if (DevConfig.DebugLogDataRepairs) {
                             DebugLogRawActivity("Combined part 1", rawActivityToCombine);
                             DebugLogRawActivity("Combined part 2", rawActivity);
                         }
@@ -145,7 +145,7 @@ namespace Thesis {
             }
 
             Console.WriteLine("Combined {0} pairs of activities starting/ending at borders", combinedCountOnStations);
-            if (AppConfig.DebugLogDataRepairs) {
+            if (DevConfig.DebugLogDataRepairs) {
                 Console.WriteLine();
                 DebugLogRawActivities("Not combined", unmatchedRawActivitesList);
             }
