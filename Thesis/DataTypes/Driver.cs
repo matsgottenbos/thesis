@@ -9,16 +9,17 @@ namespace Thesis {
         public readonly bool IsInternational;
         public readonly bool IsHotelAllowed;
         public readonly int[] homeTravelTimes, homeTravelDistances;
-        readonly bool[] activityQualifications;
+        readonly bool[] activityAvailability, activityQualifications;
         protected Instance instance;
         public readonly SalarySettings SalarySettings;
 
-        public Driver(int allDriversIndex, bool isInternational, bool isHotelAllowed, int[] homeTravelTimes, int[] homeTravelDistances, bool[] activityQualifications, SalarySettings salarySettings) {
+        public Driver(int allDriversIndex, bool isInternational, bool isHotelAllowed, int[] homeTravelTimes, int[] homeTravelDistances, bool[] activityAvailability, bool[] activityQualifications, SalarySettings salarySettings) {
             AllDriversIndex = allDriversIndex;
             IsInternational = isInternational;
             IsHotelAllowed = isHotelAllowed;
             this.homeTravelTimes = homeTravelTimes;
             this.homeTravelDistances = homeTravelDistances;
+            this.activityAvailability = activityAvailability;
             this.activityQualifications = activityQualifications;
             SalarySettings = salarySettings;
         }
@@ -35,6 +36,10 @@ namespace Thesis {
 
         public int HomeTravelDistanceToStart(Activity activity) {
             return homeTravelDistances[activity.StartStationAddressIndex];
+        }
+
+        public bool IsAvailableForActivity(Activity activity) {
+            return activityAvailability[activity.Index];
         }
 
         public bool IsQualifiedForActivity(Activity activity) {

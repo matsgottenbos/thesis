@@ -177,7 +177,6 @@ namespace Thesis {
                 { "Night shifts", driverInfo => driverInfo.NightShiftCountByCompanyRules },
                 { "Weekend shifts", driverInfo => driverInfo.WeekendShiftCountByCompanyRules },
                 { "Hotel stays", driverInfo => driverInfo.HotelCount },
-                { "Time off requests", driverInfo => throw new NotImplementedException() },
                 { "Consecutive free days", driverInfo => SatisfactionCalculator.GetConsecutiveFreeDaysScore(driverInfo) },
                 { "Resting time", driverInfo => driverInfo.IdealRestingTimeScore },
             };

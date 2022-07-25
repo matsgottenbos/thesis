@@ -9,7 +9,7 @@ namespace Thesis {
         public readonly bool IsOptional;
         readonly InternalSalarySettings internalSalarySettings;
 
-        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, bool isInternational, bool isOptional, int[] homeTravelTimes, int[] homeTravelDistances, bool[] activityQualifications, int contractTime, InternalSalarySettings internalSalarySettings, SatisfactionCriterion[] satisfactionCriteria) : base(allDriversIndex, isInternational, true, homeTravelTimes, homeTravelDistances, activityQualifications, internalSalarySettings) {
+        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, bool isInternational, bool isOptional, int[] homeTravelTimes, int[] homeTravelDistances, bool[] activityAvailability, bool[] activityQualifications, int contractTime, InternalSalarySettings internalSalarySettings, SatisfactionCriterion[] satisfactionCriteria) : base(allDriversIndex, isInternational, true, homeTravelTimes, homeTravelDistances, activityAvailability, activityQualifications, internalSalarySettings) {
             InternalIndex = internalIndex;
             InternalDriverName = internalDriverName;
             IsOptional = isOptional;

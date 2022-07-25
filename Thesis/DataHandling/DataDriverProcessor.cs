@@ -10,9 +10,31 @@ namespace Thesis {
     static class DataDriverProcessor {
         public static (InternalDriver[], int) CreateInternalDrivers(XSSFWorkbook driversBook, Activity[] activities) {
             ExcelSheet internalDriverSettingsSheet = new ExcelSheet("Internal drivers", driversBook);
+            ExcelSheet unavailabilitySettingsSheet = new ExcelSheet("Internal driver unavailability", driversBook);
 
             (int[][] internalDriversHomeTravelTimes, int[][] internalDriversHomeTravelDistances, string[] travelInfoInternalDriverNames, _) = TravelInfoImporter.ImportBipartiteTravelInfo(Path.Combine(DevConfig.IntermediateFolder, "internalTravelInfo.csv"));
 
+            // Process driver unavailability
+            Dictionary<string, List<(int, int)>> internalDriversActivityAvailabilities = new Dictionary<string, List<(int, int)>>();
+            unavailabilitySettingsSheet.ForEachRow(unavailabilitySettingsRow => {
+                string driverName = unavailabilitySettingsSheet.GetStringValue(unavailabilitySettingsRow, "Internal driver name");
+                int? startDayIndex = unavailabilitySettingsSheet.GetIntValue(unavailabilitySettingsRow, "Unavailable from | Day") - 1;
+                int? startDayHour = unavailabilitySettingsSheet.GetIntValue(unavailabilitySettingsRow, "Unavailable from | Hour");
+                int? endDayIndex = unavailabilitySettingsSheet.GetIntValue(unavailabilitySettingsRow, "Unavailable until | Day") - 1;
+                int? endDayHour = unavailabilitySettingsSheet.GetIntValue(unavailabilitySettingsRow, "Unavailable until | Hour");
+                if (driverName == null || !startDayIndex.HasValue || !startDayHour.HasValue || !endDayIndex.HasValue || !endDayHour.HasValue) return;
+
+                int startTime = startDayIndex.Value * DevConfig.DayLength + startDayHour.Value * DevConfig.HourLength;
+                int endTime = endDayIndex.Value * DevConfig.DayLength + endDayHour.Value * DevConfig.HourLength;
+
+                if (internalDriversActivityAvailabilities.ContainsKey(driverName)) {
+                    internalDriversActivityAvailabilities[driverName].Add((startTime, endTime));
+                } else {
+                    internalDriversActivityAvailabilities.Add(driverName, new List<(int, int)>() { (startTime, endTime) });
+                }
+            });
+
+            // Process drivers
             List<InternalDriver> internalDrivers = new List<InternalDriver>();
             int requiredInternalDriverCount = 0;
             internalDriverSettingsSheet.ForEachRow(internalDriverSettingsRow => {
@@ -35,6 +57,17 @@ namespace Thesis {
                 int[] homeTravelTimes = internalDriversHomeTravelTimes[travelInfoInternalDriverIndex];
                 int[] homeTravelDistance = internalDriversHomeTravelDistances[travelInfoInternalDriverIndex];
 
+                // Availability
+                List<(int, int)> driverUnavailabilities;
+                if (internalDriversActivityAvailabilities.ContainsKey(driverName)) {
+                    // Driver has availabilities
+                    driverUnavailabilities = internalDriversActivityAvailabilities[driverName];
+                } else {
+                    // Driver has no unavailabilities
+                    driverUnavailabilities = new List<(int, int)>();
+                }
+                bool[] activityAvailabilities = DetermineActivityAvailabilityFromUnavailabilities(driverUnavailabilities, activities);
+
                 // Qualifications
                 string[] countryQualifications = countryQualificationsStr.Split(", ");
                 bool[] activityQualifications = DetermineActivityQualificationsFromCountryQualifications(countryQualifications, activities);
@@ -44,7 +77,6 @@ namespace Thesis {
                 InternalSalarySettings salaryInfo = isInternational ? SalaryConfig.InternalInternationalSalaryInfo : SalaryConfig.InternalNationalSalaryInfo;
 
                 // Satisfaction criteria names
-                //string[] singleModeCriterionNames = new string[] { "Travel time", "Contract time accuracy", "Expected delays", "Time off requests", "Consecutive free days", "Resting time" };
                 string[] singleModeCriterionNames = new string[] { "Travel time", "Contract time accuracy", "Expected delays", "Consecutive free days", "Resting time" };
                 string[] multipleModeCriterionNames = new string[] { "Route variation", "Shift lengths", "Night shifts", "Weekend shifts", "Hotel stays" };
                 string[] allCriterionNames = singleModeCriterionNames.Concat(multipleModeCriterionNames).ToArray();
@@ -86,7 +118,7 @@ namespace Thesis {
                 }
 
                 int internalDriverIndex = internalDrivers.Count;
-                internalDrivers.Add(new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, isInternational, isOptional.Value, homeTravelTimes, homeTravelDistance, activityQualifications, contractTime.Value, salaryInfo, satisfactionCriteria));
+                internalDrivers.Add(new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, isInternational, isOptional.Value, homeTravelTimes, homeTravelDistance, activityAvailabilities, activityQualifications, contractTime.Value, salaryInfo, satisfactionCriteria));
             });
             return (internalDrivers.ToArray(), requiredInternalDriverCount);
         }
@@ -153,7 +185,10 @@ namespace Thesis {
                 int[] homeTravelTimes = externalDriversHomeTravelTimes[travelInfoExternalCompanyIndex];
                 int[] homeTravelDistances = externalDriversHomeTravelDistances[travelInfoExternalCompanyIndex];
 
-                // Determine track proficiencies
+                // External drivers are always available
+                bool[] activityAvailabilities = DetermineActivityAvailabilityFromUnavailabilities(new List<(int, int)>(), activities);
+
+                // Determine qualifications
                 bool[] activityQualifications = DetermineActivityQualificationsFromCountryQualifications(countryQualifications, activities);
 
                 // Add external driver type
@@ -162,7 +197,7 @@ namespace Thesis {
                 // Add drivers of this type
                 ExternalDriver[] currentTypeNationalDrivers = new ExternalDriver[maxShiftCount.Value];
                 for (int indexInType = 0; indexInType < maxShiftCount; indexInType++) {
-                    ExternalDriver newExternalDriver = new ExternalDriver(allDriverIndex, externalDriverTypeIndex, indexInType, companyName, externalDriverTypeName, isInternational, isHotelAllowed.Value, homeTravelTimes, activityQualifications, homeTravelDistances, SalaryConfig.ExternalNationalSalaryInfo);
+                    ExternalDriver newExternalDriver = new ExternalDriver(allDriverIndex, externalDriverTypeIndex, indexInType, companyName, externalDriverTypeName, isInternational, isHotelAllowed.Value, homeTravelTimes, activityAvailabilities, activityQualifications, homeTravelDistances, SalaryConfig.ExternalNationalSalaryInfo);
                     currentTypeNationalDrivers[indexInType] = newExternalDriver;
                     allDriverIndex++;
                 }
@@ -174,6 +209,15 @@ namespace Thesis {
             });
 
             return (externalDriverTypes.ToArray(), externalDriversByType.ToArray(), externalDriversByTypeDict);
+        }
+
+        static bool[] DetermineActivityAvailabilityFromUnavailabilities(List<(int, int)> driverUnavailabilities, Activity[] activities) {
+            bool[] activityAvailabilities = new bool[activities.Length];
+            for (int activityIndex = 0; activityIndex < activities.Length; activityIndex++) {
+                Activity activity = activities[activityIndex];
+                activityAvailabilities[activityIndex] = !driverUnavailabilities.Any(unavailability => activity.StartTime < unavailability.Item2 && activity.EndTime > unavailability.Item1);
+            }
+            return activityAvailabilities;
         }
 
         static bool[] DetermineActivityQualificationsFromCountryQualifications(string[] driverCountryQualifications, Activity[] activities) {
