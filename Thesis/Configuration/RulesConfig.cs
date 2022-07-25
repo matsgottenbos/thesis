@@ -201,8 +201,15 @@ namespace Thesis {
                         satisfactionCriterionInfosList.Add(new MatchContractTimeSatisfactionCriterionInfo(criterionName, string.Format("{0} required", criterionMode), worstThreshold.Value, relevantValueFunc));
                         satisfactionCriterionInfosList.Add(new MaxContractTimeSatisfactionCriterionInfo(criterionName, string.Format("{0} optional", criterionMode), worstThreshold.Value, relevantValueFunc));
                         break;
+                    case "Travel time":
+                    case "Shift lengths":
+                        // Add range criterion with hour to minute conversions
+                        int worstThresholdMinutes = ConfigHandler.HourToMinuteValue(worstThreshold.Value);
+                        int bestThresholdMinutes = ConfigHandler.HourToMinuteValue(bestThreshold.Value);
+                        satisfactionCriterionInfosList.Add(new RangeSatisfactionCriterionInfo(criterionName, criterionMode, worstThresholdMinutes, bestThresholdMinutes, relevantValueFunc));
+                        break;
                     default:
-                        // Add range criterion type for all others
+                        // Add normal range criterion type for all others
                         satisfactionCriterionInfosList.Add(new RangeSatisfactionCriterionInfo(criterionName, criterionMode, worstThreshold.Value, bestThreshold.Value, relevantValueFunc));
                         break;
                 }
