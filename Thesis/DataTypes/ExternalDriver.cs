@@ -6,7 +6,7 @@ namespace Thesis {
         public readonly string CompanyName, ExternalDriverTypeName;
         readonly ExternalSalarySettings externalSalarySettings;
 
-        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, string companyName, string externalDriverTypeName, bool isInternational, bool isHotelAllowed, int[] homeTravelTimes, bool[] activityAvailability, bool[] activityQualifications, int[] homeTravelDistances, ExternalSalarySettings externalSalarySettings) : base(allDriversIndex, isInternational, isHotelAllowed, homeTravelTimes, homeTravelDistances, activityAvailability, activityQualifications, externalSalarySettings) {
+        public ExternalDriver(int allDriversIndex, int externalDriverTypeIndex, int indexInType, string companyName, string externalDriverTypeName, bool isInternational, bool isHotelAllowed, int[] homeTravelTimes, bool[] activityQualifications, int[] homeTravelDistances, ExternalSalarySettings externalSalarySettings) : base(allDriversIndex, isInternational, isHotelAllowed, homeTravelTimes, homeTravelDistances, activityQualifications, externalSalarySettings) {
             ExternalDriverTypeIndex = externalDriverTypeIndex;
             IndexInType = indexInType;
             CompanyName = companyName;
@@ -20,6 +20,10 @@ namespace Thesis {
 
         public string GetExternalDriverName(int actualIndexInType) {
             return string.Format("{0} {1}", ExternalDriverTypeName, actualIndexInType + 1);
+        }
+
+        public override bool IsAvailableDuringRange(int rangeStartTime, int rangeEndTime) {
+            return true;
         }
 
         public override double GetSatisfaction(SaDriverInfo driverInfo) {

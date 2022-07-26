@@ -37,8 +37,8 @@ namespace Thesis {
             InvalidHotelCount++;
         }
 
-        public void AddPotentialAvailabilityViolation(Activity activity, Driver driver) {
-            if (!driver.IsAvailableForActivity(activity)) {
+        public void AddPotentialAvailabilityViolation(int fullShiftStartTime, int fullShiftEndTime, Driver driver) {
+            if (!driver.IsAvailableDuringRange(fullShiftStartTime, fullShiftEndTime)) {
                 AvailabilityViolationCount++;
             }
         }

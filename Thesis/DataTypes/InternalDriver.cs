@@ -7,13 +7,15 @@ namespace Thesis {
         public readonly SatisfactionCriterion[] SatisfactionCriteria;
         readonly string InternalDriverName;
         public readonly bool IsOptional;
+        readonly TimeRange[] unavailabilities;
         readonly InternalSalarySettings internalSalarySettings;
 
-        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, bool isInternational, bool isOptional, int[] homeTravelTimes, int[] homeTravelDistances, bool[] activityAvailability, bool[] activityQualifications, int contractTime, InternalSalarySettings internalSalarySettings, SatisfactionCriterion[] satisfactionCriteria) : base(allDriversIndex, isInternational, true, homeTravelTimes, homeTravelDistances, activityAvailability, activityQualifications, internalSalarySettings) {
+        public InternalDriver(int allDriversIndex, int internalIndex, string internalDriverName, bool isInternational, bool isOptional, int[] homeTravelTimes, int[] homeTravelDistances, TimeRange[] unavailabilities, bool[] activityQualifications, int contractTime, InternalSalarySettings internalSalarySettings, SatisfactionCriterion[] satisfactionCriteria) : base(allDriversIndex, isInternational, true, homeTravelTimes, homeTravelDistances, activityQualifications, internalSalarySettings) {
             InternalIndex = internalIndex;
             InternalDriverName = internalDriverName;
             IsOptional = isOptional;
             ContractTime = contractTime;
+            this.unavailabilities = unavailabilities;
             this.internalSalarySettings = internalSalarySettings;
             SatisfactionCriteria = satisfactionCriteria;
         }
@@ -25,6 +27,16 @@ namespace Thesis {
         public string GetInternalDriverName(bool useRealName) {
             if (useRealName) return InternalDriverName;
             return string.Format("Driver {0}", InternalIndex + 1);
+        }
+
+        public override bool IsAvailableDuringRange(int rangeStartTime, int rangeEndTime) {
+            for (int unavailabilityIndex = 0; unavailabilityIndex < unavailabilities.Length; unavailabilityIndex++) {
+                TimeRange unavailability = unavailabilities[unavailabilityIndex];
+                if (rangeStartTime < unavailability.EndTime && rangeEndTime > unavailability.StartTime) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         int GetPaidTravelTime(int travelTime) {

@@ -45,6 +45,11 @@ namespace Thesis {
             XorShiftRandom appRand = DevConfig.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
             Instance instance = GetInstance(planningStartTime, planningEndTime);
 
+            // Force garbage collection
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            for (int i = 0; i < 5; i++) GC.Collect();
+
             // Special app modes with instance data
             if (DevConfig.DebugRunInspector) {
                 Console.WriteLine("Running debug inspector");
