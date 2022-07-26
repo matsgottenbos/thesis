@@ -322,7 +322,7 @@ namespace Thesis {
                 ["startTime"] = rawActivity.StartTime,
                 ["endTime"] = rawActivity.EndTime,
                 ["dutyName"] = rawActivity.DutyName,
-                ["activityName"] = rawActivity.ActivityName,
+                ["activityName"] = rawActivity.ActivityType,
                 ["projectName"] = rawActivity.ProjectName,
                 ["trainNumber"] = rawActivity.TrainNumber,
                 ["startStationName"] = rawActivity.StartStationName,

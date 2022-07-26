@@ -18,7 +18,7 @@ namespace Thesis {
         /// <summary>Filter activities on these values of RailwayUntertaking.</summary>
         public static string[] IncludedRailwayUndertakings;
         /// <summary>Filter activities on these values of ActivityDescriptionEN.</summary>
-        public static string[] IncludedActivityDescriptions;
+        public static string[] IncludedActivityTypes;
         /// <summary>Driver assignments in past data are considered internal for these company names.</summary>
         public static string[] InternalDriverCompanyNames;
         /// <summary>API key to use for requests to the Google Maps API.</summary>
@@ -39,7 +39,7 @@ namespace Thesis {
             PlanningNextDate = PlanningStartDate.AddDays(planningWindowNumberOfDays);
             SaIterationCount = ParseHelper.ParseLargeNumString(ExcelSheet.GetStringValue(appSettingsCellDict["Algorithm iteration count"]));
             IncludedRailwayUndertakings = ParseHelper.SplitAndCleanDataStringList(ExcelSheet.GetStringValue(appSettingsCellDict["Included railway undertakings"]));
-            IncludedActivityDescriptions = ParseHelper.SplitAndCleanDataStringList(ExcelSheet.GetStringValue(appSettingsCellDict["Included activity descriptions"]));
+            IncludedActivityTypes = ParseHelper.SplitAndCleanDataStringList(ExcelSheet.GetStringValue(appSettingsCellDict["Included activity descriptions"]));
             InternalDriverCompanyNames = ParseHelper.SplitAndCleanDataStringList(ExcelSheet.GetStringValue(appSettingsCellDict["Internal driver company names"]));
             GoogleMapsApiKey = ExcelSheet.GetStringValue(appSettingsCellDict["Google Maps API key"]);
             GoogleMapsMaxDestinationCountPerRequest = ExcelSheet.GetIntValue(appSettingsCellDict["Google Maps request max destinations"]).Value;

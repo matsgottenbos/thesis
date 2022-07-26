@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace Thesis {
     class RawActivity {
         public readonly int StartTime, EndTime;
-        public readonly string DutyName, ActivityName, DutyId, ProjectName, TrainNumber, StartStationName, EndStationName, DataAssignedCompanyName, DataAssignedEmployeeName;
+        public readonly string DutyName, ActivityType, DutyId, ProjectName, TrainNumber, StartStationName, EndStationName, DataAssignedCompanyName, DataAssignedEmployeeName;
         public readonly string[] RequiredCountryQualifications;
         public readonly RawActivity[] OriginalRawActivities;
 
         public RawActivity(string dutyName, string activityName, string dutyId, string projectName, string trainNumber, string startStationName, string endStationName, string[] requiredCountryQualifications, int startTime, int endTime, string dataAssignedCompanyName, string dataAssignedEmployeeName, RawActivity[] originalRawActivities = null) {
             DutyName = dutyName;
-            ActivityName = activityName;
+            ActivityType = activityName;
             DutyId = dutyId;
             ProjectName = projectName;
             TrainNumber = trainNumber;
@@ -33,7 +33,7 @@ namespace Thesis {
                 a.StartTime == b.StartTime &&
                 a.EndTime == b.EndTime &&
                 a.DutyName == b.DutyName &&
-                a.ActivityName == b.ActivityName &&
+                a.ActivityType == b.ActivityType &&
                 a.DutyId == b.DutyId &&
                 a.ProjectName == b.ProjectName &&
                 a.TrainNumber == b.TrainNumber &&

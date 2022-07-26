@@ -27,13 +27,13 @@ namespace Thesis {
 
                 // Get duty, activity and project name name
                 string dutyName = activitiesSheet.GetStringValue(activityRow, "DutyNo");
-                string activityName = activitiesSheet.GetStringValue(activityRow, "ActivityDescriptionEN");
+                string activityType = activitiesSheet.GetStringValue(activityRow, "ActivityDescriptionEN");
                 string dutyId = activitiesSheet.GetStringValue(activityRow, "DutyID");
                 string projectName = activitiesSheet.GetStringValue(activityRow, "Project") ?? "";
                 string trainNumber = activitiesSheet.GetStringValue(activityRow, "TrainNo") ?? "";
 
                 // Filter to configured activity descriptions
-                if (!ParseHelper.DataStringInList(activityName, AppConfig.IncludedActivityDescriptions)) return;
+                if (!ParseHelper.DataStringInList(activityType, AppConfig.IncludedActivityTypes)) return;
 
                 // Get start and end stations
                 string startStationDataName = activitiesSheet.GetStringValue(activityRow, "OriginLocationName");
@@ -70,7 +70,7 @@ namespace Thesis {
 
 
 
-                rawActivities.Add(new RawActivity(dutyName, activityName, dutyId, projectName, trainNumber, startStationDataName, endStationDataName, requiredCountryQualifications, startTime, endTime, assignedCompanyName, assignedEmployeeName));
+                rawActivities.Add(new RawActivity(dutyName, activityType, dutyId, projectName, trainNumber, startStationDataName, endStationDataName, requiredCountryQualifications, startTime, endTime, assignedCompanyName, assignedEmployeeName));
             });
 
             if (rawActivities.Count == 0) {

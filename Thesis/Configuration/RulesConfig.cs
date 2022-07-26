@@ -55,14 +55,18 @@ namespace Thesis {
         public static int IdealRestTime;
 
         /* Robustness */
+        /// <summary>Activities with these values of ActivityDescriptionEN are considered train driving activities, which have a higher probability to be delayed.</summary>
+        public static string[] DrivingActivityTypes;
+        /// <summary>Chance that a train driving activity has a delay.</summary>
+        public static float DrivingActivityDelayProbability;
+        /// <summary>Chance that a non-train-driving activity has a delay.</summary>
+        public static float NonDrivingActivityDelayProbability;
         /// <summary>Added cost for each expected conflict due to delays, if the conflict is between activities of the same duty.</summary>
         public static float RobustnessCostFactorSameDuty;
         /// <summary>Added cost for each expected conflict due to delays, if the conflict is between activities of different duties but of the same project.</summary>
         public static float RobustnessCostFactorSameProject;
         /// <summary>Added cost for each expected conflict due to delays, if the conflict is between activities of different duties and projects.</summary>
         public static float RobustnessCostFactorDifferentProject;
-        /// <summary>Chance that a activity has a delay.</summary>
-        public static float ActivityDelayProbability;
         /// <summary>Activity mean delay by planned duration.</summary>
         public static Func<int, double> ActivityMeanDelayFunc;
         /// <summary>Alpha parameter of activity delay gamma distribution, by mean delay.</summary>
@@ -121,10 +125,12 @@ namespace Thesis {
             IdealRestTime = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(rulesSettingsCellDict["Ideal resting time for satisfaction"]).Value);
 
             /* Robustness */
+            DrivingActivityTypes = ParseHelper.SplitAndCleanDataStringList(ExcelSheet.GetStringValue(rulesSettingsCellDict["Driving activity descriptions"]));
+            DrivingActivityDelayProbability = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Driving activity delay probability"]).Value;
+            NonDrivingActivityDelayProbability = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Non-driving activity delay probability"]).Value;
             RobustnessCostFactorSameDuty = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Same duty expected conflict cost"]).Value;
             RobustnessCostFactorSameProject = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Same project expected conflict cost"]).Value;
             RobustnessCostFactorDifferentProject = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Different project expected conflict cost"]).Value;
-            ActivityDelayProbability = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Delay probability"]).Value;
 
             float meanDelayQuadraticCoefficient = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Mean delay quadratic coefficient"]).Value;
             float meanDelayLinearCoefficient = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Mean delay linear coefficient"]).Value;

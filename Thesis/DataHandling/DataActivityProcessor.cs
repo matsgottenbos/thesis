@@ -99,7 +99,7 @@ namespace Thesis {
 
                 if (isStartBorder) {
                     // Check if we can combine the start of this activity with an unmatched activity
-                    RawActivity rawActivityToCombine = unmatchedRawActivitesList.Find(unmatchedRawActivity => unmatchedRawActivity.DutyId == rawActivity.DutyId && unmatchedRawActivity.ActivityName == rawActivity.ActivityName && unmatchedRawActivity.EndStationName == rawActivity.StartStationName && unmatchedRawActivity.EndTime == rawActivity.StartTime);
+                    RawActivity rawActivityToCombine = unmatchedRawActivitesList.Find(unmatchedRawActivity => unmatchedRawActivity.DutyId == rawActivity.DutyId && unmatchedRawActivity.ActivityType == rawActivity.ActivityType && unmatchedRawActivity.EndStationName == rawActivity.StartStationName && unmatchedRawActivity.EndTime == rawActivity.StartTime);
                     if (rawActivityToCombine == null) {
                         unmatchedRawActivitesList.Add(rawActivity);
                     } else {
@@ -125,7 +125,7 @@ namespace Thesis {
                             combinedRequiredCountryQualifications = combinedRequiredCountryQualificationsList.ToArray();
                         }
 
-                        RawActivity combinedActivity = new RawActivity(rawActivityToCombine.DutyName, rawActivityToCombine.ActivityName, rawActivityToCombine.DutyId, rawActivityToCombine.ProjectName, rawActivityToCombine.TrainNumber, rawActivityToCombine.StartStationName, rawActivity.EndStationName, combinedRequiredCountryQualifications, rawActivityToCombine.StartTime, rawActivity.EndTime, rawActivityToCombine.DataAssignedCompanyName, rawActivityToCombine.DataAssignedEmployeeName, new RawActivity[] { rawActivityToCombine, rawActivity });
+                        RawActivity combinedActivity = new RawActivity(rawActivityToCombine.DutyName, rawActivityToCombine.ActivityType, rawActivityToCombine.DutyId, rawActivityToCombine.ProjectName, rawActivityToCombine.TrainNumber, rawActivityToCombine.StartStationName, rawActivity.EndStationName, combinedRequiredCountryQualifications, rawActivityToCombine.StartTime, rawActivity.EndTime, rawActivityToCombine.DataAssignedCompanyName, rawActivityToCombine.DataAssignedEmployeeName, new RawActivity[] { rawActivityToCombine, rawActivity });
 
                         unmatchedRawActivitesList.Remove(rawActivityToCombine);
                         if (isEndBorder) unmatchedRawActivitesList.Add(combinedActivity);
@@ -161,7 +161,7 @@ namespace Thesis {
         }
 
         static void DebugLogRawActivity(string comment, RawActivity rawActivity) {
-            Console.WriteLine("{0}: {1,5}-{2,5}  {3,-45} -> {4,-45}  {5,-30}  {6,-30}", comment, rawActivity.StartTime, rawActivity.EndTime, rawActivity.StartStationName, rawActivity.EndStationName, rawActivity.ActivityName, rawActivity.DutyName);
+            Console.WriteLine("{0}: {1,5}-{2,5}  {3,-45} -> {4,-45}  {5,-30}  {6,-30}", comment, rawActivity.StartTime, rawActivity.EndTime, rawActivity.StartStationName, rawActivity.EndStationName, rawActivity.ActivityType, rawActivity.DutyName);
         }
 
 
@@ -216,7 +216,7 @@ namespace Thesis {
         }
 
         static float GetSuccessionRobustness(Activity activity1, Activity activity2, int plannedDuration, int waitingTime) {
-            double conflictProb = GetConflictProbability(plannedDuration, waitingTime);
+            double conflictProb = GetConflictProbability(plannedDuration, waitingTime, activity1.ActivityType);
 
             bool areSameDuty = activity1.DutyId == activity2.DutyId;
             bool areSameProject = activity1.ProjectName == activity2.ProjectName && activity1.ProjectName != "";
@@ -235,11 +235,13 @@ namespace Thesis {
             return (float)robustnessCost;
         }
 
-        static double GetConflictProbability(int plannedDuration, int waitingTime) {
+        static double GetConflictProbability(int plannedDuration, int waitingTime, string activityType) {
+            bool isDrivingActivity = RulesConfig.DrivingActivityTypes.Contains(activityType);
+
             double meanDelay = RulesConfig.ActivityMeanDelayFunc(plannedDuration);
             double delayAlpha = RulesConfig.ActivityDelayGammaDistributionAlphaFunc(meanDelay);
             double delayBeta = RulesConfig.ActivityDelayGammaDistributionBetaFunc(meanDelay);
-            float delayProb = RulesConfig.ActivityDelayProbability;
+            float delayProb = isDrivingActivity ? RulesConfig.DrivingActivityDelayProbability : RulesConfig.NonDrivingActivityDelayProbability;
             double conflictProbWhenDelayed = 1 - Gamma.CDF(delayAlpha, delayBeta, waitingTime);
             double conflictProb = delayProb * conflictProbWhenDelayed;
             return conflictProb;
