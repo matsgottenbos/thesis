@@ -64,6 +64,8 @@ namespace Thesis {
         /// <summary></summary>
         public static float InvalidHotelPenalty;
         /// <summary></summary>
+        public static float AvailabilityViolationPenalty;
+        /// <summary></summary>
         public static float QualificationViolationPenalty;
 
         public static void Init(XSSFWorkbook settingsBook) {
@@ -100,6 +102,7 @@ namespace Thesis {
             InternalShiftCountViolationPenaltyPerShift = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Internal shift count per excess shift"]).Value;
             ExternalShiftCountPenaltyPerShift = ExcelSheet.GetIntValue(algorithmSettingsCellDict["External shift count per excess shift"]).Value;
             InvalidHotelPenalty = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Invalid hotel per violation"]).Value;
+            AvailabilityViolationPenalty = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Availability per violation"]).Value;
             QualificationViolationPenalty = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Qualification per violation"]).Value;
         }
     }

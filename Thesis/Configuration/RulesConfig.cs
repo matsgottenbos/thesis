@@ -78,25 +78,9 @@ namespace Thesis {
         /// <summary>Day/night parts of the day.</summary>
         public static TimePart[] DayPartsForNight;
 
-
-
-
-
-
-        // Satisfaction
-        public static readonly RangeSatisfactionCriterion SatCriterionRouteVariation = new RangeSatisfactionCriterion(10, 0, 0.2f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionTravelTime = new RangeSatisfactionCriterion(40 * 60, 0, 0.1f, 0.2f);
-        public static readonly MatchContractTimeSatisfactionCriterion SatCriterionContractTimeAccuracyRequiredDriver = new MatchContractTimeSatisfactionCriterion(0.4f, 0.2f, 0.2f);
-        public static readonly MaxContractTimeSatisfactionCriterion SatCriterionContractTimeAccuracyOptionalDriver = new MaxContractTimeSatisfactionCriterion(0.4f, 0.2f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionShiftLengths = new RangeSatisfactionCriterion(10 * 60, 0, 0.05f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionRobustness = new RangeSatisfactionCriterion(800, 0, 0.05f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionNightShifts = new RangeSatisfactionCriterion(5, 0, 0.05f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionWeekendShifts = new RangeSatisfactionCriterion(3, 0, 0.05f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionHotelStays = new RangeSatisfactionCriterion(4, 0, 0.15f, 0.2f);
-        // TBA: time off requests
-        // TBA: consecutive shifts
-        public static readonly RangeSatisfactionCriterion SatCriterionConsecutiveFreeDays = new RangeSatisfactionCriterion(0, 1, 0.05f, 0.2f);
-        public static readonly RangeSatisfactionCriterion SatCriterionRestingTime = new RangeSatisfactionCriterion(36, 0, 0.1f, 0.2f);
+        /* Satisfaction criteria */
+        /// <summary>Array of all satisfaction criteria with their possible types.</summary>
+        public static AbstractSatisfactionCriterionInfo[] SatisfactionCriterionInfos;
 
         public static void Init(XSSFWorkbook settingsBook) {
             ProcessRulesSettings(settingsBook);
@@ -182,8 +166,54 @@ namespace Thesis {
         }
 
         static void ProcessSatisfactionSettings(XSSFWorkbook settingsBook) {
-            ExcelSheet satisfactionRulesSettingsSheet = new ExcelSheet("Satisfaction", settingsBook);
+            ExcelSheet satisfactionSettingsSheet = new ExcelSheet("Satisfaction", settingsBook);
 
+            Dictionary<string, Func<SaDriverInfo, float>> rangeCriterionNameToRelevantValueFunc = new Dictionary<string, Func<SaDriverInfo, float>>() {
+                { "Route variation", driverInfo => SatisfactionCalculator.GetDuplicateRouteCount(driverInfo) },
+                { "Travel time", driverInfo => driverInfo.TravelTime },
+                { "Contract time accuracy", driverInfo => driverInfo.WorkedTime },
+                { "Shift lengths", driverInfo => driverInfo.IdealShiftLengthScore },
+                { "Expected delays", driverInfo => (float)driverInfo.Stats.Robustness },
+                { "Night shifts", driverInfo => driverInfo.NightShiftCountByCompanyRules },
+                { "Weekend shifts", driverInfo => driverInfo.WeekendShiftCountByCompanyRules },
+                { "Hotel stays", driverInfo => driverInfo.HotelCount },
+                { "Consecutive free days", driverInfo => SatisfactionCalculator.GetConsecutiveFreeDaysScore(driverInfo) },
+                { "Resting time", driverInfo => driverInfo.IdealRestingTimeScore },
+            };
+
+            List<AbstractSatisfactionCriterionInfo> satisfactionCriterionInfosList = new List<AbstractSatisfactionCriterionInfo>();
+            satisfactionSettingsSheet.ForEachRow(satisfactionSettingsRow => {
+                string criterionName = satisfactionSettingsSheet.GetStringValue(satisfactionSettingsRow, "Criterion");
+                string criterionMode = satisfactionSettingsSheet.GetStringValue(satisfactionSettingsRow, "Mode");
+                float? worstThreshold = satisfactionSettingsSheet.GetFloatValue(satisfactionSettingsRow, "0% threshold");
+                float? bestThreshold = satisfactionSettingsSheet.GetFloatValue(satisfactionSettingsRow, "100% threshold");
+                if (criterionName == null || criterionMode == null || !worstThreshold.HasValue || !bestThreshold.HasValue) return;
+
+                if (!rangeCriterionNameToRelevantValueFunc.ContainsKey(criterionName)) {
+                    throw new Exception(string.Format("Unknown criterion name `{0}` in satisfaction settings", criterionName));
+                }
+                Func<SaDriverInfo, float> relevantValueFunc = rangeCriterionNameToRelevantValueFunc[criterionName];
+
+                switch (criterionName) {
+                    case "Contract time accuracy":
+                        // Add special criterion types for contract time accuracy
+                        satisfactionCriterionInfosList.Add(new MatchContractTimeSatisfactionCriterionInfo(criterionName, string.Format("{0} required", criterionMode), worstThreshold.Value, relevantValueFunc));
+                        satisfactionCriterionInfosList.Add(new MaxContractTimeSatisfactionCriterionInfo(criterionName, string.Format("{0} optional", criterionMode), worstThreshold.Value, relevantValueFunc));
+                        break;
+                    case "Travel time":
+                    case "Shift lengths":
+                        // Add range criterion with hour to minute conversions
+                        int worstThresholdMinutes = ConfigHandler.HourToMinuteValue(worstThreshold.Value);
+                        int bestThresholdMinutes = ConfigHandler.HourToMinuteValue(bestThreshold.Value);
+                        satisfactionCriterionInfosList.Add(new RangeSatisfactionCriterionInfo(criterionName, criterionMode, worstThresholdMinutes, bestThresholdMinutes, relevantValueFunc));
+                        break;
+                    default:
+                        // Add normal range criterion type for all others
+                        satisfactionCriterionInfosList.Add(new RangeSatisfactionCriterionInfo(criterionName, criterionMode, worstThreshold.Value, bestThreshold.Value, relevantValueFunc));
+                        break;
+                }
+            });
+            SatisfactionCriterionInfos = satisfactionCriterionInfosList.ToArray();
         }
 
         static Func<int, int, bool> GetShiftTypeRuleFunc(Dictionary<string, ICell> settingsCellDict, string ruleTypeSettingName, string ruleMinimumSettingName) {

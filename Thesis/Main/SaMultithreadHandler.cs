@@ -16,7 +16,7 @@ namespace Thesis {
         string prevParetoFrontStr;
         readonly List<List<SaInfo>> paretoFrontsOverTime;
         readonly Stopwatch stopwatch;
-        CancellationTokenSource[] threadCancellationTokens;
+        readonly CancellationTokenSource[] threadCancellationTokens;
 
         public SaMultithreadHandler(long targetIterationCount) {
             this.targetIterationCount = targetIterationCount;
@@ -75,12 +75,14 @@ namespace Thesis {
         }
 
         void HandleThreadCallback() {
-            totalIterationCount += SaConfig.ThreadCallbackFrequency;
-            totalIterationCountSinceLastLog += SaConfig.ThreadCallbackFrequency;
+            Interlocked.Add(ref totalIterationCount, SaConfig.ThreadCallbackFrequency);
+            Interlocked.Add(ref totalIterationCountSinceLastLog, SaConfig.ThreadCallbackFrequency);
 
             if (totalIterationCount >= targetIterationCount) {
-                for (int i = 0; i < threadCancellationTokens.Length; i++) {
-                    threadCancellationTokens[i].Cancel();
+                lock (threadCancellationTokens) {
+                    for (int i = 0; i < threadCancellationTokens.Length; i++) {
+                        threadCancellationTokens[i].Cancel();
+                    }
                 }
                 return;
             }
@@ -93,10 +95,20 @@ namespace Thesis {
 
         void PerformLog() {
             float saDuration = stopwatch.ElapsedMilliseconds / 1000f;
-            string speedStr = saDuration > 1 ? ParseHelper.LargeNumToString(totalIterationCount / saDuration, "0") + "/s" : "-";
+            float speed = totalIterationCount / saDuration;
+            string speedStr;
+            if (saDuration <= 1) {
+                speedStr = "-";
+            } else if (speed > 1000000) {
+                speedStr = ParseHelper.LargeNumToString(speed, "0.000") + "/s";
+            } else {
+                speedStr = ParseHelper.LargeNumToString(speed, "0") + "/s";
+            }
 
             List<SaInfo> paretoFront = GetCombinedParetoFront();
-            paretoFrontsOverTime.Add(paretoFront);
+            lock (paretoFrontsOverTime) {
+                paretoFrontsOverTime.Add(paretoFront);
+            }
 
             string paretoFrontStr;
             bool hasImprovementSinceLastLog;
@@ -221,17 +233,25 @@ namespace Thesis {
             }
 
             lock (saThread.Info) {
-                string lastImprovementIterationStr = saThread.Info.LastImprovementIteration.HasValue ? ParseHelper.LargeNumToString(saThread.Info.LastImprovementIteration.Value, "0") : "-";
-                string hasImprovementStr = saThread.Info.HasImprovementSinceLog ? " !!!" : "";
-
                 double logCost = saThread.Info.TotalInfo.Stats.RawCost + saThread.Info.TotalInfo.Stats.Robustness;
 
+                string iterationNumStr = ParseHelper.LargeNumToString(saThread.Info.IterationNum, "0.#");
+                string lastImprovementIterationStr = saThread.Info.LastImprovementIteration.HasValue ? ParseHelper.LargeNumToString(saThread.Info.LastImprovementIteration.Value, "0") : "-";
+                string cycleNumStr = saThread.Info.CycleNum.ToString();
+                string logCostStr = ParseHelper.LargeNumToString(logCost, "0.0");
+                string satisfactionScoreStr = saThread.Info.TotalInfo.Stats.SatisfactionScore.HasValue ? ParseHelper.ToString(saThread.Info.TotalInfo.Stats.SatisfactionScore.Value * 100, "0") : "?";
+                string rawCostStr = ParseHelper.LargeNumToString(saThread.Info.TotalInfo.Stats.RawCost, "0.0");
+                string temperatureStr = ParseHelper.LargeNumToString(saThread.Info.Temperature, "0.0");
+                string satisfactionFactorStr = ParseHelper.ToString(saThread.Info.SatisfactionFactor, "0.00");
+                string penaltyStr = ParseHelper.GetPenaltyString(saThread.Info.TotalInfo);
+                string hasImprovementStr = saThread.Info.HasImprovementSinceLog ? " !!!" : "";
+
                 // Log basic info
-                Console.WriteLine("{0}:    # {1,6}    Last.impr: {2,4}    Cycle: {3,2}    Cost: {4,6} ({5,2}%)    Raw: {6,6}    Temp: {7,5}    Sat.f: {8,4}   Penalty: {9,-33}    {10}{11}", threadIndex, ParseHelper.LargeNumToString(saThread.Info.IterationNum, "0.#"), lastImprovementIterationStr, saThread.Info.CycleNum, ParseHelper.LargeNumToString(logCost, "0.0"), ParseHelper.ToString(saThread.Info.TotalInfo.Stats.SatisfactionScore.Value * 100, "0"), ParseHelper.LargeNumToString(saThread.Info.TotalInfo.Stats.RawCost, "0.0"), ParseHelper.LargeNumToString(saThread.Info.Temperature, "0.0"), ParseHelper.ToString(saThread.Info.SatisfactionFactor, "0.00"), ParseHelper.GetPenaltyString(saThread.Info.TotalInfo), paretoFrontStr, hasImprovementStr);
+                Console.WriteLine("{0}:    # {1,6}    Last.impr: {2,4}    Cycle: {3,2}    Cost: {4,6} ({5,2}%)    Raw: {6,6}    Temp: {7,5}    Sat.f: {8,4}   Penalty: {9,-33}    {10}{11}", threadIndex, iterationNumStr, lastImprovementIterationStr, cycleNumStr, logCostStr, satisfactionScoreStr, rawCostStr, temperatureStr, satisfactionFactorStr, penaltyStr, paretoFrontStr, hasImprovementStr);
 
                 if (DevConfig.DebugSaLogAdditionalInfo) {
-                    //Console.WriteLine("Worked times: {0}", ParseHelper.ToString(saThread.Info.DriverInfos.Select(driverInfo => driverInfo.WorkedTime).ToArray()));
-                    //Console.WriteLine("Contract time factors: {0}", ParseHelper.ToString(saThread.Info.Instance.InternalDrivers.Select(driver => (double)saThread.Info.DriverInfos[driver.AllDriversIndex].WorkedTime / driver.ContractTime).ToArray()));
+                    Console.WriteLine("Worked times: {0}", ParseHelper.ToString(saThread.Info.DriverInfos.Select(driverInfo => driverInfo.WorkedTime).ToArray()));
+                    Console.WriteLine("Contract time factors: {0}", ParseHelper.ToString(saThread.Info.Instance.InternalDrivers.Select(driver => (double)saThread.Info.DriverInfos[driver.AllDriversIndex].WorkedTime / driver.ContractTime).ToArray()));
                     Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(saThread.Info.DriverInfos.Select(driverInfo => driverInfo.ShiftCount).ToArray()));
                     Console.WriteLine("External type shift counts: {0}", ParseHelper.ToString(saThread.Info.ExternalDriverTypeInfos.Select(externalDriverTypeInfo => externalDriverTypeInfo.ExternalShiftCount).ToArray()));
                 }

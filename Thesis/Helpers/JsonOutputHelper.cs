@@ -173,7 +173,7 @@ namespace Thesis {
         }
 
         static JObject CreateDriverSatisfactionCriteriaJObject(InternalDriver internalDriver, SaDriverInfo driverInfo) {
-            Dictionary<string, double> satisfactionPerCriterion = SatisfactionCalculator.GetDriverSatisfactionPerCriterion(internalDriver, driverInfo);
+            Dictionary<string, double> satisfactionPerCriterion = internalDriver.GetSatisfactionPerCriterion(driverInfo);
 
             JObject driverSatisfactionCriteriaJObject = new JObject();
             foreach (KeyValuePair<string, double> criterionKvp in satisfactionPerCriterion) {
@@ -240,7 +240,7 @@ namespace Thesis {
         }
 
         static void AddShiftToDriverShifts(Activity shiftFirstActivity, Activity shiftLastActivity, Activity parkingActivity, Activity beforeHotelActivity, Activity afterHotelActivity, float shiftRobustness, JArray shiftPathJArray, JArray shiftsJArray, Driver driver, SaInfo info) {
-            (_, DriverTypeMainShiftInfo driverTypeMainShiftInfo, int realMainShiftLength, int fullShiftLength, _, _, _, float fullShiftCost) = RangeCostActivityProcessor.GetShiftDetails(shiftFirstActivity, shiftLastActivity, parkingActivity, beforeHotelActivity, afterHotelActivity, driver, info, info.Instance);
+            (_, DriverTypeMainShiftInfo driverTypeMainShiftInfo, int realMainShiftLength, int fullShiftLength, _, _, _, _, _, float fullShiftCost) = RangeCostActivityProcessor.GetShiftDetails(shiftFirstActivity, shiftLastActivity, parkingActivity, beforeHotelActivity, afterHotelActivity, driver, info, info.Instance);
 
             (int sharedCarTravelTimeBefore, int sharedCarTravelDistanceBefore, int ownCarTravelTimeBefore, int ownCarTravelDistanceBefore) = RangeCostActivityProcessor.GetTravelInfoBefore(beforeHotelActivity, shiftFirstActivity, driver, info.Instance);
             (int sharedCarTravelTimeAfter, int sharedCarTravelDistanceAfter, int ownCarTravelTimeAfter, int ownCarTravelDistanceAfter) = RangeCostActivityProcessor.GetTravelInfoAfter(shiftLastActivity, afterHotelActivity, parkingActivity, driver, info.Instance);

@@ -94,6 +94,7 @@ namespace Thesis {
                 if (penaltyInfo.RestTimeViolationCount > 0) penaltyTypes.Add("Rt" + penaltyInfo.RestTimeViolationCount);
                 if (penaltyInfo.ShiftCountViolationAmount > 0) penaltyTypes.Add("Sc" + penaltyInfo.ShiftCountViolationAmount);
                 if (penaltyInfo.InvalidHotelCount > 0) penaltyTypes.Add("Ih" + penaltyInfo.InvalidHotelCount);
+                if (penaltyInfo.AvailabilityViolationCount > 0) penaltyTypes.Add("Av" + penaltyInfo.AvailabilityViolationCount);
                 if (penaltyInfo.QualificationViolationCount > 0) penaltyTypes.Add("Qu" + penaltyInfo.QualificationViolationCount);
                 if (externalShiftCountViolationAmount > 0) penaltyTypes.Add("Ec" + externalShiftCountViolationAmount);
                 string penaltyTypesStr = string.Join(" ", penaltyTypes);

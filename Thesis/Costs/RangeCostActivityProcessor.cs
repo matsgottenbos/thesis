@@ -75,7 +75,7 @@ namespace Thesis {
 
         static void ProcessDriverEndShift(Activity shiftLastActivity, Activity nextShiftFirstActivity, ref Activity shiftFirstActivity, ref Activity parkingActivity, ref Activity beforeHotelActivity, Func<Activity, bool> isHotelAfterActivity, SaDriverInfo driverInfo, Driver driver, SaInfo info, Instance instance) {
             Activity afterHotelActivity = isHotelAfterActivity(shiftLastActivity) ? nextShiftFirstActivity : null;
-            (MainShiftInfo mainShiftInfo, DriverTypeMainShiftInfo driverTypeMainShiftInfo, int realMainShiftLength, int fullShiftLength, int ownCarTravelTime, int sharedCarTravelTimeAfter, int ownCarTravelTimeAfter, float fullShiftCost) = GetShiftDetails(shiftFirstActivity, shiftLastActivity, parkingActivity, beforeHotelActivity, afterHotelActivity, driver, info, instance);
+            (MainShiftInfo mainShiftInfo, DriverTypeMainShiftInfo driverTypeMainShiftInfo, int realMainShiftLength, int fullShiftLength, int fullShiftStartTime, int fullShiftEndTime, int ownCarTravelTime, int sharedCarTravelTimeAfter, int ownCarTravelTimeAfter, float fullShiftCost) = GetShiftDetails(shiftFirstActivity, shiftLastActivity, parkingActivity, beforeHotelActivity, afterHotelActivity, driver, info, instance);
 
             // Store shift details
             driverInfo.ShiftCount++;
@@ -85,6 +85,9 @@ namespace Thesis {
 
             // Check shift length
             driverInfo.PenaltyInfo.AddPossibleShiftLengthViolation(fullShiftLength, mainShiftInfo);
+
+            // Check driver availability
+            driverInfo.PenaltyInfo.AddPotentialAvailabilityViolation(fullShiftStartTime, fullShiftEndTime, driver);
 
             // Determine ideal shift length score
             driverInfo.IdealShiftLengthScore += Math.Max(0, realMainShiftLength - RulesConfig.IdealShiftLength);
@@ -167,15 +170,15 @@ namespace Thesis {
 
         /* Helpers */
 
-        public static (MainShiftInfo, DriverTypeMainShiftInfo, int, int, int, int, int, float) GetShiftDetails(Activity shiftFirstActivity, Activity shiftLastActivity, Activity parkingActivity, Activity beforeHotelActivity, Activity afterHotelActivity, Driver driver, SaInfo info, Instance instance) {
+        public static (MainShiftInfo, DriverTypeMainShiftInfo, int, int, int, int, int, int, int, float) GetShiftDetails(Activity shiftFirstActivity, Activity shiftLastActivity, Activity parkingActivity, Activity beforeHotelActivity, Activity afterHotelActivity, Driver driver, SaInfo info, Instance instance) {
             (int sharedCarTravelTimeBefore, int sharedCarTravelDistanceBefore, int ownCarTravelTimeBefore, int ownCarTravelDistanceBefore) = GetTravelInfoBefore(beforeHotelActivity, shiftFirstActivity, driver, instance);
             (int sharedCarTravelTimeAfter, int sharedCarTravelDistanceAfter, int ownCarTravelTimeAfter, int ownCarTravelDistanceAfter) = GetTravelInfoAfter(shiftLastActivity, afterHotelActivity, parkingActivity, driver, instance);
 
-            int shiftStartTime = shiftFirstActivity.StartTime - sharedCarTravelTimeBefore;
-            int realShiftEndTime = shiftLastActivity.EndTime + sharedCarTravelTimeAfter;
-            int realMainShiftLength = realShiftEndTime - shiftStartTime;
+            int mainShiftStartTime = shiftFirstActivity.StartTime - sharedCarTravelTimeBefore;
+            int realMainShiftEndTime = shiftLastActivity.EndTime + sharedCarTravelTimeAfter;
+            int realMainShiftLength = realMainShiftEndTime - mainShiftStartTime;
 
-            MainShiftInfo mainShiftInfo = info.Instance.MainShiftInfo(shiftStartTime, realShiftEndTime);
+            MainShiftInfo mainShiftInfo = info.Instance.MainShiftInfo(mainShiftStartTime, realMainShiftEndTime);
             DriverTypeMainShiftInfo driverTypeMainShiftInfo = mainShiftInfo.ByDriver(driver);
 
             // Get travel time and cost and shift length
@@ -187,7 +190,9 @@ namespace Thesis {
             int sharedCarTravelDistance = sharedCarTravelDistanceBefore + sharedCarTravelDistanceAfter;
 
             // Get full shift length and cost
-            int fullShiftLength = mainShiftInfo.RealMainShiftLength + ownCarTravelTime;
+            int fullShiftStartTime = mainShiftStartTime - ownCarTravelTimeBefore;
+            int fullShiftEndTime = realMainShiftEndTime + ownCarTravelTimeAfter;
+            int fullShiftLength = fullShiftEndTime - fullShiftStartTime;
             float fullShiftCost = driverTypeMainShiftInfo.MainShiftCost + ownCarTravelCost + sharedCarTravelDistance * RulesConfig.SharedCarCostsPerKilometer;
 
             #if DEBUG
@@ -196,7 +201,7 @@ namespace Thesis {
             }
             #endif
 
-            return (mainShiftInfo, driverTypeMainShiftInfo, realMainShiftLength, fullShiftLength, ownCarTravelTime, sharedCarTravelTimeAfter, ownCarTravelTimeAfter, fullShiftCost);
+            return (mainShiftInfo, driverTypeMainShiftInfo, realMainShiftLength, fullShiftLength, fullShiftStartTime, fullShiftEndTime, ownCarTravelTime, sharedCarTravelTimeAfter, ownCarTravelTimeAfter, fullShiftCost);
         }
 
         public static (int, int, int, int) GetTravelInfoBefore(Activity beforeHotelActivity, Activity shiftFirstActivity, Driver driver, Instance instance) {

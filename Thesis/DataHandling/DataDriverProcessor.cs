@@ -10,9 +10,32 @@ namespace Thesis {
     static class DataDriverProcessor {
         public static (InternalDriver[], int) CreateInternalDrivers(XSSFWorkbook driversBook, Activity[] activities) {
             ExcelSheet internalDriverSettingsSheet = new ExcelSheet("Internal drivers", driversBook);
+            ExcelSheet unavailabilitySettingsSheet = new ExcelSheet("Internal driver unavailability", driversBook);
 
             (int[][] internalDriversHomeTravelTimes, int[][] internalDriversHomeTravelDistances, string[] travelInfoInternalDriverNames, _) = TravelInfoImporter.ImportBipartiteTravelInfo(Path.Combine(DevConfig.IntermediateFolder, "internalTravelInfo.csv"));
 
+            // Process driver unavailability
+            Dictionary<string, List<TimeRange>> internalDriversActivityAvailabilities = new Dictionary<string, List<TimeRange>>();
+            unavailabilitySettingsSheet.ForEachRow(unavailabilitySettingsRow => {
+                string driverName = unavailabilitySettingsSheet.GetStringValue(unavailabilitySettingsRow, "Internal driver name");
+                int? startDayIndex = unavailabilitySettingsSheet.GetIntValue(unavailabilitySettingsRow, "Unavailable from | Day") - 1;
+                int? startDayHour = unavailabilitySettingsSheet.GetIntValue(unavailabilitySettingsRow, "Unavailable from | Hour");
+                int? endDayIndex = unavailabilitySettingsSheet.GetIntValue(unavailabilitySettingsRow, "Unavailable until | Day") - 1;
+                int? endDayHour = unavailabilitySettingsSheet.GetIntValue(unavailabilitySettingsRow, "Unavailable until | Hour");
+                if (driverName == null || !startDayIndex.HasValue || !startDayHour.HasValue || !endDayIndex.HasValue || !endDayHour.HasValue) return;
+
+                int startTime = startDayIndex.Value * DevConfig.DayLength + startDayHour.Value * DevConfig.HourLength;
+                int endTime = endDayIndex.Value * DevConfig.DayLength + endDayHour.Value * DevConfig.HourLength;
+                TimeRange unavailability = new TimeRange(startTime, endTime);
+
+                if (internalDriversActivityAvailabilities.ContainsKey(driverName)) {
+                    internalDriversActivityAvailabilities[driverName].Add(unavailability);
+                } else {
+                    internalDriversActivityAvailabilities.Add(driverName, new List<TimeRange>() { unavailability });
+                }
+            });
+
+            // Process drivers
             List<InternalDriver> internalDrivers = new List<InternalDriver>();
             int requiredInternalDriverCount = 0;
             internalDriverSettingsSheet.ForEachRow(internalDriverSettingsRow => {
@@ -23,13 +46,11 @@ namespace Thesis {
                 if (driverName == null || countryQualificationsStr == null || !contractTime.HasValue || !isOptional.HasValue) return;
                 if (contractTime.Value == 0) return;
 
-                string[] countryQualifications = countryQualificationsStr.Split(", ");
-                bool isInternational = countryQualifications.Length > 1;
-
                 if (!isOptional.Value) {
                     requiredInternalDriverCount++;
                 }
 
+                // Travel info
                 int travelInfoInternalDriverIndex = Array.IndexOf(travelInfoInternalDriverNames, driverName);
                 if (travelInfoInternalDriverIndex == -1) {
                     throw new Exception(string.Format("Could not find internal driver `{0}` in internal travel info", driverName));
@@ -37,13 +58,67 @@ namespace Thesis {
                 int[] homeTravelTimes = internalDriversHomeTravelTimes[travelInfoInternalDriverIndex];
                 int[] homeTravelDistance = internalDriversHomeTravelDistances[travelInfoInternalDriverIndex];
 
-                // Determine track proficiencies
-                bool[] activityQualifications = DetermineActivityQualificationsFromCountryQualifications(countryQualifications, activities);
+                // Availability
+                TimeRange[] driverUnavailabilities;
+                if (internalDriversActivityAvailabilities.ContainsKey(driverName)) {
+                    // Driver has availabilities
+                    driverUnavailabilities = internalDriversActivityAvailabilities[driverName].ToArray();
+                } else {
+                    // Driver has no unavailabilities
+                    driverUnavailabilities = Array.Empty<TimeRange>();
+                }
 
+                // Qualifications
+                string[] countryQualifications = countryQualificationsStr.Split(", ");
+                bool[] activityQualifications = DetermineActivityQualificationsFromCountryQualifications(countryQualifications, activities);
+                bool isInternational = countryQualifications.Length > 1;
+
+                // Salary info
                 InternalSalarySettings salaryInfo = isInternational ? SalaryConfig.InternalInternationalSalaryInfo : SalaryConfig.InternalNationalSalaryInfo;
 
+                // Satisfaction criteria names
+                string[] singleModeCriterionNames = new string[] { "Travel time", "Contract time accuracy", "Expected delays", "Consecutive free days", "Resting time" };
+                string[] multipleModeCriterionNames = new string[] { "Route variation", "Shift lengths", "Night shifts", "Weekend shifts", "Hotel stays" };
+                string[] allCriterionNames = singleModeCriterionNames.Concat(multipleModeCriterionNames).ToArray();
+
+                // Satisfaction criteria
+                List<SatisfactionCriterion> satisfactionCriteriaList = new List<SatisfactionCriterion>();
+                float maxCriterionWeight = 0;
+                for (int criterionIndex = 0; criterionIndex < allCriterionNames.Length; criterionIndex++) {
+                    string criterionName = allCriterionNames[criterionIndex];
+
+                    AbstractSatisfactionCriterionInfo criterionInfo;
+                    if (multipleModeCriterionNames.Contains(criterionName)) {
+                        // Criterion with multiple mode
+                        string criterionModeColumnName = string.Format("Satisfaction criterion mode | {0}", criterionName);
+                        string criterionMode = internalDriverSettingsSheet.GetStringValue(internalDriverSettingsRow, criterionModeColumnName);
+                        criterionInfo = Array.Find(RulesConfig.SatisfactionCriterionInfos, searchCriterionInfo => searchCriterionInfo.Name == criterionName && searchCriterionInfo.Mode == criterionMode);
+                        if (criterionInfo == null) {
+                            throw new Exception(string.Format("Could not find satisfaction criterion `{0}` with mode `{1}`", criterionName, criterionMode));
+                        }
+                    } else {
+                        // Criterion with single mode
+                        criterionInfo = Array.Find(RulesConfig.SatisfactionCriterionInfos, searchCriterionInfo => searchCriterionInfo.Name == criterionName);
+                        if (criterionInfo == null) {
+                            throw new Exception(string.Format("Unknown satisfaction criterion `{0}`", criterionName));
+                        }
+                    }
+
+                    string criterionWeightColumnName = string.Format("Satisfaction criterion weight | {0}", criterionName);
+                    float criterionWeight = internalDriverSettingsSheet.GetFloatValue(internalDriverSettingsRow, criterionWeightColumnName).Value;
+                    maxCriterionWeight = Math.Max(maxCriterionWeight, criterionWeight);
+
+                    satisfactionCriteriaList.Add(new SatisfactionCriterion(criterionInfo, criterionWeight));
+                }
+                SatisfactionCriterion[] satisfactionCriteria = satisfactionCriteriaList.ToArray();
+
+                // Set satisfaction criteria max weight
+                for (int criterionIndex = 0; criterionIndex < satisfactionCriteria.Length; criterionIndex++) {
+                    satisfactionCriteria[criterionIndex].SetMaxWeight(maxCriterionWeight);
+                }
+
                 int internalDriverIndex = internalDrivers.Count;
-                internalDrivers.Add(new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, isInternational, isOptional.Value, homeTravelTimes, homeTravelDistance, activityQualifications, contractTime.Value, salaryInfo));
+                internalDrivers.Add(new InternalDriver(internalDriverIndex, internalDriverIndex, driverName, isInternational, isOptional.Value, homeTravelTimes, homeTravelDistance, driverUnavailabilities, activityQualifications, contractTime.Value, salaryInfo, satisfactionCriteria));
             });
             return (internalDrivers.ToArray(), requiredInternalDriverCount);
         }
@@ -110,7 +185,7 @@ namespace Thesis {
                 int[] homeTravelTimes = externalDriversHomeTravelTimes[travelInfoExternalCompanyIndex];
                 int[] homeTravelDistances = externalDriversHomeTravelDistances[travelInfoExternalCompanyIndex];
 
-                // Determine track proficiencies
+                // Determine qualifications
                 bool[] activityQualifications = DetermineActivityQualificationsFromCountryQualifications(countryQualifications, activities);
 
                 // Add external driver type

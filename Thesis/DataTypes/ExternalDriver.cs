@@ -22,6 +22,10 @@ namespace Thesis {
             return string.Format("{0} {1}", ExternalDriverTypeName, actualIndexInType + 1);
         }
 
+        public override bool IsAvailableDuringRange(int rangeStartTime, int rangeEndTime) {
+            return true;
+        }
+
         public override double GetSatisfaction(SaDriverInfo driverInfo) {
             return 0;
         }

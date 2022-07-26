@@ -37,6 +37,8 @@ namespace Thesis {
             return homeTravelDistances[activity.StartStationAddressIndex];
         }
 
+        public abstract bool IsAvailableDuringRange(int rangeStartTime, int rangeEndTime);
+
         public bool IsQualifiedForActivity(Activity activity) {
             return activityQualifications[activity.Index];
         }
