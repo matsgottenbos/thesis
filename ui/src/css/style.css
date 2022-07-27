@@ -105,8 +105,27 @@ h3 {
 
 /* Visualise */
 
-.scheduleInfo {
+.scheduleInfo, .shiftsButton {
     padding: 0 2rem 2rem 2rem;
+}
+
+.shiftsButton {
+    display: inline-block;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.shiftsButton:hover {
+    opacity: 0.8;
+}
+
+.shiftsButton .icon {
+    margin-left: 0.5rem;
+    transition: margin 0.2s ease;
+}
+
+.shiftsButton:hover .icon {
+    margin-left: 0.75rem;
 }
 
 .scheduleVisual {
@@ -289,7 +308,7 @@ h3 {
 }
 
 .shift .cell {
-    padding: 0.75rem 0;
+    padding: 0.75rem 0.75rem 0.75rem 0;
     overflow-wrap: break-word;
 }
 
@@ -304,7 +323,7 @@ h3 {
 .shiftPath .cell.startTime,
 .shiftPath .cell.endTime,
 .shiftPath .cell.duration {
-    width: calc(16% / 3);
+    width: calc(15% / 3);
 }
 
 .shiftPath .cell.duty,
@@ -317,16 +336,16 @@ h3 {
 }
 
 .shiftPath .train {
-    width: 5%;
+    width: 7.5%;
 }
 
 .shiftPath .cell.combinedDetails {
-    width: 50%
+    width: 52.5%
 }
 
 .shiftPath .cell.fromLocation,
 .shiftPath .cell.toLocation {
-    width: calc(30% / 2);
+    width: calc(32.5% / 2);
 }
 
 .shiftPath .pathItem {
@@ -339,4 +358,11 @@ h3 {
 
 .shiftPath .pathItem.overlapError {
     color: rgba(240, 0, 0, 1);
+}
+
+
+/* Schedule shifts */
+.scheduleShifts .loading {
+    padding-left: 2rem;
+    font-weight: bold;
 }

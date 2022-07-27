@@ -14,6 +14,10 @@ class SchedulePage {
             window.location = `${Config.homeUrl}run?run=${selectedRunName}`;
         });
 
+        $('.shiftsButton').click(() => {
+            window.location = `${Config.homeUrl}shifts?run=${selectedRunName}&schedule=${selectedScheduleName}`;
+        });
+
         const runData = await Api.getRunData(selectedRunName);
         const scheduleData = await Api.getScheduleData(selectedRunName, selectedScheduleName);
         

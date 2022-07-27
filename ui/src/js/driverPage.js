@@ -1,18 +1,19 @@
 import * as Api from './api.js';
 import * as Helper from './helper.js';
 import * as Config from './config.js';
+import * as ShiftHandler from './shiftHandler.js';
 
 class DriverPage {
     async init() {
         const selectedRunName = Helper.getUrlParameters().get('run');
         const selectedScheduleName = Helper.getUrlParameters().get('schedule');
         const selectedDriverStr = Helper.getUrlParameters().get('driver');
-        if (selectedRunName === null || selectedScheduleName === null) {
+        if (selectedRunName === null || selectedScheduleName === null || selectedDriverStr === null) {
             window.location = Config.homeUrl;
         }
 
         $('.backButton').click(() => {
-            window.location = `${Config.homeUrl}run?run=${selectedRunName}`;
+            window.location = `${Config.homeUrl}schedule?run=${selectedRunName}&schedule=${selectedScheduleName}`;
         });
 
         const runData = await Api.getRunData(selectedRunName);
@@ -20,14 +21,10 @@ class DriverPage {
 
         const dataStartDate = new Date(runData.dataStartDate);
 
-        $('.backButton').click(() => {
-            window.location = `../schedule/?run=${selectedRunName}&schedule=${selectedScheduleName}`;
-        });
-
         const selectedDriverIndex = parseInt(selectedDriverStr) - 1;
         const driver = scheduleData.drivers[selectedDriverIndex];
 
-        const name = this.showRealDriverNames ? driver.realDriverName : driver.driverName;
+        const name = Config.showRealDriverNames ? driver.realDriverName : driver.driverName;
         $('.pageTitle').html(name);
 
         // Driver info
@@ -89,80 +86,7 @@ class DriverPage {
         
 
         // Driver path
-        const shiftsHtmlParts = [];
-        let shiftHtmlParts = [];
-        let currentShiftDateStr = null;
-        driver.shifts.forEach(shift => {
-            shift.activityPath.forEach(item => {
-                if (currentShiftDateStr === null) currentShiftDateStr = Helper.parseDate(item.startTime, dataStartDate);
-                const startTimeStr = Helper.parseTime(item.startTime, dataStartDate);
-                const endTimeStr = Helper.parseTime(item.endTime, dataStartDate);
-                const durationStr = Helper.parseTimeDiff(item.startTime, item.endTime);
-
-                const activityInfo = {
-                    id: '',
-                    startTime: startTimeStr,
-                    endTime: endTimeStr,
-                    duration: durationStr,
-                    duty: null,
-                    activity: null,
-                    project: null,
-                    train: null,
-                    combinedDetails: null,
-                    fromLocation: '',
-                    toLocation: '',
-                };
-
-                if (item.type === 'activity') {
-                    activityInfo.id = item.activityIndex;
-                    activityInfo.duty = item.dutyName;
-                    activityInfo.activity = item.activityName;
-                    activityInfo.project = item.projectName;
-                    activityInfo.train = item.trainNumber;
-                    activityInfo.fromLocation = item.startStationName;
-                    activityInfo.toLocation = item.endStationName;
-                } else {
-                    let name;
-                    if (item.type === 'travelBetween') name = 'Travel between activities (shared car)';
-                    else if (item.type === 'wait') name = `Waiting (expected delay cost: &euro; ${Math.round(item.robustness)})`;
-                    else if (item.type === 'travelFromHome') name = 'Travel from home (personal car)';
-                    else if (item.type === 'travelToCar') name = 'Travel to personal car (shared car)';
-                    else if (item.type === 'travelToHome') name = 'Travel to home (personal car)';
-                    else if (item.type === 'travelToHotel') name = 'Travel to hotel (shared car)';
-                    else if (item.type === 'travelFromHotel') name = 'Travel from hotel (shared car)';
-                    else if (item.type === 'rest') name = 'Rest';
-                    else if (item.type === 'hotel') name = 'Hotel stay';
-                    else if (item.type === 'overlapError') name = 'Overlap error';
-
-                    activityInfo.combinedDetails = name;
-
-                    if (item.type == 'travelBetween' || item.type == 'travelToCar' || item.type == 'travelToHome' || item.type == 'travelToHotel') {
-                        activityInfo.fromLocation = item.startStationName;
-                    }
-                    if (item.type == 'travelBetween' || item.type == 'travelToCar' || item.type == 'travelFromHome' || item.type == 'travelFromHotel') {
-                        activityInfo.toLocation = item.endStationName;
-                    }
-
-                    if (item.type == 'wait' && item.endTime - item.startTime === 0) return;
-                }
-
-                if (!Config.shouldShowActivityIds) {
-                    delete activityInfo.id;
-                }
-
-                const activityCellHtmls = Object.keys(activityInfo).map(key => {
-                    if (activityInfo[key] === null) return '';
-                    return `<span class="cell ${key}">${activityInfo[key]}</span>`;
-                });
-                const activityHtml = `<div class="row pathItem ${item.type}">${activityCellHtmls.join('')}</div>`;
-                shiftHtmlParts.push(activityHtml);
-            });
-
-            shiftsHtmlParts.push(this.getShiftHtml(shiftsHtmlParts.length, shift, shiftHtmlParts, currentShiftDateStr, dataStartDate));
-            shiftHtmlParts = [];
-            currentShiftDateStr = null;
-        });
-
+        const shiftsHtmlParts = driver.shifts.map((shift, i) => ShiftHandler.getShiftHtml(shift, i, driver, dataStartDate));
         $('.driverPath').html(shiftsHtmlParts.join(''));
     }
 
