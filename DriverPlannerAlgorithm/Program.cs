@@ -28,7 +28,7 @@ namespace DriverPlannerAlgorithm {
         }
 
         static void Run() {
-            Console.WriteLine("Running program with start date {0} and end date {1} for {2} iterations", AppConfig.PlanningStartDate, AppConfig.PlanningEndDate, ParseHelper.LargeNumToString(AppConfig.SaIterationCount));
+            Console.WriteLine("Running program with start date {0} and end date {1} for {2} iterations", AppConfig.PlanningStartDate, AppConfig.PlanningEndDate, ToStringHelper.LargeNumToString(AppConfig.SaIterationCount));
 
             // Special app modes without instance data
             if (DevConfig.DebugRunDelaysExporter) {

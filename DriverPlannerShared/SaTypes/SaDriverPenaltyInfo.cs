@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Used to store calculated penalty amounts for a driver's activity path, or a range of it
+*/
+
+using System;
 
 namespace DriverPlannerShared {
     public class SaDriverPenaltyInfo {
@@ -113,15 +117,15 @@ namespace DriverPlannerShared {
         /* Debugging */
 
         public void DebugLog(bool isDiff, bool shouldLogZeros = true) {
-            ParseHelper.LogDebugValue(OverlapViolationCount, "Overlap violation count", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(ShiftLengthViolationCount, "Shift length violation count", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(ShiftLengthViolationAmount, "Shift length violation", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(RestTimeViolationCount, "Rest time violation count", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(RestTimeViolationAmount, "Rest time violation", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(ShiftCountViolationAmount, "Shift count violation amount", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(InvalidHotelCount, "Invalid hotel count", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(AvailabilityViolationCount, "Availability violation count", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(QualificationViolationCount, "Qualification violation count", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(OverlapViolationCount, "Overlap violation count", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(ShiftLengthViolationCount, "Shift length violation count", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(ShiftLengthViolationAmount, "Shift length violation", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(RestTimeViolationCount, "Rest time violation count", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(RestTimeViolationAmount, "Rest time violation", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(ShiftCountViolationAmount, "Shift count violation amount", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(InvalidHotelCount, "Invalid hotel count", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(AvailabilityViolationCount, "Availability violation count", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(QualificationViolationCount, "Qualification violation count", isDiff, shouldLogZeros);
         }
     }
 }

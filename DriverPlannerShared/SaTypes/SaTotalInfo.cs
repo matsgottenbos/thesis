@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Used to store combined calculated information about multiple drivers
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -62,7 +66,7 @@ namespace DriverPlannerShared {
         public void DebugLog(bool isDiff, bool shouldLogZeros = true) {
             Stats.DebugLog(isDiff, shouldLogZeros);
             PenaltyInfo.DebugLog(isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(ExternalShiftCountViolationAmount, "External shift count violation amount", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(ExternalShiftCountViolationAmount, "External shift count violation amount", isDiff, shouldLogZeros);
         }
     }
 }

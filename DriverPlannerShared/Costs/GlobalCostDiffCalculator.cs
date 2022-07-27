@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Calculates cost differences for changes that are about multiple drivers together
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

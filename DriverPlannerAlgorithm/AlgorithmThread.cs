@@ -54,92 +54,103 @@ namespace DriverPlannerAlgorithm {
                 else if (operationDouble < AlgorithmConfig.SwapProbCumulative) operation = SwapOperation.CreateRandom(Info, rand);
                 else operation = ToggleHotelOperation.CreateRandom(Info, rand);
 
+                // Determine cost difference of executing operation
                 SaTotalInfo totalInfoDiff = operation.GetCostDiff();
                 double oldAdjustedCost = GetAdjustedCost(Info.TotalInfo.Stats.Cost, Info.TotalInfo.Stats.SatisfactionScore.Value, Info.SatisfactionFactor);
                 double newAdjustedCost = GetAdjustedCost(Info.TotalInfo.Stats.Cost + totalInfoDiff.Stats.Cost, Info.TotalInfo.Stats.SatisfactionScore.Value + totalInfoDiff.Stats.SatisfactionScore.Value, Info.SatisfactionFactor);
                 double adjustedCostDiff = newAdjustedCost - oldAdjustedCost;
 
+                // Execute operation according to the principles of simulated annealing: always if the cost decreases, or with a probability of e^(-diff / temp) otherwise
                 bool isAccepted = adjustedCostDiff < 0 || rand.NextDouble() < Math.Exp(-adjustedCostDiff / Info.Temperature);
                 if (isAccepted) {
-                    operation.Execute();
-
-                    int satisfactionLevel = (int)Math.Round(Info.TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor);
-                    if (Info.TotalInfo.Stats.Penalty < 0.01) {
-                        Info.HasHadFeasibleSolutionInCycle = true;
-
-                        if (Info.TotalInfo.Stats.Cost < BestInfoBySatisfaction[satisfactionLevel].TotalInfo.Stats.Cost) {
-                            Info.LastImprovementIteration = Info.IterationNum;
-                            Info.HasImprovementSinceLog = true;
-
-                            // Check cost to remove floating point imprecisions
-                            TotalCostCalculator.ProcessAssignmentCost(Info);
-
-                            #if DEBUG
-                            if (DevConfig.DebugCheckOperations) {
-                                if (Info.TotalInfo.Stats.Penalty > 0.01) throw new Exception("New best solution is invalid");
-                                if (Math.Abs(Info.TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor - satisfactionLevel) > 0.6) throw new Exception("New best solution has incorrect satisfaction level");
-                            }
-                            #endif
-
-                            // Store as the best solution for this satisfaction level
-                            SaInfo bestInfo = Info.CopyForBestInfo();
-                            BestInfoBySatisfaction[satisfactionLevel] = bestInfo;
-
-                            // Check if this solution also improves on best solutions for lower satisfaction levels
-                            for (int searchSatisfactionLevel = satisfactionLevel - 1; searchSatisfactionLevel >= 0; searchSatisfactionLevel--) {
-                                if (Info.TotalInfo.Stats.Cost < BestInfoBySatisfaction[searchSatisfactionLevel].TotalInfo.Stats.Cost) {
-                                    BestInfoBySatisfaction[searchSatisfactionLevel] = bestInfo;
-                                }
-                            }
-                        }
-                    }
+                    ExecuteOperation(operation);
                 }
 
-                // Update iteration number
-                Info.IterationNum++;
-
-                #if DEBUG
-                // Set debugger to next iteration
-                if (DevConfig.DebugCheckOperations) {
-                    SaDebugger.NextIteration(Info);
-                }
-                #endif
-
-                // Callback
-                if (Info.IterationNum % AlgorithmConfig.ThreadCallbackFrequency == 0) {
-                    threadCallback();
-                }
-
-                // Update temperature and penalty factor
-                if (Info.IterationNum % AlgorithmConfig.TemperatureReductionFrequency == 0) {
-                    Info.Temperature *= AlgorithmConfig.TemperatureReductionFactor;
-
-                    // Check if we should end the cycle, either normally or early
-                    if (!Info.HasHadFeasibleSolutionInCycle && Info.Temperature <= AlgorithmConfig.EarlyEndCycleTemperature || Info.Temperature <= AlgorithmConfig.EndCycleTemperature) {
-                        Info.HasHadFeasibleSolutionInCycle = false;
-
-                        // Check if we should do a full reset
-                        if (rand.NextDouble() < AlgorithmConfig.FullResetProb) {
-                            // Full reset
-                            PerformFullReset();
-                        } else {
-                            // Partial reset
-                            Info.CycleNum++;
-                            Info.SatisfactionFactor = (float)rand.NextDouble(AlgorithmConfig.CycleMinSatisfactionFactor, AlgorithmConfig.CycleMaxSatisfactionFactor);
-                            Info.Temperature = (float)rand.NextDouble(AlgorithmConfig.CycleMinInitialTemperature, AlgorithmConfig.CycleMaxInitialTemperature);
-                        }
-                    }
-
-                    TotalCostCalculator.ProcessAssignmentCost(Info);
-                }
-
-                #if DEBUG
-                // Reset iteration in debugger after additional checks
-                if (DevConfig.DebugCheckOperations) {
-                    SaDebugger.ResetIteration(Info);
-                }
-                #endif
+                // Update parameters to move to the next iteration
+                NextIteration();
             }
+        }
+
+        void ExecuteOperation(AbstractOperation operation) {
+            operation.Execute();
+
+            int satisfactionLevel = (int)Math.Round(Info.TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor);
+            if (Info.TotalInfo.Stats.Penalty < 0.01) {
+                Info.HasHadFeasibleSolutionInCycle = true;
+
+                if (Info.TotalInfo.Stats.Cost < BestInfoBySatisfaction[satisfactionLevel].TotalInfo.Stats.Cost) {
+                    Info.LastImprovementIteration = Info.IterationNum;
+                    Info.HasImprovementSinceLog = true;
+
+                    // Check cost to remove floating point imprecisions
+                    TotalCostCalculator.ProcessAssignmentCost(Info);
+
+                    #if DEBUG
+                    if (DevConfig.DebugCheckOperations) {
+                        if (Info.TotalInfo.Stats.Penalty > 0.01) throw new Exception("New best solution is invalid");
+                        if (Math.Abs(Info.TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor - satisfactionLevel) > 0.6) throw new Exception("New best solution has incorrect satisfaction level");
+                    }
+                    #endif
+
+                    // Store as the best solution for this satisfaction level
+                    SaInfo bestInfo = Info.CopyForBestInfo();
+                    BestInfoBySatisfaction[satisfactionLevel] = bestInfo;
+
+                    // Check if this solution also improves on best solutions for lower satisfaction levels
+                    for (int searchSatisfactionLevel = satisfactionLevel - 1; searchSatisfactionLevel >= 0; searchSatisfactionLevel--) {
+                        if (Info.TotalInfo.Stats.Cost < BestInfoBySatisfaction[searchSatisfactionLevel].TotalInfo.Stats.Cost) {
+                            BestInfoBySatisfaction[searchSatisfactionLevel] = bestInfo;
+                        }
+                    }
+                }
+            }
+        }
+
+        void NextIteration() {
+            // Update iteration number
+            Info.IterationNum++;
+
+            #if DEBUG
+            // Set debugger to next iteration
+            if (DevConfig.DebugCheckOperations) {
+                SaDebugger.NextIteration(Info);
+            }
+            #endif
+
+            // Callback
+            if (Info.IterationNum % AlgorithmConfig.ThreadCallbackFrequency == 0) {
+                threadCallback();
+            }
+
+            // Update temperature and penalty factor
+            if (Info.IterationNum % AlgorithmConfig.TemperatureReductionFrequency == 0) {
+                Info.Temperature *= AlgorithmConfig.TemperatureReductionFactor;
+
+                // Check if we should end the cycle, either normally or early
+                if (!Info.HasHadFeasibleSolutionInCycle && Info.Temperature <= AlgorithmConfig.EarlyEndCycleTemperature || Info.Temperature <= AlgorithmConfig.EndCycleTemperature) {
+                    Info.HasHadFeasibleSolutionInCycle = false;
+
+                    // Check if we should do a full reset
+                    if (rand.NextDouble() < AlgorithmConfig.FullResetProb) {
+                        // Full reset
+                        PerformFullReset();
+                    } else {
+                        // Partial reset
+                        Info.CycleNum++;
+                        Info.SatisfactionFactor = (float)rand.NextDouble(AlgorithmConfig.CycleMinSatisfactionFactor, AlgorithmConfig.CycleMaxSatisfactionFactor);
+                        Info.Temperature = (float)rand.NextDouble(AlgorithmConfig.CycleMinInitialTemperature, AlgorithmConfig.CycleMaxInitialTemperature);
+                    }
+                }
+
+                TotalCostCalculator.ProcessAssignmentCost(Info);
+            }
+
+            #if DEBUG
+            // Reset iteration in debugger after additional checks
+            if (DevConfig.DebugCheckOperations) {
+                SaDebugger.ResetIteration(Info);
+            }
+            #endif
         }
 
         void PerformFullReset() {
@@ -153,7 +164,7 @@ namespace DriverPlannerAlgorithm {
             Info.IsHotelStayAfterActivity = new bool[Info.Instance.Activities.Length];
 
             // Create a random initial assignment
-            Info.Assignment = GetInitialAssignment();
+            Info.Assignment = GenerateInitialAssignment();
             Info.ProcessDriverPaths();
 
             #if DEBUG
@@ -176,7 +187,7 @@ namespace DriverPlannerAlgorithm {
             #endif
         }
 
-        Driver[] GetInitialAssignment() {
+        Driver[] GenerateInitialAssignment() {
             Driver[] assignment = new Driver[Info.Instance.Activities.Length];
             List<Activity>[] driverPaths = new List<Activity>[Info.Instance.AllDrivers.Length];
             for (int i = 0; i < driverPaths.Length; i++) driverPaths[i] = new List<Activity>();

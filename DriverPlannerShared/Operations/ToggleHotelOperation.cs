@@ -38,7 +38,7 @@ namespace DriverPlannerShared {
             totalInfoDiff.AddDriverInfo(driverInfoDiff);
 
             // Determine satisfaction score diff
-            totalInfoDiff.Stats.SatisfactionScore = SatisfactionCalculator.GetSatisfactionScoreDiff(totalInfoDiff, driver, driverInfoDiff, null, null, info);
+            totalInfoDiff.Stats.SatisfactionScore = SatisfactionScoreCalculator.GetSatisfactionScoreDiff(totalInfoDiff, driver, driverInfoDiff, null, null, info);
 
             return totalInfoDiff;
         }

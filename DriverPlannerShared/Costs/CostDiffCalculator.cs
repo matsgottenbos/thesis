@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Calculates cost differences for changes to a single driver
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,7 +12,7 @@ using System.Threading.Tasks;
 namespace DriverPlannerShared {
     public static class CostDiffCalculator {
         static string GetRangeString(Activity firstRelevantActivity, Activity lastRelevantActivity) {
-            return string.Format("{0}--{1}", ParseHelper.ActivityToIndexOrUnderscore(firstRelevantActivity), ParseHelper.ActivityToIndexOrUnderscore(lastRelevantActivity));
+            return string.Format("{0}--{1}", ToStringHelper.ActivityToIndexOrUnderscore(firstRelevantActivity), ToStringHelper.ActivityToIndexOrUnderscore(lastRelevantActivity));
         }
 
         static string GetNormalRangeInfo(Activity firstRelevantActivity, Activity lastRelevantActivity) {

@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Preprocess shift info based on settings
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

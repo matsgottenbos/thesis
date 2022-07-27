@@ -1,4 +1,8 @@
-﻿using NPOI.XSSF.UserModel;
+﻿/*
+ * Process miscellaneous parts of imported data
+*/
+
+using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.IO;

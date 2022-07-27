@@ -1,4 +1,10 @@
-﻿/*===============================[ XorShiftPlus ]==============================
+﻿/*
+ * Faster implementation of a Random object
+ * Created by R. Wildenhaus, used under MIT license
+*/
+
+
+/*===============================[ XorShiftPlus ]==============================
   ==-------------[ (c) 2018 R. Wildenhaus - Licensed under MIT ]-------------==
   ============================================================================= */
 

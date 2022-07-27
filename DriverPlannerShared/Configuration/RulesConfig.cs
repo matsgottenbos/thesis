@@ -175,7 +175,7 @@ namespace DriverPlannerShared {
             ExcelSheet satisfactionSettingsSheet = new ExcelSheet("Satisfaction", settingsBook);
 
             Dictionary<string, Func<SaDriverInfo, float>> rangeCriterionNameToRelevantValueFunc = new Dictionary<string, Func<SaDriverInfo, float>>() {
-                { "Route variation", driverInfo => SatisfactionCalculator.GetDuplicateRouteCount(driverInfo) },
+                { "Route variation", driverInfo => SatisfactionScoreCalculator.GetDuplicateRouteCount(driverInfo) },
                 { "Travel time", driverInfo => driverInfo.TravelTime },
                 { "Contract time accuracy", driverInfo => driverInfo.WorkedTime },
                 { "Shift lengths", driverInfo => driverInfo.IdealShiftLengthScore },
@@ -183,7 +183,7 @@ namespace DriverPlannerShared {
                 { "Night shifts", driverInfo => driverInfo.NightShiftCountByCompanyRules },
                 { "Weekend shifts", driverInfo => driverInfo.WeekendShiftCountByCompanyRules },
                 { "Hotel stays", driverInfo => driverInfo.HotelCount },
-                { "Consecutive free days", driverInfo => SatisfactionCalculator.GetConsecutiveFreeDaysScore(driverInfo) },
+                { "Consecutive free days", driverInfo => SatisfactionScoreCalculator.GetConsecutiveFreeDaysScore(driverInfo) },
                 { "Resting time", driverInfo => driverInfo.IdealRestingTimeScore },
             };
 

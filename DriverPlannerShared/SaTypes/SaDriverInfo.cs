@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Used to store calculated information about a driver's activity path, or a range of it
+*/
+
+using System;
 using System.Linq;
 
 namespace DriverPlannerShared {
@@ -73,17 +77,17 @@ namespace DriverPlannerShared {
         public void DebugLog(bool isDiff, bool shouldLogZeros = true) {
             Stats.DebugLog(isDiff, shouldLogZeros);
             PenaltyInfo.DebugLog(isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(WorkedTime, "Worked time", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(ShiftCount, "Shift count", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(HotelCount, "Hotel count", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(NightShiftCountByCompanyRules, "Night shift count (company rules)", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(WeekendShiftCountByCompanyRules, "Weekend shift count (company rules)", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(TravelTime, "Travel time", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(SingleFreeDayCount, "Single free days", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(DoubleFreeDayCount, "Double free days", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(IdealShiftLengthScore, "Ideal shift length score", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(IdealRestingTimeScore, "Ideal resting time score", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(ParseHelper.ToString(SharedRouteCounts), "Shared route counts", isDiff, SharedRouteCounts.Sum() == 0, shouldLogZeros);
+            ToStringHelper.LogDebugValue(WorkedTime, "Worked time", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(ShiftCount, "Shift count", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(HotelCount, "Hotel count", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(NightShiftCountByCompanyRules, "Night shift count (company rules)", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(WeekendShiftCountByCompanyRules, "Weekend shift count (company rules)", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(TravelTime, "Travel time", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(SingleFreeDayCount, "Single free days", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(DoubleFreeDayCount, "Double free days", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(IdealShiftLengthScore, "Ideal shift length score", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(IdealRestingTimeScore, "Ideal resting time score", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(ToStringHelper.ToString(SharedRouteCounts), "Shared route counts", isDiff, SharedRouteCounts.Sum() == 0, shouldLogZeros);
         }
     }
 }

@@ -1,4 +1,10 @@
-﻿using DriverPlannerShared;
+﻿/*
+ * Runs a local HTTP server to show a web interface visualising the schedules determined by the algorithm
+ * Based on code by Benjamin Summerton, used under Unlicense license
+ * Original: https://github.com/define-private-public/CSharpNetworking/blob/master/02.HttpListener/HttpServer.cs
+*/
+
+using DriverPlannerShared;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -11,8 +17,6 @@ using System.Threading.Tasks;
 
 namespace DriverPlannerUi {
     static class UiHandler {
-        // Based on: https://github.com/define-private-public/CSharpNetworking/blob/master/02.HttpListener/HttpServer.cs (license: Unlicense)
-
         static HttpListener listener;
 
         public static void Run() {
@@ -21,7 +25,7 @@ namespace DriverPlannerUi {
         }
 
         static void HostUiServer() {
-            // Create a Http server and start listening for incoming connections
+            // Create a HTTP server and start listening for incoming connections
             listener = new HttpListener();
             listener.Prefixes.Add(AppConfig.UiHostUrl);
             listener.Start();

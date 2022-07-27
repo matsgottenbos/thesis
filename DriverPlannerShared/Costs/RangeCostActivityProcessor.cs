@@ -1,4 +1,8 @@
-﻿using DriverPlannerShared;
+﻿/*
+ * Process a single activity for the range cost calculator
+*/
+
+using DriverPlannerShared;
 using System;
 using System.Collections.Generic;
 using System.Linq;

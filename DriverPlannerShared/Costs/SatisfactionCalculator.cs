@@ -1,4 +1,8 @@
-﻿using DriverPlannerShared;
+﻿/*
+ * Calculates satisfaction score for an assignment
+*/
+
+using DriverPlannerShared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DriverPlannerShared {
-    public static class SatisfactionCalculator {
+    public static class SatisfactionScoreCalculator {
         /* Satisfaction score */
 
         public static double GetSatisfactionScore(SaInfo info) {

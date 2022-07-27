@@ -39,7 +39,7 @@ namespace DriverPlannerShared {
             if (assignedExternalDriverTypeDiff != null) totalInfoDiff.AddExternalDriverTypeInfo(assignedExternalDriverTypeDiff);
 
             // Determine satisfaction score diff
-            totalInfoDiff.Stats.SatisfactionScore = SatisfactionCalculator.GetSatisfactionScoreDiff(totalInfoDiff, unassignedDriver, unassignedDriverInfoDiff, assignedDriver, assignedDriverInfoDiff, info);
+            totalInfoDiff.Stats.SatisfactionScore = SatisfactionScoreCalculator.GetSatisfactionScoreDiff(totalInfoDiff, unassignedDriver, unassignedDriverInfoDiff, assignedDriver, assignedDriverInfoDiff, info);
 
             return totalInfoDiff;
         }

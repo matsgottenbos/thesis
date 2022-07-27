@@ -1,4 +1,8 @@
-﻿using MathNet.Numerics.Distributions;
+﻿/*
+ * Create activity objects based on imported data
+*/
+
+using MathNet.Numerics.Distributions;
 using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;

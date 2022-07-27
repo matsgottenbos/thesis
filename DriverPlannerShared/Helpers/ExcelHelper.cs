@@ -1,4 +1,8 @@
-﻿using NPOI.SS.UserModel;
+﻿/*
+ * Helper methods for reading Excel books
+*/
+
+using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;

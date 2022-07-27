@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Used to store calculated information about an external drivers's activity path, or a range of it, that concerns the external driver type
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,10 +55,10 @@ namespace DriverPlannerShared {
         /* Debugging */
 
         public void DebugLog(bool isDiff, bool shouldLogZeros = true) {
-            ParseHelper.LogDebugValue(Cost, "Cost", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(Penalty, "Penalty", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(ExternalShiftCount, "External shift count", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(ExternalShiftCountViolationAmount, "External shift count violation amount", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(Cost, "Cost", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(Penalty, "Penalty", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(ExternalShiftCount, "External shift count", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(ExternalShiftCountViolationAmount, "External shift count violation amount", isDiff, shouldLogZeros);
         }
     }
 }

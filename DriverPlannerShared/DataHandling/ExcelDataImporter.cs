@@ -1,4 +1,8 @@
-﻿using NPOI.SS.UserModel;
+﻿/*
+ * Import data from an Excel file
+*/
+
+using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;

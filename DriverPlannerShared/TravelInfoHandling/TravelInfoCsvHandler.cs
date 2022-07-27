@@ -1,4 +1,8 @@
-﻿using CsvHelper;
+﻿/*
+ * Helper methods to read and write travel info to CSV files
+*/
+
+using CsvHelper;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

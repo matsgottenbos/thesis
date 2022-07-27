@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Stores costs, robustness and satisfaction information
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,12 +57,12 @@ namespace DriverPlannerShared {
         }
 
         public void DebugLog(bool isDiff, bool shouldLogZeros = true) {
-            ParseHelper.LogDebugValue(Cost, "Cost", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(RawCost, "Raw cost", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(Robustness, "Robustness", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(Penalty, "Penalty", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(DriverSatisfaction, "Driver satisfaction", isDiff, shouldLogZeros);
-            ParseHelper.LogDebugValue(SatisfactionScore, "Satisfaction score", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(Cost, "Cost", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(RawCost, "Raw cost", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(Robustness, "Robustness", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(Penalty, "Penalty", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(DriverSatisfaction, "Driver satisfaction", isDiff, shouldLogZeros);
+            ToStringHelper.LogDebugValue(SatisfactionScore, "Satisfaction score", isDiff, shouldLogZeros);
         }
     }
 }

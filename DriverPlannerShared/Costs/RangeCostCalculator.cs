@@ -1,4 +1,8 @@
-﻿using DriverPlannerShared;
+﻿/*
+ * Calculates costs for a range of activities for a driver
+*/
+
+using DriverPlannerShared;
 using System;
 using System.Collections.Generic;
 using System.Linq;

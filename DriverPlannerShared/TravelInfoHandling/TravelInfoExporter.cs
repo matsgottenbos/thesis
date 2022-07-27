@@ -1,4 +1,8 @@
-﻿using CsvHelper;
+﻿/*
+ * Helper methods to export travel info
+*/
+
+using CsvHelper;
 using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;

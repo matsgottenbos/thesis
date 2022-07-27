@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Helper methods for multithreading
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

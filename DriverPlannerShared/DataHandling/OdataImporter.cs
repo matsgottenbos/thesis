@@ -1,4 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
+﻿/*
+ * Import data from the RailCube OData API
+*/
+
+using Newtonsoft.Json.Linq;
 using RailCube.WebApi.Models;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,8 @@
-﻿using DriverPlannerShared;
+﻿/*
+ * Calculates total cost of an assignment
+*/
+
+using DriverPlannerShared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +23,7 @@ namespace DriverPlannerShared {
                 info.DriverInfos[driverIndex] = driverInfo;
                 info.TotalInfo.AddDriverInfo(driverInfo);
             }
-            info.TotalInfo.Stats.SatisfactionScore = SatisfactionCalculator.GetSatisfactionScore(info);
+            info.TotalInfo.Stats.SatisfactionScore = SatisfactionScoreCalculator.GetSatisfactionScore(info);
 
             info.ExternalDriverTypeInfos = new SaExternalDriverTypeInfo[info.Instance.ExternalDriverTypes.Length];
             for (int externalDriverTypeIndex = 0; externalDriverTypeIndex < info.Instance.ExternalDriverTypes.Length; externalDriverTypeIndex++) {

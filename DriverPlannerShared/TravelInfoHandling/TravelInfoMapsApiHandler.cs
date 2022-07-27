@@ -1,4 +1,8 @@
-﻿using Google.Maps;
+﻿/*
+ * Helper methods for Google Maps API requests
+*/
+
+using Google.Maps;
 using Google.Maps.DistanceMatrix;
 using System;
 using System.Collections.Generic;
