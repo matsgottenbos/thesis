@@ -6,7 +6,7 @@
 
     public class DevConfig {
         /* Data source */
-        // TODO: remove setting
+        /// <summary>Data source to import from.</summary>
         public const DataSource SelectedDataSource = DataSource.Odata;
 
         /* Time periods */
@@ -23,15 +23,15 @@
 
         /* File structure */
         /// <summary>Path to the solution root folder.</summary>
-        public static readonly string SolutionFolder = (Environment.Is64BitProcess ? Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName : Directory.GetParent(Environment.CurrentDirectory).Parent.FullName) + @"\..\";
+        public static readonly string SolutionFolder = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.Parent.FullName;
         /// <summary>Path to the input folder.</summary>
-        public static readonly string InputFolder = Path.Combine(SolutionFolder, @"input\");
+        public static readonly string InputFolder = Path.Combine(SolutionFolder, @"Input\");
         /// <summary>Path to the intermediate folder.</summary>
-        public static readonly string IntermediateFolder = Path.Combine(SolutionFolder, @"intermediate\");
+        public static readonly string IntermediateFolder = Path.Combine(SolutionFolder, @"Intermediate\");
         /// <summary>Path to the output folder.</summary>
-        public static readonly string OutputFolder = Path.Combine(SolutionFolder, @"output\");
+        public static readonly string OutputFolder = Path.Combine(SolutionFolder, @"Output\");
         /// <summary>Path to the UI folder.</summary>
-        public static readonly string UiFolder = Path.Combine(SolutionFolder, @"ui\");
+        public static readonly string UiFolder = Path.Combine(SolutionFolder, @"UI\");
 
         /* Debugging settings */
         /// <summary>Whether to disable multithreading in the algorithm.</summary>

@@ -66,42 +66,42 @@ namespace DriverPlannerShared {
         public static float QualificationViolationPenalty { get; private set; }
 
         public static void Init(XSSFWorkbook settingsBook) {
-            ExcelSheet appSettingsSheet = new ExcelSheet("Algorithm", settingsBook);
-            Dictionary<string, ICell> algorithmSettingsCellDict = ConfigHandler.GetSettingsValueCellsAsDict(appSettingsSheet);
+            ExcelSheet algorithmSettingsSheet = new ExcelSheet("Algorithm", settingsBook);
+            Dictionary<string, ICell> algorithmSettingsCellDict = ConfigHandler.GetSettingsValueCellsAsDict(algorithmSettingsSheet);
 
             // Simulated annealing parameters
-            LogFrequency = (int)ParseHelper.ParseLargeNumString(ExcelSheet.GetStringValue(algorithmSettingsCellDict["Log frequency"]));
-            ThreadCallbackFrequency = (int)ParseHelper.ParseLargeNumString(ExcelSheet.GetStringValue(algorithmSettingsCellDict["Thread callback frequency"]));
-            TemperatureReductionFrequency = (int)ParseHelper.ParseLargeNumString(ExcelSheet.GetStringValue(algorithmSettingsCellDict["Temperature reduction frequency"]));
-            TemperatureReductionFactor = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Temperature reduction factor"]).Value;
-            InitialTemperature = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Initial temperature"]).Value;
-            CycleMinInitialTemperature = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Cycle min initial temperature"]).Value;
-            CycleMaxInitialTemperature = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Cycle max initial temperature"]).Value;
-            EndCycleTemperature = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["End cycle temperature"]).Value;
-            EarlyEndCycleTemperature = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Early end cycle temperature"]).Value;
-            CycleMinSatisfactionFactor = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Cycle min satisfaction factor"]).Value;
-            CycleMaxSatisfactionFactor = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Cycle max satisfaction factor"]).Value;
-            FullResetProb = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Full reset probability"]).Value;
-            ShiftWaitingTimeThreshold = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Shift waiting time threshold"]).Value);
-            ParetoFrontMinCostDiff = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Pareto front min cost diff"]).Value;
+            LogFrequency = (int)ParseHelper.ParseLargeNumString(algorithmSettingsSheet.GetStringValue(algorithmSettingsCellDict["Log frequency"]));
+            ThreadCallbackFrequency = (int)ParseHelper.ParseLargeNumString(algorithmSettingsSheet.GetStringValue(algorithmSettingsCellDict["Thread callback frequency"]));
+            TemperatureReductionFrequency = (int)ParseHelper.ParseLargeNumString(algorithmSettingsSheet.GetStringValue(algorithmSettingsCellDict["Temperature reduction frequency"]));
+            TemperatureReductionFactor = algorithmSettingsSheet.GetFloatValue(algorithmSettingsCellDict["Temperature reduction factor"]).Value;
+            InitialTemperature = algorithmSettingsSheet.GetIntValue(algorithmSettingsCellDict["Initial temperature"]).Value;
+            CycleMinInitialTemperature = algorithmSettingsSheet.GetIntValue(algorithmSettingsCellDict["Cycle min initial temperature"]).Value;
+            CycleMaxInitialTemperature = algorithmSettingsSheet.GetIntValue(algorithmSettingsCellDict["Cycle max initial temperature"]).Value;
+            EndCycleTemperature = algorithmSettingsSheet.GetFloatValue(algorithmSettingsCellDict["End cycle temperature"]).Value;
+            EarlyEndCycleTemperature = algorithmSettingsSheet.GetFloatValue(algorithmSettingsCellDict["Early end cycle temperature"]).Value;
+            CycleMinSatisfactionFactor = algorithmSettingsSheet.GetFloatValue(algorithmSettingsCellDict["Cycle min satisfaction factor"]).Value;
+            CycleMaxSatisfactionFactor = algorithmSettingsSheet.GetFloatValue(algorithmSettingsCellDict["Cycle max satisfaction factor"]).Value;
+            FullResetProb = algorithmSettingsSheet.GetFloatValue(algorithmSettingsCellDict["Full reset probability"]).Value;
+            ShiftWaitingTimeThreshold = ConfigHandler.HourToMinuteValue(algorithmSettingsSheet.GetFloatValue(algorithmSettingsCellDict["Shift waiting time threshold"]).Value);
+            ParetoFrontMinCostDiff = algorithmSettingsSheet.GetIntValue(algorithmSettingsCellDict["Pareto front min cost diff"]).Value;
 
             // Operation probabilities
-            AssignInternalProbCumulative = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Assign internal"]).Value;
-            AssignExternalProbCumulative = AssignInternalProbCumulative + ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Assign external"]).Value;
-            SwapProbCumulative = AssignExternalProbCumulative + ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Swap"]).Value;
-            ToggleHotelProbCumulative = SwapProbCumulative + ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Toggle hotel"]).Value;
+            AssignInternalProbCumulative = algorithmSettingsSheet.GetFloatValue(algorithmSettingsCellDict["Assign internal"]).Value;
+            AssignExternalProbCumulative = AssignInternalProbCumulative + algorithmSettingsSheet.GetFloatValue(algorithmSettingsCellDict["Assign external"]).Value;
+            SwapProbCumulative = AssignExternalProbCumulative + algorithmSettingsSheet.GetFloatValue(algorithmSettingsCellDict["Swap"]).Value;
+            ToggleHotelProbCumulative = SwapProbCumulative + algorithmSettingsSheet.GetFloatValue(algorithmSettingsCellDict["Toggle hotel"]).Value;
 
             // Penalties
-            OverlapViolationPenalty = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Overlap per violation"]).Value;
-            ShiftLengthViolationPenalty = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Shift length per violation"]).Value;
-            ShiftLengthViolationPenaltyPerMin = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Shift length per excess hour"]).Value / (float)DevConfig.HourLength;
-            RestTimeViolationPenalty = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Resting time per violation"]).Value;
-            RestTimeViolationPenaltyPerMin = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Resting time per deficient hour"]).Value / (float)DevConfig.HourLength;
-            InternalShiftCountViolationPenaltyPerShift = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Internal shift count per excess shift"]).Value;
-            ExternalShiftCountPenaltyPerShift = ExcelSheet.GetIntValue(algorithmSettingsCellDict["External shift count per excess shift"]).Value;
-            InvalidHotelPenalty = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Invalid hotel per violation"]).Value;
-            AvailabilityViolationPenalty = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Availability per violation"]).Value;
-            QualificationViolationPenalty = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Qualification per violation"]).Value;
+            OverlapViolationPenalty = algorithmSettingsSheet.GetIntValue(algorithmSettingsCellDict["Overlap per violation"]).Value;
+            ShiftLengthViolationPenalty = algorithmSettingsSheet.GetIntValue(algorithmSettingsCellDict["Shift length per violation"]).Value;
+            ShiftLengthViolationPenaltyPerMin = algorithmSettingsSheet.GetIntValue(algorithmSettingsCellDict["Shift length per excess hour"]).Value / (float)DevConfig.HourLength;
+            RestTimeViolationPenalty = algorithmSettingsSheet.GetIntValue(algorithmSettingsCellDict["Resting time per violation"]).Value;
+            RestTimeViolationPenaltyPerMin = algorithmSettingsSheet.GetIntValue(algorithmSettingsCellDict["Resting time per deficient hour"]).Value / (float)DevConfig.HourLength;
+            InternalShiftCountViolationPenaltyPerShift = algorithmSettingsSheet.GetIntValue(algorithmSettingsCellDict["Internal shift count per excess shift"]).Value;
+            ExternalShiftCountPenaltyPerShift = algorithmSettingsSheet.GetIntValue(algorithmSettingsCellDict["External shift count per excess shift"]).Value;
+            InvalidHotelPenalty = algorithmSettingsSheet.GetIntValue(algorithmSettingsCellDict["Invalid hotel per violation"]).Value;
+            AvailabilityViolationPenalty = algorithmSettingsSheet.GetIntValue(algorithmSettingsCellDict["Availability per violation"]).Value;
+            QualificationViolationPenalty = algorithmSettingsSheet.GetIntValue(algorithmSettingsCellDict["Qualification per violation"]).Value;
         }
     }
 }

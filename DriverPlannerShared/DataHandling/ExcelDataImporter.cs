@@ -7,7 +7,7 @@ using NPOI.XSSF.UserModel;
 namespace DriverPlannerShared {
     public static class ExcelDataImporter {
         public static Instance Import() {
-            XSSFWorkbook testDataBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "testData.xlsx"));
+            XSSFWorkbook testDataBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "Test data.xlsx"));
             ExcelSheet activitiesSheet = new ExcelSheet("DutyActivities", testDataBook);
 
             RawActivity[] rawActivities = ParseRawActivities(activitiesSheet);

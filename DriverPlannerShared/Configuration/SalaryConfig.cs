@@ -27,10 +27,10 @@ namespace DriverPlannerShared {
             SalaryRateBlock[] weekdaySalaryRates = ProcessWeekdaySalaryRates(driverType, weekdaySalaryBlocksSettingsSheet);
 
             Dictionary<string, ICell> valueCellPerDriverTypeSetting = GetDriverTypeSettingsValueCellsAsDict(driverType, salariesSettingsSheet);
-            float weekendHourlyRate = ExcelSheet.GetFloatValue(valueCellPerDriverTypeSetting["Weekend rate"]).Value;
-            float travelTimeHourlyRate = ExcelSheet.GetFloatValue(valueCellPerDriverTypeSetting["Travel time rate"]).Value;
-            float minPaidShiftTimeHours = ExcelSheet.GetFloatValue(valueCellPerDriverTypeSetting["Minimum paid shift time"]).Value;
-            float unpaidTravelTimePerShiftHours = ExcelSheet.GetFloatValue(valueCellPerDriverTypeSetting["Unpaid travel time per shift"]).Value;
+            float weekendHourlyRate = salariesSettingsSheet.GetFloatValue(valueCellPerDriverTypeSetting["Weekend rate"]).Value;
+            float travelTimeHourlyRate = salariesSettingsSheet.GetFloatValue(valueCellPerDriverTypeSetting["Travel time rate"]).Value;
+            float minPaidShiftTimeHours = salariesSettingsSheet.GetFloatValue(valueCellPerDriverTypeSetting["Minimum paid shift time"]).Value;
+            float unpaidTravelTimePerShiftHours = salariesSettingsSheet.GetFloatValue(valueCellPerDriverTypeSetting["Unpaid travel time per shift"]).Value;
 
             return InternalSalarySettings.CreateByHours(weekdaySalaryRates, weekendHourlyRate, travelTimeHourlyRate, minPaidShiftTimeHours, unpaidTravelTimePerShiftHours);
         }
@@ -39,10 +39,10 @@ namespace DriverPlannerShared {
             SalaryRateBlock[] weekdaySalaryRates = ProcessWeekdaySalaryRates(driverType, weekdaySalaryBlocksSettingsSheet);
 
             Dictionary<string, ICell> valueCellPerDriverTypeSetting = GetDriverTypeSettingsValueCellsAsDict(driverType, salariesSettingsSheet);
-            float weekendHourlyRate = ExcelSheet.GetFloatValue(valueCellPerDriverTypeSetting["Weekend rate"]).Value;
-            float travelDistanceRate = ExcelSheet.GetFloatValue(valueCellPerDriverTypeSetting["Travel distance rate"]).Value;
-            float minPaidShiftTimeHours = ExcelSheet.GetFloatValue(valueCellPerDriverTypeSetting["Minimum paid shift time"]).Value;
-            int unpaidTravelDistancePerShift = ExcelSheet.GetIntValue(valueCellPerDriverTypeSetting["Unpaid travel distance per shift"]).Value;
+            float weekendHourlyRate = salariesSettingsSheet.GetFloatValue(valueCellPerDriverTypeSetting["Weekend rate"]).Value;
+            float travelDistanceRate = salariesSettingsSheet.GetFloatValue(valueCellPerDriverTypeSetting["Travel distance rate"]).Value;
+            float minPaidShiftTimeHours = salariesSettingsSheet.GetFloatValue(valueCellPerDriverTypeSetting["Minimum paid shift time"]).Value;
+            int unpaidTravelDistancePerShift = salariesSettingsSheet.GetIntValue(valueCellPerDriverTypeSetting["Unpaid travel distance per shift"]).Value;
 
             return ExternalSalarySettings.CreateByHours(weekdaySalaryRates, weekendHourlyRate, travelDistanceRate, minPaidShiftTimeHours, unpaidTravelDistancePerShift);
         }

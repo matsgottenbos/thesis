@@ -93,51 +93,51 @@ namespace DriverPlannerShared {
             Dictionary<string, ICell> rulesSettingsCellDict = ConfigHandler.GetSettingsValueCellsAsDict(rulesSettingsSheet);
 
             // Shift constraints
-            DriverMaxShiftCount = ExcelSheet.GetIntValue(rulesSettingsCellDict["Max shift count"]).Value;
-            MaxMainDayShiftLength = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(rulesSettingsCellDict["Max day shift length with travel"]).Value);
-            MaxFullDayShiftLength = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(rulesSettingsCellDict["Max day shift length without travel"]).Value);
-            MaxMainNightShiftLength = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(rulesSettingsCellDict["Max night shift length with travel"]).Value);
-            MaxFullNightShiftLength = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(rulesSettingsCellDict["Max night shift length without travel"]).Value);
-            MinRestTimeAfterDayShift = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(rulesSettingsCellDict["Min resting time after day shift"]).Value);
-            MinRestTimeAfterNightShift = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(rulesSettingsCellDict["Min resting time after night shift"]).Value);
-            HotelMaxRestTime = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(rulesSettingsCellDict["Max hotel stay length"]).Value);
-            HotelExtraTravelTime = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(rulesSettingsCellDict["Hotel extra travel time"]).Value);
-            HotelExtraTravelDistance = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(rulesSettingsCellDict["Hotel extra travel distance"]).Value);
-            SingleFreeDayMinRestTime = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(rulesSettingsCellDict["Min resting time for free day"]).Value);
-            DoubleFreeDayMinRestTime = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(rulesSettingsCellDict["Min resting time for double free day"]).Value);
+            DriverMaxShiftCount = rulesSettingsSheet.GetIntValue(rulesSettingsCellDict["Max shift count"]).Value;
+            MaxMainDayShiftLength = ConfigHandler.HourToMinuteValue(rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Max day shift length with travel"]).Value);
+            MaxFullDayShiftLength = ConfigHandler.HourToMinuteValue(rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Max day shift length without travel"]).Value);
+            MaxMainNightShiftLength = ConfigHandler.HourToMinuteValue(rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Max night shift length with travel"]).Value);
+            MaxFullNightShiftLength = ConfigHandler.HourToMinuteValue(rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Max night shift length without travel"]).Value);
+            MinRestTimeAfterDayShift = ConfigHandler.HourToMinuteValue(rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Min resting time after day shift"]).Value);
+            MinRestTimeAfterNightShift = ConfigHandler.HourToMinuteValue(rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Min resting time after night shift"]).Value);
+            HotelMaxRestTime = ConfigHandler.HourToMinuteValue(rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Max hotel stay length"]).Value);
+            HotelExtraTravelTime = ConfigHandler.HourToMinuteValue(rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Hotel extra travel time"]).Value);
+            HotelExtraTravelDistance = ConfigHandler.HourToMinuteValue(rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Hotel extra travel distance"]).Value);
+            SingleFreeDayMinRestTime = ConfigHandler.HourToMinuteValue(rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Min resting time for free day"]).Value);
+            DoubleFreeDayMinRestTime = ConfigHandler.HourToMinuteValue(rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Min resting time for double free day"]).Value);
 
             // Shift type rules
-            IsNightShiftByLawFunc = GetShiftTypeRuleFunc(rulesSettingsCellDict, "Night shift by law rule type", "Night shift by law rule minimum");
-            IsNightShiftByCompanyRulesFunc = GetShiftTypeRuleFunc(rulesSettingsCellDict, "Night shift by company rule type", "Night shift by company rule minimum");
-            IsWeekendShiftByCompanyRulesFunc = GetShiftTypeRuleFunc(rulesSettingsCellDict, "Weekend shift by company rule type", "Weekend shift by company rule minimum");
+            IsNightShiftByLawFunc = GetShiftTypeRuleFunc(rulesSettingsSheet, rulesSettingsCellDict, "Night shift by law rule type", "Night shift by law rule minimum");
+            IsNightShiftByCompanyRulesFunc = GetShiftTypeRuleFunc(rulesSettingsSheet, rulesSettingsCellDict, "Night shift by company rule type", "Night shift by company rule minimum");
+            IsWeekendShiftByCompanyRulesFunc = GetShiftTypeRuleFunc(rulesSettingsSheet, rulesSettingsCellDict, "Weekend shift by company rule type", "Weekend shift by company rule minimum");
 
             // Misc costs
-            HotelCosts = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Hotel costs"]).Value;
-            SharedCarCostsPerKilometer = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Shared car costs per kilometer"]).Value;
+            HotelCosts = rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Hotel costs"]).Value;
+            SharedCarCostsPerKilometer = rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Shared car costs per kilometer"]).Value;
 
             // Satisfaction
-            IdealShiftLength = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(rulesSettingsCellDict["Ideal shift length for satisfaction"]).Value);
-            IdealRestTime = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(rulesSettingsCellDict["Ideal resting time for satisfaction"]).Value);
+            IdealShiftLength = ConfigHandler.HourToMinuteValue(rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Ideal shift length for satisfaction"]).Value);
+            IdealRestTime = ConfigHandler.HourToMinuteValue(rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Ideal resting time for satisfaction"]).Value);
 
             /* Robustness */
-            DrivingActivityTypes = ParseHelper.SplitAndCleanDataStringList(ExcelSheet.GetStringValue(rulesSettingsCellDict["Driving activity descriptions"]));
-            DrivingActivityDelayProbability = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Driving activity delay probability"]).Value;
-            NonDrivingActivityDelayProbability = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Non-driving activity delay probability"]).Value;
-            RobustnessCostFactorSameDuty = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Same duty expected conflict cost"]).Value;
-            RobustnessCostFactorSameProject = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Same project expected conflict cost"]).Value;
-            RobustnessCostFactorDifferentProject = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Different project expected conflict cost"]).Value;
+            DrivingActivityTypes = ParseHelper.SplitAndCleanDataStringList(rulesSettingsSheet.GetStringValue(rulesSettingsCellDict["Driving activity descriptions"]));
+            DrivingActivityDelayProbability = rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Driving activity delay probability"]).Value;
+            NonDrivingActivityDelayProbability = rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Non-driving activity delay probability"]).Value;
+            RobustnessCostFactorSameDuty = rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Same duty expected conflict cost"]).Value;
+            RobustnessCostFactorSameProject = rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Same project expected conflict cost"]).Value;
+            RobustnessCostFactorDifferentProject = rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Different project expected conflict cost"]).Value;
 
-            float meanDelayQuadraticCoefficient = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Mean delay quadratic coefficient"]).Value;
-            float meanDelayLinearCoefficient = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Mean delay linear coefficient"]).Value;
-            float meanDelayConstantCoefficient = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Mean delay constant coefficient"]).Value;
+            float meanDelayQuadraticCoefficient = rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Mean delay quadratic coefficient"]).Value;
+            float meanDelayLinearCoefficient = rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Mean delay linear coefficient"]).Value;
+            float meanDelayConstantCoefficient = rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Mean delay constant coefficient"]).Value;
             ActivityMeanDelayFunc = (int plannedDuration) => meanDelayQuadraticCoefficient * plannedDuration * plannedDuration + meanDelayLinearCoefficient * plannedDuration + meanDelayConstantCoefficient;
 
-            float delayGammaDistributionCoefficient = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Delay gamma distribution coefficient"]).Value;
+            float delayGammaDistributionCoefficient = rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Delay gamma distribution coefficient"]).Value;
             ActivityDelayGammaDistributionAlphaFunc = (double meanDelay) => delayGammaDistributionCoefficient * meanDelay * meanDelay;
             ActivityDelayGammaDistributionBetaFunc = (double meanDelay) => delayGammaDistributionCoefficient * meanDelay;
 
-            float relativeTravelDelayFactor = ExcelSheet.GetFloatValue(rulesSettingsCellDict["Relative travel delay factor"]).Value;
-            int constantTravelDelay = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(rulesSettingsCellDict["Constant travel delay"]).Value);
+            float relativeTravelDelayFactor = rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Relative travel delay factor"]).Value;
+            int constantTravelDelay = ConfigHandler.HourToMinuteValue(rulesSettingsSheet.GetFloatValue(rulesSettingsCellDict["Constant travel delay"]).Value);
             TravelDelayExpectedFunc = (int plannedTravelTime) => (int)(relativeTravelDelayFactor * plannedTravelTime) + constantTravelDelay;
         }
 
@@ -217,14 +217,14 @@ namespace DriverPlannerShared {
             SatisfactionCriterionInfos = satisfactionCriterionInfosList.ToArray();
         }
 
-        static Func<int, int, bool> GetShiftTypeRuleFunc(Dictionary<string, ICell> settingsCellDict, string ruleTypeSettingName, string ruleMinimumSettingName) {
-            string type = ExcelSheet.GetStringValue(settingsCellDict[ruleTypeSettingName]);
+        static Func<int, int, bool> GetShiftTypeRuleFunc(ExcelSheet rulesSettingsSheet, Dictionary<string, ICell> settingsCellDict, string ruleTypeSettingName, string ruleMinimumSettingName) {
+            string type = rulesSettingsSheet.GetStringValue(settingsCellDict[ruleTypeSettingName]);
             switch (type) {
                 case "Absolute":
-                    int minimumTime = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(settingsCellDict[ruleMinimumSettingName]).Value);
+                    int minimumTime = ConfigHandler.HourToMinuteValue(rulesSettingsSheet.GetFloatValue(settingsCellDict[ruleMinimumSettingName]).Value);
                     return (int mainShiftTimeAtNight, int mainShiftLength) => mainShiftTimeAtNight >= minimumTime;
                 case "Relative":
-                    float minimumFraction = ExcelSheet.GetFloatValue(settingsCellDict[ruleMinimumSettingName]).Value;
+                    float minimumFraction = rulesSettingsSheet.GetFloatValue(settingsCellDict[ruleMinimumSettingName]).Value;
                     return (int mainShiftTimeAtNight, int mainShiftLength) => (float)mainShiftTimeAtNight / mainShiftLength >= minimumFraction;
                 default:
                     throw new Exception(string.Format("Expected value `Absolute` or `Relative` for setting `{0}`, but found, `{1}`", ruleTypeSettingName, type));

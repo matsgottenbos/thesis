@@ -3,13 +3,13 @@
 namespace DriverPlannerUi {
     class Program {
         static void Main() {
-            ConfigHandler.InitAllConfigs();
-
             if (DevConfig.DebugThrowExceptions) {
+                ConfigHandler.InitAllConfigs();
                 Run();
                 Console.WriteLine("\n*** Program finished ***");
             } else {
                 try {
+                    ConfigHandler.InitAllConfigs();
                     Run();
                     Console.WriteLine("\n*** Program finished ***");
                 } catch (Exception exception) {
@@ -28,7 +28,7 @@ namespace DriverPlannerUi {
         }
 
         static void Run() {
-            Console.WriteLine("\nRunning UI");
+            Console.WriteLine("Running UI");
             UiHandler.Run();
         }
     }

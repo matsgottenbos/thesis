@@ -9,10 +9,10 @@ namespace DriverPlannerShared {
         /* Determine specific travel info */
 
         public static void DetermineAndExportAllTravelInfos() {
-            XSSFWorkbook addressesBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "stationAddresses.xlsx"));
+            XSSFWorkbook addressesBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "Station addresses.xlsx"));
             ExcelSheet stationAddressesSheet = new ExcelSheet("Station addresses", addressesBook);
 
-            XSSFWorkbook driversBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "drivers.xlsx"));
+            XSSFWorkbook driversBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "Drivers.xlsx"));
             ExcelSheet internalDriversSheet = new ExcelSheet("Internal drivers", driversBook);
             ExcelSheet externalDriverCompaniesSheet = new ExcelSheet("External driver companies", driversBook);
 

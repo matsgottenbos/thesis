@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriverPlannerUi", "DriverPl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriverPlannerAlgorithm", "DriverPlannerAlgorithm\DriverPlannerAlgorithm.csproj", "{C95C6D4D-0A1C-41E0-B1A7-29AA52896814}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverPlannerShared", "DriverPlannerShared\DriverPlannerShared.csproj", "{C5B69162-55A0-454C-8B34-E33B8B0C1D53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriverPlannerShared", "DriverPlannerShared\DriverPlannerShared.csproj", "{C5B69162-55A0-454C-8B34-E33B8B0C1D53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

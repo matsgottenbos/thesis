@@ -16,13 +16,13 @@ namespace DriverPlannerShared {
     }
 
     public class ExcelSheet {
-        readonly string sheetName;
+        public readonly string SheetName;
         readonly ISheet sheet;
         readonly Dictionary<string, int> columnNamesToIndices;
         readonly int firstContentRowIndex;
 
         public ExcelSheet(string sheetName, XSSFWorkbook excelBook) {
-            this.sheetName = sheetName;
+            SheetName = sheetName;
             sheet = excelBook.GetSheet(sheetName);
             if (sheet == null) throw new Exception($"Unknown sheet `{sheetName}`");
 
@@ -57,7 +57,7 @@ namespace DriverPlannerShared {
 
         public int GetColumnIndex(string columnName) {
             if (!columnNamesToIndices.ContainsKey(columnName)) {
-                throw new Exception(string.Format("Could not find column `{0}` in Excel sheet `{1}`", columnName, sheetName));
+                throw new Exception(string.Format("Could not find column `{0}` in Excel sheet `{1}`", columnName, SheetName));
             }
             return columnNamesToIndices[columnName];
         }
@@ -71,10 +71,17 @@ namespace DriverPlannerShared {
             }
         }
 
+        void CheckCellType(ICell cell, CellType expectedCellType) {
+            if (cell != null && cell.CellType != expectedCellType) {
+                throw new Exception(string.Format("Sheet `{0}` cell {1}: expected {2} value but found {3} value", SheetName, cell.Address.ToString(), expectedCellType, cell.CellType));
+            }
+        }
+
         public string GetStringValue(IRow row, string columnName) {
             return GetStringValue(row.GetCell(GetColumnIndex(columnName)));
         }
-        public static string GetStringValue(ICell cell) {
+        public string GetStringValue(ICell cell) {
+            CheckCellType(cell, CellType.String);
             string stringValue = cell?.StringCellValue;
             if (stringValue == null || stringValue == "") return null;
             return ParseHelper.CleanDataString(stringValue);
@@ -83,31 +90,35 @@ namespace DriverPlannerShared {
         public int? GetIntValue(IRow row, string columnName) {
             return GetIntValue(row.GetCell(GetColumnIndex(columnName)));
         }
-        public static int? GetIntValue(ICell cell) {
+        public int? GetIntValue(ICell cell) {
             if (cell == null) return null;
+            CheckCellType(cell, CellType.Numeric);
             return (int)Math.Round(cell.NumericCellValue);
         }
 
         public float? GetFloatValue(IRow row, string columnName) {
             return GetFloatValue(row.GetCell(GetColumnIndex(columnName)));
         }
-        public static float? GetFloatValue(ICell cell) {
+        public float? GetFloatValue(ICell cell) {
             if (cell == null) return null;
+            CheckCellType(cell, CellType.Numeric);
             return (float)cell.NumericCellValue;
         }
 
         public bool? GetBoolValue(IRow row, string columnName) {
             return GetBoolValue(row.GetCell(GetColumnIndex(columnName)));
         }
-        public static bool? GetBoolValue(ICell cell) {
+        public bool? GetBoolValue(ICell cell) {
             if (cell == null) return null;
+            CheckCellType(cell, CellType.Boolean);
             return cell.BooleanCellValue;
         }
 
         public DateTime? GetDateValue(IRow row, string columnName) {
             return GetDateValue(row.GetCell(GetColumnIndex(columnName)));
         }
-        public static DateTime? GetDateValue(ICell cell) {
+        public DateTime? GetDateValue(ICell cell) {
+            CheckCellType(cell, CellType.Numeric);
             return cell?.DateCellValue;
         }
     }

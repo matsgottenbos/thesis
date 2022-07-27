@@ -4,12 +4,12 @@ using System;
 namespace DriverPlannerAlgorithm {
     class Program {
         static void Main() {
-            ConfigHandler.InitAllConfigs();
-
             if (DevConfig.DebugThrowExceptions) {
+                ConfigHandler.InitAllConfigs();
                 Run();
             } else {
                 try {
+                    ConfigHandler.InitAllConfigs();
                     Run();
                 } catch (Exception exception) {
                     Console.WriteLine("\n*** Program exited with error ***\n{0}", exception.Message);

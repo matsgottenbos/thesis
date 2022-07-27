@@ -4,7 +4,7 @@ using NPOI.XSSF.UserModel;
 namespace DriverPlannerShared {
     public static class ConfigHandler {
         public static void InitAllConfigs() {
-            XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "settings.xlsx"));
+            XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "Settings.xlsx"));
             AppConfig.Init(settingsBook);
             RulesConfig.Init(settingsBook);
             AlgorithmConfig.Init(settingsBook);
@@ -18,7 +18,7 @@ namespace DriverPlannerShared {
                 if (name == null) return;
 
                 ICell valueCell = row.GetCell(sheet.GetColumnIndex("Value"));
-                if (valueCell == null) throw new Exception(string.Format("Value of setting `{0}` was empty", name));
+                if (valueCell == null) throw new Exception(string.Format("Value of setting `{0}` in sheet `{1}` was empty", name, sheet.SheetName));
 
                 valueCellPerSetting.Add(name, valueCell);
             });

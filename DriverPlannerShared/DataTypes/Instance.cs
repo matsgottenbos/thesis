@@ -17,8 +17,8 @@ namespace DriverPlannerShared {
         public readonly Driver[] AllDrivers, DataAssignment;
 
         public Instance(RawActivity[] rawActivities) {
-            XSSFWorkbook stationAddressesBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "stationAddresses.xlsx"));
-            XSSFWorkbook driversBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "drivers.xlsx"));
+            XSSFWorkbook stationAddressesBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "Station addresses.xlsx"));
+            XSSFWorkbook driversBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "Drivers.xlsx"));
 
             (StationNames, plannedCarTravelTimes, expectedCarTravelTimes, carTravelDistances) = DataMiscProcessor.GetStationNamesAndExpectedCarTravelInfo();
             (string[] borderStationNames, string[] borderRegionStationNames) = DataMiscProcessor.GetBorderAndBorderRegionStationNames(stationAddressesBook);
