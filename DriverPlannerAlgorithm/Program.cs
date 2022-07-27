@@ -8,12 +8,10 @@ namespace DriverPlannerAlgorithm {
             ConfigHandler.InitAllConfigs();
 
             if (DevConfig.DebugThrowExceptions) {
-                Run(AppConfig.SaIterationCount, AppConfig.PlanningStartDate, AppConfig.PlanningNextDate);
-                Console.WriteLine("\n*** Program finished ***");
+                Run();
             } else {
                 try {
-                    Run(AppConfig.SaIterationCount, AppConfig.PlanningStartDate, AppConfig.PlanningNextDate);
-                    Console.WriteLine("\n*** Program finished ***");
+                    Run();
                 } catch (Exception exception) {
                     Console.WriteLine("\n*** Program exited with error ***\n{0}", exception.Message);
                 }
@@ -29,9 +27,8 @@ namespace DriverPlannerAlgorithm {
             Console.ReadLine();
         }
 
-        static void Run(long targetIterationCount, DateTime planningStartTime, DateTime planningEndTime) {
-            // TODO: remove these arguments
-            Console.WriteLine("Running program with start date {0} and end date {1} for {2} iterations", planningStartTime, planningEndTime, ParseHelper.LargeNumToString(targetIterationCount));
+        static void Run() {
+            Console.WriteLine("Running program with start date {0} and end date {1} for {2} iterations", AppConfig.PlanningStartDate, AppConfig.PlanningEndDate, ParseHelper.LargeNumToString(AppConfig.SaIterationCount));
 
             // Special app modes without instance data
             if (DevConfig.DebugRunDelaysExporter) {
@@ -45,7 +42,7 @@ namespace DriverPlannerAlgorithm {
             Console.WriteLine("Successfully processsed travel info");
 
             XorShiftRandom appRand = DevConfig.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
-            Instance instance = GetInstance(planningStartTime, planningEndTime);
+            Instance instance = GetInstance();
 
             // Force garbage collection
             GC.Collect();
@@ -71,22 +68,23 @@ namespace DriverPlannerAlgorithm {
 
             // Simulated annealing
             Console.WriteLine("\nStarting simulated annealing");
-            SaMultithreadHandler saMultithreadHandler = new SaMultithreadHandler(targetIterationCount);
+            SaMultithreadHandler saMultithreadHandler = new SaMultithreadHandler();
             saMultithreadHandler.Run(instance, appRand);
+
+            Console.WriteLine("\n*** Program finished ***");
         }
 
-        static Instance GetInstance(DateTime planningStartTime, DateTime planningEndTime) {
+        static Instance GetInstance() {
             Instance instance;
             switch (DevConfig.SelectedDataSource) {
                 case DataSource.Excel:
                     Console.WriteLine("\nImporting data from Excel...");
-                    instance = ExcelDataImporter.Import(planningStartTime, planningEndTime);
+                    instance = ExcelDataImporter.Import();
                     break;
 
                 case DataSource.Odata:
                     Console.WriteLine("\nImporting data from RailCube...");
-                    OdataImporter.Import();
-                    throw new NotImplementedException();
+                    instance = OdataImporter.Import();
                     break;
             }
             Console.WriteLine("Data import complete");

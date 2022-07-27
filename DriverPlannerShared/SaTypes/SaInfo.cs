@@ -18,7 +18,7 @@ namespace DriverPlannerShared {
         public int CycleNum;
         public long? LastImprovementIteration;
         public float Temperature, SatisfactionFactor;
-        public bool HasImprovementSinceLog;
+        public bool HasImprovementSinceLog, HasHadFeasibleSolutionInCycle;
 
         public SaInfo(Instance instance) {
             Instance = instance;

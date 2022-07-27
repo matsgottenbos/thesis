@@ -71,7 +71,7 @@ namespace DriverPlannerShared {
             JObject runJObject = new JObject {
                 ["iterationCount"] = AppConfig.SaIterationCount,
                 ["dataStartDate"] = AppConfig.PlanningStartDate.ToString("yyyy/MM/dd HH:mm"),
-                ["dataEndDate"] = AppConfig.PlanningNextDate.ToString("yyyy/MM/dd HH:mm"),
+                ["dataEndDate"] = AppConfig.PlanningEndDate.ToString("yyyy/MM/dd HH:mm"),
                 ["runCompletionDate"] = DateTime.Now.ToString("yyyy/MM/dd HH:mm"),
                 ["schedules"] = schedulesJArray,
             };

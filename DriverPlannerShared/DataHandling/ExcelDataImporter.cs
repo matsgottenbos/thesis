@@ -10,20 +10,20 @@ using System.Threading.Tasks;
 
 namespace DriverPlannerShared {
     public static class ExcelDataImporter {
-        public static Instance Import(DateTime planningStartDate, DateTime planningEndDate) {
+        public static Instance Import() {
             XSSFWorkbook testDataBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "testData.xlsx"));
             ExcelSheet activitiesSheet = new ExcelSheet("DutyActivities", testDataBook);
 
-            RawActivity[] rawActivities = ParseRawActivities(activitiesSheet, planningStartDate, planningEndDate);
+            RawActivity[] rawActivities = ParseRawActivities(activitiesSheet);
             return new Instance(rawActivities);
         }
 
-        static RawActivity[] ParseRawActivities(ExcelSheet activitiesSheet, DateTime planningStartDate, DateTime planningNextDate) {
+        static RawActivity[] ParseRawActivities(ExcelSheet activitiesSheet) {
             List<RawActivity> rawActivities = new List<RawActivity>();
             activitiesSheet.ForEachRow(activityRow => {
-                // Skip if non-included order owner
-                string orderOwner = activitiesSheet.GetStringValue(activityRow, "RailwayUndertaking");
-                if (orderOwner == null || !AppConfig.IncludedRailwayUndertakings.Contains(orderOwner)) return;
+                // Skip if non-included railway undertaking
+                string railwayUndertaking = activitiesSheet.GetStringValue(activityRow, "RailwayUndertaking");
+                if (railwayUndertaking == null || !AppConfig.IncludedRailwayUndertakings.Contains(railwayUndertaking)) return;
 
                 // Get duty, activity and project name name
                 string dutyName = activitiesSheet.GetStringValue(activityRow, "DutyNo");
@@ -40,7 +40,7 @@ namespace DriverPlannerShared {
                 string endStationDataName = activitiesSheet.GetStringValue(activityRow, "DestinationLocationName");
                 string startStationCountry = activitiesSheet.GetStringValue(activityRow, "OriginCountry");
                 string endStationCountry = activitiesSheet.GetStringValue(activityRow, "DestinationCountry");
-                if (startStationDataName == null || endStationDataName == null) return;
+                if (startStationDataName == null || endStationDataName == null || startStationCountry == null || endStationCountry == null) return;
 
                 // Get required country qualifications
                 string[] requiredCountryQualifications;
@@ -49,11 +49,11 @@ namespace DriverPlannerShared {
 
                 // Get start and end time
                 DateTime? startTimeRaw = activitiesSheet.GetDateValue(activityRow, "PlannedStart");
-                if (startTimeRaw == null || startTimeRaw < planningStartDate || startTimeRaw > planningNextDate) return; // Skip activities outside planning timeframe
-                int startTime = (int)Math.Round((startTimeRaw - planningStartDate).Value.TotalMinutes);
+                if (startTimeRaw == null || startTimeRaw < AppConfig.PlanningStartDate || startTimeRaw > AppConfig.PlanningEndDate) return; // Skip activities outside planning timeframe
+                int startTime = (int)Math.Round((startTimeRaw - AppConfig.PlanningStartDate).Value.TotalMinutes);
                 DateTime? endTimeRaw = activitiesSheet.GetDateValue(activityRow, "PlannedEnd");
                 if (endTimeRaw == null) return; // Skip row if required values are empty
-                int endTime = (int)Math.Round((endTimeRaw - planningStartDate).Value.TotalMinutes);
+                int endTime = (int)Math.Round((endTimeRaw - AppConfig.PlanningStartDate).Value.TotalMinutes);
 
                 // Skip activities longer than max shift length
                 if (endTime - startTime > RulesConfig.MaxMainNightShiftLength) return;

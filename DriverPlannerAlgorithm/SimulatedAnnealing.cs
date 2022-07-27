@@ -60,28 +60,32 @@ namespace DriverPlannerAlgorithm {
                     operation.Execute();
 
                     int satisfactionLevel = (int)Math.Round(Info.TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor);
-                    if (Info.TotalInfo.Stats.Penalty < 0.01 && Info.TotalInfo.Stats.Cost < BestInfoBySatisfaction[satisfactionLevel].TotalInfo.Stats.Cost) {
-                        Info.LastImprovementIteration = Info.IterationNum;
-                        Info.HasImprovementSinceLog = true;
+                    if (Info.TotalInfo.Stats.Penalty < 0.01) {
+                        Info.HasHadFeasibleSolutionInCycle = true;
 
-                        // Check cost to remove floating point imprecisions
-                        TotalCostCalculator.ProcessAssignmentCost(Info);
+                        if (Info.TotalInfo.Stats.Cost < BestInfoBySatisfaction[satisfactionLevel].TotalInfo.Stats.Cost) {
+                            Info.LastImprovementIteration = Info.IterationNum;
+                            Info.HasImprovementSinceLog = true;
 
-                        #if DEBUG
-                        if (DevConfig.DebugCheckOperations) {
-                            if (Info.TotalInfo.Stats.Penalty > 0.01) throw new Exception("New best solution is invalid");
-                            if (Math.Abs(Info.TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor - satisfactionLevel) > 0.6) throw new Exception("New best solution has incorrect satisfaction level");
-                        }
-                        #endif
+                            // Check cost to remove floating point imprecisions
+                            TotalCostCalculator.ProcessAssignmentCost(Info);
 
-                        // Store as the best solution for this satisfaction level
-                        SaInfo bestInfo = Info.CopyForBestInfo();
-                        BestInfoBySatisfaction[satisfactionLevel] = bestInfo;
+                            #if DEBUG
+                            if (DevConfig.DebugCheckOperations) {
+                                if (Info.TotalInfo.Stats.Penalty > 0.01) throw new Exception("New best solution is invalid");
+                                if (Math.Abs(Info.TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor - satisfactionLevel) > 0.6) throw new Exception("New best solution has incorrect satisfaction level");
+                            }
+                            #endif
 
-                        // Check if this solution also improves on best solutions for lower satisfaction levels
-                        for (int searchSatisfactionLevel = satisfactionLevel - 1; searchSatisfactionLevel >= 0; searchSatisfactionLevel--) {
-                            if (Info.TotalInfo.Stats.Cost < BestInfoBySatisfaction[searchSatisfactionLevel].TotalInfo.Stats.Cost) {
-                                BestInfoBySatisfaction[searchSatisfactionLevel] = bestInfo;
+                            // Store as the best solution for this satisfaction level
+                            SaInfo bestInfo = Info.CopyForBestInfo();
+                            BestInfoBySatisfaction[satisfactionLevel] = bestInfo;
+
+                            // Check if this solution also improves on best solutions for lower satisfaction levels
+                            for (int searchSatisfactionLevel = satisfactionLevel - 1; searchSatisfactionLevel >= 0; searchSatisfactionLevel--) {
+                                if (Info.TotalInfo.Stats.Cost < BestInfoBySatisfaction[searchSatisfactionLevel].TotalInfo.Stats.Cost) {
+                                    BestInfoBySatisfaction[searchSatisfactionLevel] = bestInfo;
+                                }
                             }
                         }
                     }
@@ -106,8 +110,10 @@ namespace DriverPlannerAlgorithm {
                 if (Info.IterationNum % SaConfig.ParameterUpdateFrequency == 0) {
                     Info.Temperature *= SaConfig.TemperatureReductionFactor;
 
-                    // Check if we should end the cycle
-                    if (Info.Temperature <= SaConfig.EndCycleTemperature) {
+                    // Check if we should end the cycle, either normally or early
+                    if (!Info.HasHadFeasibleSolutionInCycle && Info.Temperature <= SaConfig.EarlyEndCycleTemperature || Info.Temperature <= SaConfig.EndCycleTemperature) {
+                        Info.HasHadFeasibleSolutionInCycle = false;
+
                         // Check if we should do a full reset
                         if (rand.NextDouble() < SaConfig.FullResetProb) {
                             // Full reset
@@ -131,6 +137,7 @@ namespace DriverPlannerAlgorithm {
                 #endif
             }
         }
+
         void PerformFullReset() {
             int oldCycleNum = Info == null ? 0 : Info.CycleNum;
 

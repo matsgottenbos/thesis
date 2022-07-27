@@ -12,7 +12,7 @@ namespace DriverPlannerShared {
         /// <summary>Planning window start date.</summary>
         public static DateTime PlanningStartDate;
         /// <summary>Planning window end date.</summary>
-        public static DateTime PlanningNextDate;
+        public static DateTime PlanningEndDate;
         /// <summary>Number of iterations to run the simulated annealing algorithm for.</summary>
         public static long SaIterationCount;
         /// <summary>Filter activities on these values of RailwayUntertaking.</summary>
@@ -21,6 +21,10 @@ namespace DriverPlannerShared {
         public static string[] IncludedActivityTypes;
         /// <summary>Driver assignments in past data are considered internal for these company names.</summary>
         public static string[] InternalDriverCompanyNames;
+        /// <summary>API key to use for requests to the Google Maps API.</summary>
+        public static string OdataUsername;
+        /// <summary>Password used to connect with the OData API of RailCube.</summary>
+        public static string OdataPassword;
         /// <summary>API key to use for requests to the Google Maps API.</summary>
         public static string GoogleMapsApiKey;
         /// <summary>Maximum number of destinations allowed by the Google Maps API in a single request.</summary>
@@ -36,11 +40,13 @@ namespace DriverPlannerShared {
 
             PlanningStartDate = ExcelSheet.GetDateValue(appSettingsCellDict["Planning window start date"]).Value;
             int planningWindowNumberOfDays = ExcelSheet.GetIntValue(appSettingsCellDict["Planning window number of days"]).Value;
-            PlanningNextDate = PlanningStartDate.AddDays(planningWindowNumberOfDays);
+            PlanningEndDate = PlanningStartDate.AddDays(planningWindowNumberOfDays);
             SaIterationCount = ParseHelper.ParseLargeNumString(ExcelSheet.GetStringValue(appSettingsCellDict["Algorithm iteration count"]));
             IncludedRailwayUndertakings = ParseHelper.SplitAndCleanDataStringList(ExcelSheet.GetStringValue(appSettingsCellDict["Included railway undertakings"]));
             IncludedActivityTypes = ParseHelper.SplitAndCleanDataStringList(ExcelSheet.GetStringValue(appSettingsCellDict["Included activity descriptions"]));
             InternalDriverCompanyNames = ParseHelper.SplitAndCleanDataStringList(ExcelSheet.GetStringValue(appSettingsCellDict["Internal driver company names"]));
+            OdataUsername = ExcelSheet.GetStringValue(appSettingsCellDict["RailCube username"]);
+            OdataPassword = ExcelSheet.GetStringValue(appSettingsCellDict["RailCube password"]);
             GoogleMapsApiKey = ExcelSheet.GetStringValue(appSettingsCellDict["Google Maps API key"]);
             GoogleMapsMaxDestinationCountPerRequest = ExcelSheet.GetIntValue(appSettingsCellDict["Google Maps request max destinations"]).Value;
             ThreadCount = ExcelSheet.GetIntValue(appSettingsCellDict["Number of threads"]).Value;

@@ -13,15 +13,11 @@ namespace DriverPlannerShared {
 
     public class DevConfig {
         // Data source
-        public const DataSource SelectedDataSource = DataSource.Excel;
-        //public const DataSource SelectedDataSource = DataSource.Odata;
+        //public const DataSource SelectedDataSource = DataSource.Excel;
+        public const DataSource SelectedDataSource = DataSource.Odata;
 
         // Multithreading
         public const bool EnableMultithreading = true;
-
-        // OData credentials
-        public const string OdataUsername = "opsrsh01@rig";
-        public const string OdataPassword = "Bu@maN2099a";
 
         // Time periods
         public const int HourLength = 60;

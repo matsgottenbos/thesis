@@ -26,6 +26,8 @@ namespace DriverPlannerShared {
         /// <summary></summary>
         public static float EndCycleTemperature;
         /// <summary></summary>
+        public static float EarlyEndCycleTemperature;
+        /// <summary></summary>
         public static float CycleMinSatisfactionFactor;
         /// <summary></summary>
         public static float CycleMaxSatisfactionFactor;
@@ -81,6 +83,7 @@ namespace DriverPlannerShared {
             CycleMaxInitialTemperature = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Cycle max initial temperature"]).Value;
             TemperatureReductionFactor = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Temperature reduction factor"]).Value;
             EndCycleTemperature = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["End cycle temperature"]).Value;
+            EarlyEndCycleTemperature = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Early end cycle temperature"]).Value;
             CycleMinSatisfactionFactor = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Cycle min satisfaction factor"]).Value;
             CycleMaxSatisfactionFactor = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Cycle max satisfaction factor"]).Value;
             FullResetProb = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Full reset probability"]).Value;

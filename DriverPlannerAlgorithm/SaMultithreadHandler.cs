@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 namespace DriverPlannerAlgorithm {
     class SaMultithreadHandler {
         readonly SimulatedAnnealing[] saThreads;
-        readonly long targetIterationCount;
         long totalIterationCount, totalIterationCountSinceLastLog;
         long? lastImprovementTotalIterationCount;
         string prevParetoFrontStr;
@@ -19,9 +18,7 @@ namespace DriverPlannerAlgorithm {
         readonly Stopwatch stopwatch;
         readonly CancellationTokenSource[] threadCancellationTokens;
 
-        public SaMultithreadHandler(long targetIterationCount) {
-            this.targetIterationCount = targetIterationCount;
-
+        public SaMultithreadHandler() {
             stopwatch = new Stopwatch();
 
             paretoFrontsOverTime = new List<List<SaInfo>>();
@@ -70,14 +67,14 @@ namespace DriverPlannerAlgorithm {
             List<SaInfo> paretoFront = GetCombinedParetoFront();
 
             // Perform all output
-            WriteOutputToFiles(paretoFront, paretoFrontsOverTime, targetIterationCount, stopwatch);
+            WriteOutputToFiles(paretoFront, paretoFrontsOverTime, AppConfig.SaIterationCount, stopwatch);
         }
 
         void HandleThreadCallback() {
             Interlocked.Add(ref totalIterationCount, SaConfig.ThreadCallbackFrequency);
             Interlocked.Add(ref totalIterationCountSinceLastLog, SaConfig.ThreadCallbackFrequency);
 
-            if (totalIterationCount >= targetIterationCount) {
+            if (totalIterationCount >= AppConfig.SaIterationCount) {
                 lock (threadCancellationTokens) {
                     for (int i = 0; i < threadCancellationTokens.Length; i++) {
                         threadCancellationTokens[i].Cancel();
