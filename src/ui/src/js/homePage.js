@@ -22,7 +22,7 @@ class RunPage {
                 </div>
             `;
         });
-        const runListHtml = runListHtmlParts.join('');
+        const runListHtml = runListHtmlParts.length > 0 ? runListHtmlParts.join('') : '<div class="pageInfo">No runs found</div>';
         $('.runList').html(runListHtml);
 
         $('.runTile').click(function() {

@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 namespace DriverPlannerShared {
     public static class JsonOutputHelper {
         public static void ExportRunListJsonFile() {
+            Directory.CreateDirectory(DevConfig.OutputFolder);
             string[] runFolderPaths = Directory.GetDirectories(DevConfig.OutputFolder);
             JArray runsByStartDateJArray = new JArray();
             for (int i = 0; i < runFolderPaths.Length; i++) {

@@ -16,6 +16,7 @@ namespace DriverPlannerShared {
             ExcelSheet internalDriversSheet = new ExcelSheet("Internal drivers", driversBook);
             ExcelSheet externalDriverCompaniesSheet = new ExcelSheet("External driver companies", driversBook);
 
+            Directory.CreateDirectory(DevConfig.IntermediateFolder);
             (List<LocationInfo> stationLocations, bool isSuccess) = DetermineAndExportStationTravelInfo(stationAddressesSheet);
             if (!isSuccess) return;
             isSuccess = DetermineAndExportInternalTravelInfo(internalDriversSheet, stationLocations);
