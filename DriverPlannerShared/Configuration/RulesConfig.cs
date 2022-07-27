@@ -174,25 +174,8 @@ namespace DriverPlannerShared {
         static void ProcessSatisfactionSettings(XSSFWorkbook settingsBook) {
             ExcelSheet satisfactionSettingsSheet = new ExcelSheet("Satisfaction", settingsBook);
 
-            Func<SaDriverInfo, int> getDuplicateRouteCount = (SaDriverInfo driverInfo) => {
-                int duplicateRouteCount = 0;
-                for (int sharedRouteIndex = 0; sharedRouteIndex < driverInfo.SharedRouteCounts.Length; sharedRouteIndex++) {
-                    int count = driverInfo.SharedRouteCounts[sharedRouteIndex];
-                    if (count > 1) {
-                        duplicateRouteCount += count - 1;
-                    }
-                }
-                return duplicateRouteCount;
-            };
-
-            Func<SaDriverInfo, float> getConsecutiveFreeDaysScore = (SaDriverInfo driverInfo) => {
-                // Criterion score is 100% when there are two consecutive free days, or otherwise 25% per single free day
-                if (driverInfo.DoubleFreeDayCount >= 1) return 1;
-                return driverInfo.SingleFreeDayCount * 0.25f;
-            };
-
             Dictionary<string, Func<SaDriverInfo, float>> rangeCriterionNameToRelevantValueFunc = new Dictionary<string, Func<SaDriverInfo, float>>() {
-                { "Route variation", driverInfo => getDuplicateRouteCount(driverInfo) },
+                { "Route variation", driverInfo => SatisfactionCalculator.GetDuplicateRouteCount(driverInfo) },
                 { "Travel time", driverInfo => driverInfo.TravelTime },
                 { "Contract time accuracy", driverInfo => driverInfo.WorkedTime },
                 { "Shift lengths", driverInfo => driverInfo.IdealShiftLengthScore },
@@ -200,7 +183,7 @@ namespace DriverPlannerShared {
                 { "Night shifts", driverInfo => driverInfo.NightShiftCountByCompanyRules },
                 { "Weekend shifts", driverInfo => driverInfo.WeekendShiftCountByCompanyRules },
                 { "Hotel stays", driverInfo => driverInfo.HotelCount },
-                { "Consecutive free days", driverInfo => getConsecutiveFreeDaysScore(driverInfo) },
+                { "Consecutive free days", driverInfo => SatisfactionCalculator.GetConsecutiveFreeDaysScore(driverInfo) },
                 { "Resting time", driverInfo => driverInfo.IdealRestingTimeScore },
             };
 
