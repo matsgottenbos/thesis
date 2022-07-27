@@ -123,38 +123,6 @@ namespace Thesis {
             return (internalDrivers.ToArray(), requiredInternalDriverCount);
         }
 
-        // TODO: use this when route knowledge data is available
-        static bool[][,] ParseInternalDriverTrackProficiencies(ExcelSheet routeKnowledgeTable, string[] internalDriverNames, string[] stationNames) {
-            bool[][,] internalDriverProficiencies = new bool[internalDriverNames.Length][,];
-            for (int driverIndex = 0; driverIndex < internalDriverNames.Length; driverIndex++) {
-                internalDriverProficiencies[driverIndex] = new bool[stationNames.Length, stationNames.Length];
-
-                // Everyone is proficient when staying in the same location
-                for (int stationIndex = 0; stationIndex < stationNames.Length; stationIndex++) {
-                    internalDriverProficiencies[driverIndex][stationIndex, stationIndex] = true;
-                }
-            }
-
-            routeKnowledgeTable.ForEachRow(routeKnowledgeRow => {
-                // Get station indices
-                string station1Name = routeKnowledgeTable.GetStringValue(routeKnowledgeRow, "OriginLocationName");
-                int station1Index = Array.IndexOf(stationNames, station1Name);
-                string station2Name = routeKnowledgeTable.GetStringValue(routeKnowledgeRow, "DestinationLocationName");
-                int station2Index = Array.IndexOf(stationNames, station2Name);
-                if (station1Index == -1 || station2Index == -1) return;
-
-                // Get driver index
-                string driverName = routeKnowledgeTable.GetStringValue(routeKnowledgeRow, "EmployeeName");
-                int driverIndex = Array.IndexOf(internalDriverNames, driverName);
-                if (driverIndex == -1) return;
-
-                internalDriverProficiencies[driverIndex][station1Index, station2Index] = true;
-                internalDriverProficiencies[driverIndex][station2Index, station1Index] = true;
-            });
-
-            return internalDriverProficiencies;
-        }
-
         public static (ExternalDriverType[], ExternalDriver[][], Dictionary<(string, bool), ExternalDriver[]>) CreateExternalDrivers(XSSFWorkbook driversBook, Activity[] activities, int internalDriverCount) {
             ExcelSheet externalDriverCompanySettingsSheet = new ExcelSheet("External driver companies", driversBook);
 

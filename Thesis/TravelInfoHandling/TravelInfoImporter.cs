@@ -92,8 +92,10 @@ namespace Thesis {
             int?[,] partialTravelDistances = new int?[locations.Count, locations.Count];
             for (int importedLocation1Index = 0; importedLocation1Index < importedLocations.Count; importedLocation1Index++) {
                 LocationInfo importedLocation1 = importedLocations[importedLocation1Index];
+                if (importedLocation1 == null) continue;
                 for (int importedLocation2Index = 0; importedLocation2Index < importedLocations.Count; importedLocation2Index++) {
                     LocationInfo importedLocation2 = importedLocations[importedLocation2Index];
+                    if (importedLocation2 == null) continue;
 
                     partialTravelTimes[importedLocation1.Index, importedLocation2.Index] = importedTravelTimes[importedLocation1Index, importedLocation2Index];
                     partialTravelDistances[importedLocation1.Index, importedLocation2.Index] = importedTravelDistances[importedLocation1Index, importedLocation2Index];
@@ -125,8 +127,10 @@ namespace Thesis {
             int?[][] partialTravelDistances = GetInstantiatedJaggedArray<int?>(originLocations.Count, destinationLocations.Count);
             for (int importedOriginLocationIndex = 0; importedOriginLocationIndex < importedOriginLocations.Count; importedOriginLocationIndex++) {
                 LocationInfo importedOriginLocation = importedOriginLocations[importedOriginLocationIndex];
+                if (importedOriginLocation == null) continue;
                 for (int importedDestinationLocationIndex = 0; importedDestinationLocationIndex < importedDestinationLocations.Count; importedDestinationLocationIndex++) {
                     LocationInfo importedDestinationLocation = importedDestinationLocations[importedDestinationLocationIndex];
+                    if (importedDestinationLocation == null) continue;
 
                     partialTravelTimes[importedOriginLocation.Index][importedDestinationLocation.Index] = importedTravelTimes[importedOriginLocationIndex][importedDestinationLocationIndex];
                     partialTravelDistances[importedOriginLocation.Index][importedDestinationLocation.Index] = importedTravelDistances[importedOriginLocationIndex][importedDestinationLocationIndex];
@@ -146,7 +150,9 @@ namespace Thesis {
             List<LocationInfo> importedLocations = new List<LocationInfo>();
             for (int importedLocationIndex = 0; importedLocationIndex < importedLocationNames.Length; importedLocationIndex++) {
                 int allLocationsIndex = locations.FindIndex(location => location.Name == importedLocationNames[importedLocationIndex]);
-                if (allLocationsIndex != -1) {
+                if (allLocationsIndex == -1) {
+                    importedLocations.Add(null);
+                } else {
                     importedLocations.Add(locations[allLocationsIndex]);
                 }
             }

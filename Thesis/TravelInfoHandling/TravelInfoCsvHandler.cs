@@ -59,7 +59,7 @@ namespace Thesis {
                 using CsvReader csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
                 travelInfoCsv = csvReader.GetRecords<TravelInfoCsv>().ToList();
             } else if (shouldIgnoreEmpty) {
-                Console.WriteLine("File `{0}` not found", csvFilePath);
+                Console.WriteLine("File `{0}` not found\nWill generate relevant travel info", csvFilePath);
                 travelInfoCsv = new List<TravelInfoCsv>();
             } else {
                 throw new Exception(string.Format("File `{0}` not found", csvFilePath));
@@ -71,10 +71,12 @@ namespace Thesis {
 
     // Type to export travel into CSV using CsvHelper.WriteRecords
     class TravelInfoCsv {
+        #pragma warning disable IDE1006 // Disable naming styles warning
         public string location1Name { get; set; }
         public string location2Name { get; set; }
         public int travelTimeMinutes { get; set; }
         public int travelDistanceKilometers { get; set; }
+        #pragma warning restore IDE1006 // Re-enable naming styles warning
 
         public TravelInfoCsv(string location1Name, string location2Name, int travelTimeMinutes, int travelDistanceKilometers) {
             this.location1Name = location1Name;

@@ -11,7 +11,6 @@ Acht,"Bad Bentheim, empl. / staalfabriek",129,200
 Acht,"Bad Bentheim, Hilgenstiege sp.25",129,201
 Acht,Beatrixhaven,74,107
 Acht,"Beverwijk, emplacement",92,142
-Acht,Bietigheim-Bissingen,317,496
 Acht,"Blerick, emplacement en werkplaats",47,63
 Acht,"Born, emplacement",51,72
 Acht,"Botlek, emplacement",80,117
@@ -31,7 +30,6 @@ Acht,"Emmerich, station",84,123
 Acht,Euromax,103,152
 Acht,"Europoort, emplacement",86,128
 Acht,"Gekkengraaf, emplacement",43,58
-Acht,Germersheim,258,405
 Acht,Goes,90,132
 Acht,"Hengelo, emplacement",114,172
 Acht,"Herzogenrath, station",77,103
@@ -72,7 +70,6 @@ Acht,"Sittard, emplacement",57,79
 Acht,Sloehaven empl.,95,144
 Acht,Steinweg Amsterdam,89,135
 Acht,Stroe,80,109
-Acht,Stuttgart,327,509
 Acht,"Tilburg, industrie",24,28
 Acht,"Uitgeest, emplacement",97,151
 Acht,"Valburg, emplacement CUP",52,76
@@ -96,7 +93,6 @@ Acht,"Zutphen, emplacement",87,118
 "Almelo, emplacement","Bad Bentheim, Hilgenstiege sp.25",38,47
 "Almelo, emplacement",Beatrixhaven,131,197
 "Almelo, emplacement","Beverwijk, emplacement",115,175
-"Almelo, emplacement",Bietigheim-Bissingen,340,543
 "Almelo, emplacement","Blerick, emplacement en werkplaats",116,174
 "Almelo, emplacement","Born, emplacement",146,224
 "Almelo, emplacement","Botlek, emplacement",135,203
@@ -116,7 +112,6 @@ Acht,"Zutphen, emplacement",87,118
 "Almelo, emplacement",Euromax,157,238
 "Almelo, emplacement","Europoort, emplacement",140,214
 "Almelo, emplacement","Gekkengraaf, emplacement",115,173
-"Almelo, emplacement",Germersheim,299,469
 "Almelo, emplacement",Goes,176,267
 "Almelo, emplacement","Hengelo, emplacement",23,19
 "Almelo, emplacement","Herzogenrath, station",167,252
@@ -157,7 +152,6 @@ Acht,"Zutphen, emplacement",87,118
 "Almelo, emplacement",Sloehaven empl.,181,279
 "Almelo, emplacement",Steinweg Amsterdam,108,162
 "Almelo, emplacement",Stroe,59,84
-"Almelo, emplacement",Stuttgart,350,556
 "Almelo, emplacement","Tilburg, industrie",116,167
 "Almelo, emplacement","Uitgeest, emplacement",118,173
 "Almelo, emplacement","Valburg, emplacement CUP",74,108
@@ -180,7 +174,6 @@ Acht,"Zutphen, emplacement",87,118
 "Amersfoort, emplacement sp.12","Bad Bentheim, Hilgenstiege sp.25",94,138
 "Amersfoort, emplacement sp.12",Beatrixhaven,71,96
 "Amersfoort, emplacement sp.12","Beverwijk, emplacement",56,76
-"Amersfoort, emplacement sp.12",Bietigheim-Bissingen,351,561
 "Amersfoort, emplacement sp.12","Blerick, emplacement en werkplaats",95,138
 "Amersfoort, emplacement sp.12","Born, emplacement",115,173
 "Amersfoort, emplacement sp.12","Botlek, emplacement",74,102
@@ -200,7 +193,6 @@ Acht,"Zutphen, emplacement",87,118
 "Amersfoort, emplacement sp.12",Euromax,97,137
 "Amersfoort, emplacement sp.12","Europoort, emplacement",80,113
 "Amersfoort, emplacement sp.12","Gekkengraaf, emplacement",94,136
-"Amersfoort, emplacement sp.12",Germersheim,306,480
 "Amersfoort, emplacement sp.12",Goes,116,166
 "Amersfoort, emplacement sp.12","Hengelo, emplacement",79,110
 "Amersfoort, emplacement sp.12","Herzogenrath, station",141,204
@@ -241,7 +233,6 @@ Acht,"Zutphen, emplacement",87,118
 "Amersfoort, emplacement sp.12",Sloehaven empl.,120,178
 "Amersfoort, emplacement sp.12",Steinweg Amsterdam,49,63
 "Amersfoort, emplacement sp.12",Stroe,26,29
-"Amersfoort, emplacement sp.12",Stuttgart,360,575
 "Amersfoort, emplacement sp.12","Tilburg, industrie",73,100
 "Amersfoort, emplacement sp.12","Uitgeest, emplacement",58,74
 "Amersfoort, emplacement sp.12","Valburg, emplacement CUP",53,72
@@ -263,7 +254,6 @@ Acht,"Zutphen, emplacement",87,118
 "Amersfoort, remise Strukton","Bad Bentheim, Hilgenstiege sp.25",94,144
 "Amersfoort, remise Strukton",Beatrixhaven,68,95
 "Amersfoort, remise Strukton","Beverwijk, emplacement",54,76
-"Amersfoort, remise Strukton",Bietigheim-Bissingen,352,559
 "Amersfoort, remise Strukton","Blerick, emplacement en werkplaats",96,135
 "Amersfoort, remise Strukton","Born, emplacement",113,170
 "Amersfoort, remise Strukton","Botlek, emplacement",72,99
@@ -283,7 +273,6 @@ Acht,"Zutphen, emplacement",87,118
 "Amersfoort, remise Strukton",Euromax,95,134
 "Amersfoort, remise Strukton","Europoort, emplacement",78,111
 "Amersfoort, remise Strukton","Gekkengraaf, emplacement",96,134
-"Amersfoort, remise Strukton",Germersheim,307,477
 "Amersfoort, remise Strukton",Goes,114,164
 "Amersfoort, remise Strukton","Hengelo, emplacement",80,115
 "Amersfoort, remise Strukton","Herzogenrath, station",139,201
@@ -324,7 +313,6 @@ Acht,"Zutphen, emplacement",87,118
 "Amersfoort, remise Strukton",Sloehaven empl.,118,175
 "Amersfoort, remise Strukton",Steinweg Amsterdam,47,63
 "Amersfoort, remise Strukton",Stroe,27,34
-"Amersfoort, remise Strukton",Stuttgart,361,572
 "Amersfoort, remise Strukton","Tilburg, industrie",71,97
 "Amersfoort, remise Strukton","Uitgeest, emplacement",57,73
 "Amersfoort, remise Strukton","Valburg, emplacement CUP",55,70
@@ -345,7 +333,6 @@ Amsterdam Centraal,"Bad Bentheim, empl. / staalfabriek",123,185
 Amsterdam Centraal,"Bad Bentheim, Hilgenstiege sp.25",122,186
 Amsterdam Centraal,Beatrixhaven,64,85
 Amsterdam Centraal,"Beverwijk, emplacement",32,27
-Amsterdam Centraal,Bietigheim-Bissingen,380,608
 Amsterdam Centraal,"Blerick, emplacement en werkplaats",126,181
 Amsterdam Centraal,"Born, emplacement",132,197
 Amsterdam Centraal,"Botlek, emplacement",67,89
@@ -365,7 +352,6 @@ Amsterdam Centraal,"Emmerich, station",96,136
 Amsterdam Centraal,Euromax,89,124
 Amsterdam Centraal,"Europoort, emplacement",72,101
 Amsterdam Centraal,"Gekkengraaf, emplacement",124,183
-Amsterdam Centraal,Germersheim,337,523
 Amsterdam Centraal,Goes,125,181
 Amsterdam Centraal,"Hengelo, emplacement",108,157
 Amsterdam Centraal,"Herzogenrath, station",158,228
@@ -406,7 +392,6 @@ Amsterdam Centraal,"Sittard, emplacement",138,204
 Amsterdam Centraal,Sloehaven empl.,129,193
 Amsterdam Centraal,Steinweg Amsterdam,21,11
 Amsterdam Centraal,Stroe,55,76
-Amsterdam Centraal,Stuttgart,389,622
 Amsterdam Centraal,"Tilburg, industrie",89,121
 Amsterdam Centraal,"Uitgeest, emplacement",31,29
 Amsterdam Centraal,"Valburg, emplacement CUP",85,122
@@ -426,7 +411,6 @@ Amsterdam Westhaven,"Bad Bentheim, empl. / staalfabriek",121,189
 Amsterdam Westhaven,"Bad Bentheim, Hilgenstiege sp.25",121,190
 Amsterdam Westhaven,Beatrixhaven,59,82
 Amsterdam Westhaven,"Beverwijk, emplacement",25,23
-Amsterdam Westhaven,Bietigheim-Bissingen,378,613
 Amsterdam Westhaven,"Blerick, emplacement en werkplaats",121,179
 Amsterdam Westhaven,"Born, emplacement",126,195
 Amsterdam Westhaven,"Botlek, emplacement",61,87
@@ -446,7 +430,6 @@ Amsterdam Westhaven,"Emmerich, station",94,141
 Amsterdam Westhaven,Euromax,84,122
 Amsterdam Westhaven,"Europoort, emplacement",67,98
 Amsterdam Westhaven,"Gekkengraaf, emplacement",119,181
-Amsterdam Westhaven,Germersheim,331,521
 Amsterdam Westhaven,Goes,119,179
 Amsterdam Westhaven,"Hengelo, emplacement",106,161
 Amsterdam Westhaven,"Herzogenrath, station",152,226
@@ -487,7 +470,6 @@ Amsterdam Westhaven,"Sittard, emplacement",133,202
 Amsterdam Westhaven,Sloehaven empl.,124,191
 Amsterdam Westhaven,Steinweg Amsterdam,14,7
 Amsterdam Westhaven,Stroe,54,80
-Amsterdam Westhaven,Stuttgart,388,626
 Amsterdam Westhaven,"Tilburg, industrie",84,119
 Amsterdam Westhaven,"Uitgeest, emplacement",25,26
 Amsterdam Westhaven,"Valburg, emplacement CUP",80,120
@@ -506,7 +488,6 @@ Amsterdam Westhaven West,"Bad Bentheim, empl. / staalfabriek",122,192
 Amsterdam Westhaven West,"Bad Bentheim, Hilgenstiege sp.25",122,192
 Amsterdam Westhaven West,Beatrixhaven,56,80
 Amsterdam Westhaven West,"Beverwijk, emplacement",20,25
-Amsterdam Westhaven West,Bietigheim-Bissingen,379,615
 Amsterdam Westhaven West,"Blerick, emplacement en werkplaats",122,180
 Amsterdam Westhaven West,"Born, emplacement",128,197
 Amsterdam Westhaven West,"Botlek, emplacement",58,84
@@ -526,7 +507,6 @@ Amsterdam Westhaven West,"Emmerich, station",95,143
 Amsterdam Westhaven West,Euromax,81,119
 Amsterdam Westhaven West,"Europoort, emplacement",64,96
 Amsterdam Westhaven West,"Gekkengraaf, emplacement",121,183
-Amsterdam Westhaven West,Germersheim,333,522
 Amsterdam Westhaven West,Goes,116,177
 Amsterdam Westhaven West,"Hengelo, emplacement",107,164
 Amsterdam Westhaven West,"Herzogenrath, station",154,227
@@ -567,7 +547,6 @@ Amsterdam Westhaven West,"Sittard, emplacement",135,203
 Amsterdam Westhaven West,Sloehaven empl.,120,188
 Amsterdam Westhaven West,Steinweg Amsterdam,2,1
 Amsterdam Westhaven West,Stroe,55,83
-Amsterdam Westhaven West,Stuttgart,389,628
 Amsterdam Westhaven West,"Tilburg, industrie",86,120
 Amsterdam Westhaven West,"Uitgeest, emplacement",24,34
 Amsterdam Westhaven West,"Valburg, emplacement CUP",81,121
@@ -585,7 +564,6 @@ APMT,"Bad Bentheim, empl. / staalfabriek",167,258
 APMT,"Bad Bentheim, Hilgenstiege sp.25",166,258
 APMT,Beatrixhaven,33,39
 APMT,"Beverwijk, emplacement",81,118
-APMT,Bietigheim-Bissingen,408,646
 APMT,"Blerick, emplacement en werkplaats",135,202
 APMT,"Born, emplacement",139,211
 APMT,"Botlek, emplacement",26,28
@@ -605,7 +583,6 @@ APMT,"Emmerich, station",131,190
 APMT,Euromax,19,15
 APMT,"Europoort, emplacement",18,18
 APMT,"Gekkengraaf, emplacement",132,198
-APMT,Germersheim,346,543
 APMT,Goes,79,87
 APMT,"Hengelo, emplacement",153,229
 APMT,"Herzogenrath, station",168,249
@@ -646,7 +623,6 @@ APMT,"Sittard, emplacement",146,217
 APMT,Sloehaven empl.,85,99
 APMT,Steinweg Amsterdam,77,110
 APMT,Stroe,101,149
-APMT,Stuttgart,418,659
 APMT,"Tilburg, industrie",82,117
 APMT,"Uitgeest, emplacement",86,124
 APMT,"Valburg, emplacement CUP",96,142
@@ -663,7 +639,6 @@ APMT,"Zutphen, emplacement",130,185
 "Arnhem, goederenemplacement","Bad Bentheim, Hilgenstiege sp.25",82,121
 "Arnhem, goederenemplacement",Beatrixhaven,82,118
 "Arnhem, goederenemplacement","Beverwijk, emplacement",88,132
-"Arnhem, goederenemplacement",Bietigheim-Bissingen,315,505
 "Arnhem, goederenemplacement","Blerick, emplacement en werkplaats",65,83
 "Arnhem, goederenemplacement","Born, emplacement",96,133
 "Arnhem, goederenemplacement","Botlek, emplacement",88,128
@@ -683,7 +658,6 @@ APMT,"Zutphen, emplacement",130,185
 "Arnhem, goederenemplacement",Euromax,111,163
 "Arnhem, goederenemplacement","Europoort, emplacement",94,140
 "Arnhem, goederenemplacement","Gekkengraaf, emplacement",65,82
-"Arnhem, goederenemplacement",Germersheim,272,430
 "Arnhem, goederenemplacement",Goes,127,189
 "Arnhem, goederenemplacement","Hengelo, emplacement",67,92
 "Arnhem, goederenemplacement","Herzogenrath, station",122,164
@@ -724,7 +698,6 @@ APMT,"Zutphen, emplacement",130,185
 "Arnhem, goederenemplacement",Sloehaven empl.,132,200
 "Arnhem, goederenemplacement",Steinweg Amsterdam,82,121
 "Arnhem, goederenemplacement",Stroe,38,33
-"Arnhem, goederenemplacement",Stuttgart,325,519
 "Arnhem, goederenemplacement","Tilburg, industrie",65,85
 "Arnhem, goederenemplacement","Uitgeest, emplacement",92,140
 "Arnhem, goederenemplacement","Valburg, emplacement CUP",18,16
@@ -740,7 +713,6 @@ APMT,"Zutphen, emplacement",130,185
 "Bad Bentheim, empl. / staalfabriek","Bad Bentheim, Hilgenstiege sp.25",3,2
 "Bad Bentheim, empl. / staalfabriek",Beatrixhaven,146,227
 "Bad Bentheim, empl. / staalfabriek","Beverwijk, emplacement",130,205
-"Bad Bentheim, empl. / staalfabriek",Bietigheim-Bissingen,319,515
 "Bad Bentheim, empl. / staalfabriek","Blerick, emplacement en werkplaats",106,162
 "Bad Bentheim, empl. / staalfabriek","Born, emplacement",137,212
 "Bad Bentheim, empl. / staalfabriek","Botlek, emplacement",149,233
@@ -760,7 +732,6 @@ APMT,"Zutphen, emplacement",130,185
 "Bad Bentheim, empl. / staalfabriek",Euromax,172,268
 "Bad Bentheim, empl. / staalfabriek","Europoort, emplacement",155,244
 "Bad Bentheim, empl. / staalfabriek","Gekkengraaf, emplacement",109,165
-"Bad Bentheim, empl. / staalfabriek",Germersheim,277,441
 "Bad Bentheim, empl. / staalfabriek",Goes,191,297
 "Bad Bentheim, empl. / staalfabriek","Hengelo, emplacement",30,32
 "Bad Bentheim, empl. / staalfabriek","Herzogenrath, station",145,224
@@ -801,7 +772,6 @@ APMT,"Zutphen, emplacement",130,185
 "Bad Bentheim, empl. / staalfabriek",Sloehaven empl.,195,309
 "Bad Bentheim, empl. / staalfabriek",Steinweg Amsterdam,123,192
 "Bad Bentheim, empl. / staalfabriek",Stroe,73,113
-"Bad Bentheim, empl. / staalfabriek",Stuttgart,328,528
 "Bad Bentheim, empl. / staalfabriek","Tilburg, industrie",130,197
 "Bad Bentheim, empl. / staalfabriek","Uitgeest, emplacement",132,202
 "Bad Bentheim, empl. / staalfabriek","Valburg, emplacement CUP",89,138
@@ -816,7 +786,6 @@ APMT,"Zutphen, emplacement",130,185
 "Bad Bentheim, empl. / staalfabriek","Zutphen, emplacement",61,86
 "Bad Bentheim, Hilgenstiege sp.25",Beatrixhaven,145,227
 "Bad Bentheim, Hilgenstiege sp.25","Beverwijk, emplacement",129,205
-"Bad Bentheim, Hilgenstiege sp.25",Bietigheim-Bissingen,321,516
 "Bad Bentheim, Hilgenstiege sp.25","Blerick, emplacement en werkplaats",108,163
 "Bad Bentheim, Hilgenstiege sp.25","Born, emplacement",139,213
 "Bad Bentheim, Hilgenstiege sp.25","Botlek, emplacement",149,233
@@ -836,7 +805,6 @@ APMT,"Zutphen, emplacement",130,185
 "Bad Bentheim, Hilgenstiege sp.25",Euromax,172,268
 "Bad Bentheim, Hilgenstiege sp.25","Europoort, emplacement",154,245
 "Bad Bentheim, Hilgenstiege sp.25","Gekkengraaf, emplacement",111,166
-"Bad Bentheim, Hilgenstiege sp.25",Germersheim,279,442
 "Bad Bentheim, Hilgenstiege sp.25",Goes,190,297
 "Bad Bentheim, Hilgenstiege sp.25","Hengelo, emplacement",29,32
 "Bad Bentheim, Hilgenstiege sp.25","Herzogenrath, station",147,225
@@ -877,7 +845,6 @@ APMT,"Zutphen, emplacement",130,185
 "Bad Bentheim, Hilgenstiege sp.25",Sloehaven empl.,195,309
 "Bad Bentheim, Hilgenstiege sp.25",Steinweg Amsterdam,122,192
 "Bad Bentheim, Hilgenstiege sp.25",Stroe,73,114
-"Bad Bentheim, Hilgenstiege sp.25",Stuttgart,330,529
 "Bad Bentheim, Hilgenstiege sp.25","Tilburg, industrie",130,197
 "Bad Bentheim, Hilgenstiege sp.25","Uitgeest, emplacement",132,203
 "Bad Bentheim, Hilgenstiege sp.25","Valburg, emplacement CUP",88,138
@@ -891,7 +858,6 @@ APMT,"Zutphen, emplacement",130,185
 "Bad Bentheim, Hilgenstiege sp.25",Zevenaar grens,83,125
 "Bad Bentheim, Hilgenstiege sp.25","Zutphen, emplacement",60,86
 Beatrixhaven,"Beverwijk, emplacement",60,88
-Beatrixhaven,Bietigheim-Bissingen,382,613
 Beatrixhaven,"Blerick, emplacement en werkplaats",112,167
 Beatrixhaven,"Born, emplacement",115,176
 Beatrixhaven,"Botlek, emplacement",15,13
@@ -911,7 +877,6 @@ Beatrixhaven,"Emmerich, station",108,150
 Beatrixhaven,Euromax,38,49
 Beatrixhaven,"Europoort, emplacement",20,24
 Beatrixhaven,"Gekkengraaf, emplacement",108,163
-Beatrixhaven,Germersheim,329,524
 Beatrixhaven,Goes,69,102
 Beatrixhaven,"Hengelo, emplacement",131,198
 Beatrixhaven,"Herzogenrath, station",145,214
@@ -952,7 +917,6 @@ Beatrixhaven,"Sittard, emplacement",122,182
 Beatrixhaven,Sloehaven empl.,74,112
 Beatrixhaven,Steinweg Amsterdam,56,80
 Beatrixhaven,Stroe,79,118
-Beatrixhaven,Stuttgart,396,627
 Beatrixhaven,"Tilburg, industrie",58,82
 Beatrixhaven,"Uitgeest, emplacement",65,95
 Beatrixhaven,"Valburg, emplacement CUP",72,107
@@ -965,7 +929,6 @@ Beatrixhaven,"Waalhaven, kantoor RFO",7,4
 Beatrixhaven,"Westhaven, emplacement",58,82
 Beatrixhaven,Zevenaar grens,93,133
 Beatrixhaven,"Zutphen, emplacement",107,150
-"Beverwijk, emplacement",Bietigheim-Bissingen,385,626
 "Beverwijk, emplacement","Blerick, emplacement en werkplaats",128,194
 "Beverwijk, emplacement","Born, emplacement",134,210
 "Beverwijk, emplacement","Botlek, emplacement",63,92
@@ -985,7 +948,6 @@ Beatrixhaven,"Zutphen, emplacement",107,150
 "Beverwijk, emplacement",Euromax,86,127
 "Beverwijk, emplacement","Europoort, emplacement",69,104
 "Beverwijk, emplacement","Gekkengraaf, emplacement",126,196
-"Beverwijk, emplacement",Germersheim,339,536
 "Beverwijk, emplacement",Goes,121,185
 "Beverwijk, emplacement","Hengelo, emplacement",116,178
 "Beverwijk, emplacement","Herzogenrath, station",159,240
@@ -1026,7 +988,6 @@ Beatrixhaven,"Zutphen, emplacement",107,150
 "Beverwijk, emplacement",Sloehaven empl.,125,196
 "Beverwijk, emplacement",Steinweg Amsterdam,20,24
 "Beverwijk, emplacement",Stroe,63,97
-"Beverwijk, emplacement",Stuttgart,395,640
 "Beverwijk, emplacement","Tilburg, industrie",91,134
 "Beverwijk, emplacement","Uitgeest, emplacement",10,12
 "Beverwijk, emplacement","Valburg, emplacement CUP",87,134
@@ -1039,79 +1000,6 @@ Beatrixhaven,"Zutphen, emplacement",107,150
 "Beverwijk, emplacement","Westhaven, emplacement",23,27
 "Beverwijk, emplacement",Zevenaar grens,92,137
 "Beverwijk, emplacement","Zutphen, emplacement",95,137
-Bietigheim-Bissingen,"Blerick, emplacement en werkplaats",278,438
-Bietigheim-Bissingen,"Born, emplacement",280,441
-Bietigheim-Bissingen,"Botlek, emplacement",390,620
-Bietigheim-Bissingen,Bottrop,269,424
-Bietigheim-Bissingen,"Coevorden, euroterminal",365,585
-Bietigheim-Bissingen,Deventer goed. empl.,336,542
-Bietigheim-Bissingen,"Deventer, goederenemplacement",336,543
-Bietigheim-Bissingen,"Dordrecht, dok",368,580
-Bietigheim-Bissingen,"Dortmund Obereving, emplacement",278,410
-Bietigheim-Bissingen,Duisburg Ruhrorthafen,257,411
-Bietigheim-Bissingen,"Duisburg, Hochfeld Süd Vorbahnhof",255,405
-Bietigheim-Bissingen,ECT,411,648
-Bietigheim-Bissingen,"Eindhoven, emplacement",314,487
-Bietigheim-Bissingen,"Eindhoven, emplacement Acht",318,497
-Bietigheim-Bissingen,Eltville Ost,144,214
-Bietigheim-Bissingen,"Emmerich, station",298,477
-Bietigheim-Bissingen,Euromax,414,655
-Bietigheim-Bissingen,"Europoort, emplacement",395,631
-Bietigheim-Bissingen,"Gekkengraaf, emplacement",281,443
-Bietigheim-Bissingen,Germersheim,86,129
-Bietigheim-Bissingen,Goes,377,615
-Bietigheim-Bissingen,"Hengelo, emplacement",331,529
-Bietigheim-Bissingen,"Herzogenrath, station",266,424
-Bietigheim-Bissingen,Holland Cargo Terminal,382,618
-Bietigheim-Bissingen,"Houtrakpolder, emplacement",378,615
-Bietigheim-Bissingen,"IJsselmonde, emplacement",381,603
-Bietigheim-Bissingen,"Kaldenkirchen, station",270,426
-Bietigheim-Bissingen,"Kijfhoek, emplacement",367,581
-Bietigheim-Bissingen,"Köln Eifeltor, emplacement",221,356
-Bietigheim-Bissingen,Koole Vondelingenweg,388,617
-Bietigheim-Bissingen,"Krefeld Linn, emplacement",264,412
-Bietigheim-Bissingen,"Lage Zwaluwe, emplacement",358,566
-Bietigheim-Bissingen,"Leusden, PON",344,551
-Bietigheim-Bissingen,Ludwigshafen-Oggersheim,85,127
-Bietigheim-Bissingen,"Maasvlakte, emplacement",407,646
-Bietigheim-Bissingen,Magdeburg Hbf,318,497
-Bietigheim-Bissingen,"Marl-Sinsen, emplacement",284,455
-Bietigheim-Bissingen,Matrans Rotterdam Terminal,397,614
-Bietigheim-Bissingen,"Moerdijk, emplacement",365,574
-Bietigheim-Bissingen,Moers,265,418
-Bietigheim-Bissingen,"Neuss, guterbahnhof",252,391
-Bietigheim-Bissingen,"Nijmegen, emplacement",322,509
-Bietigheim-Bissingen,NWB terminal,378,612
-Bietigheim-Bissingen,OBA,379,613
-Bietigheim-Bissingen,"Oberhausen West, emplacement",255,410
-Bietigheim-Bissingen,"Oldenzaal, emplacement",335,522
-Bietigheim-Bissingen,"Onnen, emplacement noordingang",398,644
-Bietigheim-Bissingen,"Onnen, emplacement zuidingang",395,640
-Bietigheim-Bissingen,Opladen,226,360
-Bietigheim-Bissingen,"Oss, terminal OOC",331,524
-Bietigheim-Bissingen,"Pernis, emplacement",385,614
-Bietigheim-Bissingen,Rheine,332,536
-Bietigheim-Bissingen,"Rheinhausen, emplacement",267,411
-Bietigheim-Bissingen,"Roosendaal, emplacement",368,578
-Bietigheim-Bissingen,RWG,412,646
-Bietigheim-Bissingen,'s-Hertogenbosch,339,535
-Bietigheim-Bissingen,"Sittard, emplacement",282,455
-Bietigheim-Bissingen,Sloehaven empl.,383,626
-Bietigheim-Bissingen,Steinweg Amsterdam,379,615
-Bietigheim-Bissingen,Stroe,339,552
-Bietigheim-Bissingen,Stuttgart,34,26
-Bietigheim-Bissingen,"Tilburg, industrie",331,522
-Bietigheim-Bissingen,"Uitgeest, emplacement",389,625
-Bietigheim-Bissingen,"Valburg, emplacement CUP",322,518
-Bietigheim-Bissingen,"Venlo, emplacement",276,434
-Bietigheim-Bissingen,"Viersen, guterbahnhof",265,414
-Bietigheim-Bissingen,"Vlissingen Sloe, emplacement",383,627
-Bietigheim-Bissingen,Vopak-Sloe,384,626
-Bietigheim-Bissingen,"Waalhaven, emplacement",382,610
-Bietigheim-Bissingen,"Waalhaven, kantoor RFO",385,610
-Bietigheim-Bissingen,"Westhaven, emplacement",377,611
-Bietigheim-Bissingen,Zevenaar grens,305,492
-Bietigheim-Bissingen,"Zutphen, emplacement",329,526
 "Blerick, emplacement en werkplaats","Born, emplacement",38,54
 "Blerick, emplacement en werkplaats","Botlek, emplacement",117,177
 "Blerick, emplacement en werkplaats",Bottrop,59,74
@@ -1130,7 +1018,6 @@ Bietigheim-Bissingen,"Zutphen, emplacement",329,526
 "Blerick, emplacement en werkplaats",Euromax,140,212
 "Blerick, emplacement en werkplaats","Europoort, emplacement",123,188
 "Blerick, emplacement en werkplaats","Gekkengraaf, emplacement",12,8
-"Blerick, emplacement en werkplaats",Germersheim,218,346
 "Blerick, emplacement en werkplaats",Goes,126,192
 "Blerick, emplacement en werkplaats","Hengelo, emplacement",118,178
 "Blerick, emplacement en werkplaats","Herzogenrath, station",64,85
@@ -1171,7 +1058,6 @@ Bietigheim-Bissingen,"Zutphen, emplacement",329,526
 "Blerick, emplacement en werkplaats",Sloehaven empl.,130,204
 "Blerick, emplacement en werkplaats",Steinweg Amsterdam,125,187
 "Blerick, emplacement en werkplaats",Stroe,84,115
-"Blerick, emplacement en werkplaats",Stuttgart,288,451
 "Blerick, emplacement en werkplaats","Tilburg, industrie",62,88
 "Blerick, emplacement en werkplaats","Uitgeest, emplacement",132,202
 "Blerick, emplacement en werkplaats","Valburg, emplacement CUP",56,82
@@ -1201,7 +1087,6 @@ Bietigheim-Bissingen,"Zutphen, emplacement",329,526
 "Born, emplacement",Euromax,144,221
 "Born, emplacement","Europoort, emplacement",127,198
 "Born, emplacement","Gekkengraaf, emplacement",42,60
-"Born, emplacement",Germersheim,220,350
 "Born, emplacement",Goes,115,177
 "Born, emplacement","Hengelo, emplacement",148,227
 "Born, emplacement","Herzogenrath, station",32,33
@@ -1242,7 +1127,6 @@ Bietigheim-Bissingen,"Zutphen, emplacement",329,526
 "Born, emplacement",Sloehaven empl.,119,189
 "Born, emplacement",Steinweg Amsterdam,129,202
 "Born, emplacement",Stroe,114,164
-"Born, emplacement",Stuttgart,289,454
 "Born, emplacement","Tilburg, industrie",65,97
 "Born, emplacement","Uitgeest, emplacement",137,217
 "Born, emplacement","Valburg, emplacement CUP",86,131
@@ -1271,7 +1155,6 @@ Bietigheim-Bissingen,"Zutphen, emplacement",329,526
 "Botlek, emplacement",Euromax,30,37
 "Botlek, emplacement","Europoort, emplacement",12,9
 "Botlek, emplacement","Gekkengraaf, emplacement",113,172
-"Botlek, emplacement",Germersheim,327,519
 "Botlek, emplacement",Goes,71,83
 "Botlek, emplacement","Hengelo, emplacement",136,206
 "Botlek, emplacement","Herzogenrath, station",146,217
@@ -1312,7 +1195,6 @@ Bietigheim-Bissingen,"Zutphen, emplacement",329,526
 "Botlek, emplacement",Sloehaven empl.,79,97
 "Botlek, emplacement",Steinweg Amsterdam,57,83
 "Botlek, emplacement",Stroe,83,125
-"Botlek, emplacement",Stuttgart,399,633
 "Botlek, emplacement","Tilburg, industrie",63,91
 "Botlek, emplacement","Uitgeest, emplacement",65,99
 "Botlek, emplacement","Valburg, emplacement CUP",77,117
@@ -1340,7 +1222,6 @@ Bottrop,"Emmerich, station",51,69
 Bottrop,Euromax,171,263
 Bottrop,"Europoort, emplacement",154,240
 Bottrop,"Gekkengraaf, emplacement",59,74
-Bottrop,Germersheim,227,350
 Bottrop,Goes,173,256
 Bottrop,"Hengelo, emplacement",79,109
 Bottrop,"Herzogenrath, station",95,133
@@ -1381,7 +1262,6 @@ Bottrop,"Sittard, emplacement",94,127
 Bottrop,Sloehaven empl.,177,268
 Bottrop,Steinweg Amsterdam,135,207
 Bottrop,Stroe,95,131
-Bottrop,Stuttgart,279,437
 Bottrop,"Tilburg, industrie",108,152
 Bottrop,"Uitgeest, emplacement",145,227
 Bottrop,"Valburg, emplacement CUP",78,111
@@ -1408,7 +1288,6 @@ Bottrop,"Zutphen, emplacement",86,119
 "Coevorden, euroterminal",Euromax,171,255
 "Coevorden, euroterminal","Europoort, emplacement",154,232
 "Coevorden, euroterminal","Gekkengraaf, emplacement",141,209
-"Coevorden, euroterminal",Germersheim,323,512
 "Coevorden, euroterminal",Goes,190,284
 "Coevorden, euroterminal","Hengelo, emplacement",54,67
 "Coevorden, euroterminal","Herzogenrath, station",191,295
@@ -1449,7 +1328,6 @@ Bottrop,"Zutphen, emplacement",86,119
 "Coevorden, euroterminal",Sloehaven empl.,195,296
 "Coevorden, euroterminal",Steinweg Amsterdam,122,180
 "Coevorden, euroterminal",Stroe,84,105
-"Coevorden, euroterminal",Stuttgart,375,599
 "Coevorden, euroterminal","Tilburg, industrie",141,204
 "Coevorden, euroterminal","Uitgeest, emplacement",132,190
 "Coevorden, euroterminal","Valburg, emplacement CUP",100,145
@@ -1475,7 +1353,6 @@ Deventer goed. empl.,"Emmerich, station",52,70
 Deventer goed. empl.,Euromax,131,197
 Deventer goed. empl.,"Europoort, emplacement",114,173
 Deventer goed. empl.,"Gekkengraaf, emplacement",89,131
-Deventer goed. empl.,Germersheim,294,469
 Deventer goed. empl.,Goes,149,226
 Deventer goed. empl.,"Hengelo, emplacement",40,50
 Deventer goed. empl.,"Herzogenrath, station",146,213
@@ -1516,7 +1393,6 @@ Deventer goed. empl.,"Sittard, emplacement",126,189
 Deventer goed. empl.,Sloehaven empl.,154,238
 Deventer goed. empl.,Steinweg Amsterdam,81,121
 Deventer goed. empl.,Stroe,32,42
-Deventer goed. empl.,Stuttgart,346,556
 Deventer goed. empl.,"Tilburg, industrie",89,126
 Deventer goed. empl.,"Uitgeest, emplacement",91,131
 Deventer goed. empl.,"Valburg, emplacement CUP",47,67
@@ -1541,7 +1417,6 @@ Deventer goed. empl.,"Zutphen, emplacement",19,14
 "Deventer, goederenemplacement",Euromax,131,197
 "Deventer, goederenemplacement","Europoort, emplacement",114,173
 "Deventer, goederenemplacement","Gekkengraaf, emplacement",89,132
-"Deventer, goederenemplacement",Germersheim,294,469
 "Deventer, goederenemplacement",Goes,150,226
 "Deventer, goederenemplacement","Hengelo, emplacement",40,50
 "Deventer, goederenemplacement","Herzogenrath, station",146,213
@@ -1582,7 +1457,6 @@ Deventer goed. empl.,"Zutphen, emplacement",19,14
 "Deventer, goederenemplacement",Sloehaven empl.,154,238
 "Deventer, goederenemplacement",Steinweg Amsterdam,82,121
 "Deventer, goederenemplacement",Stroe,32,43
-"Deventer, goederenemplacement",Stuttgart,346,556
 "Deventer, goederenemplacement","Tilburg, industrie",89,126
 "Deventer, goederenemplacement","Uitgeest, emplacement",91,131
 "Deventer, goederenemplacement","Valburg, emplacement CUP",48,67
@@ -1606,7 +1480,6 @@ Deventer goed. empl.,"Zutphen, emplacement",19,14
 "Dordrecht, dok",Euromax,48,68
 "Dordrecht, dok","Europoort, emplacement",30,44
 "Dordrecht, dok","Gekkengraaf, emplacement",94,142
-"Dordrecht, dok",Germersheim,308,488
 "Dordrecht, dok",Goes,61,89
 "Dordrecht, dok","Hengelo, emplacement",127,194
 "Dordrecht, dok","Herzogenrath, station",127,186
@@ -1647,7 +1520,6 @@ Deventer goed. empl.,"Zutphen, emplacement",19,14
 "Dordrecht, dok",Sloehaven empl.,66,101
 "Dordrecht, dok",Steinweg Amsterdam,64,95
 "Dordrecht, dok",Stroe,74,113
-"Dordrecht, dok",Stuttgart,377,593
 "Dordrecht, dok","Tilburg, industrie",43,61
 "Dordrecht, dok","Uitgeest, emplacement",72,111
 "Dordrecht, dok","Valburg, emplacement CUP",66,101
@@ -1670,7 +1542,6 @@ Deventer goed. empl.,"Zutphen, emplacement",19,14
 "Dortmund Obereving, emplacement",Euromax,196,307
 "Dortmund Obereving, emplacement","Europoort, emplacement",178,283
 "Dortmund Obereving, emplacement","Gekkengraaf, emplacement",85,112
-"Dortmund Obereving, emplacement",Germersheim,235,344
 "Dortmund Obereving, emplacement",Goes,199,294
 "Dortmund Obereving, emplacement","Hengelo, emplacement",99,137
 "Dortmund Obereving, emplacement","Herzogenrath, station",113,157
@@ -1711,7 +1582,6 @@ Deventer goed. empl.,"Zutphen, emplacement",19,14
 "Dortmund Obereving, emplacement",Sloehaven empl.,204,306
 "Dortmund Obereving, emplacement",Steinweg Amsterdam,159,251
 "Dortmund Obereving, emplacement",Stroe,120,174
-"Dortmund Obereving, emplacement",Stuttgart,288,423
 "Dortmund Obereving, emplacement","Tilburg, industrie",135,190
 "Dortmund Obereving, emplacement","Uitgeest, emplacement",170,271
 "Dortmund Obereving, emplacement","Valburg, emplacement CUP",103,155
@@ -1733,7 +1603,6 @@ Duisburg Ruhrorthafen,"Emmerich, station",50,70
 Duisburg Ruhrorthafen,Euromax,162,248
 Duisburg Ruhrorthafen,"Europoort, emplacement",145,224
 Duisburg Ruhrorthafen,"Gekkengraaf, emplacement",44,58
-Duisburg Ruhrorthafen,Germersheim,215,337
 Duisburg Ruhrorthafen,Goes,158,240
 Duisburg Ruhrorthafen,"Hengelo, emplacement",86,122
 Duisburg Ruhrorthafen,"Herzogenrath, station",81,113
@@ -1774,7 +1643,6 @@ Duisburg Ruhrorthafen,"Sittard, emplacement",79,111
 Duisburg Ruhrorthafen,Sloehaven empl.,163,252
 Duisburg Ruhrorthafen,Steinweg Amsterdam,134,209
 Duisburg Ruhrorthafen,Stroe,94,132
-Duisburg Ruhrorthafen,Stuttgart,267,424
 Duisburg Ruhrorthafen,"Tilburg, industrie",94,136
 Duisburg Ruhrorthafen,"Uitgeest, emplacement",144,228
 Duisburg Ruhrorthafen,"Valburg, emplacement CUP",77,113
@@ -1795,7 +1663,6 @@ Duisburg Ruhrorthafen,"Zutphen, emplacement",86,120
 "Duisburg, Hochfeld Süd Vorbahnhof",Euromax,164,253
 "Duisburg, Hochfeld Süd Vorbahnhof","Europoort, emplacement",147,230
 "Duisburg, Hochfeld Süd Vorbahnhof","Gekkengraaf, emplacement",42,59
-"Duisburg, Hochfeld Süd Vorbahnhof",Germersheim,213,332
 "Duisburg, Hochfeld Süd Vorbahnhof",Goes,156,241
 "Duisburg, Hochfeld Süd Vorbahnhof","Hengelo, emplacement",87,131
 "Duisburg, Hochfeld Süd Vorbahnhof","Herzogenrath, station",77,104
@@ -1836,7 +1703,6 @@ Duisburg Ruhrorthafen,"Zutphen, emplacement",86,120
 "Duisburg, Hochfeld Süd Vorbahnhof",Sloehaven empl.,161,253
 "Duisburg, Hochfeld Süd Vorbahnhof",Steinweg Amsterdam,135,217
 "Duisburg, Hochfeld Süd Vorbahnhof",Stroe,95,141
-"Duisburg, Hochfeld Süd Vorbahnhof",Stuttgart,265,419
 "Duisburg, Hochfeld Süd Vorbahnhof","Tilburg, industrie",92,137
 "Duisburg, Hochfeld Süd Vorbahnhof","Uitgeest, emplacement",145,237
 "Duisburg, Hochfeld Süd Vorbahnhof","Valburg, emplacement CUP",78,124
@@ -1856,7 +1722,6 @@ ECT,"Emmerich, station",133,192
 ECT,Euromax,24,20
 ECT,"Europoort, emplacement",21,20
 ECT,"Gekkengraaf, emplacement",134,200
-ECT,Germersheim,349,546
 ECT,Goes,81,89
 ECT,"Hengelo, emplacement",155,232
 ECT,"Herzogenrath, station",170,251
@@ -1897,7 +1762,6 @@ ECT,"Sittard, emplacement",148,219
 ECT,Sloehaven empl.,87,102
 ECT,Steinweg Amsterdam,79,112
 ECT,Stroe,103,152
-ECT,Stuttgart,421,661
 ECT,"Tilburg, industrie",84,119
 ECT,"Uitgeest, emplacement",88,127
 ECT,"Valburg, emplacement CUP",98,144
@@ -1916,7 +1780,6 @@ ECT,"Zutphen, emplacement",133,187
 "Eindhoven, emplacement",Euromax,109,163
 "Eindhoven, emplacement","Europoort, emplacement",92,140
 "Eindhoven, emplacement","Gekkengraaf, emplacement",40,49
-"Eindhoven, emplacement",Germersheim,254,396
 "Eindhoven, emplacement",Goes,97,143
 "Eindhoven, emplacement","Hengelo, emplacement",113,169
 "Eindhoven, emplacement","Herzogenrath, station",73,94
@@ -1957,7 +1820,6 @@ ECT,"Zutphen, emplacement",133,187
 "Eindhoven, emplacement",Sloehaven empl.,101,154
 "Eindhoven, emplacement",Steinweg Amsterdam,92,139
 "Eindhoven, emplacement",Stroe,79,106
-"Eindhoven, emplacement",Stuttgart,323,501
 "Eindhoven, emplacement","Tilburg, industrie",30,38
 "Eindhoven, emplacement","Uitgeest, emplacement",99,154
 "Eindhoven, emplacement","Valburg, emplacement CUP",50,73
@@ -1975,7 +1837,6 @@ ECT,"Zutphen, emplacement",133,187
 "Eindhoven, emplacement Acht",Euromax,104,155
 "Eindhoven, emplacement Acht","Europoort, emplacement",87,132
 "Eindhoven, emplacement Acht","Gekkengraaf, emplacement",44,59
-"Eindhoven, emplacement Acht",Germersheim,258,406
 "Eindhoven, emplacement Acht",Goes,92,136
 "Eindhoven, emplacement Acht","Hengelo, emplacement",115,173
 "Eindhoven, emplacement Acht","Herzogenrath, station",77,104
@@ -2016,7 +1877,6 @@ ECT,"Zutphen, emplacement",133,187
 "Eindhoven, emplacement Acht",Sloehaven empl.,96,147
 "Eindhoven, emplacement Acht",Steinweg Amsterdam,90,133
 "Eindhoven, emplacement Acht",Stroe,81,110
-"Eindhoven, emplacement Acht",Stuttgart,327,510
 "Eindhoven, emplacement Acht","Tilburg, industrie",25,31
 "Eindhoven, emplacement Acht","Uitgeest, emplacement",98,148
 "Eindhoven, emplacement Acht","Valburg, emplacement CUP",52,77
@@ -2033,7 +1893,6 @@ Eltville Ost,"Emmerich, station",202,312
 Eltville Ost,Euromax,319,489
 Eltville Ost,"Europoort, emplacement",301,466
 Eltville Ost,"Gekkengraaf, emplacement",189,289
-Eltville Ost,Germersheim,90,129
 Eltville Ost,Goes,283,442
 Eltville Ost,"Hengelo, emplacement",237,365
 Eltville Ost,"Herzogenrath, station",169,253
@@ -2074,7 +1933,6 @@ Eltville Ost,"Sittard, emplacement",187,281
 Eltville Ost,Sloehaven empl.,288,454
 Eltville Ost,Steinweg Amsterdam,286,451
 Eltville Ost,Stroe,246,374
-Eltville Ost,Stuttgart,153,227
 Eltville Ost,"Tilburg, industrie",239,366
 Eltville Ost,"Uitgeest, emplacement",296,471
 Eltville Ost,"Valburg, emplacement CUP",229,355
@@ -2090,7 +1948,6 @@ Eltville Ost,"Zutphen, emplacement",237,362
 "Emmerich, station",Euromax,136,199
 "Emmerich, station","Europoort, emplacement",118,176
 "Emmerich, station","Gekkengraaf, emplacement",70,80
-"Emmerich, station",Germersheim,256,403
 "Emmerich, station",Goes,152,220
 "Emmerich, station","Hengelo, emplacement",76,83
 "Emmerich, station","Herzogenrath, station",119,164
@@ -2131,7 +1988,6 @@ Eltville Ost,"Zutphen, emplacement",237,362
 "Emmerich, station",Sloehaven empl.,157,232
 "Emmerich, station",Steinweg Amsterdam,99,144
 "Emmerich, station",Stroe,60,67
-"Emmerich, station",Stuttgart,308,490
 "Emmerich, station","Tilburg, industrie",90,122
 "Emmerich, station","Uitgeest, emplacement",110,163
 "Emmerich, station","Valburg, emplacement CUP",43,48
@@ -2146,7 +2002,6 @@ Eltville Ost,"Zutphen, emplacement",237,362
 "Emmerich, station","Zutphen, emplacement",51,55
 Euromax,"Europoort, emplacement",23,28
 Euromax,"Gekkengraaf, emplacement",137,207
-Euromax,Germersheim,351,554
 Euromax,Goes,83,96
 Euromax,"Hengelo, emplacement",160,241
 Euromax,"Herzogenrath, station",170,252
@@ -2187,7 +2042,6 @@ Euromax,"Sittard, emplacement",151,228
 Euromax,Sloehaven empl.,91,110
 Euromax,Steinweg Amsterdam,81,119
 Euromax,Stroe,107,160
-Euromax,Stuttgart,423,669
 Euromax,"Tilburg, industrie",87,127
 Euromax,"Uitgeest, emplacement",89,134
 Euromax,"Valburg, emplacement CUP",101,152
@@ -2201,7 +2055,6 @@ Euromax,"Westhaven, emplacement",84,121
 Euromax,Zevenaar grens,123,182
 Euromax,"Zutphen, emplacement",136,194
 "Europoort, emplacement","Gekkengraaf, emplacement",119,183
-"Europoort, emplacement",Germersheim,333,530
 "Europoort, emplacement",Goes,65,77
 "Europoort, emplacement","Hengelo, emplacement",141,217
 "Europoort, emplacement","Herzogenrath, station",152,228
@@ -2242,7 +2095,6 @@ Euromax,"Zutphen, emplacement",136,194
 "Europoort, emplacement",Sloehaven empl.,72,90
 "Europoort, emplacement",Steinweg Amsterdam,63,94
 "Europoort, emplacement",Stroe,89,136
-"Europoort, emplacement",Stuttgart,405,644
 "Europoort, emplacement","Tilburg, industrie",68,102
 "Europoort, emplacement","Uitgeest, emplacement",71,110
 "Europoort, emplacement","Valburg, emplacement CUP",83,128
@@ -2255,7 +2107,6 @@ Euromax,"Zutphen, emplacement",136,194
 "Europoort, emplacement","Westhaven, emplacement",66,96
 "Europoort, emplacement",Zevenaar grens,105,158
 "Europoort, emplacement","Zutphen, emplacement",118,170
-"Gekkengraaf, emplacement",Germersheim,222,352
 "Gekkengraaf, emplacement",Goes,123,188
 "Gekkengraaf, emplacement","Hengelo, emplacement",116,176
 "Gekkengraaf, emplacement","Herzogenrath, station",68,90
@@ -2296,7 +2147,6 @@ Euromax,"Zutphen, emplacement",136,194
 "Gekkengraaf, emplacement",Sloehaven empl.,127,200
 "Gekkengraaf, emplacement",Steinweg Amsterdam,122,189
 "Gekkengraaf, emplacement",Stroe,82,113
-"Gekkengraaf, emplacement",Stuttgart,291,456
 "Gekkengraaf, emplacement","Tilburg, industrie",58,84
 "Gekkengraaf, emplacement","Uitgeest, emplacement",130,204
 "Gekkengraaf, emplacement","Valburg, emplacement CUP",54,80
@@ -2309,59 +2159,6 @@ Euromax,"Zutphen, emplacement",136,194
 "Gekkengraaf, emplacement","Westhaven, emplacement",119,181
 "Gekkengraaf, emplacement",Zevenaar grens,76,110
 "Gekkengraaf, emplacement","Zutphen, emplacement",90,114
-Germersheim,Goes,317,506
-Germersheim,"Hengelo, emplacement",286,463
-Germersheim,"Herzogenrath, station",203,317
-Germersheim,Holland Cargo Terminal,337,530
-Germersheim,"Houtrakpolder, emplacement",332,527
-Germersheim,"IJsselmonde, emplacement",321,504
-Germersheim,"Kaldenkirchen, station",211,336
-Germersheim,"Kijfhoek, emplacement",308,490
-Germersheim,"Köln Eifeltor, emplacement",173,267
-Germersheim,Koole Vondelingenweg,329,515
-Germersheim,"Krefeld Linn, emplacement",213,327
-Germersheim,"Lage Zwaluwe, emplacement",300,475
-Germersheim,"Leusden, PON",299,485
-Germersheim,Ludwigshafen-Oggersheim,30,39
-Germersheim,"Maasvlakte, emplacement",346,544
-Germersheim,Magdeburg Hbf,334,541
-Germersheim,"Marl-Sinsen, emplacement",235,379
-Germersheim,Matrans Rotterdam Terminal,336,512
-Germersheim,"Moerdijk, emplacement",307,482
-Germersheim,Moers,218,342
-Germersheim,"Neuss, guterbahnhof",198,308
-Germersheim,"Nijmegen, emplacement",261,408
-Germersheim,NWB terminal,333,521
-Germersheim,OBA,333,522
-Germersheim,"Oberhausen West, emplacement",210,345
-Germersheim,"Oldenzaal, emplacement",290,456
-Germersheim,"Onnen, emplacement noordingang",356,582
-Germersheim,"Onnen, emplacement zuidingang",352,579
-Germersheim,Opladen,182,295
-Germersheim,"Oss, terminal OOC",271,423
-Germersheim,"Pernis, emplacement",328,514
-Germersheim,Rheine,288,466
-Germersheim,"Rheinhausen, emplacement",213,334
-Germersheim,"Roosendaal, emplacement",310,488
-Germersheim,RWG,350,546
-Germersheim,'s-Hertogenbosch,282,448
-Germersheim,"Sittard, emplacement",221,345
-Germersheim,Sloehaven empl.,321,518
-Germersheim,Steinweg Amsterdam,335,529
-Germersheim,Stroe,295,472
-Germersheim,Stuttgart,86,109
-Germersheim,"Tilburg, industrie",272,430
-Germersheim,"Uitgeest, emplacement",343,544
-Germersheim,"Valburg, emplacement CUP",266,424
-Germersheim,"Venlo, emplacement",218,341
-Germersheim,"Viersen, guterbahnhof",206,323
-Germersheim,"Vlissingen Sloe, emplacement",322,518
-Germersheim,Vopak-Sloe,322,517
-Germersheim,"Waalhaven, emplacement",322,508
-Germersheim,"Waalhaven, kantoor RFO",325,509
-Germersheim,"Westhaven, emplacement",332,521
-Germersheim,Zevenaar grens,260,427
-Germersheim,"Zutphen, emplacement",286,460
 Goes,"Hengelo, emplacement",179,273
 Goes,"Herzogenrath, station",130,198
 Goes,Holland Cargo Terminal,117,179
@@ -2401,7 +2198,6 @@ Goes,"Sittard, emplacement",113,176
 Goes,Sloehaven empl.,15,17
 Goes,Steinweg Amsterdam,115,178
 Goes,Stroe,126,192
-Goes,Stuttgart,387,629
 Goes,"Tilburg, industrie",77,115
 Goes,"Uitgeest, emplacement",124,193
 Goes,"Valburg, emplacement CUP",118,180
@@ -2452,7 +2248,6 @@ Goes,"Zutphen, emplacement",154,222
 "Hengelo, emplacement",Sloehaven empl.,182,280
 "Hengelo, emplacement",Steinweg Amsterdam,109,164
 "Hengelo, emplacement",Stroe,60,85
-"Hengelo, emplacement",Stuttgart,341,543
 "Hengelo, emplacement","Tilburg, industrie",117,169
 "Hengelo, emplacement","Uitgeest, emplacement",119,174
 "Hengelo, emplacement","Valburg, emplacement CUP",75,110
@@ -2502,7 +2297,6 @@ Goes,"Zutphen, emplacement",154,222
 "Herzogenrath, station",Sloehaven empl.,136,207
 "Herzogenrath, station",Steinweg Amsterdam,159,240
 "Herzogenrath, station",Stroe,143,202
-"Herzogenrath, station",Stuttgart,275,437
 "Herzogenrath, station","Tilburg, industrie",95,135
 "Herzogenrath, station","Uitgeest, emplacement",166,255
 "Herzogenrath, station","Valburg, emplacement CUP",115,169
@@ -2551,7 +2345,6 @@ Holland Cargo Terminal,"Sittard, emplacement",138,210
 Holland Cargo Terminal,Sloehaven empl.,122,190
 Holland Cargo Terminal,Steinweg Amsterdam,10,7
 Holland Cargo Terminal,Stroe,58,86
-Holland Cargo Terminal,Stuttgart,392,632
 Holland Cargo Terminal,"Tilburg, industrie",89,127
 Holland Cargo Terminal,"Uitgeest, emplacement",22,27
 Holland Cargo Terminal,"Valburg, emplacement CUP",84,128
@@ -2599,7 +2392,6 @@ Holland Cargo Terminal,"Zutphen, emplacement",89,126
 "Houtrakpolder, emplacement",Sloehaven empl.,118,186
 "Houtrakpolder, emplacement",Steinweg Amsterdam,6,4
 "Houtrakpolder, emplacement",Stroe,53,83
-"Houtrakpolder, emplacement",Stuttgart,387,628
 "Houtrakpolder, emplacement","Tilburg, industrie",84,124
 "Houtrakpolder, emplacement","Uitgeest, emplacement",22,31
 "Houtrakpolder, emplacement","Valburg, emplacement CUP",80,124
@@ -2646,7 +2438,6 @@ Holland Cargo Terminal,"Zutphen, emplacement",89,126
 "IJsselmonde, emplacement",Sloehaven empl.,72,107
 "IJsselmonde, emplacement",Steinweg Amsterdam,61,88
 "IJsselmonde, emplacement",Stroe,74,108
-"IJsselmonde, emplacement",Stuttgart,390,617
 "IJsselmonde, emplacement","Tilburg, industrie",54,75
 "IJsselmonde, emplacement","Uitgeest, emplacement",70,103
 "IJsselmonde, emplacement","Valburg, emplacement CUP",68,100
@@ -2692,7 +2483,6 @@ Holland Cargo Terminal,"Zutphen, emplacement",89,126
 "Kaldenkirchen, station",Sloehaven empl.,134,212
 "Kaldenkirchen, station",Steinweg Amsterdam,128,195
 "Kaldenkirchen, station",Stroe,88,123
-"Kaldenkirchen, station",Stuttgart,279,440
 "Kaldenkirchen, station","Tilburg, industrie",65,96
 "Kaldenkirchen, station","Uitgeest, emplacement",136,210
 "Kaldenkirchen, station","Valburg, emplacement CUP",59,90
@@ -2737,7 +2527,6 @@ Holland Cargo Terminal,"Zutphen, emplacement",89,126
 "Kijfhoek, emplacement",Sloehaven empl.,65,102
 "Kijfhoek, emplacement",Steinweg Amsterdam,62,93
 "Kijfhoek, emplacement",Stroe,72,110
-"Kijfhoek, emplacement",Stuttgart,377,594
 "Kijfhoek, emplacement","Tilburg, industrie",43,62
 "Kijfhoek, emplacement","Uitgeest, emplacement",70,108
 "Kijfhoek, emplacement","Valburg, emplacement CUP",63,98
@@ -2781,7 +2570,6 @@ Holland Cargo Terminal,"Zutphen, emplacement",89,126
 "Köln Eifeltor, emplacement",Sloehaven empl.,171,274
 "Köln Eifeltor, emplacement",Steinweg Amsterdam,179,285
 "Köln Eifeltor, emplacement",Stroe,139,209
-"Köln Eifeltor, emplacement",Stuttgart,231,369
 "Köln Eifeltor, emplacement","Tilburg, industrie",123,186
 "Köln Eifeltor, emplacement","Uitgeest, emplacement",189,305
 "Köln Eifeltor, emplacement","Valburg, emplacement CUP",116,182
@@ -2824,7 +2612,6 @@ Koole Vondelingenweg,"Sittard, emplacement",125,189
 Koole Vondelingenweg,Sloehaven empl.,78,119
 Koole Vondelingenweg,Steinweg Amsterdam,55,80
 Koole Vondelingenweg,Stroe,81,122
-Koole Vondelingenweg,Stuttgart,398,630
 Koole Vondelingenweg,"Tilburg, industrie",61,88
 Koole Vondelingenweg,"Uitgeest, emplacement",64,96
 Koole Vondelingenweg,"Valburg, emplacement CUP",75,113
@@ -2866,7 +2653,6 @@ Koole Vondelingenweg,"Zutphen, emplacement",111,155
 "Krefeld Linn, emplacement",Sloehaven empl.,163,249
 "Krefeld Linn, emplacement",Steinweg Amsterdam,150,225
 "Krefeld Linn, emplacement",Stroe,110,153
-"Krefeld Linn, emplacement",Stuttgart,274,425
 "Krefeld Linn, emplacement","Tilburg, industrie",94,134
 "Krefeld Linn, emplacement","Uitgeest, emplacement",157,240
 "Krefeld Linn, emplacement","Valburg, emplacement CUP",81,121
@@ -2907,7 +2693,6 @@ Koole Vondelingenweg,"Zutphen, emplacement",111,155
 "Lage Zwaluwe, emplacement",Sloehaven empl.,59,91
 "Lage Zwaluwe, emplacement",Steinweg Amsterdam,74,110
 "Lage Zwaluwe, emplacement",Stroe,77,117
-"Lage Zwaluwe, emplacement",Stuttgart,368,579
 "Lage Zwaluwe, emplacement","Tilburg, industrie",34,47
 "Lage Zwaluwe, emplacement","Uitgeest, emplacement",82,126
 "Lage Zwaluwe, emplacement","Valburg, emplacement CUP",69,105
@@ -2947,7 +2732,6 @@ Koole Vondelingenweg,"Zutphen, emplacement",111,155
 "Leusden, PON",Sloehaven empl.,116,176
 "Leusden, PON",Steinweg Amsterdam,48,68
 "Leusden, PON",Stroe,23,29
-"Leusden, PON",Stuttgart,354,564
 "Leusden, PON","Tilburg, industrie",68,98
 "Leusden, PON","Uitgeest, emplacement",58,79
 "Leusden, PON","Valburg, emplacement CUP",47,62
@@ -2986,7 +2770,6 @@ Ludwigshafen-Oggersheim,"Sittard, emplacement",202,313
 Ludwigshafen-Oggersheim,Sloehaven empl.,302,486
 Ludwigshafen-Oggersheim,Steinweg Amsterdam,316,497
 Ludwigshafen-Oggersheim,Stroe,276,425
-Ludwigshafen-Oggersheim,Stuttgart,95,140
 Ludwigshafen-Oggersheim,"Tilburg, industrie",253,398
 Ludwigshafen-Oggersheim,"Uitgeest, emplacement",324,512
 Ludwigshafen-Oggersheim,"Valburg, emplacement CUP",247,392
@@ -3024,7 +2807,6 @@ Ludwigshafen-Oggersheim,"Zutphen, emplacement",268,426
 "Maasvlakte, emplacement",Sloehaven empl.,85,101
 "Maasvlakte, emplacement",Steinweg Amsterdam,75,109
 "Maasvlakte, emplacement",Stroe,101,151
-"Maasvlakte, emplacement",Stuttgart,417,659
 "Maasvlakte, emplacement","Tilburg, industrie",80,117
 "Maasvlakte, emplacement","Uitgeest, emplacement",83,125
 "Maasvlakte, emplacement","Valburg, emplacement CUP",95,143
@@ -3061,7 +2843,6 @@ Magdeburg Hbf,"Sittard, emplacement",307,500
 Magdeburg Hbf,Sloehaven empl.,397,653
 Magdeburg Hbf,Steinweg Amsterdam,324,531
 Magdeburg Hbf,Stroe,274,453
-Magdeburg Hbf,Stuttgart,327,510
 Magdeburg Hbf,"Tilburg, industrie",329,537
 Magdeburg Hbf,"Uitgeest, emplacement",333,542
 Magdeburg Hbf,"Valburg, emplacement CUP",290,478
@@ -3097,7 +2878,6 @@ Magdeburg Hbf,"Zutphen, emplacement",262,425
 "Marl-Sinsen, emplacement",Sloehaven empl.,193,300
 "Marl-Sinsen, emplacement",Steinweg Amsterdam,148,236
 "Marl-Sinsen, emplacement",Stroe,108,159
-"Marl-Sinsen, emplacement",Stuttgart,294,469
 "Marl-Sinsen, emplacement","Tilburg, industrie",124,184
 "Marl-Sinsen, emplacement","Uitgeest, emplacement",158,256
 "Marl-Sinsen, emplacement","Valburg, emplacement CUP",92,140
@@ -3132,7 +2912,6 @@ Matrans Rotterdam Terminal,"Sittard, emplacement",134,187
 Matrans Rotterdam Terminal,Sloehaven empl.,87,116
 Matrans Rotterdam Terminal,Steinweg Amsterdam,69,84
 Matrans Rotterdam Terminal,Stroe,93,123
-Matrans Rotterdam Terminal,Stuttgart,407,628
 Matrans Rotterdam Terminal,"Tilburg, industrie",70,86
 Matrans Rotterdam Terminal,"Uitgeest, emplacement",77,100
 Matrans Rotterdam Terminal,"Valburg, emplacement CUP",84,111
@@ -3166,7 +2945,6 @@ Matrans Rotterdam Terminal,"Zutphen, emplacement",120,153
 "Moerdijk, emplacement",Sloehaven empl.,58,86
 "Moerdijk, emplacement",Steinweg Amsterdam,77,113
 "Moerdijk, emplacement",Stroe,83,121
-"Moerdijk, emplacement",Stuttgart,375,587
 "Moerdijk, emplacement","Tilburg, industrie",41,55
 "Moerdijk, emplacement","Uitgeest, emplacement",85,128
 "Moerdijk, emplacement","Valburg, emplacement CUP",75,109
@@ -3199,7 +2977,6 @@ Moers,"Sittard, emplacement",72,102
 Moers,Sloehaven empl.,156,243
 Moers,Steinweg Amsterdam,141,213
 Moers,Stroe,101,141
-Moers,Stuttgart,275,432
 Moers,"Tilburg, industrie",87,127
 Moers,"Uitgeest, emplacement",149,228
 Moers,"Valburg, emplacement CUP",72,109
@@ -3231,7 +3008,6 @@ Moers,"Zutphen, emplacement",94,131
 "Neuss, guterbahnhof",Sloehaven empl.,167,260
 "Neuss, guterbahnhof",Steinweg Amsterdam,159,242
 "Neuss, guterbahnhof",Stroe,118,170
-"Neuss, guterbahnhof",Stuttgart,262,404
 "Neuss, guterbahnhof","Tilburg, industrie",98,144
 "Neuss, guterbahnhof","Uitgeest, emplacement",166,258
 "Neuss, guterbahnhof","Valburg, emplacement CUP",90,138
@@ -3262,7 +3038,6 @@ Moers,"Zutphen, emplacement",94,131
 "Nijmegen, emplacement",Sloehaven empl.,124,184
 "Nijmegen, emplacement",Steinweg Amsterdam,93,132
 "Nijmegen, emplacement",Stroe,53,59
-"Nijmegen, emplacement",Stuttgart,331,522
 "Nijmegen, emplacement","Tilburg, industrie",56,67
 "Nijmegen, emplacement","Uitgeest, emplacement",101,147
 "Nijmegen, emplacement","Valburg, emplacement CUP",19,13
@@ -3292,7 +3067,6 @@ NWB terminal,"Sittard, emplacement",133,201
 NWB terminal,Sloehaven empl.,124,191
 NWB terminal,Steinweg Amsterdam,14,7
 NWB terminal,Stroe,54,80
-NWB terminal,Stuttgart,388,626
 NWB terminal,"Tilburg, industrie",84,118
 NWB terminal,"Uitgeest, emplacement",26,26
 NWB terminal,"Valburg, emplacement CUP",80,119
@@ -3321,7 +3095,6 @@ OBA,"Sittard, emplacement",134,202
 OBA,Sloehaven empl.,125,191
 OBA,Steinweg Amsterdam,14,8
 OBA,Stroe,55,81
-OBA,Stuttgart,389,626
 OBA,"Tilburg, industrie",85,119
 OBA,"Uitgeest, emplacement",26,26
 OBA,"Valburg, emplacement CUP",81,120
@@ -3349,7 +3122,6 @@ OBA,"Zutphen, emplacement",86,120
 "Oberhausen West, emplacement",Sloehaven empl.,163,255
 "Oberhausen West, emplacement",Steinweg Amsterdam,127,205
 "Oberhausen West, emplacement",Stroe,87,129
-"Oberhausen West, emplacement",Stuttgart,264,424
 "Oberhausen West, emplacement","Tilburg, industrie",94,139
 "Oberhausen West, emplacement","Uitgeest, emplacement",137,225
 "Oberhausen West, emplacement","Valburg, emplacement CUP",70,110
@@ -3376,7 +3148,6 @@ OBA,"Zutphen, emplacement",86,120
 "Oldenzaal, emplacement",Sloehaven empl.,186,291
 "Oldenzaal, emplacement",Steinweg Amsterdam,113,174
 "Oldenzaal, emplacement",Stroe,63,96
-"Oldenzaal, emplacement",Stuttgart,345,535
 "Oldenzaal, emplacement","Tilburg, industrie",121,179
 "Oldenzaal, emplacement","Uitgeest, emplacement",122,185
 "Oldenzaal, emplacement","Valburg, emplacement CUP",79,120
@@ -3402,7 +3173,6 @@ OBA,"Zutphen, emplacement",86,120
 "Onnen, emplacement noordingang",Sloehaven empl.,216,340
 "Onnen, emplacement noordingang",Steinweg Amsterdam,128,200
 "Onnen, emplacement noordingang",Stroe,105,148
-"Onnen, emplacement noordingang",Stuttgart,408,657
 "Onnen, emplacement noordingang","Tilburg, industrie",162,247
 "Onnen, emplacement noordingang","Uitgeest, emplacement",130,190
 "Onnen, emplacement noordingang","Valburg, emplacement CUP",121,188
@@ -3427,7 +3197,6 @@ OBA,"Zutphen, emplacement",86,120
 "Onnen, emplacement zuidingang",Sloehaven empl.,212,336
 "Onnen, emplacement zuidingang",Steinweg Amsterdam,130,205
 "Onnen, emplacement zuidingang",Stroe,101,145
-"Onnen, emplacement zuidingang",Stuttgart,404,654
 "Onnen, emplacement zuidingang","Tilburg, industrie",159,244
 "Onnen, emplacement zuidingang","Uitgeest, emplacement",132,194
 "Onnen, emplacement zuidingang","Valburg, emplacement CUP",117,185
@@ -3451,7 +3220,6 @@ Opladen,"Sittard, emplacement",79,114
 Opladen,Sloehaven empl.,184,289
 Opladen,Steinweg Amsterdam,162,258
 Opladen,Stroe,122,182
-Opladen,Stuttgart,236,373
 Opladen,"Tilburg, industrie",124,183
 Opladen,"Uitgeest, emplacement",172,278
 Opladen,"Valburg, emplacement CUP",106,163
@@ -3474,7 +3242,6 @@ Opladen,"Zutphen, emplacement",114,170
 "Oss, terminal OOC",Sloehaven empl.,109,166
 "Oss, terminal OOC",Steinweg Amsterdam,84,125
 "Oss, terminal OOC",Stroe,57,67
-"Oss, terminal OOC",Stuttgart,340,537
 "Oss, terminal OOC","Tilburg, industrie",42,49
 "Oss, terminal OOC","Uitgeest, emplacement",92,140
 "Oss, terminal OOC","Valburg, emplacement CUP",28,34
@@ -3496,7 +3263,6 @@ Opladen,"Zutphen, emplacement",114,170
 "Pernis, emplacement",Sloehaven empl.,75,116
 "Pernis, emplacement",Steinweg Amsterdam,53,77
 "Pernis, emplacement",Stroe,78,119
-"Pernis, emplacement",Stuttgart,395,627
 "Pernis, emplacement","Tilburg, industrie",58,85
 "Pernis, emplacement","Uitgeest, emplacement",61,93
 "Pernis, emplacement","Valburg, emplacement CUP",72,111
@@ -3517,7 +3283,6 @@ Rheine,"Sittard, emplacement",157,240
 Rheine,Sloehaven empl.,210,330
 Rheine,Steinweg Amsterdam,138,213
 Rheine,Stroe,88,134
-Rheine,Stuttgart,341,549
 Rheine,"Tilburg, industrie",146,218
 Rheine,"Uitgeest, emplacement",147,223
 Rheine,"Valburg, emplacement CUP",104,159
@@ -3537,7 +3302,6 @@ Rheine,"Zutphen, emplacement",76,107
 "Rheinhausen, emplacement",Sloehaven empl.,161,250
 "Rheinhausen, emplacement",Steinweg Amsterdam,146,222
 "Rheinhausen, emplacement",Stroe,106,145
-"Rheinhausen, emplacement",Stuttgart,276,424
 "Rheinhausen, emplacement","Tilburg, industrie",92,134
 "Rheinhausen, emplacement","Uitgeest, emplacement",155,241
 "Rheinhausen, emplacement","Valburg, emplacement CUP",79,121
@@ -3556,7 +3320,6 @@ Rheine,"Zutphen, emplacement",76,107
 "Roosendaal, emplacement",Sloehaven empl.,45,66
 "Roosendaal, emplacement",Steinweg Amsterdam,87,130
 "Roosendaal, emplacement",Stroe,94,138
-"Roosendaal, emplacement",Stuttgart,378,592
 "Roosendaal, emplacement","Tilburg, industrie",46,65
 "Roosendaal, emplacement","Uitgeest, emplacement",96,145
 "Roosendaal, emplacement","Valburg, emplacement CUP",86,126
@@ -3574,7 +3337,6 @@ RWG,"Sittard, emplacement",150,219
 RWG,Sloehaven empl.,89,102
 RWG,Steinweg Amsterdam,81,112
 RWG,Stroe,104,152
-RWG,Stuttgart,421,660
 RWG,"Tilburg, industrie",86,119
 RWG,"Uitgeest, emplacement",90,127
 RWG,"Valburg, emplacement CUP",100,144
@@ -3591,7 +3353,6 @@ RWG,"Zutphen, emplacement",134,187
 's-Hertogenbosch,Sloehaven empl.,92,141
 's-Hertogenbosch,Steinweg Amsterdam,68,96
 's-Hertogenbosch,Stroe,63,95
-'s-Hertogenbosch,Stuttgart,352,550
 's-Hertogenbosch,"Tilburg, industrie",26,23
 's-Hertogenbosch,"Uitgeest, emplacement",77,116
 's-Hertogenbosch,"Valburg, emplacement CUP",40,53
@@ -3607,7 +3368,6 @@ RWG,"Zutphen, emplacement",134,187
 "Sittard, emplacement",Sloehaven empl.,120,186
 "Sittard, emplacement",Steinweg Amsterdam,136,208
 "Sittard, emplacement",Stroe,121,170
-"Sittard, emplacement",Stuttgart,292,468
 "Sittard, emplacement","Tilburg, industrie",72,103
 "Sittard, emplacement","Uitgeest, emplacement",144,223
 "Sittard, emplacement","Valburg, emplacement CUP",92,137
@@ -3622,7 +3382,6 @@ RWG,"Zutphen, emplacement",134,187
 "Sittard, emplacement","Zutphen, emplacement",129,171
 Sloehaven empl.,Steinweg Amsterdam,121,189
 Sloehaven empl.,Stroe,132,203
-Sloehaven empl.,Stuttgart,392,640
 Sloehaven empl.,"Tilburg, industrie",82,126
 Sloehaven empl.,"Uitgeest, emplacement",129,204
 Sloehaven empl.,"Valburg, emplacement CUP",123,191
@@ -3636,7 +3395,6 @@ Sloehaven empl.,"Westhaven, emplacement",124,191
 Sloehaven empl.,Zevenaar grens,146,221
 Sloehaven empl.,"Zutphen, emplacement",159,233
 Steinweg Amsterdam,Stroe,55,83
-Steinweg Amsterdam,Stuttgart,389,629
 Steinweg Amsterdam,"Tilburg, industrie",86,120
 Steinweg Amsterdam,"Uitgeest, emplacement",25,34
 Steinweg Amsterdam,"Valburg, emplacement CUP",82,121
@@ -3649,7 +3407,6 @@ Steinweg Amsterdam,"Waalhaven, kantoor RFO",58,82
 Steinweg Amsterdam,"Westhaven, emplacement",8,5
 Steinweg Amsterdam,Zevenaar grens,86,126
 Steinweg Amsterdam,"Zutphen, emplacement",86,123
-Stroe,Stuttgart,349,565
 Stroe,"Tilburg, industrie",81,122
 Stroe,"Uitgeest, emplacement",65,94
 Stroe,"Valburg, emplacement CUP",43,49
@@ -3662,18 +3419,6 @@ Stroe,"Waalhaven, kantoor RFO",80,119
 Stroe,"Westhaven, emplacement",53,80
 Stroe,Zevenaar grens,45,63
 Stroe,"Zutphen, emplacement",37,44
-Stuttgart,"Tilburg, industrie",341,535
-Stuttgart,"Uitgeest, emplacement",398,639
-Stuttgart,"Valburg, emplacement CUP",332,532
-Stuttgart,"Venlo, emplacement",286,447
-Stuttgart,"Viersen, guterbahnhof",275,427
-Stuttgart,"Vlissingen Sloe, emplacement",393,641
-Stuttgart,Vopak-Sloe,393,639
-Stuttgart,"Waalhaven, emplacement",392,623
-Stuttgart,"Waalhaven, kantoor RFO",394,624
-Stuttgart,"Westhaven, emplacement",387,624
-Stuttgart,Zevenaar grens,315,505
-Stuttgart,"Zutphen, emplacement",339,539
 "Tilburg, industrie","Uitgeest, emplacement",94,141
 "Tilburg, industrie","Valburg, emplacement CUP",54,74
 "Tilburg, industrie","Venlo, emplacement",64,90

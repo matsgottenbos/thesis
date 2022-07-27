@@ -9,10 +9,6 @@ using System.Threading.Tasks;
 namespace Thesis {
     static class DataActivityProcessor {
         public static (Activity[], bool[,], float[,], bool[,], int, int) ProcessRawActivities(XSSFWorkbook stationAddressesBook, RawActivity[] rawActivities, string[] stationNames, string[] borderStationNames, string[] borderRegionStationNames, int[,] expectedCarTravelTimes) {
-            if (rawActivities.Length == 0) {
-                throw new Exception("No activities found in timeframe");
-            }
-
             Console.WriteLine("Found {0} activities in timeframe", rawActivities.Length);
 
             // Sort activities by start time
@@ -26,18 +22,32 @@ namespace Thesis {
             Dictionary<string, int> stationDataNameToAddressIndex = GetStationDataNameToAddressIndexDict(stationAddressesBook, stationNames);
 
             // Create activity objects
-            Activity[] activities = new Activity[rawActivities.Length];
-            for (int activityIndex = 0; activityIndex < rawActivities.Length; activityIndex++) {
-                RawActivity rawActivity = rawActivities[activityIndex];
+            List<Activity> activitiesList = new List<Activity>();
+            List<string> missingStations = new List<string>();
+            int skippedActivitiesForMissingStationsCount = 0;
+            for (int rawActivityIndex = 0; rawActivityIndex < rawActivities.Length; rawActivityIndex++) {
+                RawActivity rawActivity = rawActivities[rawActivityIndex];
 
                 // Get index of start and end station addresses
-                if (!stationDataNameToAddressIndex.ContainsKey(rawActivity.StartStationName)) throw new Exception(string.Format("Unknown station `{0}`", rawActivity.StartStationName));
+                if (!stationDataNameToAddressIndex.ContainsKey(rawActivity.StartStationName)) {
+                    if (!missingStations.Contains(rawActivity.StartStationName)) missingStations.Add(rawActivity.StartStationName);
+                    skippedActivitiesForMissingStationsCount++;
+                    continue;
+                }
                 int startStationAddressIndex = stationDataNameToAddressIndex[rawActivity.StartStationName];
-                if (!stationDataNameToAddressIndex.ContainsKey(rawActivity.EndStationName)) throw new Exception(string.Format("Unknown station `{0}`", rawActivity.EndStationName));
+                if (!stationDataNameToAddressIndex.ContainsKey(rawActivity.EndStationName)) {
+                    if (!missingStations.Contains(rawActivity.EndStationName)) missingStations.Add(rawActivity.EndStationName);
+                    skippedActivitiesForMissingStationsCount++;
+                    continue;
+                }
                 int endStationAddressIndex = stationDataNameToAddressIndex[rawActivity.EndStationName];
 
-                activities[activityIndex] = new Activity(rawActivity, activityIndex, startStationAddressIndex, endStationAddressIndex);
+                activitiesList.Add(new Activity(rawActivity, activitiesList.Count, startStationAddressIndex, endStationAddressIndex));
             }
+            if (missingStations.Count > 0) {
+                Console.WriteLine("Skipping {0} activities with unknown stations: {1}", skippedActivitiesForMissingStationsCount, string.Join(", ", missingStations));
+            }
+            Activity[] activities = activitiesList.ToArray();
 
             // Get info about activity succession
             (bool[,] activitySuccession, float[,] activitySuccessionRobustness) = GetActivitySuccessionInfo(activities, expectedCarTravelTimes);
@@ -144,8 +154,8 @@ namespace Thesis {
                 }
             }
 
-            Console.WriteLine("Combined {0} pairs of activities starting/ending at borders", combinedCountOnStations);
             if (DevConfig.DebugLogDataRepairs) {
+                Console.WriteLine("Combined {0} pairs of activities starting/ending at borders", combinedCountOnStations);
                 Console.WriteLine();
                 DebugLogRawActivities("Not combined", unmatchedRawActivitesList);
             }
@@ -177,9 +187,6 @@ namespace Thesis {
                 string addressStationName = linkingStationNamesSheet.GetStringValue(linkingStationNamesRow, "Station name in address list");
 
                 int addressStationIndex = Array.IndexOf(stationNames, addressStationName);
-                if (addressStationIndex == -1) {
-                    throw new Exception(string.Format("Station `{0}` not found in travel info", addressStationName));
-                }
                 stationDataNameToAddressIndex.Add(dataStationName, addressStationIndex);
             });
             return stationDataNameToAddressIndex;

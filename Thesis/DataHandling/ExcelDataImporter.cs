@@ -62,20 +62,8 @@ namespace Thesis {
                 string assignedCompanyName = activitiesSheet.GetStringValue(activityRow, "EmployeeWorksFor");
                 string assignedEmployeeName = activitiesSheet.GetStringValue(activityRow, "EmployeeName");
 
-
-                // Temp; TODO: make cleaner
-                string[] stationsToSkip = new string[] { "Stuttgart Hbf", "Stuttgart Hafen", "Germersheim", "Bietigheim-Bissingen" };
-                if (stationsToSkip.Contains(startStationDataName) || stationsToSkip.Contains(endStationDataName)) return;
-                if (endTime - startTime > 6 * 60) return;
-
-
-
                 rawActivities.Add(new RawActivity(dutyName, activityType, dutyId, projectName, trainNumber, startStationDataName, endStationDataName, requiredCountryQualifications, startTime, endTime, assignedCompanyName, assignedEmployeeName));
             });
-
-            if (rawActivities.Count == 0) {
-                throw new Exception("No activities found in timeframe");
-            }
 
             return rawActivities.ToArray();
         }

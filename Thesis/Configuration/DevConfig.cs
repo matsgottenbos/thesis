@@ -41,10 +41,10 @@ namespace Thesis {
         public static readonly string UiFolder = Path.Combine(SolutionFolder, @"ui\");
 
         // App modes
-        public const bool DebugRunTravelTimeProcesssor = false;
         public const bool DebugRunUi = false;
 
         // Debug
+        public const bool DebugThrowExceptions = true;
         public const bool DebugUseSeededSa = false;
         public const bool DebugCheckOperations = false;
         public const bool DebugSaLogThreads = true;

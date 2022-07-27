@@ -16,15 +16,15 @@ namespace Thesis {
             XSSFWorkbook addressesBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "stationAddresses.xlsx"));
             ExcelSheet stationAddressesSheet = new ExcelSheet("Station addresses", addressesBook);
 
-            XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "settings.xlsx"));
-            ExcelSheet internalAddressesSheet = new ExcelSheet("Internal drivers", settingsBook);
-            ExcelSheet externalAddressesSheet = new ExcelSheet("External driver companies", settingsBook);
+            XSSFWorkbook driversBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "drivers.xlsx"));
+            ExcelSheet internalDriversSheet = new ExcelSheet("Internal drivers", driversBook);
+            ExcelSheet externalDriverCompaniesSheet = new ExcelSheet("External driver companies", driversBook);
 
             (List<LocationInfo> stationLocations, bool isSuccess) = DetermineAndExportStationTravelInfo(stationAddressesSheet);
             if (!isSuccess) return;
-            isSuccess = DetermineAndExportInternalTravelInfo(internalAddressesSheet, stationLocations);
+            isSuccess = DetermineAndExportInternalTravelInfo(internalDriversSheet, stationLocations);
             if (!isSuccess) return;
-            DetermineAndExportExternalTravelInfo(externalAddressesSheet, stationLocations);
+            DetermineAndExportExternalTravelInfo(externalDriverCompaniesSheet, stationLocations);
         }
 
         static (List<LocationInfo>, bool) DetermineAndExportStationTravelInfo(ExcelSheet stationAddressesSheet) {
@@ -40,11 +40,11 @@ namespace Thesis {
             return (stationLocations, isSuccess);
         }
 
-        static bool DetermineAndExportInternalTravelInfo(ExcelSheet internalAddressesSheet, List<LocationInfo> stationLocations) {
+        static bool DetermineAndExportInternalTravelInfo(ExcelSheet internalDriversSheet, List<LocationInfo> stationLocations) {
             List<LocationInfo> internalLocations = new List<LocationInfo>();
-            internalAddressesSheet.ForEachRow(internalAddressRow => {
-                string name = internalAddressesSheet.GetStringValue(internalAddressRow, "Internal driver name");
-                string address = internalAddressesSheet.GetStringValue(internalAddressRow, "Home address");
+            internalDriversSheet.ForEachRow(internalDriversRow => {
+                string name = internalDriversSheet.GetStringValue(internalDriversRow, "Internal driver name");
+                string address = internalDriversSheet.GetStringValue(internalDriversRow, "Home address");
                 internalLocations.Add(new LocationInfo(name, address, internalLocations.Count));
             });
 
@@ -52,11 +52,11 @@ namespace Thesis {
             return DetermineAndExportBipartiteTravelInfo(internalLocations, stationLocations, "internal", csvFilePath);
         }
 
-        static bool DetermineAndExportExternalTravelInfo(ExcelSheet externalAddressesSheet, List<LocationInfo> stationLocations) {
+        static bool DetermineAndExportExternalTravelInfo(ExcelSheet externalDriverCompaniesSheet, List<LocationInfo> stationLocations) {
             List<LocationInfo> externalLocations = new List<LocationInfo>();
-            externalAddressesSheet.ForEachRow(internalAddressRow => {
-                string name = externalAddressesSheet.GetStringValue(internalAddressRow, "External driver type name"); // TODO: column has changed
-                string address = externalAddressesSheet.GetStringValue(internalAddressRow, "Driver starting address");
+            externalDriverCompaniesSheet.ForEachRow(externalDriverCompaniesRow => {
+                string name = externalDriverCompaniesSheet.GetStringValue(externalDriverCompaniesRow, "External driver type name");
+                string address = externalDriverCompaniesSheet.GetStringValue(externalDriverCompaniesRow, "Driver starting address");
                 externalLocations.Add(new LocationInfo(name, address, externalLocations.Count));
             });
 
@@ -67,14 +67,12 @@ namespace Thesis {
 
         /* Travel info helper methods */
 
-        static bool DetermineAndExportFullyConnectedTravelInfo(List<LocationInfo> locations, string locationTypeName, string csvFilePath) {
-            Console.WriteLine("\n* Checking {0} travel info *", locationTypeName);
+        static bool DetermineAndExportFullyConnectedTravelInfo(List<LocationInfo> locations, string travelTypeName, string csvFilePath) {
             (int?[,] importedTravelTimes, int?[,] importedTravelDistances, List<LocationInfo> missingLocations) = TravelInfoImporter.ImportPartialFullyConnectedTravelInfo(locations, csvFilePath);
 
-            int missingLocationCount = missingLocations.Count;
-            string missingLocationCountStr = string.Format("{0}/{1}", missingLocations.Count, locations.Count);
+            string missingLocationCountStr = string.Format("Missing {0} {1} travel origin locations:\n{2}", missingLocations.Count, travelTypeName, JoinLocationInfoNames(missingLocations));
             int missingTravelInfoCount = missingLocations.Count * locations.Count;
-            (bool isSuccess, bool shouldContinue) = LogMapsApiConfirmationPrompt(missingLocationCount, missingLocationCountStr, missingTravelInfoCount);
+            (bool isSuccess, bool shouldContinue) = LogMapsApiConfirmationPrompt(missingLocations.Count, missingLocationCountStr, missingTravelInfoCount, travelTypeName);
             if (!shouldContinue) return isSuccess;
 
             // Add missing info through the Google Maps API
@@ -88,14 +86,13 @@ namespace Thesis {
             return true;
         }
 
-        static bool DetermineAndExportBipartiteTravelInfo(List<LocationInfo> originLocations, List<LocationInfo> destinationLocations, string locationTypeName, string csvFilePath) {
-            Console.WriteLine("\n* Checking {0} travel info *", locationTypeName);
+        static bool DetermineAndExportBipartiteTravelInfo(List<LocationInfo> originLocations, List<LocationInfo> destinationLocations, string travelTypeName, string csvFilePath) {
             (int?[][] importedTravelTimes, int?[][] importedTravelDistances, List<LocationInfo> missingOriginLocations, List<LocationInfo> missingDestinationLocations) = TravelInfoImporter.ImportPartialBipartiteTravelInfo(originLocations, destinationLocations, csvFilePath);
 
             int missingLocationCount = missingOriginLocations.Count + missingDestinationLocations.Count;
-            string missingLocationCountStr = string.Format("{0}/{1} origin and {2}/{3} destination", missingOriginLocations.Count, originLocations.Count, missingDestinationLocations.Count, destinationLocations.Count);
+            string missingLocationCountStr = string.Format("Missing {0} {1} travel origin locations:\n{2}\n\nMissing {3} {1} travel destination locations:\n{4}", missingOriginLocations.Count, travelTypeName, JoinLocationInfoNames(missingOriginLocations), missingDestinationLocations.Count, JoinLocationInfoNames(missingDestinationLocations));
             int missingTravelInfoCount = missingOriginLocations.Count * destinationLocations.Count + (originLocations.Count - missingOriginLocations.Count) * missingDestinationLocations.Count;
-            (bool isSuccess, bool shouldContinue) = LogMapsApiConfirmationPrompt(missingLocationCount, missingLocationCountStr, missingTravelInfoCount);
+            (bool isSuccess, bool shouldContinue) = LogMapsApiConfirmationPrompt(missingLocationCount, missingLocationCountStr, missingTravelInfoCount, travelTypeName);
             if (!shouldContinue) return isSuccess;
 
             // Add missing info through the Google Maps API
@@ -109,12 +106,11 @@ namespace Thesis {
             return true;
         }
 
-        static (bool, bool) LogMapsApiConfirmationPrompt(int missingLocationCount, string missingLocationCountStr, int missingTravelInfoCount) {
+        static (bool, bool) LogMapsApiConfirmationPrompt(int missingLocationCount, string missingLocationsStr, int missingTravelInfoCount, string travelTypeName) {
             if (missingLocationCount == 0) {
-                Console.WriteLine("Already up to date.");
                 return (true, false);
             } else {
-                Console.WriteLine("Missing {0} locations. Travel info for {1} pairs of locations needs to be requested from the Google Maps API.", missingLocationCountStr ?? missingLocationCount.ToString(), missingTravelInfoCount);
+                Console.WriteLine("\n{0}\n\nTravel info for {1} pairs of {2} locations needs to be requested from the Google Maps API.", missingLocationsStr, missingTravelInfoCount, travelTypeName);
                 Console.WriteLine("Type `Y` and hit enter to continue. Type anything else to exit.");
                 string consoleLine = Console.ReadLine();
                 if (consoleLine != "Y") {
@@ -143,6 +139,10 @@ namespace Thesis {
                 }
             }
             return array;
+        }
+
+        static string JoinLocationInfoNames(List<LocationInfo> locationInfos) {
+            return string.Join("\n", locationInfos.Select(locationInfo => locationInfo.Name));
         }
     }
 

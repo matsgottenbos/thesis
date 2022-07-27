@@ -12,7 +12,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Bos, Joel","Bad Bentheim, Hilgenstiege sp.25",85,132
 "Bos, Joel",Beatrixhaven,79,116
 "Bos, Joel","Beverwijk, emplacement",64,97
-"Bos, Joel",Bietigheim-Bissingen,328,535
 "Bos, Joel","Blerick, emplacement en werkplaats",75,113
 "Bos, Joel","Born, emplacement",104,162
 "Bos, Joel","Botlek, emplacement",78,118
@@ -32,7 +31,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Bos, Joel",Euromax,102,153
 "Bos, Joel","Europoort, emplacement",84,129
 "Bos, Joel","Gekkengraaf, emplacement",73,111
-"Bos, Joel",Germersheim,285,470
 "Bos, Joel",Goes,123,185
 "Bos, Joel","Hengelo, emplacement",72,104
 "Bos, Joel","Herzogenrath, station",134,199
@@ -73,7 +71,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Bos, Joel",Sloehaven empl.,129,196
 "Bos, Joel",Steinweg Amsterdam,56,83
 "Bos, Joel",Stroe,19,15
-"Bos, Joel",Stuttgart,341,549
 "Bos, Joel","Tilburg, industrie",73,105
 "Bos, Joel","Uitgeest, emplacement",66,93
 "Bos, Joel","Valburg, emplacement CUP",33,47
@@ -99,7 +96,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Broere, Sam","Bad Bentheim, Hilgenstiege sp.25",104,158
 "Broere, Sam",Beatrixhaven,52,71
 "Broere, Sam","Beverwijk, emplacement",48,67
-"Broere, Sam",Bietigheim-Bissingen,347,563
 "Broere, Sam","Blerick, emplacement en werkplaats",94,141
 "Broere, Sam","Born, emplacement",100,151
 "Broere, Sam","Botlek, emplacement",56,76
@@ -119,7 +115,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Broere, Sam",Euromax,80,112
 "Broere, Sam","Europoort, emplacement",61,87
 "Broere, Sam","Gekkengraaf, emplacement",92,139
-"Broere, Sam",Germersheim,304,498
 "Broere, Sam",Goes,102,147
 "Broere, Sam","Hengelo, emplacement",90,130
 "Broere, Sam","Herzogenrath, station",129,189
@@ -160,7 +155,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Broere, Sam",Sloehaven empl.,108,158
 "Broere, Sam",Steinweg Amsterdam,43,54
 "Broere, Sam",Stroe,37,49
-"Broere, Sam",Stuttgart,361,578
 "Broere, Sam","Tilburg, industrie",57,75
 "Broere, Sam","Uitgeest, emplacement",53,74
 "Broere, Sam","Valburg, emplacement CUP",53,75
@@ -186,7 +180,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "de Kleijn, T.","Bad Bentheim, Hilgenstiege sp.25",139,219
 "de Kleijn, T.",Beatrixhaven,16,16
 "de Kleijn, T.","Beverwijk, emplacement",66,96
-"de Kleijn, T.",Bietigheim-Bissingen,377,605
 "de Kleijn, T.","Blerick, emplacement en werkplaats",108,158
 "de Kleijn, T.","Born, emplacement",110,168
 "de Kleijn, T.","Botlek, emplacement",22,26
@@ -206,7 +199,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "de Kleijn, T.",Euromax,46,61
 "de Kleijn, T.","Europoort, emplacement",28,37
 "de Kleijn, T.","Gekkengraaf, emplacement",103,155
-"de Kleijn, T.",Germersheim,318,501
 "de Kleijn, T.",Goes,70,102
 "de Kleijn, T.","Hengelo, emplacement",125,190
 "de Kleijn, T.","Herzogenrath, station",140,206
@@ -247,7 +239,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "de Kleijn, T.",Sloehaven empl.,75,113
 "de Kleijn, T.",Steinweg Amsterdam,61,88
 "de Kleijn, T.",Stroe,72,110
-"de Kleijn, T.",Stuttgart,390,619
 "de Kleijn, T.","Tilburg, industrie",53,74
 "de Kleijn, T.","Uitgeest, emplacement",71,103
 "de Kleijn, T.","Valburg, emplacement CUP",67,99
@@ -273,7 +264,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "de Koning, Mark","Bad Bentheim, Hilgenstiege sp.25",82,126
 "de Koning, Mark",Beatrixhaven,74,109
 "de Koning, Mark","Beverwijk, emplacement",79,112
-"de Koning, Mark",Bietigheim-Bissingen,320,521
 "de Koning, Mark","Blerick, emplacement en werkplaats",58,84
 "de Koning, Mark","Born, emplacement",88,133
 "de Koning, Mark","Botlek, emplacement",79,118
@@ -293,7 +283,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "de Koning, Mark",Euromax,103,154
 "de Koning, Mark","Europoort, emplacement",85,129
 "de Koning, Mark","Gekkengraaf, emplacement",56,82
-"de Koning, Mark",Germersheim,268,426
 "de Koning, Mark",Goes,122,182
 "de Koning, Mark","Hengelo, emplacement",69,97
 "de Koning, Mark","Herzogenrath, station",117,170
@@ -334,7 +323,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "de Koning, Mark",Sloehaven empl.,127,193
 "de Koning, Mark",Steinweg Amsterdam,73,101
 "de Koning, Mark",Stroe,36,42
-"de Koning, Mark",Stuttgart,334,535
 "de Koning, Mark","Tilburg, industrie",56,76
 "de Koning, Mark","Uitgeest, emplacement",82,111
 "de Koning, Mark","Valburg, emplacement CUP",17,18
@@ -360,7 +348,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Dijkema, Stefan","Bad Bentheim, Hilgenstiege sp.25",86,130
 "Dijkema, Stefan",Beatrixhaven,77,107
 "Dijkema, Stefan","Beverwijk, emplacement",61,85
-"Dijkema, Stefan",Bietigheim-Bissingen,341,551
 "Dijkema, Stefan","Blerick, emplacement en werkplaats",87,129
 "Dijkema, Stefan","Born, emplacement",117,178
 "Dijkema, Stefan","Botlek, emplacement",80,113
@@ -380,7 +367,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Dijkema, Stefan",Euromax,104,148
 "Dijkema, Stefan","Europoort, emplacement",86,124
 "Dijkema, Stefan","Gekkengraaf, emplacement",86,127
-"Dijkema, Stefan",Germersheim,298,486
 "Dijkema, Stefan",Goes,124,180
 "Dijkema, Stefan","Hengelo, emplacement",73,101
 "Dijkema, Stefan","Herzogenrath, station",146,215
@@ -421,7 +407,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Dijkema, Stefan",Sloehaven empl.,130,191
 "Dijkema, Stefan",Steinweg Amsterdam,52,71
 "Dijkema, Stefan",Stroe,19,16
-"Dijkema, Stefan",Stuttgart,354,565
 "Dijkema, Stefan","Tilburg, industrie",79,108
 "Dijkema, Stefan","Uitgeest, emplacement",62,81
 "Dijkema, Stefan","Valburg, emplacement CUP",46,63
@@ -447,7 +432,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Hagens, Rien","Bad Bentheim, Hilgenstiege sp.25",82,126
 "Hagens, Rien",Beatrixhaven,74,109
 "Hagens, Rien","Beverwijk, emplacement",79,112
-"Hagens, Rien",Bietigheim-Bissingen,320,521
 "Hagens, Rien","Blerick, emplacement en werkplaats",58,84
 "Hagens, Rien","Born, emplacement",88,133
 "Hagens, Rien","Botlek, emplacement",79,118
@@ -467,7 +451,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Hagens, Rien",Euromax,103,154
 "Hagens, Rien","Europoort, emplacement",85,129
 "Hagens, Rien","Gekkengraaf, emplacement",56,82
-"Hagens, Rien",Germersheim,268,426
 "Hagens, Rien",Goes,122,182
 "Hagens, Rien","Hengelo, emplacement",69,97
 "Hagens, Rien","Herzogenrath, station",117,170
@@ -508,7 +491,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Hagens, Rien",Sloehaven empl.,127,193
 "Hagens, Rien",Steinweg Amsterdam,73,101
 "Hagens, Rien",Stroe,36,42
-"Hagens, Rien",Stuttgart,334,535
 "Hagens, Rien","Tilburg, industrie",56,76
 "Hagens, Rien","Uitgeest, emplacement",82,111
 "Hagens, Rien","Valburg, emplacement CUP",17,18
@@ -534,7 +516,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Jonker, R.M.J.","Bad Bentheim, Hilgenstiege sp.25",27,35
 "Jonker, R.M.J.",Beatrixhaven,128,195
 "Jonker, R.M.J.","Beverwijk, emplacement",111,173
-"Jonker, R.M.J.",Bietigheim-Bissingen,329,533
 "Jonker, R.M.J.","Blerick, emplacement en werkplaats",113,173
 "Jonker, R.M.J.","Born, emplacement",143,222
 "Jonker, R.M.J.","Botlek, emplacement",131,201
@@ -554,7 +535,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Jonker, R.M.J.",Euromax,155,236
 "Jonker, R.M.J.","Europoort, emplacement",137,212
 "Jonker, R.M.J.","Gekkengraaf, emplacement",111,171
-"Jonker, R.M.J.",Germersheim,294,460
 "Jonker, R.M.J.",Goes,175,269
 "Jonker, R.M.J.","Hengelo, emplacement",13,6
 "Jonker, R.M.J.","Herzogenrath, station",163,232
@@ -595,7 +575,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Jonker, R.M.J.",Sloehaven empl.,181,279
 "Jonker, R.M.J.",Steinweg Amsterdam,103,159
 "Jonker, R.M.J.",Stroe,53,80
-"Jonker, R.M.J.",Stuttgart,343,547
 "Jonker, R.M.J.","Tilburg, industrie",111,165
 "Jonker, R.M.J.","Uitgeest, emplacement",112,169
 "Jonker, R.M.J.","Valburg, emplacement CUP",71,102
@@ -621,7 +600,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Okhuijsen, Thijmen","Bad Bentheim, Hilgenstiege sp.25",82,123
 "Okhuijsen, Thijmen",Beatrixhaven,79,115
 "Okhuijsen, Thijmen","Beverwijk, emplacement",90,135
-"Okhuijsen, Thijmen",Bietigheim-Bissingen,312,506
 "Okhuijsen, Thijmen","Blerick, emplacement en werkplaats",65,82
 "Okhuijsen, Thijmen","Born, emplacement",94,132
 "Okhuijsen, Thijmen","Botlek, emplacement",85,125
@@ -641,7 +619,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Okhuijsen, Thijmen",Euromax,109,160
 "Okhuijsen, Thijmen","Europoort, emplacement",91,136
 "Okhuijsen, Thijmen","Gekkengraaf, emplacement",63,81
-"Okhuijsen, Thijmen",Germersheim,269,441
 "Okhuijsen, Thijmen",Goes,127,189
 "Okhuijsen, Thijmen","Hengelo, emplacement",69,94
 "Okhuijsen, Thijmen","Herzogenrath, station",124,169
@@ -682,7 +659,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Okhuijsen, Thijmen",Sloehaven empl.,133,200
 "Okhuijsen, Thijmen",Steinweg Amsterdam,84,125
 "Okhuijsen, Thijmen",Stroe,43,35
-"Okhuijsen, Thijmen",Stuttgart,325,520
 "Okhuijsen, Thijmen","Tilburg, industrie",62,82
 "Okhuijsen, Thijmen","Uitgeest, emplacement",94,135
 "Okhuijsen, Thijmen","Valburg, emplacement CUP",14,13
@@ -708,7 +684,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Ritsma, Niels","Bad Bentheim, Hilgenstiege sp.25",87,113
 "Ritsma, Niels",Beatrixhaven,110,155
 "Ritsma, Niels","Beverwijk, emplacement",80,115
-"Ritsma, Niels",Bietigheim-Bissingen,353,575
 "Ritsma, Niels","Blerick, emplacement en werkplaats",109,167
 "Ritsma, Niels","Born, emplacement",139,216
 "Ritsma, Niels","Botlek, emplacement",113,167
@@ -728,7 +703,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Ritsma, Niels",Euromax,137,203
 "Ritsma, Niels","Europoort, emplacement",119,178
 "Ritsma, Niels","Gekkengraaf, emplacement",107,165
-"Ritsma, Niels",Germersheim,311,510
 "Ritsma, Niels",Goes,158,229
 "Ritsma, Niels","Hengelo, emplacement",74,84
 "Ritsma, Niels","Herzogenrath, station",168,254
@@ -769,7 +743,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Ritsma, Niels",Sloehaven empl.,163,240
 "Ritsma, Niels",Steinweg Amsterdam,71,101
 "Ritsma, Niels",Stroe,50,74
-"Ritsma, Niels",Stuttgart,367,589
 "Ritsma, Niels","Tilburg, industrie",108,159
 "Ritsma, Niels","Uitgeest, emplacement",81,111
 "Ritsma, Niels","Valburg, emplacement CUP",67,96
@@ -795,7 +768,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Sabelis, Tim","Bad Bentheim, Hilgenstiege sp.25",132,201
 "Sabelis, Tim",Beatrixhaven,64,93
 "Sabelis, Tim","Beverwijk, emplacement",10,9
-"Sabelis, Tim",Bietigheim-Bissingen,387,631
 "Sabelis, Tim","Blerick, emplacement en werkplaats",132,199
 "Sabelis, Tim","Born, emplacement",137,214
 "Sabelis, Tim","Botlek, emplacement",65,96
@@ -815,7 +787,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Sabelis, Tim",Euromax,89,131
 "Sabelis, Tim","Europoort, emplacement",71,107
 "Sabelis, Tim","Gekkengraaf, emplacement",130,201
-"Sabelis, Tim",Germersheim,343,541
 "Sabelis, Tim",Goes,125,191
 "Sabelis, Tim","Hengelo, emplacement",119,172
 "Sabelis, Tim","Herzogenrath, station",166,252
@@ -856,7 +827,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Sabelis, Tim",Sloehaven empl.,130,202
 "Sabelis, Tim",Steinweg Amsterdam,25,31
 "Sabelis, Tim",Stroe,66,92
-"Sabelis, Tim",Stuttgart,401,645
 "Sabelis, Tim","Tilburg, industrie",94,138
 "Sabelis, Tim","Uitgeest, emplacement",8,4
 "Sabelis, Tim","Valburg, emplacement CUP",92,139
@@ -882,7 +852,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Schneider, Harry","Bad Bentheim, Hilgenstiege sp.25",141,223
 "Schneider, Harry",Beatrixhaven,38,40
 "Schneider, Harry","Beverwijk, emplacement",40,57
-"Schneider, Harry",Bietigheim-Bissingen,383,615
 "Schneider, Harry","Blerick, emplacement en werkplaats",128,184
 "Schneider, Harry","Born, emplacement",133,199
 "Schneider, Harry","Botlek, emplacement",39,43
@@ -902,7 +871,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Schneider, Harry",Euromax,63,78
 "Schneider, Harry","Europoort, emplacement",45,54
 "Schneider, Harry","Gekkengraaf, emplacement",126,186
-"Schneider, Harry",Germersheim,339,526
 "Schneider, Harry",Goes,98,138
 "Schneider, Harry","Hengelo, emplacement",128,194
 "Schneider, Harry","Herzogenrath, station",162,237
@@ -943,7 +911,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Schneider, Harry",Sloehaven empl.,104,149
 "Schneider, Harry",Steinweg Amsterdam,36,49
 "Schneider, Harry",Stroe,75,114
-"Schneider, Harry",Stuttgart,396,629
 "Schneider, Harry","Tilburg, industrie",85,114
 "Schneider, Harry","Uitgeest, emplacement",45,64
 "Schneider, Harry","Valburg, emplacement CUP",88,124
@@ -969,7 +936,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Suk, Dustin","Bad Bentheim, Hilgenstiege sp.25",140,215
 "Suk, Dustin",Beatrixhaven,73,106
 "Suk, Dustin","Beverwijk, emplacement",19,22
-"Suk, Dustin",Bietigheim-Bissingen,396,644
 "Suk, Dustin","Blerick, emplacement en werkplaats",141,212
 "Suk, Dustin","Born, emplacement",145,228
 "Suk, Dustin","Botlek, emplacement",74,109
@@ -989,7 +955,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Suk, Dustin",Euromax,98,144
 "Suk, Dustin","Europoort, emplacement",80,120
 "Suk, Dustin","Gekkengraaf, emplacement",138,214
-"Suk, Dustin",Germersheim,351,554
 "Suk, Dustin",Goes,133,204
 "Suk, Dustin","Hengelo, emplacement",127,186
 "Suk, Dustin","Herzogenrath, station",175,265
@@ -1030,7 +995,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Suk, Dustin",Sloehaven empl.,139,215
 "Suk, Dustin",Steinweg Amsterdam,33,44
 "Suk, Dustin",Stroe,74,106
-"Suk, Dustin",Stuttgart,410,658
 "Suk, Dustin","Tilburg, industrie",102,151
 "Suk, Dustin","Uitgeest, emplacement",13,13
 "Suk, Dustin","Valburg, emplacement CUP",100,153
@@ -1056,7 +1020,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Suk, Boyd","Bad Bentheim, Hilgenstiege sp.25",140,215
 "Suk, Boyd",Beatrixhaven,73,106
 "Suk, Boyd","Beverwijk, emplacement",19,22
-"Suk, Boyd",Bietigheim-Bissingen,396,644
 "Suk, Boyd","Blerick, emplacement en werkplaats",141,212
 "Suk, Boyd","Born, emplacement",145,228
 "Suk, Boyd","Botlek, emplacement",74,109
@@ -1076,7 +1039,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Suk, Boyd",Euromax,98,144
 "Suk, Boyd","Europoort, emplacement",80,120
 "Suk, Boyd","Gekkengraaf, emplacement",138,214
-"Suk, Boyd",Germersheim,351,554
 "Suk, Boyd",Goes,133,204
 "Suk, Boyd","Hengelo, emplacement",127,186
 "Suk, Boyd","Herzogenrath, station",175,265
@@ -1117,7 +1079,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Suk, Boyd",Sloehaven empl.,139,215
 "Suk, Boyd",Steinweg Amsterdam,33,44
 "Suk, Boyd",Stroe,74,106
-"Suk, Boyd",Stuttgart,410,658
 "Suk, Boyd","Tilburg, industrie",102,151
 "Suk, Boyd","Uitgeest, emplacement",13,13
 "Suk, Boyd","Valburg, emplacement CUP",100,153
@@ -1143,7 +1104,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "ten Boden, Robin","Bad Bentheim, Hilgenstiege sp.25",96,137
 "ten Boden, Robin",Beatrixhaven,72,97
 "ten Boden, Robin","Beverwijk, emplacement",57,77
-"ten Boden, Robin",Bietigheim-Bissingen,351,559
 "ten Boden, Robin","Blerick, emplacement en werkplaats",98,137
 "ten Boden, Robin","Born, emplacement",118,175
 "ten Boden, Robin","Botlek, emplacement",76,103
@@ -1163,7 +1123,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "ten Boden, Robin",Euromax,100,138
 "ten Boden, Robin","Europoort, emplacement",82,114
 "ten Boden, Robin","Gekkengraaf, emplacement",96,135
-"ten Boden, Robin",Germersheim,309,494
 "ten Boden, Robin",Goes,120,170
 "ten Boden, Robin","Hengelo, emplacement",83,109
 "ten Boden, Robin","Herzogenrath, station",147,212
@@ -1204,7 +1163,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "ten Boden, Robin",Sloehaven empl.,126,181
 "ten Boden, Robin",Steinweg Amsterdam,49,63
 "ten Boden, Robin",Stroe,30,29
-"ten Boden, Robin",Stuttgart,365,574
 "ten Boden, Robin","Tilburg, industrie",75,98
 "ten Boden, Robin","Uitgeest, emplacement",58,73
 "ten Boden, Robin","Valburg, emplacement CUP",57,71
@@ -1230,7 +1188,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Uenk, Jesse","Bad Bentheim, Hilgenstiege sp.25",64,90
 "Uenk, Jesse",Beatrixhaven,107,153
 "Uenk, Jesse","Beverwijk, emplacement",90,131
-"Uenk, Jesse",Bietigheim-Bissingen,337,538
 "Uenk, Jesse","Blerick, emplacement en werkplaats",92,130
 "Uenk, Jesse","Born, emplacement",122,179
 "Uenk, Jesse","Botlek, emplacement",110,159
@@ -1250,7 +1207,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Uenk, Jesse",Euromax,134,194
 "Uenk, Jesse","Europoort, emplacement",115,170
 "Uenk, Jesse","Gekkengraaf, emplacement",91,128
-"Uenk, Jesse",Germersheim,294,473
 "Uenk, Jesse",Goes,154,226
 "Uenk, Jesse","Hengelo, emplacement",50,61
 "Uenk, Jesse","Herzogenrath, station",151,217
@@ -1291,7 +1247,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "Uenk, Jesse",Sloehaven empl.,160,237
 "Uenk, Jesse",Steinweg Amsterdam,82,117
 "Uenk, Jesse",Stroe,32,38
-"Uenk, Jesse",Stuttgart,350,552
 "Uenk, Jesse","Tilburg, industrie",91,122
 "Uenk, Jesse","Uitgeest, emplacement",91,127
 "Uenk, Jesse","Valburg, emplacement CUP",50,59
@@ -1317,7 +1272,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Amerongen, Mark","Bad Bentheim, Hilgenstiege sp.25",129,201
 "van Amerongen, Mark",Beatrixhaven,45,55
 "van Amerongen, Mark","Beverwijk, emplacement",33,43
-"van Amerongen, Mark",Bietigheim-Bissingen,371,603
 "van Amerongen, Mark","Blerick, emplacement en werkplaats",116,171
 "van Amerongen, Mark","Born, emplacement",121,187
 "van Amerongen, Mark","Botlek, emplacement",46,59
@@ -1337,7 +1291,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Amerongen, Mark",Euromax,70,94
 "van Amerongen, Mark","Europoort, emplacement",52,70
 "van Amerongen, Mark","Gekkengraaf, emplacement",114,173
-"van Amerongen, Mark",Germersheim,326,514
 "van Amerongen, Mark",Goes,98,144
 "van Amerongen, Mark","Hengelo, emplacement",116,172
 "van Amerongen, Mark","Herzogenrath, station",150,224
@@ -1378,7 +1331,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Amerongen, Mark",Sloehaven empl.,103,155
 "van Amerongen, Mark",Steinweg Amsterdam,29,35
 "van Amerongen, Mark",Stroe,63,92
-"van Amerongen, Mark",Stuttgart,384,617
 "van Amerongen, Mark","Tilburg, industrie",78,110
 "van Amerongen, Mark","Uitgeest, emplacement",38,49
 "van Amerongen, Mark","Valburg, emplacement CUP",76,112
@@ -1404,7 +1356,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van de Velde, Jan","Bad Bentheim, Hilgenstiege sp.25",142,222
 "van de Velde, Jan",Beatrixhaven,13,10
 "van de Velde, Jan","Beverwijk, emplacement",64,94
-"van de Velde, Jan",Bietigheim-Bissingen,379,607
 "van de Velde, Jan","Blerick, emplacement en werkplaats",110,161
 "van de Velde, Jan","Born, emplacement",113,171
 "van de Velde, Jan","Botlek, emplacement",19,20
@@ -1424,7 +1375,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van de Velde, Jan",Euromax,43,55
 "van de Velde, Jan","Europoort, emplacement",24,31
 "van de Velde, Jan","Gekkengraaf, emplacement",105,157
-"van de Velde, Jan",Germersheim,320,503
 "van de Velde, Jan",Goes,67,97
 "van de Velde, Jan","Hengelo, emplacement",129,193
 "van de Velde, Jan","Herzogenrath, station",142,208
@@ -1465,7 +1415,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van de Velde, Jan",Sloehaven empl.,72,107
 "van de Velde, Jan",Steinweg Amsterdam,60,86
 "van de Velde, Jan",Stroe,76,113
-"van de Velde, Jan",Stuttgart,393,622
 "van de Velde, Jan","Tilburg, industrie",55,77
 "van de Velde, Jan","Uitgeest, emplacement",69,101
 "van de Velde, Jan","Valburg, emplacement CUP",70,102
@@ -1491,7 +1440,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van der Heul, Rutger","Bad Bentheim, Hilgenstiege sp.25",152,239
 "van der Heul, Rutger",Beatrixhaven,24,28
 "van der Heul, Rutger","Beverwijk, emplacement",75,112
-"van der Heul, Rutger",Bietigheim-Bissingen,382,609
 "van der Heul, Rutger","Blerick, emplacement en werkplaats",112,167
 "van der Heul, Rutger","Born, emplacement",116,177
 "van der Heul, Rutger","Botlek, emplacement",29,38
@@ -1511,7 +1459,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van der Heul, Rutger",Euromax,53,73
 "van der Heul, Rutger","Europoort, emplacement",35,49
 "van der Heul, Rutger","Gekkengraaf, emplacement",109,163
-"van der Heul, Rutger",Germersheim,323,510
 "van der Heul, Rutger",Goes,57,82
 "van der Heul, Rutger","Hengelo, emplacement",139,210
 "van der Heul, Rutger","Herzogenrath, station",141,212
@@ -1552,7 +1499,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van der Heul, Rutger",Sloehaven empl.,62,93
 "van der Heul, Rutger",Steinweg Amsterdam,71,105
 "van der Heul, Rutger",Stroe,86,130
-"van der Heul, Rutger",Stuttgart,395,624
 "van der Heul, Rutger","Tilburg, industrie",58,82
 "van der Heul, Rutger","Uitgeest, emplacement",80,119
 "van der Heul, Rutger","Valburg, emplacement CUP",79,119
@@ -1578,7 +1524,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Dijk, Nick","Bad Bentheim, Hilgenstiege sp.25",92,143
 "van Dijk, Nick",Beatrixhaven,64,93
 "van Dijk, Nick","Beverwijk, emplacement",79,120
-"van Dijk, Nick",Bietigheim-Bissingen,328,532
 "van Dijk, Nick","Blerick, emplacement en werkplaats",59,85
 "van Dijk, Nick","Born, emplacement",88,134
 "van Dijk, Nick","Botlek, emplacement",69,103
@@ -1598,7 +1543,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Dijk, Nick",Euromax,93,138
 "van Dijk, Nick","Europoort, emplacement",75,114
 "van Dijk, Nick","Gekkengraaf, emplacement",57,83
-"van Dijk, Nick",Germersheim,269,427
 "van Dijk, Nick",Goes,112,167
 "van Dijk, Nick","Hengelo, emplacement",79,114
 "van Dijk, Nick","Herzogenrath, station",118,172
@@ -1639,7 +1583,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Dijk, Nick",Sloehaven empl.,117,177
 "van Dijk, Nick",Steinweg Amsterdam,74,107
 "van Dijk, Nick",Stroe,44,54
-"van Dijk, Nick",Stuttgart,342,546
 "van Dijk, Nick","Tilburg, industrie",58,79
 "van Dijk, Nick","Uitgeest, emplacement",84,127
 "van Dijk, Nick","Valburg, emplacement CUP",17,19
@@ -1665,7 +1608,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Kleij, Silvester","Bad Bentheim, Hilgenstiege sp.25",154,236
 "van Kleij, Silvester",Beatrixhaven,21,17
 "van Kleij, Silvester","Beverwijk, emplacement",68,96
-"van Kleij, Silvester",Bietigheim-Bissingen,393,626
 "van Kleij, Silvester","Blerick, emplacement en werkplaats",124,179
 "van Kleij, Silvester","Born, emplacement",126,189
 "van Kleij, Silvester","Botlek, emplacement",17,13
@@ -1685,7 +1627,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Kleij, Silvester",Euromax,42,48
 "van Kleij, Silvester","Europoort, emplacement",22,18
 "van Kleij, Silvester","Gekkengraaf, emplacement",119,176
-"van Kleij, Silvester",Germersheim,334,522
 "van Kleij, Silvester",Goes,81,116
 "van Kleij, Silvester","Hengelo, emplacement",141,208
 "van Kleij, Silvester","Herzogenrath, station",155,227
@@ -1726,7 +1667,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Kleij, Silvester",Sloehaven empl.,86,126
 "van Kleij, Silvester",Steinweg Amsterdam,64,88
 "van Kleij, Silvester",Stroe,88,128
-"van Kleij, Silvester",Stuttgart,407,640
 "van Kleij, Silvester","Tilburg, industrie",69,95
 "van Kleij, Silvester","Uitgeest, emplacement",73,103
 "van Kleij, Silvester","Valburg, emplacement CUP",83,120
@@ -1752,7 +1692,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Kleij, M.B.","Bad Bentheim, Hilgenstiege sp.25",130,200
 "van Kleij, M.B.",Beatrixhaven,61,82
 "van Kleij, M.B.","Beverwijk, emplacement",12,10
-"van Kleij, M.B.",Bietigheim-Bissingen,384,620
 "van Kleij, M.B.","Blerick, emplacement en werkplaats",129,188
 "van Kleij, M.B.","Born, emplacement",134,203
 "van Kleij, M.B.","Botlek, emplacement",62,85
@@ -1772,7 +1711,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Kleij, M.B.",Euromax,86,120
 "van Kleij, M.B.","Europoort, emplacement",68,96
 "van Kleij, M.B.","Gekkengraaf, emplacement",127,190
-"van Kleij, M.B.",Germersheim,340,530
 "van Kleij, M.B.",Goes,122,180
 "van Kleij, M.B.","Hengelo, emplacement",117,171
 "van Kleij, M.B.","Herzogenrath, station",163,241
@@ -1813,7 +1751,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Kleij, M.B.",Sloehaven empl.,127,191
 "van Kleij, M.B.",Steinweg Amsterdam,23,17
 "van Kleij, M.B.",Stroe,64,91
-"van Kleij, M.B.",Stuttgart,398,634
 "van Kleij, M.B.","Tilburg, industrie",91,127
 "van Kleij, M.B.","Uitgeest, emplacement",18,19
 "van Kleij, M.B.","Valburg, emplacement CUP",89,129
@@ -1839,7 +1776,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Leijden, Niels","Bad Bentheim, Hilgenstiege sp.25",142,220
 "van Leijden, Niels",Beatrixhaven,85,122
 "van Leijden, Niels","Beverwijk, emplacement",45,50
-"van Leijden, Niels",Bietigheim-Bissingen,397,642
 "van Leijden, Niels","Blerick, emplacement en werkplaats",144,219
 "van Leijden, Niels","Born, emplacement",153,235
 "van Leijden, Niels","Botlek, emplacement",86,125
@@ -1859,7 +1795,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Leijden, Niels",Euromax,110,161
 "van Leijden, Niels","Europoort, emplacement",92,136
 "van Leijden, Niels","Gekkengraaf, emplacement",142,218
-"van Leijden, Niels",Germersheim,354,577
 "van Leijden, Niels",Goes,146,221
 "van Leijden, Niels","Hengelo, emplacement",129,191
 "van Leijden, Niels","Herzogenrath, station",182,273
@@ -1900,7 +1835,6 @@ location1Name,location2Name,travelTimeMinutes,travelDistanceKilometers
 "van Leijden, Niels",Sloehaven empl.,151,231
 "van Leijden, Niels",Steinweg Amsterdam,37,46
 "van Leijden, Niels",Stroe,76,111
-"van Leijden, Niels",Stuttgart,411,656
 "van Leijden, Niels","Tilburg, industrie",110,159
 "van Leijden, Niels","Uitgeest, emplacement",39,41
 "van Leijden, Niels","Valburg, emplacement CUP",103,154
@@ -1926,7 +1860,6 @@ German dummy 1,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 1,"Bad Bentheim, Hilgenstiege sp.25",81,113
 German dummy 1,Beatrixhaven,104,154
 German dummy 1,"Beverwijk, emplacement",101,154
-German dummy 1,Bietigheim-Bissingen,293,475
 German dummy 1,"Blerick, emplacement en werkplaats",68,83
 German dummy 1,"Born, emplacement",98,132
 German dummy 1,"Botlek, emplacement",109,164
@@ -1946,7 +1879,6 @@ German dummy 1,"Emmerich, station",6,1
 German dummy 1,Euromax,132,199
 German dummy 1,"Europoort, emplacement",114,175
 German dummy 1,"Gekkengraaf, emplacement",67,81
-German dummy 1,Germersheim,250,410
 German dummy 1,Goes,150,227
 German dummy 1,"Hengelo, emplacement",71,82
 German dummy 1,"Herzogenrath, station",120,183
@@ -1987,7 +1919,6 @@ German dummy 1,"Sittard, emplacement",105,138
 German dummy 1,Sloehaven empl.,155,238
 German dummy 1,Steinweg Amsterdam,96,143
 German dummy 1,Stroe,55,80
-German dummy 1,Stuttgart,306,489
 German dummy 1,"Tilburg, industrie",86,121
 German dummy 1,"Uitgeest, emplacement",105,153
 German dummy 1,"Valburg, emplacement CUP",39,46
@@ -2013,7 +1944,6 @@ German dummy 2,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 2,"Bad Bentheim, Hilgenstiege sp.25",81,113
 German dummy 2,Beatrixhaven,104,154
 German dummy 2,"Beverwijk, emplacement",101,154
-German dummy 2,Bietigheim-Bissingen,293,475
 German dummy 2,"Blerick, emplacement en werkplaats",68,83
 German dummy 2,"Born, emplacement",98,132
 German dummy 2,"Botlek, emplacement",109,164
@@ -2033,7 +1963,6 @@ German dummy 2,"Emmerich, station",6,1
 German dummy 2,Euromax,132,199
 German dummy 2,"Europoort, emplacement",114,175
 German dummy 2,"Gekkengraaf, emplacement",67,81
-German dummy 2,Germersheim,250,410
 German dummy 2,Goes,150,227
 German dummy 2,"Hengelo, emplacement",71,82
 German dummy 2,"Herzogenrath, station",120,183
@@ -2074,7 +2003,6 @@ German dummy 2,"Sittard, emplacement",105,138
 German dummy 2,Sloehaven empl.,155,238
 German dummy 2,Steinweg Amsterdam,96,143
 German dummy 2,Stroe,55,80
-German dummy 2,Stuttgart,306,489
 German dummy 2,"Tilburg, industrie",86,121
 German dummy 2,"Uitgeest, emplacement",105,153
 German dummy 2,"Valburg, emplacement CUP",39,46
@@ -2100,7 +2028,6 @@ German dummy 3,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 3,"Bad Bentheim, Hilgenstiege sp.25",81,113
 German dummy 3,Beatrixhaven,104,154
 German dummy 3,"Beverwijk, emplacement",101,154
-German dummy 3,Bietigheim-Bissingen,293,475
 German dummy 3,"Blerick, emplacement en werkplaats",68,83
 German dummy 3,"Born, emplacement",98,132
 German dummy 3,"Botlek, emplacement",109,164
@@ -2120,7 +2047,6 @@ German dummy 3,"Emmerich, station",6,1
 German dummy 3,Euromax,132,199
 German dummy 3,"Europoort, emplacement",114,175
 German dummy 3,"Gekkengraaf, emplacement",67,81
-German dummy 3,Germersheim,250,410
 German dummy 3,Goes,150,227
 German dummy 3,"Hengelo, emplacement",71,82
 German dummy 3,"Herzogenrath, station",120,183
@@ -2161,7 +2087,6 @@ German dummy 3,"Sittard, emplacement",105,138
 German dummy 3,Sloehaven empl.,155,238
 German dummy 3,Steinweg Amsterdam,96,143
 German dummy 3,Stroe,55,80
-German dummy 3,Stuttgart,306,489
 German dummy 3,"Tilburg, industrie",86,121
 German dummy 3,"Uitgeest, emplacement",105,153
 German dummy 3,"Valburg, emplacement CUP",39,46
@@ -2187,7 +2112,6 @@ German dummy 4,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 4,"Bad Bentheim, Hilgenstiege sp.25",81,113
 German dummy 4,Beatrixhaven,104,154
 German dummy 4,"Beverwijk, emplacement",101,154
-German dummy 4,Bietigheim-Bissingen,293,475
 German dummy 4,"Blerick, emplacement en werkplaats",68,83
 German dummy 4,"Born, emplacement",98,132
 German dummy 4,"Botlek, emplacement",109,164
@@ -2207,7 +2131,6 @@ German dummy 4,"Emmerich, station",6,1
 German dummy 4,Euromax,132,199
 German dummy 4,"Europoort, emplacement",114,175
 German dummy 4,"Gekkengraaf, emplacement",67,81
-German dummy 4,Germersheim,250,410
 German dummy 4,Goes,150,227
 German dummy 4,"Hengelo, emplacement",71,82
 German dummy 4,"Herzogenrath, station",120,183
@@ -2248,7 +2171,6 @@ German dummy 4,"Sittard, emplacement",105,138
 German dummy 4,Sloehaven empl.,155,238
 German dummy 4,Steinweg Amsterdam,96,143
 German dummy 4,Stroe,55,80
-German dummy 4,Stuttgart,306,489
 German dummy 4,"Tilburg, industrie",86,121
 German dummy 4,"Uitgeest, emplacement",105,153
 German dummy 4,"Valburg, emplacement CUP",39,46
@@ -2274,7 +2196,6 @@ German dummy 5,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 5,"Bad Bentheim, Hilgenstiege sp.25",81,113
 German dummy 5,Beatrixhaven,104,154
 German dummy 5,"Beverwijk, emplacement",101,154
-German dummy 5,Bietigheim-Bissingen,293,475
 German dummy 5,"Blerick, emplacement en werkplaats",68,83
 German dummy 5,"Born, emplacement",98,132
 German dummy 5,"Botlek, emplacement",109,164
@@ -2294,7 +2215,6 @@ German dummy 5,"Emmerich, station",6,1
 German dummy 5,Euromax,132,199
 German dummy 5,"Europoort, emplacement",114,175
 German dummy 5,"Gekkengraaf, emplacement",67,81
-German dummy 5,Germersheim,250,410
 German dummy 5,Goes,150,227
 German dummy 5,"Hengelo, emplacement",71,82
 German dummy 5,"Herzogenrath, station",120,183
@@ -2335,7 +2255,6 @@ German dummy 5,"Sittard, emplacement",105,138
 German dummy 5,Sloehaven empl.,155,238
 German dummy 5,Steinweg Amsterdam,96,143
 German dummy 5,Stroe,55,80
-German dummy 5,Stuttgart,306,489
 German dummy 5,"Tilburg, industrie",86,121
 German dummy 5,"Uitgeest, emplacement",105,153
 German dummy 5,"Valburg, emplacement CUP",39,46
@@ -2361,7 +2280,6 @@ German dummy 6,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 6,"Bad Bentheim, Hilgenstiege sp.25",81,113
 German dummy 6,Beatrixhaven,104,154
 German dummy 6,"Beverwijk, emplacement",101,154
-German dummy 6,Bietigheim-Bissingen,293,475
 German dummy 6,"Blerick, emplacement en werkplaats",68,83
 German dummy 6,"Born, emplacement",98,132
 German dummy 6,"Botlek, emplacement",109,164
@@ -2381,7 +2299,6 @@ German dummy 6,"Emmerich, station",6,1
 German dummy 6,Euromax,132,199
 German dummy 6,"Europoort, emplacement",114,175
 German dummy 6,"Gekkengraaf, emplacement",67,81
-German dummy 6,Germersheim,250,410
 German dummy 6,Goes,150,227
 German dummy 6,"Hengelo, emplacement",71,82
 German dummy 6,"Herzogenrath, station",120,183
@@ -2422,7 +2339,6 @@ German dummy 6,"Sittard, emplacement",105,138
 German dummy 6,Sloehaven empl.,155,238
 German dummy 6,Steinweg Amsterdam,96,143
 German dummy 6,Stroe,55,80
-German dummy 6,Stuttgart,306,489
 German dummy 6,"Tilburg, industrie",86,121
 German dummy 6,"Uitgeest, emplacement",105,153
 German dummy 6,"Valburg, emplacement CUP",39,46
@@ -2448,7 +2364,6 @@ German dummy 7,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 7,"Bad Bentheim, Hilgenstiege sp.25",81,113
 German dummy 7,Beatrixhaven,104,154
 German dummy 7,"Beverwijk, emplacement",101,154
-German dummy 7,Bietigheim-Bissingen,293,475
 German dummy 7,"Blerick, emplacement en werkplaats",68,83
 German dummy 7,"Born, emplacement",98,132
 German dummy 7,"Botlek, emplacement",109,164
@@ -2468,7 +2383,6 @@ German dummy 7,"Emmerich, station",6,1
 German dummy 7,Euromax,132,199
 German dummy 7,"Europoort, emplacement",114,175
 German dummy 7,"Gekkengraaf, emplacement",67,81
-German dummy 7,Germersheim,250,410
 German dummy 7,Goes,150,227
 German dummy 7,"Hengelo, emplacement",71,82
 German dummy 7,"Herzogenrath, station",120,183
@@ -2509,7 +2423,6 @@ German dummy 7,"Sittard, emplacement",105,138
 German dummy 7,Sloehaven empl.,155,238
 German dummy 7,Steinweg Amsterdam,96,143
 German dummy 7,Stroe,55,80
-German dummy 7,Stuttgart,306,489
 German dummy 7,"Tilburg, industrie",86,121
 German dummy 7,"Uitgeest, emplacement",105,153
 German dummy 7,"Valburg, emplacement CUP",39,46
@@ -2535,7 +2448,6 @@ German dummy 8,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 8,"Bad Bentheim, Hilgenstiege sp.25",81,113
 German dummy 8,Beatrixhaven,104,154
 German dummy 8,"Beverwijk, emplacement",101,154
-German dummy 8,Bietigheim-Bissingen,293,475
 German dummy 8,"Blerick, emplacement en werkplaats",68,83
 German dummy 8,"Born, emplacement",98,132
 German dummy 8,"Botlek, emplacement",109,164
@@ -2555,7 +2467,6 @@ German dummy 8,"Emmerich, station",6,1
 German dummy 8,Euromax,132,199
 German dummy 8,"Europoort, emplacement",114,175
 German dummy 8,"Gekkengraaf, emplacement",67,81
-German dummy 8,Germersheim,250,410
 German dummy 8,Goes,150,227
 German dummy 8,"Hengelo, emplacement",71,82
 German dummy 8,"Herzogenrath, station",120,183
@@ -2596,7 +2507,6 @@ German dummy 8,"Sittard, emplacement",105,138
 German dummy 8,Sloehaven empl.,155,238
 German dummy 8,Steinweg Amsterdam,96,143
 German dummy 8,Stroe,55,80
-German dummy 8,Stuttgart,306,489
 German dummy 8,"Tilburg, industrie",86,121
 German dummy 8,"Uitgeest, emplacement",105,153
 German dummy 8,"Valburg, emplacement CUP",39,46
@@ -2622,7 +2532,6 @@ German dummy 9,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 9,"Bad Bentheim, Hilgenstiege sp.25",81,113
 German dummy 9,Beatrixhaven,104,154
 German dummy 9,"Beverwijk, emplacement",101,154
-German dummy 9,Bietigheim-Bissingen,293,475
 German dummy 9,"Blerick, emplacement en werkplaats",68,83
 German dummy 9,"Born, emplacement",98,132
 German dummy 9,"Botlek, emplacement",109,164
@@ -2642,7 +2551,6 @@ German dummy 9,"Emmerich, station",6,1
 German dummy 9,Euromax,132,199
 German dummy 9,"Europoort, emplacement",114,175
 German dummy 9,"Gekkengraaf, emplacement",67,81
-German dummy 9,Germersheim,250,410
 German dummy 9,Goes,150,227
 German dummy 9,"Hengelo, emplacement",71,82
 German dummy 9,"Herzogenrath, station",120,183
@@ -2683,7 +2591,6 @@ German dummy 9,"Sittard, emplacement",105,138
 German dummy 9,Sloehaven empl.,155,238
 German dummy 9,Steinweg Amsterdam,96,143
 German dummy 9,Stroe,55,80
-German dummy 9,Stuttgart,306,489
 German dummy 9,"Tilburg, industrie",86,121
 German dummy 9,"Uitgeest, emplacement",105,153
 German dummy 9,"Valburg, emplacement CUP",39,46
@@ -2709,7 +2616,6 @@ German dummy 10,"Bad Bentheim, empl. / staalfabriek",79,112
 German dummy 10,"Bad Bentheim, Hilgenstiege sp.25",81,113
 German dummy 10,Beatrixhaven,104,154
 German dummy 10,"Beverwijk, emplacement",101,154
-German dummy 10,Bietigheim-Bissingen,293,475
 German dummy 10,"Blerick, emplacement en werkplaats",68,83
 German dummy 10,"Born, emplacement",98,132
 German dummy 10,"Botlek, emplacement",109,164
@@ -2729,7 +2635,6 @@ German dummy 10,"Emmerich, station",6,1
 German dummy 10,Euromax,132,199
 German dummy 10,"Europoort, emplacement",114,175
 German dummy 10,"Gekkengraaf, emplacement",67,81
-German dummy 10,Germersheim,250,410
 German dummy 10,Goes,150,227
 German dummy 10,"Hengelo, emplacement",71,82
 German dummy 10,"Herzogenrath, station",120,183
@@ -2770,7 +2675,6 @@ German dummy 10,"Sittard, emplacement",105,138
 German dummy 10,Sloehaven empl.,155,238
 German dummy 10,Steinweg Amsterdam,96,143
 German dummy 10,Stroe,55,80
-German dummy 10,Stuttgart,306,489
 German dummy 10,"Tilburg, industrie",86,121
 German dummy 10,"Uitgeest, emplacement",105,153
 German dummy 10,"Valburg, emplacement CUP",39,46

@@ -31,8 +31,6 @@ namespace Thesis {
         }
 
         public void Run(Instance instance, XorShiftRandom appRand) {
-            Console.WriteLine("Starting simulated annealing");
-
             // Start stopwatch
             stopwatch.Start();
 
