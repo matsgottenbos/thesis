@@ -56,8 +56,8 @@ namespace DriverPlannerShared {
         /* Helper methods */
 
         public MainShiftInfo MainShiftInfo(int mainShiftStartTime, int realMainShiftEndTime) {
-            int roundedStartTime = (int)Math.Round((float)mainShiftStartTime / DevConfig.RoundedTimeStepSize);
-            int roundedEndTime = (int)Math.Round((float)realMainShiftEndTime / DevConfig.RoundedTimeStepSize);
+            int roundedStartTime = (int)Math.Round((float)mainShiftStartTime / AppConfig.RoundedTimeStepSize);
+            int roundedEndTime = (int)Math.Round((float)realMainShiftEndTime / AppConfig.RoundedTimeStepSize);
             return mainShiftInfos[roundedStartTime, roundedEndTime];
         }
 

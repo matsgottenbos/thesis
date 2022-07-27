@@ -8,13 +8,13 @@ namespace DriverPlannerShared {
     public static class DataShiftProcessor {
         public static MainShiftInfo[,] GetMainShiftInfos(SalarySettings[] salarySettingsByDriverType, int timeframeLength) {
             int timeframeLengthWithFinalTravel = timeframeLength + 24 * 60;
-            int roundedTimeStepCount = timeframeLengthWithFinalTravel / DevConfig.RoundedTimeStepSize;
+            int roundedTimeStepCount = timeframeLengthWithFinalTravel / AppConfig.RoundedTimeStepSize;
 
             MainShiftInfo[,] mainShiftInfos = new MainShiftInfo[roundedTimeStepCount, roundedTimeStepCount];
             for (int startTimeStepIndex = 0; startTimeStepIndex < roundedTimeStepCount; startTimeStepIndex++) {
                 for (int endTimeStepIndex = startTimeStepIndex; endTimeStepIndex < roundedTimeStepCount; endTimeStepIndex++) {
-                    int mainShiftStartTime = startTimeStepIndex * DevConfig.RoundedTimeStepSize;
-                    int realMainShiftEndTime = endTimeStepIndex * DevConfig.RoundedTimeStepSize;
+                    int mainShiftStartTime = startTimeStepIndex * AppConfig.RoundedTimeStepSize;
+                    int realMainShiftEndTime = endTimeStepIndex * AppConfig.RoundedTimeStepSize;
                     int realMainShiftLength = realMainShiftEndTime - mainShiftStartTime;
 
                     // Determine shift info for driver types

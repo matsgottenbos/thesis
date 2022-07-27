@@ -30,6 +30,8 @@ namespace DriverPlannerShared {
         public static string GoogleMapsApiKey { get; private set; }
         /// <summary>Maximum number of destinations allowed by the Google Maps API in a single request.</summary>
         public static int GoogleMapsMaxDestinationCountPerRequest { get; private set; }
+        /// <summary>Some shift info in the program is rounded to this number of hours.</summary>
+        public static int RoundedTimeStepSize { get; private set; }
         /// <summary>Number of processor threads to use for the simulated annealing algorithm. For the best performance, this number should be equal to the number of virtual cores in your computer.</summary>
         public static int ThreadCount { get; private set; }
         /// <summary>Local URL to run the UI HTTP server on.</summary>
@@ -50,6 +52,7 @@ namespace DriverPlannerShared {
             OdataPassword = ExcelSheet.GetStringValue(appSettingsCellDict["RailCube password"]);
             GoogleMapsApiKey = ExcelSheet.GetStringValue(appSettingsCellDict["Google Maps API key"]);
             GoogleMapsMaxDestinationCountPerRequest = ExcelSheet.GetIntValue(appSettingsCellDict["Google Maps request max destinations"]).Value;
+            RoundedTimeStepSize = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(appSettingsCellDict["Rounded time step size"]).Value);
             ThreadCount = ExcelSheet.GetIntValue(appSettingsCellDict["Number of threads"]).Value;
             UiHostUrl = ExcelSheet.GetStringValue(appSettingsCellDict["UI host URL"]);
         }
