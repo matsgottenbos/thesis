@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DriverPlannerShared {
+﻿namespace DriverPlannerShared {
     public abstract class AbstractAssignOperation : AbstractOperation {
         readonly Activity activity;
         readonly Driver unassignedDriver, assignedDriver;
@@ -21,11 +15,11 @@ namespace DriverPlannerShared {
         }
 
         public override SaTotalInfo GetCostDiff() {
-            #if DEBUG
+#if DEBUG
             if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperation().Description = string.Format("Re-assign activity {0} from driver {1} to driver {2}", activity.Index, unassignedDriver.GetId(), assignedDriver.GetId());
             }
-            #endif
+#endif
 
             // Get cost diffs
             unassignedDriverInfoDiff = CostDiffCalculator.GetUnassignDriverCostDiff(activity, unassignedDriver, unassignedDriverInfo, info);

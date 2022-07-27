@@ -2,12 +2,6 @@
  * Used to store all changing variables of the simulated annealing algorithm
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace DriverPlannerShared {
     public class SaInfo {
         public readonly Instance Instance;
@@ -29,11 +23,11 @@ namespace DriverPlannerShared {
         }
 
         public void ReassignActivity(Activity activity, Driver oldDriver, Driver newDriver) {
-            #if DEBUG
+#if DEBUG
             if (DevConfig.DebugCheckOperations) {
                 DebugCheckDriverPaths();
             }
-            #endif
+#endif
 
             // Update assignment
             Assignment[activity.Index] = newDriver;
@@ -58,11 +52,11 @@ namespace DriverPlannerShared {
                 DriverPathIndices[newDriverPath[j].Index]++;
             }
 
-            #if DEBUG
+#if DEBUG
             if (DevConfig.DebugCheckOperations) {
                 DebugCheckDriverPaths();
             }
-            #endif
+#endif
         }
 
         public void DebugCheckDriverPaths() {

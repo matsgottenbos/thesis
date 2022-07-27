@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DriverPlannerShared {
+﻿namespace DriverPlannerShared {
     public class SalaryRateBlock {
         public readonly int StartTime;
         public readonly float SalaryRate;

@@ -1,11 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace DriverPlannerShared {
+﻿namespace DriverPlannerShared {
     public class DebugJsonExporter {
         readonly Instance instance;
         string outputSubfolderPath;

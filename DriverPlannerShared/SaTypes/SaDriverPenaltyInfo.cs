@@ -2,8 +2,6 @@
  * Used to store calculated penalty amounts for a driver's activity path, or a range of it
 */
 
-using System;
-
 namespace DriverPlannerShared {
     public class SaDriverPenaltyInfo {
         public int OverlapViolationCount, ShiftLengthViolationCount, ShiftLengthViolationAmount, RestTimeViolationCount, RestTimeViolationAmount, ShiftCountViolationAmount, InvalidHotelCount, AvailabilityViolationCount, QualificationViolationCount;
@@ -48,7 +46,7 @@ namespace DriverPlannerShared {
         }
 
         public void AddPotentialQualificationViolation(Activity activity, Driver driver) {
-           if (!driver.IsQualifiedForActivity(activity)) {
+            if (!driver.IsQualifiedForActivity(activity)) {
                 QualificationViolationCount++;
             }
         }

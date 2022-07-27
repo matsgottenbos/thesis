@@ -2,12 +2,7 @@
  * Helper methods for converting values to strings
 */
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DriverPlannerShared {
     public static class ToStringHelper {

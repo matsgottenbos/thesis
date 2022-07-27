@@ -1,10 +1,5 @@
 ﻿using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DriverPlannerShared {
     public class RulesConfig {
@@ -157,7 +152,7 @@ namespace DriverPlannerShared {
                 weekPartsForWeekendList.Add(new TimePart(startTime, isWeekend));
             });
             WeekPartsForWeekend = weekPartsForWeekendList.ToArray();
-    }
+        }
 
         static void ProcessDayPartsSettings(XSSFWorkbook settingsBook) {
             ExcelSheet dayPartsSettingsSheet = new ExcelSheet("Day parts", settingsBook);
@@ -224,7 +219,7 @@ namespace DriverPlannerShared {
 
         static Func<int, int, bool> GetShiftTypeRuleFunc(Dictionary<string, ICell> settingsCellDict, string ruleTypeSettingName, string ruleMinimumSettingName) {
             string type = ExcelSheet.GetStringValue(settingsCellDict[ruleTypeSettingName]);
-            switch(type) {
+            switch (type) {
                 case "Absolute":
                     int minimumTime = ConfigHandler.HourToMinuteValue(ExcelSheet.GetFloatValue(settingsCellDict[ruleMinimumSettingName]).Value);
                     return (int mainShiftTimeAtNight, int mainShiftLength) => mainShiftTimeAtNight >= minimumTime;

@@ -2,12 +2,6 @@
  * Used to store combined calculated information about multiple drivers
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace DriverPlannerShared {
     public class SaTotalInfo {
         public SaStats Stats;

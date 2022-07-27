@@ -2,12 +2,6 @@
  * Calculates cost differences for changes that are about multiple drivers together
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace DriverPlannerShared {
     public static class GlobalCostDiffCalculator {
         public static (SaExternalDriverTypeInfo, SaExternalDriverTypeInfo) GetExternalDriversGlobalCostDiff(Driver driver1, Driver driver2, SaDriverInfo driver1InfoDiff, SaDriverInfo driver2InfoDiff, SaInfo info) {
@@ -48,11 +42,11 @@ namespace DriverPlannerShared {
         }
 
         static SaExternalDriverTypeInfo GetExternalDriverTypeCostDiff(ExternalDriver externalDriver, SaExternalDriverTypeInfo oldExternalDriverTypeInfo, SaDriverInfo driverInfoDiff, SaInfo info) {
-            #if DEBUG
+#if DEBUG
             if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperation().StartPart(string.Format("Global cost diff for external driver {0}", externalDriver.GetId()), externalDriver);
             }
-            #endif
+#endif
 
             ExternalDriverType externalDriverType = info.Instance.ExternalDriverTypes[externalDriver.ExternalDriverTypeIndex];
 
@@ -64,11 +58,11 @@ namespace DriverPlannerShared {
 
             SaExternalDriverTypeInfo externalDriverTypeInfoDiff = newExternalDriverTypeInfo - oldExternalDriverTypeInfo;
 
-            #if DEBUG
+#if DEBUG
             if (DevConfig.DebugCheckOperations) {
                 CheckErrors(externalDriverTypeInfoDiff, driverInfoDiff, externalDriver, info);
             }
-            #endif
+#endif
 
             return externalDriverTypeInfoDiff;
         }

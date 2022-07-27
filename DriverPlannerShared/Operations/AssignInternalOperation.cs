@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DriverPlannerShared {
+﻿namespace DriverPlannerShared {
     public class AssignInternalOperation : AbstractAssignOperation {
         public AssignInternalOperation(int activityIndex, InternalDriver newInternalDriver, SaInfo info) : base(activityIndex, newInternalDriver, info) { }
 

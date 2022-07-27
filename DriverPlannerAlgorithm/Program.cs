@@ -1,6 +1,5 @@
 ﻿using DriverPlannerShared;
 using System;
-using System.Collections.Generic;
 
 namespace DriverPlannerAlgorithm {
     class Program {

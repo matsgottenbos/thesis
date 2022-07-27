@@ -2,13 +2,6 @@
  * Process a single activity for the range cost calculator
 */
 
-using DriverPlannerShared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace DriverPlannerShared {
     public static class RangeCostActivityProcessor {
         /* Process activities */
@@ -54,7 +47,7 @@ namespace DriverPlannerShared {
             // If the range is not empty, finish the last shift of the range
             if (shiftFirstActivity != null) {
                 // This is the end of the range, but not the driver path
-                ProcessDriverEndShift(prevActivity, activityAfterRange, ref shiftFirstActivity, ref parkingActivity , ref beforeHotelActivity, isHotelAfterActivity, driverInfo, driver, info, instance);
+                ProcessDriverEndShift(prevActivity, activityAfterRange, ref shiftFirstActivity, ref parkingActivity, ref beforeHotelActivity, isHotelAfterActivity, driverInfo, driver, info, instance);
             }
         }
 
@@ -68,11 +61,11 @@ namespace DriverPlannerShared {
                 driverInfo.SharedRouteCounts[sharedRouteIndex.Value]++;
             }
 
-            #if DEBUG
+#if DEBUG
             if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentStageInfo().AddActivity(activity, isOverlapViolation, isInvalidHotelAfter);
             }
-            #endif
+#endif
         }
 
 
@@ -109,11 +102,11 @@ namespace DriverPlannerShared {
                     driverInfo.PenaltyInfo.AddInvalidHotel();
                 }
 
-                #if DEBUG
+#if DEBUG
                 if (DevConfig.DebugCheckOperations) {
                     SaDebugger.GetCurrentStageInfo().SetRestInfo(null, false, isInvalidHotelAfter);
                 }
-                #endif
+#endif
             } else {
                 // This is a non-final shift of the driver path
                 ProcessRestTime(mainShiftInfo, shiftLastActivity, nextShiftFirstActivity, ref shiftFirstActivity, ref parkingActivity, ref beforeHotelActivity, afterHotelActivity != null, sharedCarTravelTimeAfter, ownCarTravelTimeAfter, driverInfo, driver, info, instance);
@@ -165,11 +158,11 @@ namespace DriverPlannerShared {
             // Start new shift
             shiftFirstActivity = nextShiftFirstActivity;
 
-            #if DEBUG
+#if DEBUG
             if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentStageInfo().SetRestInfo(restTimeAfter, isHotelAfter, isInvalidHotelAfter);
             }
-            #endif
+#endif
         }
 
 
@@ -200,11 +193,11 @@ namespace DriverPlannerShared {
             int fullShiftLength = fullShiftEndTime - fullShiftStartTime;
             float fullShiftCost = driverTypeMainShiftInfo.MainShiftCost + ownCarTravelCost + sharedCarTravelDistance * RulesConfig.SharedCarCostsPerKilometer;
 
-            #if DEBUG
+#if DEBUG
             if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentStageInfo().SetShiftDetails(shiftFirstActivity, shiftLastActivity, afterHotelActivity, mainShiftInfo, driverTypeMainShiftInfo, fullShiftLength, sharedCarTravelTimeBefore, ownCarTravelTimeBefore, sharedCarTravelTimeAfter, ownCarTravelTimeAfter);
             }
-            #endif
+#endif
 
             return (mainShiftInfo, driverTypeMainShiftInfo, realMainShiftLength, fullShiftLength, fullShiftStartTime, fullShiftEndTime, ownCarTravelTime, sharedCarTravelTimeAfter, ownCarTravelTimeAfter, fullShiftCost);
         }

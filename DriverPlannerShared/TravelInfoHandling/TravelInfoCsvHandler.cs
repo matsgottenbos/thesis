@@ -3,13 +3,7 @@
 */
 
 using CsvHelper;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DriverPlannerShared {
     public static class TravelInfoCsvHandler {
@@ -75,12 +69,12 @@ namespace DriverPlannerShared {
 
     // Type to export travel into CSV using CsvHelper.WriteRecords
     public class TravelInfoCsv {
-        #pragma warning disable IDE1006 // Disable naming styles warning
+#pragma warning disable IDE1006 // Disable naming styles warning
         public string location1Name { get; set; }
         public string location2Name { get; set; }
         public int travelTimeMinutes { get; set; }
         public int travelDistanceKilometers { get; set; }
-        #pragma warning restore IDE1006 // Re-enable naming styles warning
+#pragma warning restore IDE1006 // Re-enable naming styles warning
 
         public TravelInfoCsv(string location1Name, string location2Name, int travelTimeMinutes, int travelDistanceKilometers) {
             this.location1Name = location1Name;

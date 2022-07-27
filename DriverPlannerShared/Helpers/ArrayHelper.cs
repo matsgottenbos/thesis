@@ -2,12 +2,6 @@
  * Helper methods for arrays
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace DriverPlannerShared {
     public static class ArrayHelper {
         public static int[] InvertArray(int[] array) {
@@ -26,7 +20,7 @@ namespace DriverPlannerShared {
             return addedArray;
         }
 
-        public static bool AreArraysEqual<T>(T[] array1, T[] array2) where T: IEquatable<T> {
+        public static bool AreArraysEqual<T>(T[] array1, T[] array2) where T : IEquatable<T> {
             for (int i = 0; i < array1.Length; i++) {
                 if (array1[i].Equals(array2[i])) return false;
             }

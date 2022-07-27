@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DriverPlannerShared {
+﻿namespace DriverPlannerShared {
     public class ToggleHotelOperation : AbstractOperation {
         readonly Activity activity;
         readonly bool isAddition;
@@ -20,12 +14,12 @@ namespace DriverPlannerShared {
         }
 
         public override SaTotalInfo GetCostDiff() {
-            #if DEBUG
+#if DEBUG
             if (DevConfig.DebugCheckOperations) {
                 string templateStr = isAddition ? "Add hotel stay to activity {0} with driver {1}" : "Remove hotel stay from activity {0} with driver {1}";
                 SaDebugger.GetCurrentOperation().Description = string.Format(templateStr, activity.Index, driver.GetId());
             }
-            #endif
+#endif
 
             // Get cost diffs
             if (isAddition) {

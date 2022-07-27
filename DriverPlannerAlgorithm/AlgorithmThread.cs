@@ -85,12 +85,12 @@ namespace DriverPlannerAlgorithm {
                     // Check cost to remove floating point imprecisions
                     TotalCostCalculator.ProcessAssignmentCost(Info);
 
-                    #if DEBUG
+#if DEBUG
                     if (DevConfig.DebugCheckOperations) {
                         if (Info.TotalInfo.Stats.Penalty > 0.01) throw new Exception("New best solution is invalid");
                         if (Math.Abs(Info.TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor - satisfactionLevel) > 0.6) throw new Exception("New best solution has incorrect satisfaction level");
                     }
-                    #endif
+#endif
 
                     // Store as the best solution for this satisfaction level
                     SaInfo bestInfo = Info.CopyForBestInfo();
@@ -110,12 +110,12 @@ namespace DriverPlannerAlgorithm {
             // Update iteration number
             Info.IterationNum++;
 
-            #if DEBUG
+#if DEBUG
             // Set debugger to next iteration
             if (DevConfig.DebugCheckOperations) {
                 SaDebugger.NextIteration(Info);
             }
-            #endif
+#endif
 
             // Callback
             if (Info.IterationNum % AlgorithmConfig.ThreadCallbackFrequency == 0) {
@@ -145,12 +145,12 @@ namespace DriverPlannerAlgorithm {
                 TotalCostCalculator.ProcessAssignmentCost(Info);
             }
 
-            #if DEBUG
+#if DEBUG
             // Reset iteration in debugger after additional checks
             if (DevConfig.DebugCheckOperations) {
                 SaDebugger.ResetIteration(Info);
             }
-            #endif
+#endif
         }
 
         void PerformFullReset() {
@@ -167,24 +167,24 @@ namespace DriverPlannerAlgorithm {
             Info.Assignment = GenerateInitialAssignment();
             Info.ProcessDriverPaths();
 
-            #if DEBUG
+#if DEBUG
             // Initialise debugger
             if (DevConfig.DebugCheckOperations) {
                 SaDebugger.ResetIteration(Info);
                 SaDebugger.GetCurrentOperation().StartPart("Initial assignment", null);
                 SaDebugger.GetCurrentOperationPart().SetStage(OperationPartStage.OldChecked);
             }
-            #endif
+#endif
 
             // Get cost of initial assignment
             TotalCostCalculator.ProcessAssignmentCost(Info);
 
-            #if DEBUG
+#if DEBUG
             // Reset iteration in debugger after initial assignment cost
             if (DevConfig.DebugCheckOperations) {
                 SaDebugger.ResetIteration(Info);
             }
-            #endif
+#endif
         }
 
         Driver[] GenerateInitialAssignment() {

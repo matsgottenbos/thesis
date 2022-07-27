@@ -2,13 +2,6 @@
  * Helper methods for multithreading
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace DriverPlannerShared {
     public static class ThreadHandler {
         public static (CancellationTokenSource, ManualResetEvent) ExecuteInThreadWithCancellation(XorShiftRandom threadRand, Action<CancellationToken, XorShiftRandom> body) {

@@ -2,15 +2,7 @@
  * Helper methods to export travel info
 */
 
-using CsvHelper;
 using NPOI.XSSF.UserModel;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DriverPlannerShared {
     public static class TravelInfoExporter {
@@ -161,5 +153,5 @@ namespace DriverPlannerShared {
         }
     }
 
-    
+
 }

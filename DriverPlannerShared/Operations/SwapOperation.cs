@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DriverPlannerShared {
+﻿namespace DriverPlannerShared {
     public class SwapOperation : AbstractOperation {
         readonly Activity activity1, activity2;
         readonly Driver driver1, driver2;
@@ -22,11 +16,11 @@ namespace DriverPlannerShared {
         }
 
         public override SaTotalInfo GetCostDiff() {
-            #if DEBUG
+#if DEBUG
             if (DevConfig.DebugCheckOperations) {
                 SaDebugger.GetCurrentOperation().Description = string.Format("Swap activity {0} from driver {1} with activity {2} from driver {3}", activity1.Index, driver1.GetId(), activity2.Index, driver2.GetId());
             }
-            #endif
+#endif
 
             // Get cost diffs
             driver1InfoDiff = CostDiffCalculator.GetSwapDriverCostDiff(activity1, activity2, driver1, driver1Info, info);

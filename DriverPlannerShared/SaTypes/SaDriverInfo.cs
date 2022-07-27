@@ -2,9 +2,6 @@
  * Used to store calculated information about a driver's activity path, or a range of it
 */
 
-using System;
-using System.Linq;
-
 namespace DriverPlannerShared {
     public class SaDriverInfo {
         public readonly Instance Instance;

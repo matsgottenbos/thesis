@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DriverPlannerShared {
+﻿namespace DriverPlannerShared {
     public abstract class Driver {
         public readonly int AllDriversIndex;
         public readonly bool IsInternational;

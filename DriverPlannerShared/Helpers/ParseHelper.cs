@@ -2,13 +2,7 @@
  * Helper methods for converting strings to other values
 */
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace DriverPlannerShared {
     public static class ParseHelper {

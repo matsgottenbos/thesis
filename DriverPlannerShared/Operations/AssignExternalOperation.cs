@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DriverPlannerShared {
+﻿namespace DriverPlannerShared {
     public class AssignExternalOperation : AbstractAssignOperation {
         public AssignExternalOperation(int activityIndex, ExternalDriver newExternalDriver, SaInfo info) : base(activityIndex, newExternalDriver, info) { }
 

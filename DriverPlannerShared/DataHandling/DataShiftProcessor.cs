@@ -2,12 +2,6 @@
  * Preprocess shift info based on settings
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace DriverPlannerShared {
     public static class DataShiftProcessor {
         public static MainShiftInfo[,] GetMainShiftInfos(SalarySettings[] salarySettingsByDriverType, int timeframeLength) {

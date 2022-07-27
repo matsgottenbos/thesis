@@ -4,11 +4,6 @@
 
 using Google.Maps;
 using Google.Maps.DistanceMatrix;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DriverPlannerShared {
     public static class TravelInfoMapsApiHandler {
@@ -80,7 +75,7 @@ namespace DriverPlannerShared {
 
             DistanceMatrixResponse response;
             try {
-                 response = new DistanceMatrixService().GetResponse(request);
+                response = new DistanceMatrixService().GetResponse(request);
             } catch {
                 Console.WriteLine("Request failed with unknown error.");
                 return false;
@@ -108,7 +103,7 @@ namespace DriverPlannerShared {
                     DistanceMatrixResponse.DistanceMatrixElement cell = row.Elements[destinationIndex];
                     int durationMinutes = (int)Math.Round((float)cell.duration.Value / 60);
                     int distanceKm = (int)Math.Round((float)cell.distance.Value / 1000);
-                    
+
                     storeTravelInfoFunc(originLocation.Index, destinationLocation.Index, durationMinutes, distanceKm);
                 }
             }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DriverPlannerShared {
+﻿namespace DriverPlannerShared {
     public class RawActivity {
         public readonly int StartTime, EndTime;
         public readonly string DutyName, ActivityType, DutyId, ProjectName, TrainNumber, StartStationName, EndStationName, DataAssignedCompanyName, DataAssignedEmployeeName;

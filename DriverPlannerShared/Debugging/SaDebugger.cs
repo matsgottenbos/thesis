@@ -1,11 +1,4 @@
-﻿using DriverPlannerShared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DriverPlannerShared {
+﻿namespace DriverPlannerShared {
     public static class SaDebugger {
         static OperationInfo CurrentOperation = null;
 

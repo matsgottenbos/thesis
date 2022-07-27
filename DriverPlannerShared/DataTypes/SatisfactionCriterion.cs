@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DriverPlannerShared {
+﻿namespace DriverPlannerShared {
     public abstract class AbstractSatisfactionCriterionInfo {
         public readonly string Name, Mode;
         protected readonly Func<SaDriverInfo, float> relevantValueFunc;

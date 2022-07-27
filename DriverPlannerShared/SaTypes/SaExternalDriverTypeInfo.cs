@@ -2,12 +2,6 @@
  * Used to store calculated information about an external drivers's activity path, or a range of it, that concerns the external driver type
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace DriverPlannerShared {
     public class SaExternalDriverTypeInfo {
         public double Cost, Penalty;

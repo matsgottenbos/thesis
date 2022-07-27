@@ -2,15 +2,8 @@
  * Import data from the RailCube OData API
 */
 
-using Newtonsoft.Json.Linq;
 using RailCube.WebApi.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DriverPlannerShared {
     public static class OdataImporter {
