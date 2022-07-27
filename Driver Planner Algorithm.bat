@@ -1,0 +1,1 @@
+START "" "%~dp0\src\DriverPlannerAlgorithm\bin\Release\net6.0-publish\DriverPlannerAlgorithm.exe"

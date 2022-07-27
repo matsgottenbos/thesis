@@ -1,0 +1,1 @@
+START "" "%~dp0\src\DriverPlannerUi\bin\Release\net6.0-publish\DriverPlannerUi.exe"
