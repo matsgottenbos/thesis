@@ -69,7 +69,7 @@ namespace DriverPlannerAlgorithm {
             List<SaInfo> paretoFront = GetCombinedParetoFront();
 
             // Perform all output
-            WriteOutputToFiles(paretoFront, paretoFrontsOverTime, AppConfig.SaIterationCount, stopwatch);
+            WriteOutputToFiles(paretoFront, paretoFrontsOverTime, stopwatch);
         }
 
         void HandleThreadCallback() {
@@ -175,10 +175,10 @@ namespace DriverPlannerAlgorithm {
             return string.Format("{0}% {1}", ToStringHelper.ToString(paretoPointInfo.TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor, "0.00"), ToStringHelper.ToString(paretoPointInfo.TotalInfo.Stats.Cost, "0"));
         }
 
-        static void WriteOutputToFiles(List<SaInfo> paretoFront, List<List<SaInfo>> paretoFrontsOverTime, long targetIterationCount, Stopwatch stopwatch) {
+        static void WriteOutputToFiles(List<SaInfo> paretoFront, List<List<SaInfo>> paretoFrontsOverTime, Stopwatch stopwatch) {
             // Log summary to console
             using (StreamWriter consoleStreamWriter = new StreamWriter(Console.OpenStandardOutput())) {
-                LogSummaryToStream(paretoFront, paretoFrontsOverTime, targetIterationCount, stopwatch, consoleStreamWriter);
+                LogSummaryToStream(paretoFront, stopwatch, consoleStreamWriter);
             }
 
             // Create output subfolder
@@ -188,36 +188,43 @@ namespace DriverPlannerAlgorithm {
 
             // Log summary text file to file
             using (StreamWriter summaryFileStreamWriter = new StreamWriter(Path.Combine(outputSubfolderPath, "summary.txt"))) {
-                LogSummaryToStream(paretoFront, paretoFrontsOverTime, targetIterationCount, stopwatch, summaryFileStreamWriter);
+                LogSummaryToStream(paretoFront, stopwatch, summaryFileStreamWriter);
+                LogAdditionalInfoToStream(paretoFront, paretoFrontsOverTime, summaryFileStreamWriter);
             }
 
             // Export JSON files
             JsonOutputHelper.ExportRunJsonFiles(outputSubfolderPath, paretoFront);
         }
 
-        static void LogSummaryToStream(List<SaInfo> paretoFront, List<List<SaInfo>> paretoFrontsOverTime, long targetIterationCount, Stopwatch stopwatch, StreamWriter streamWriter) {
+        static void LogSummaryToStream(List<SaInfo> paretoFront, Stopwatch stopwatch, StreamWriter streamWriter) {
             float saDuration = stopwatch.ElapsedMilliseconds / 1000f;
-            float saSpeed = targetIterationCount / saDuration;
-            streamWriter.WriteLine("SA finished {0} iterations in {1} s  |  Speed: {2} iterations/s", ToStringHelper.LargeNumToString(targetIterationCount), ToStringHelper.ToString(saDuration), ToStringHelper.LargeNumToString(saSpeed));
+            float saSpeed = AppConfig.SaIterationCount / saDuration;
+            streamWriter.WriteLine("\nSA finished {0} iterations in {1} s  |  Speed: {2} iterations/s", ToStringHelper.LargeNumToString(AppConfig.SaIterationCount), ToStringHelper.ToString(saDuration), ToStringHelper.LargeNumToString(saSpeed));
 
+            // Log pareto front summary
             if (paretoFront.Count == 0) {
                 streamWriter.WriteLine("SA found no valid solution");
             } else {
                 streamWriter.WriteLine("Pareto-optimal front: {0}", FinalParetoFrontToString(paretoFront));
-
-                for (int i = 0; i < paretoFront.Count; i++) {
-                    SaInfo paretoPoint = paretoFront[i];
-                    streamWriter.WriteLine("\nPoint {0}\n{1}", FinalParetoPointToString(paretoPoint), ToStringHelper.AssignmentToString(paretoPoint));
-                }
-
-                // Log progression of min-cost solutions
-                streamWriter.WriteLine("\nMin cost progression:");
-                streamWriter.WriteLine(string.Join(", ", paretoFrontsOverTime.Select(paretoFront => ToStringHelper.ToString(paretoFront.Count > 0 ? paretoFront[0].TotalInfo.Stats.Cost : -1, "0"))));
-
-                // Log progression of max-satisfaction solutions
-                streamWriter.WriteLine("\nMax satisfaction progression:");
-                streamWriter.WriteLine(string.Join(", ", paretoFrontsOverTime.Select(paretoFront => ToStringHelper.ToString(paretoFront.Count > 0 ? paretoFront[^1].TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor : -1, "0.00"))));
             }
+        }
+
+        static void LogAdditionalInfoToStream(List<SaInfo> paretoFront, List<List<SaInfo>> paretoFrontsOverTime, StreamWriter streamWriter) {
+            if (paretoFront.Count == 0) return;
+
+            // Pareto front details
+            for (int i = 0; i < paretoFront.Count; i++) {
+                SaInfo paretoPoint = paretoFront[i];
+                streamWriter.WriteLine("\nPoint {0}\n{1}", FinalParetoPointToString(paretoPoint), ToStringHelper.AssignmentToString(paretoPoint));
+            }
+
+            // Log progression of min-cost solutions
+            streamWriter.WriteLine("\nMin cost progression:");
+            streamWriter.WriteLine(string.Join(", ", paretoFrontsOverTime.Select(paretoFront => ToStringHelper.ToString(paretoFront.Count > 0 ? paretoFront[0].TotalInfo.Stats.Cost : -1, "0"))));
+
+            // Log progression of max-satisfaction solutions
+            streamWriter.WriteLine("\nMax satisfaction progression:");
+            streamWriter.WriteLine(string.Join(", ", paretoFrontsOverTime.Select(paretoFront => ToStringHelper.ToString(paretoFront.Count > 0 ? paretoFront[^1].TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor : -1, "0.00"))));
         }
 
         static void PeformSaDebugLog(AlgorithmThread saThread, int threadIndex) {
