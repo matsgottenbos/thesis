@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriverPlannerUi", "DriverPlannerUi\DriverPlannerUi.csproj", "{FF8A05CB-17E5-4FF0-9878-4326AB24A2E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriverPlannerAlgorithm", "src\DriverPlannerAlgorithm\DriverPlannerAlgorithm.csproj", "{EBDF39EC-B296-40C9-B9DE-81819CFEB4DA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriverPlannerAlgorithm", "DriverPlannerAlgorithm\DriverPlannerAlgorithm.csproj", "{C95C6D4D-0A1C-41E0-B1A7-29AA52896814}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriverPlannerShared", "src\DriverPlannerShared\DriverPlannerShared.csproj", "{3D637D60-1EBE-43CF-99F6-EEB5A9D0A700}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriverPlannerShared", "DriverPlannerShared\DriverPlannerShared.csproj", "{C5B69162-55A0-454C-8B34-E33B8B0C1D53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriverPlannerUi", "src\DriverPlannerUi\DriverPlannerUi.csproj", "{DC59CC21-F84A-4696-AF2D-1C0320E1F9F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FF8A05CB-17E5-4FF0-9878-4326AB24A2E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF8A05CB-17E5-4FF0-9878-4326AB24A2E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FF8A05CB-17E5-4FF0-9878-4326AB24A2E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FF8A05CB-17E5-4FF0-9878-4326AB24A2E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C95C6D4D-0A1C-41E0-B1A7-29AA52896814}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C95C6D4D-0A1C-41E0-B1A7-29AA52896814}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C95C6D4D-0A1C-41E0-B1A7-29AA52896814}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C95C6D4D-0A1C-41E0-B1A7-29AA52896814}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C5B69162-55A0-454C-8B34-E33B8B0C1D53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5B69162-55A0-454C-8B34-E33B8B0C1D53}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5B69162-55A0-454C-8B34-E33B8B0C1D53}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5B69162-55A0-454C-8B34-E33B8B0C1D53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBDF39EC-B296-40C9-B9DE-81819CFEB4DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBDF39EC-B296-40C9-B9DE-81819CFEB4DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBDF39EC-B296-40C9-B9DE-81819CFEB4DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBDF39EC-B296-40C9-B9DE-81819CFEB4DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D637D60-1EBE-43CF-99F6-EEB5A9D0A700}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D637D60-1EBE-43CF-99F6-EEB5A9D0A700}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D637D60-1EBE-43CF-99F6-EEB5A9D0A700}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D637D60-1EBE-43CF-99F6-EEB5A9D0A700}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC59CC21-F84A-4696-AF2D-1C0320E1F9F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC59CC21-F84A-4696-AF2D-1C0320E1F9F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC59CC21-F84A-4696-AF2D-1C0320E1F9F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC59CC21-F84A-4696-AF2D-1C0320E1F9F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -22,16 +22,16 @@
         public const int PercentageFactor = 100;
 
         /* File structure */
-        /// <summary>Path to the solution root folder.</summary>
-        public static readonly string SolutionFolder = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.Parent.FullName;
+        /// <summary>Path to the src folder.</summary>
+        public static readonly string SourceFolder = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.Parent.FullName;
         /// <summary>Path to the input folder.</summary>
-        public static readonly string InputFolder = Path.Combine(SolutionFolder, @"Input\");
+        public static readonly string InputFolder = Path.Combine(SourceFolder, @"..\Input\");
         /// <summary>Path to the intermediate folder.</summary>
-        public static readonly string IntermediateFolder = Path.Combine(SolutionFolder, @"Intermediate\");
+        public static readonly string IntermediateFolder = Path.Combine(SourceFolder, @"..\Intermediate\");
         /// <summary>Path to the output folder.</summary>
-        public static readonly string OutputFolder = Path.Combine(SolutionFolder, @"Output\");
+        public static readonly string OutputFolder = Path.Combine(SourceFolder, @"..\Output\");
         /// <summary>Path to the UI folder.</summary>
-        public static readonly string UiFolder = Path.Combine(SolutionFolder, @"UI\");
+        public static readonly string UiFolder = Path.Combine(SourceFolder, @"ui\");
 
         /* Debugging settings */
         /// <summary>Whether to disable multithreading in the algorithm.</summary>
