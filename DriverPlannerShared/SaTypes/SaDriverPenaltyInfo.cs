@@ -54,13 +54,13 @@ namespace DriverPlannerShared {
 
         public double GetPenalty() {
             double penalty = 0;
-            penalty += OverlapViolationCount * SaConfig.OverlapViolationPenalty;
-            penalty += ShiftLengthViolationCount * SaConfig.ShiftLengthViolationPenalty + ShiftLengthViolationAmount * SaConfig.ShiftLengthViolationPenaltyPerMin;
-            penalty += RestTimeViolationCount * SaConfig.RestTimeViolationPenalty + RestTimeViolationAmount * SaConfig.RestTimeViolationPenaltyPerMin;
-            penalty += ShiftCountViolationAmount * SaConfig.InternalShiftCountViolationPenaltyPerShift;
-            penalty += InvalidHotelCount * SaConfig.InvalidHotelPenalty;
-            penalty += AvailabilityViolationCount * SaConfig.AvailabilityViolationPenalty;
-            penalty += QualificationViolationCount * SaConfig.QualificationViolationPenalty;
+            penalty += OverlapViolationCount * AlgorithmConfig.OverlapViolationPenalty;
+            penalty += ShiftLengthViolationCount * AlgorithmConfig.ShiftLengthViolationPenalty + ShiftLengthViolationAmount * AlgorithmConfig.ShiftLengthViolationPenaltyPerMin;
+            penalty += RestTimeViolationCount * AlgorithmConfig.RestTimeViolationPenalty + RestTimeViolationAmount * AlgorithmConfig.RestTimeViolationPenaltyPerMin;
+            penalty += ShiftCountViolationAmount * AlgorithmConfig.InternalShiftCountViolationPenaltyPerShift;
+            penalty += InvalidHotelCount * AlgorithmConfig.InvalidHotelPenalty;
+            penalty += AvailabilityViolationCount * AlgorithmConfig.AvailabilityViolationPenalty;
+            penalty += QualificationViolationCount * AlgorithmConfig.QualificationViolationPenalty;
             return penalty;
         }
 

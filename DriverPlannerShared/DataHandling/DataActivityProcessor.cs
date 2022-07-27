@@ -58,7 +58,7 @@ namespace DriverPlannerShared {
                 Activity activity1 = activities[activity1Index];
                 for (int activity2Index = activity1Index; activity2Index < activities.Length; activity2Index++) {
                     Activity activity2 = activities[activity2Index];
-                    activitiesAreSameShift[activity1.Index, activity2.Index] = GetExpectedWaitingTime(activity1, activity2, expectedCarTravelTimes) <= SaConfig.ShiftWaitingTimeThreshold;
+                    activitiesAreSameShift[activity1.Index, activity2.Index] = GetExpectedWaitingTime(activity1, activity2, expectedCarTravelTimes) <= AlgorithmConfig.ShiftWaitingTimeThreshold;
                 }
             }
 

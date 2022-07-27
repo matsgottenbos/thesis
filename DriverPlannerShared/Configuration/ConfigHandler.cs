@@ -13,7 +13,7 @@ namespace DriverPlannerShared {
             XSSFWorkbook settingsBook = ExcelHelper.ReadExcelFile(Path.Combine(DevConfig.InputFolder, "settings.xlsx"));
             AppConfig.Init(settingsBook);
             RulesConfig.Init(settingsBook);
-            SaConfig.Init(settingsBook);
+            AlgorithmConfig.Init(settingsBook);
             SalaryConfig.Init(settingsBook);
         }
 

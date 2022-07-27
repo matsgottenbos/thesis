@@ -7,81 +7,81 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DriverPlannerShared {
-    public class SaConfig {
-        // SA parameters
-        /// <summary></summary>
-        public static int LogFrequency;
-        /// <summary></summary>
-        public static int ThreadCallbackFrequency;
-        /// <summary></summary>
-        public static int ParameterUpdateFrequency;
-        /// <summary></summary>
-        public static float InitialTemperature;
-        /// <summary></summary>
-        public static float CycleMinInitialTemperature;
-        /// <summary></summary>
-        public static float CycleMaxInitialTemperature;
-        /// <summary></summary>
-        public static float TemperatureReductionFactor;
-        /// <summary></summary>
-        public static float EndCycleTemperature;
-        /// <summary></summary>
-        public static float EarlyEndCycleTemperature;
-        /// <summary></summary>
-        public static float CycleMinSatisfactionFactor;
-        /// <summary></summary>
-        public static float CycleMaxSatisfactionFactor;
+    public class AlgorithmConfig {
+        /* Algorithm parameters */
+        /// <summary>Number of iterations across all threads after which the algorithm logs its progress to the console.</summary>
+        public static int LogFrequency { get; private set; }
+        /// <summary>Number of iterations after which each algorithm threads sends an update to the multithread handler.</summary>
+        public static int ThreadCallbackFrequency { get; private set; }
+        /// <summary>Number of iterations after which the simulated annealing temperature is reduced.</summary>
+        public static int TemperatureReductionFrequency { get; private set; }
+        /// <summary>Factor with which the simulated annealing temperature is reduced.</summary>
+        public static float TemperatureReductionFactor { get; private set; }
+        /// <summary>Simulated annealing temperature when the algorithm starts.</summary>
+        public static float InitialTemperature { get; private set; }
+        /// <summary>Lower bound of the randomly selected simulated annealing temperature after a partial reset.</summary>
+        public static float CycleMinInitialTemperature { get; private set; }
+        /// <summary>Upper bound of the randomly selected simulated annealing temperature after a partial reset.</summary>
+        public static float CycleMaxInitialTemperature { get; private set; }
+        /// <summary>Simulated annealing temperature at which a partial or full reset happens.</summary>
+        public static float EndCycleTemperature { get; private set; }
+        /// <summary>Simulated annealing temperature at which a reset happens early if no valid solution was found this cycle.</summary>
+        public static float EarlyEndCycleTemperature { get; private set; }
+        /// <summary>Lower bound of the randomly selected satisfaction factor of a cycle.</summary>
+        public static float CycleMinSatisfactionFactor { get; private set; }
+        /// <summary>Upper bound of the randomly selected satisfaction factor of a cycle.</summary>
+        public static float CycleMaxSatisfactionFactor { get; private set; }
         /// <summary>Chance of a full reset at the end of a cycle.</summary>
-        public static float FullResetProb;
+        public static float FullResetProb { get; private set; }
         /// <summary>Waiting times shorter than this count as the same shift; waiting time longer start a new shift.</summary>
-        public static int ShiftWaitingTimeThreshold;
+        public static int ShiftWaitingTimeThreshold { get; private set; }
         /// <summary>Minimum cost difference to consider two solutions to be separate points on the pareto front.</summary>
-        public static float ParetoFrontMinCostDiff;
+        public static float ParetoFrontMinCostDiff { get; private set; }
 
-        // Operation probabilities
-        /// <summary></summary>
-        public static float AssignInternalProbCumulative;
-        /// <summary></summary>
-        public static float AssignExternalProbCumulative;
-        /// <summary></summary>
-        public static float SwapProbCumulative;
-        /// <summary></summary>
-        public static float ToggleHotelProbCumulative;
+        /* Operation probabilities */
+        /// <summary>Cumulative probability of selecting the assign internal driver operation.</summary>
+        public static float AssignInternalProbCumulative { get; private set; }
+        /// <summary>Cumulative probability of selecting the assign external driver operation.</summary>
+        public static float AssignExternalProbCumulative { get; private set; }
+        /// <summary>Cumulative probability of selecting the swap drivers operation.</summary>
+        public static float SwapProbCumulative { get; private set; }
+        /// <summary>Cumulative probability of selecting the toggle hotel operation.</summary>
+        public static float ToggleHotelProbCumulative { get; private set; }
 
-        // Penalties
-        /// <summary></summary>
-        public static float OverlapViolationPenalty;
-        /// <summary></summary>
-        public static float ShiftLengthViolationPenalty;
-        /// <summary></summary>
-        public static float ShiftLengthViolationPenaltyPerMin;
-        /// <summary></summary>
-        public static float RestTimeViolationPenalty;
-        /// <summary></summary>
-        public static float RestTimeViolationPenaltyPerMin;
-        /// <summary></summary>
-        public static float InternalShiftCountViolationPenaltyPerShift;
-        /// <summary></summary>
-        public static float ExternalShiftCountPenaltyPerShift;
-        /// <summary></summary>
-        public static float InvalidHotelPenalty;
-        /// <summary></summary>
-        public static float AvailabilityViolationPenalty;
-        /// <summary></summary>
-        public static float QualificationViolationPenalty;
+        /* Penalties */
+        /// <summary>Penalty cost added for each overlap violation.</summary>
+        public static float OverlapViolationPenalty { get; private set; }
+        /// <summary>Penalty cost added for each shift violation.</summary>
+        public static float ShiftLengthViolationPenalty { get; private set; }
+        /// <summary>Penalty cost added for each minute of shift violation.</summary>
+        public static float ShiftLengthViolationPenaltyPerMin { get; private set; }
+        /// <summary>Penalty cost added for each resting time violation.</summary>
+        public static float RestTimeViolationPenalty { get; private set; }
+        /// <summary>Penalty cost added for each minute of resting time violation.</summary>
+        public static float RestTimeViolationPenaltyPerMin { get; private set; }
+        /// <summary>Penalty cost added for each shift of internal driver shift count violation.</summary>
+        public static float InternalShiftCountViolationPenaltyPerShift { get; private set; }
+        /// <summary>Penalty cost added for each shift of external driver type shift count violation.</summary>
+        public static float ExternalShiftCountPenaltyPerShift { get; private set; }
+        /// <summary>Penalty cost added for each invalid hotel.</summary>
+        public static float InvalidHotelPenalty { get; private set; }
+        /// <summary>Penalty cost added for each availability violation.</summary>
+        public static float AvailabilityViolationPenalty { get; private set; }
+        /// <summary>Penalty cost added for each qualification violation.</summary>
+        public static float QualificationViolationPenalty { get; private set; }
 
         public static void Init(XSSFWorkbook settingsBook) {
             ExcelSheet appSettingsSheet = new ExcelSheet("Algorithm", settingsBook);
             Dictionary<string, ICell> algorithmSettingsCellDict = ConfigHandler.GetSettingsValueCellsAsDict(appSettingsSheet);
 
-            // Parameters
+            // Simulated annealing parameters
             LogFrequency = (int)ParseHelper.ParseLargeNumString(ExcelSheet.GetStringValue(algorithmSettingsCellDict["Log frequency"]));
             ThreadCallbackFrequency = (int)ParseHelper.ParseLargeNumString(ExcelSheet.GetStringValue(algorithmSettingsCellDict["Thread callback frequency"]));
-            ParameterUpdateFrequency = (int)ParseHelper.ParseLargeNumString(ExcelSheet.GetStringValue(algorithmSettingsCellDict["Parameter update frequency"]));
+            TemperatureReductionFrequency = (int)ParseHelper.ParseLargeNumString(ExcelSheet.GetStringValue(algorithmSettingsCellDict["Temperature reduction frequency"]));
+            TemperatureReductionFactor = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Temperature reduction factor"]).Value;
             InitialTemperature = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Initial temperature"]).Value;
             CycleMinInitialTemperature = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Cycle min initial temperature"]).Value;
             CycleMaxInitialTemperature = ExcelSheet.GetIntValue(algorithmSettingsCellDict["Cycle max initial temperature"]).Value;
-            TemperatureReductionFactor = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Temperature reduction factor"]).Value;
             EndCycleTemperature = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["End cycle temperature"]).Value;
             EarlyEndCycleTemperature = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Early end cycle temperature"]).Value;
             CycleMinSatisfactionFactor = ExcelSheet.GetFloatValue(algorithmSettingsCellDict["Cycle min satisfaction factor"]).Value;

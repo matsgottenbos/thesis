@@ -1,4 +1,8 @@
-﻿using DriverPlannerShared;
+﻿/*
+ * Runs a single thread of the simulated annealing algorithm
+*/
+
+using DriverPlannerShared;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,14 +13,14 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace DriverPlannerAlgorithm {
-    class SimulatedAnnealing {
+    class AlgorithmThread {
         public SaInfo Info;
         public readonly SaInfo[] BestInfoBySatisfaction;
         readonly XorShiftRandom rand;
         readonly Action threadCallback;
         public int[] DebugOperationCounts, DebugAcceptedOperationCounts;
 
-        public SimulatedAnnealing(Instance instance, XorShiftRandom rand, Action threadCallback) {
+        public AlgorithmThread(Instance instance, XorShiftRandom rand, Action threadCallback) {
             this.rand = rand;
             this.threadCallback = threadCallback;
 
@@ -45,9 +49,9 @@ namespace DriverPlannerAlgorithm {
                 // Pick a random operation based on the configured probabilities
                 double operationDouble = rand.NextDouble();
                 AbstractOperation operation;
-                if (operationDouble < SaConfig.AssignInternalProbCumulative) operation = AssignInternalOperation.CreateRandom(Info, rand);
-                else if (operationDouble < SaConfig.AssignExternalProbCumulative) operation = AssignExternalOperation.CreateRandom(Info, rand);
-                else if (operationDouble < SaConfig.SwapProbCumulative) operation = SwapOperation.CreateRandom(Info, rand);
+                if (operationDouble < AlgorithmConfig.AssignInternalProbCumulative) operation = AssignInternalOperation.CreateRandom(Info, rand);
+                else if (operationDouble < AlgorithmConfig.AssignExternalProbCumulative) operation = AssignExternalOperation.CreateRandom(Info, rand);
+                else if (operationDouble < AlgorithmConfig.SwapProbCumulative) operation = SwapOperation.CreateRandom(Info, rand);
                 else operation = ToggleHotelOperation.CreateRandom(Info, rand);
 
                 SaTotalInfo totalInfoDiff = operation.GetCostDiff();
@@ -102,27 +106,27 @@ namespace DriverPlannerAlgorithm {
                 #endif
 
                 // Callback
-                if (Info.IterationNum % SaConfig.ThreadCallbackFrequency == 0) {
+                if (Info.IterationNum % AlgorithmConfig.ThreadCallbackFrequency == 0) {
                     threadCallback();
                 }
 
                 // Update temperature and penalty factor
-                if (Info.IterationNum % SaConfig.ParameterUpdateFrequency == 0) {
-                    Info.Temperature *= SaConfig.TemperatureReductionFactor;
+                if (Info.IterationNum % AlgorithmConfig.TemperatureReductionFrequency == 0) {
+                    Info.Temperature *= AlgorithmConfig.TemperatureReductionFactor;
 
                     // Check if we should end the cycle, either normally or early
-                    if (!Info.HasHadFeasibleSolutionInCycle && Info.Temperature <= SaConfig.EarlyEndCycleTemperature || Info.Temperature <= SaConfig.EndCycleTemperature) {
+                    if (!Info.HasHadFeasibleSolutionInCycle && Info.Temperature <= AlgorithmConfig.EarlyEndCycleTemperature || Info.Temperature <= AlgorithmConfig.EndCycleTemperature) {
                         Info.HasHadFeasibleSolutionInCycle = false;
 
                         // Check if we should do a full reset
-                        if (rand.NextDouble() < SaConfig.FullResetProb) {
+                        if (rand.NextDouble() < AlgorithmConfig.FullResetProb) {
                             // Full reset
                             PerformFullReset();
                         } else {
                             // Partial reset
                             Info.CycleNum++;
-                            Info.SatisfactionFactor = (float)rand.NextDouble(SaConfig.CycleMinSatisfactionFactor, SaConfig.CycleMaxSatisfactionFactor);
-                            Info.Temperature = (float)rand.NextDouble(SaConfig.CycleMinInitialTemperature, SaConfig.CycleMaxInitialTemperature);
+                            Info.SatisfactionFactor = (float)rand.NextDouble(AlgorithmConfig.CycleMinSatisfactionFactor, AlgorithmConfig.CycleMaxSatisfactionFactor);
+                            Info.Temperature = (float)rand.NextDouble(AlgorithmConfig.CycleMinInitialTemperature, AlgorithmConfig.CycleMaxInitialTemperature);
                         }
                     }
 
@@ -144,8 +148,8 @@ namespace DriverPlannerAlgorithm {
             // Initialise info
             Info = new SaInfo(Info.Instance);
             Info.CycleNum = oldCycleNum + 1;
-            Info.Temperature = SaConfig.InitialTemperature;
-            Info.SatisfactionFactor = (float)rand.NextDouble(SaConfig.CycleMinSatisfactionFactor, SaConfig.CycleMaxSatisfactionFactor);
+            Info.Temperature = AlgorithmConfig.InitialTemperature;
+            Info.SatisfactionFactor = (float)rand.NextDouble(AlgorithmConfig.CycleMinSatisfactionFactor, AlgorithmConfig.CycleMaxSatisfactionFactor);
             Info.IsHotelStayAfterActivity = new bool[Info.Instance.Activities.Length];
 
             // Create a random initial assignment

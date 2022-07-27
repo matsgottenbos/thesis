@@ -10,81 +10,81 @@ namespace DriverPlannerShared {
     public class RulesConfig {
         /* Shift constraints */
         /// <summary>The maximum number of shifts a driver can have per week.</summary>
-        public static int DriverMaxShiftCount;
+        public static int DriverMaxShiftCount { get; private set; }
         /// <summary>Maximum length of a day shift, including travel (in minutes).</summary>
-        public static int MaxFullDayShiftLength;
+        public static int MaxFullDayShiftLength { get; private set; }
         /// <summary>Maximum length of a day shift, excluding travel (in minutes).</summary>
-        public static int MaxMainDayShiftLength;
+        public static int MaxMainDayShiftLength { get; private set; }
         /// <summary>Maximum length of a night shift, including travel (in minutes).</summary>
-        public static int MaxFullNightShiftLength;
+        public static int MaxFullNightShiftLength { get; private set; }
         /// <summary>Maximum length of a night shift, excluding travel (in minutes).</summary>
-        public static int MaxMainNightShiftLength;
+        public static int MaxMainNightShiftLength { get; private set; }
         /// <summary>Minimum required resting time after a day shift (in minutes).</summary>
-        public static int MinRestTimeAfterDayShift;
+        public static int MinRestTimeAfterDayShift { get; private set; }
         /// <summary>Minimum required resting time after a night shift (in minutes).</summary>
-        public static int MinRestTimeAfterNightShift;
+        public static int MinRestTimeAfterNightShift { get; private set; }
         /// <summary>Maximum allowed resting time during a hotel stay (in minutes).</summary>
-        public static int HotelMaxRestTime;
+        public static int HotelMaxRestTime { get; private set; }
         /// <summary>Additional travel time between two shifts when there is an hotel stay. This travel time is equally split between the shift before and after (in minutes).</summary>
-        public static int HotelExtraTravelTime;
+        public static int HotelExtraTravelTime { get; private set; }
         /// <summary>Additional travel distance between two shifts when there is an hotel stay. This travel time is equally split between the shift before and after (in minutes).</summary>
-        public static int HotelExtraTravelDistance;
+        public static int HotelExtraTravelDistance { get; private set; }
         /// <summary>Minimum required resting time between two shifts to count as a single free day (in minutes).</summary>
-        public static int SingleFreeDayMinRestTime;
+        public static int SingleFreeDayMinRestTime { get; private set; }
         /// <summary>Minimum required resting time between two shifts to count as two consecutive free days (in minutes).</summary>
-        public static int DoubleFreeDayMinRestTime;
+        public static int DoubleFreeDayMinRestTime { get; private set; }
 
         /* Shift type rules */
         /// <summary>Function determining whether a shift is a night shift, according to labour laws.</summary>
-        public static Func<int, int, bool> IsNightShiftByLawFunc;
+        public static Func<int, int, bool> IsNightShiftByLawFunc { get; private set; }
         /// <summary>Function determining whether a shift is a night shift, according to company rules.</summary>
-        public static Func<int, int, bool> IsNightShiftByCompanyRulesFunc;
+        public static Func<int, int, bool> IsNightShiftByCompanyRulesFunc { get; private set; }
         /// <summary>Function determining whether a shift is a weekend shift, according to company rules.</summary>
-        public static Func<int, int, bool> IsWeekendShiftByCompanyRulesFunc;
+        public static Func<int, int, bool> IsWeekendShiftByCompanyRulesFunc { get; private set; }
 
         /* Misc costs */
         /// <summary>Estimated costs of an hotel stay (hotel expenses + driver compensation).</summary>
-        public static float HotelCosts;
+        public static float HotelCosts { get; private set; }
         /// <summary>Additional costs for travel by pool car. Applied to intra-shift car travel, travel to pick up personal car, and travel to/from hotel.</summary>
-        public static float SharedCarCostsPerKilometer;
+        public static float SharedCarCostsPerKilometer { get; private set; }
 
         /* Satisfaction */
         /// <summary>Shift lengths above this threshold give a satisfaction penalty (in hours).</summary>
-        public static int IdealShiftLength;
+        public static int IdealShiftLength { get; private set; }
         /// <summary>Resting times below this threshold give a satisfaction penalty (in hours).</summary>
-        public static int IdealRestTime;
+        public static int IdealRestTime { get; private set; }
 
         /* Robustness */
         /// <summary>Activities with these values of ActivityDescriptionEN are considered train driving activities, which have a higher probability to be delayed.</summary>
-        public static string[] DrivingActivityTypes;
+        public static string[] DrivingActivityTypes { get; private set; }
         /// <summary>Chance that a train driving activity has a delay.</summary>
-        public static float DrivingActivityDelayProbability;
+        public static float DrivingActivityDelayProbability { get; private set; }
         /// <summary>Chance that a non-train-driving activity has a delay.</summary>
-        public static float NonDrivingActivityDelayProbability;
+        public static float NonDrivingActivityDelayProbability { get; private set; }
         /// <summary>Added cost for each expected conflict due to delays, if the conflict is between activities of the same duty.</summary>
-        public static float RobustnessCostFactorSameDuty;
+        public static float RobustnessCostFactorSameDuty { get; private set; }
         /// <summary>Added cost for each expected conflict due to delays, if the conflict is between activities of different duties but of the same project.</summary>
-        public static float RobustnessCostFactorSameProject;
+        public static float RobustnessCostFactorSameProject { get; private set; }
         /// <summary>Added cost for each expected conflict due to delays, if the conflict is between activities of different duties and projects.</summary>
-        public static float RobustnessCostFactorDifferentProject;
+        public static float RobustnessCostFactorDifferentProject { get; private set; }
         /// <summary>Activity mean delay by planned duration.</summary>
-        public static Func<int, double> ActivityMeanDelayFunc;
+        public static Func<int, double> ActivityMeanDelayFunc { get; private set; }
         /// <summary>Alpha parameter of activity delay gamma distribution, by mean delay.</summary>
-        public static Func<double, double> ActivityDelayGammaDistributionAlphaFunc;
+        public static Func<double, double> ActivityDelayGammaDistributionAlphaFunc { get; private set; }
         /// <summary>Beta parameter of activity delay gamma distribution, by mean delay.</summary>
-        public static Func<double, double> ActivityDelayGammaDistributionBetaFunc;
+        public static Func<double, double> ActivityDelayGammaDistributionBetaFunc { get; private set; }
         /// <summary>Expected travel delay by planned travel time.</summary>
-        public static Func<int, int> TravelDelayExpectedFunc;
+        public static Func<int, int> TravelDelayExpectedFunc { get; private set; }
 
         /* Week & day parts */
         /// <summary>Weekend/non-weekend parts of the week.</summary>
-        public static TimePart[] WeekPartsForWeekend;
+        public static TimePart[] WeekPartsForWeekend { get; private set; }
         /// <summary>Day/night parts of the day.</summary>
-        public static TimePart[] DayPartsForNight;
+        public static TimePart[] DayPartsForNight { get; private set; }
 
         /* Satisfaction criteria */
         /// <summary>Array of all satisfaction criteria with their possible types.</summary>
-        public static AbstractSatisfactionCriterionInfo[] SatisfactionCriterionInfos;
+        public static AbstractSatisfactionCriterionInfo[] SatisfactionCriterionInfos { get; private set; }
 
         public static void Init(XSSFWorkbook settingsBook) {
             ProcessRulesSettings(settingsBook);

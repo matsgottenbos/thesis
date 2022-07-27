@@ -10,13 +10,13 @@ namespace DriverPlannerShared {
     public class SalaryConfig {
         /* Salary rates for driver types */
         /// <summary>Internal national driver salary info.</summary>
-        public static InternalSalarySettings InternalNationalSalaryInfo;
+        public static InternalSalarySettings InternalNationalSalaryInfo { get; private set; }
         /// <summary>Internal international driver salary info.</summary>
-        public static InternalSalarySettings InternalInternationalSalaryInfo;
+        public static InternalSalarySettings InternalInternationalSalaryInfo { get; private set; }
         /// <summary>External national driver salary info.</summary>
-        public static ExternalSalarySettings ExternalNationalSalaryInfo;
+        public static ExternalSalarySettings ExternalNationalSalaryInfo { get; private set; }
         /// <summary>External international driver salary info.</summary>
-        public static ExternalSalarySettings ExternalInternationalSalaryInfo;
+        public static ExternalSalarySettings ExternalInternationalSalaryInfo { get; private set; }
 
         public static void Init(XSSFWorkbook settingsBook) {
             ExcelSheet salariesSettingsSheet = new ExcelSheet("Salaries", settingsBook);

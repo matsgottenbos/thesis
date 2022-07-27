@@ -13,7 +13,7 @@ namespace DriverPlannerShared {
 
         public void AddPotentialShiftCountViolation(int shiftCount, ExternalDriverType externalDriverType) {
             ExternalShiftCountViolationAmount += Math.Max(0, externalDriverType.MinShiftCount - shiftCount) + Math.Max(0, shiftCount - externalDriverType.MaxShiftCount);
-            Penalty = ExternalShiftCountViolationAmount * SaConfig.ExternalShiftCountPenaltyPerShift;
+            Penalty = ExternalShiftCountViolationAmount * AlgorithmConfig.ExternalShiftCountPenaltyPerShift;
             Cost = Penalty;
         }
 

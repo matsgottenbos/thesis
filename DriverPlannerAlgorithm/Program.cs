@@ -41,7 +41,7 @@ namespace DriverPlannerAlgorithm {
             TravelInfoExporter.DetermineAndExportAllTravelInfos();
             Console.WriteLine("Successfully processsed travel info");
 
-            XorShiftRandom appRand = DevConfig.DebugUseSeededSa ? new XorShiftRandom(1) : new XorShiftRandom();
+            XorShiftRandom appRand = DevConfig.DebugSeedRandomness ? new XorShiftRandom(1) : new XorShiftRandom();
             Instance instance = GetInstance();
 
             // Force garbage collection
@@ -68,7 +68,7 @@ namespace DriverPlannerAlgorithm {
 
             // Simulated annealing
             Console.WriteLine("\nStarting simulated annealing");
-            SaMultithreadHandler saMultithreadHandler = new SaMultithreadHandler();
+            AlgorithmMultithreadHandler saMultithreadHandler = new AlgorithmMultithreadHandler();
             saMultithreadHandler.Run(instance, appRand);
 
             Console.WriteLine("\n*** Program finished ***");

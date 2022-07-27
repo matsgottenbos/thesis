@@ -9,30 +9,31 @@ using System.Threading.Tasks;
 
 namespace DriverPlannerShared {
     public static class AppConfig {
-        /// <summary>Planning window start date.</summary>
-        public static DateTime PlanningStartDate;
-        /// <summary>Planning window end date.</summary>
-        public static DateTime PlanningEndDate;
+        /* App settings */
+        /// <summary>Starting date of the time period to plan for.</summary>
+        public static DateTime PlanningStartDate { get; private set; }
+        /// <summary>Ending date of the time period to plan for.</summary>
+        public static DateTime PlanningEndDate { get; private set; }
         /// <summary>Number of iterations to run the simulated annealing algorithm for.</summary>
-        public static long SaIterationCount;
+        public static long SaIterationCount { get; private set; }
         /// <summary>Filter activities on these values of RailwayUntertaking.</summary>
-        public static string[] IncludedRailwayUndertakings;
+        public static string[] IncludedRailwayUndertakings { get; private set; }
         /// <summary>Filter activities on these values of ActivityDescriptionEN.</summary>
-        public static string[] IncludedActivityTypes;
+        public static string[] IncludedActivityTypes { get; private set; }
         /// <summary>Driver assignments in past data are considered internal for these company names.</summary>
-        public static string[] InternalDriverCompanyNames;
+        public static string[] InternalDriverCompanyNames { get; private set; }
         /// <summary>API key to use for requests to the Google Maps API.</summary>
-        public static string OdataUsername;
+        public static string OdataUsername { get; private set; }
         /// <summary>Password used to connect with the OData API of RailCube.</summary>
-        public static string OdataPassword;
+        public static string OdataPassword { get; private set; }
         /// <summary>API key to use for requests to the Google Maps API.</summary>
-        public static string GoogleMapsApiKey;
+        public static string GoogleMapsApiKey { get; private set; }
         /// <summary>Maximum number of destinations allowed by the Google Maps API in a single request.</summary>
-        public static int GoogleMapsMaxDestinationCountPerRequest;
-        /// <summary>Number of processor threads to use for the simulated annealing algorithm.</summary>
-        public static int ThreadCount;
+        public static int GoogleMapsMaxDestinationCountPerRequest { get; private set; }
+        /// <summary>Number of processor threads to use for the simulated annealing algorithm. For the best performance, this number should be equal to the number of virtual cores in your computer.</summary>
+        public static int ThreadCount { get; private set; }
         /// <summary>Local URL to run the UI HTTP server on.</summary>
-        public static string UiHostUrl;
+        public static string UiHostUrl { get; private set; }
 
         public static void Init(XSSFWorkbook settingsBook) {
             ExcelSheet appSettingsSheet = new ExcelSheet("App", settingsBook);

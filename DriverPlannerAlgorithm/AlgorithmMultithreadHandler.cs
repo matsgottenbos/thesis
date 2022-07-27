@@ -1,4 +1,8 @@
-﻿using DriverPlannerShared;
+﻿/*
+ * Runs all threads of the simulated annealing algorithm
+*/
+
+using DriverPlannerShared;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,8 +13,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace DriverPlannerAlgorithm {
-    class SaMultithreadHandler {
-        readonly SimulatedAnnealing[] saThreads;
+    class AlgorithmMultithreadHandler {
+        readonly AlgorithmThread[] saThreads;
         long totalIterationCount, totalIterationCountSinceLastLog;
         long? lastImprovementTotalIterationCount;
         string prevParetoFrontStr;
@@ -18,13 +22,13 @@ namespace DriverPlannerAlgorithm {
         readonly Stopwatch stopwatch;
         readonly CancellationTokenSource[] threadCancellationTokens;
 
-        public SaMultithreadHandler() {
+        public AlgorithmMultithreadHandler() {
             stopwatch = new Stopwatch();
 
             paretoFrontsOverTime = new List<List<SaInfo>>();
 
-            int actualThreadCount = DevConfig.EnableMultithreading ? AppConfig.ThreadCount : 1;
-            saThreads = new SimulatedAnnealing[actualThreadCount];
+            int actualThreadCount = DevConfig.DebugDisableMultithreading ? 1 : AppConfig.ThreadCount;
+            saThreads = new AlgorithmThread[actualThreadCount];
             threadCancellationTokens = new CancellationTokenSource[actualThreadCount];
         }
 
@@ -32,13 +36,21 @@ namespace DriverPlannerAlgorithm {
             // Start stopwatch
             stopwatch.Start();
 
-            if (DevConfig.EnableMultithreading) {
+            if (DevConfig.DebugDisableMultithreading) {
+                AlgorithmThread simulatedAnnealing = new AlgorithmThread(instance, appRand, HandleThreadCallback);
+                saThreads[0] = simulatedAnnealing;
+
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+                CancellationToken cancellationToken = cancellationTokenSource.Token;
+                threadCancellationTokens[0] = cancellationTokenSource;
+                simulatedAnnealing.Run(cancellationToken);
+            } else {
                 ManualResetEvent[] handles = new ManualResetEvent[AppConfig.ThreadCount];
                 for (int threadIndex = 0; threadIndex < AppConfig.ThreadCount; threadIndex++) {
                     ulong seed = appRand.NextUInt64();
                     XorShiftRandom saRand = new XorShiftRandom(seed);
 
-                    SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, saRand, HandleThreadCallback);
+                    AlgorithmThread simulatedAnnealing = new AlgorithmThread(instance, saRand, HandleThreadCallback);
                     saThreads[threadIndex] = simulatedAnnealing;
 
                     (CancellationTokenSource cts, ManualResetEvent handle) = ThreadHandler.ExecuteInThreadWithCancellation(saRand, (CancellationToken cancellationToken, XorShiftRandom threadRand) => {
@@ -51,14 +63,6 @@ namespace DriverPlannerAlgorithm {
 
                 // Wait for the SA threads to exit
                 WaitHandle.WaitAll(handles);
-            } else {
-                SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(instance, appRand, HandleThreadCallback);
-                saThreads[0] = simulatedAnnealing;
-
-                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-                CancellationToken cancellationToken = cancellationTokenSource.Token;
-                threadCancellationTokens[0] = cancellationTokenSource;
-                simulatedAnnealing.Run(cancellationToken);
             }
 
             stopwatch.Stop();
@@ -71,8 +75,8 @@ namespace DriverPlannerAlgorithm {
         }
 
         void HandleThreadCallback() {
-            Interlocked.Add(ref totalIterationCount, SaConfig.ThreadCallbackFrequency);
-            Interlocked.Add(ref totalIterationCountSinceLastLog, SaConfig.ThreadCallbackFrequency);
+            Interlocked.Add(ref totalIterationCount, AlgorithmConfig.ThreadCallbackFrequency);
+            Interlocked.Add(ref totalIterationCountSinceLastLog, AlgorithmConfig.ThreadCallbackFrequency);
 
             if (totalIterationCount >= AppConfig.SaIterationCount) {
                 lock (threadCancellationTokens) {
@@ -83,7 +87,7 @@ namespace DriverPlannerAlgorithm {
                 return;
             }
 
-            if (totalIterationCountSinceLastLog >= SaConfig.LogFrequency) {
+            if (totalIterationCountSinceLastLog >= AlgorithmConfig.LogFrequency) {
                 totalIterationCountSinceLastLog = 0;
                 PerformLog();
             }
@@ -126,7 +130,7 @@ namespace DriverPlannerAlgorithm {
 
             prevParetoFrontStr = paretoFrontStr;
 
-            if (DevConfig.DebugSaLogThreads) {
+            if (DevConfig.DebugLogThreads) {
                 for (int threadIndex = 0; threadIndex < saThreads.Length; threadIndex++) {
                     PeformSaDebugLog(saThreads[threadIndex], threadIndex);
                 }
@@ -148,7 +152,7 @@ namespace DriverPlannerAlgorithm {
 
                 if (bestInfoOfLevel.TotalInfo.Stats.Cost == double.MaxValue) continue;
 
-                if (bestOfPrevLevel == null || bestInfoOfLevel.TotalInfo.Stats.Cost < bestOfPrevLevel.TotalInfo.Stats.Cost - SaConfig.ParetoFrontMinCostDiff) {
+                if (bestOfPrevLevel == null || bestInfoOfLevel.TotalInfo.Stats.Cost < bestOfPrevLevel.TotalInfo.Stats.Cost - AlgorithmConfig.ParetoFrontMinCostDiff) {
                     paretoFront.Add(bestInfoOfLevel);
                     bestOfPrevLevel = bestInfoOfLevel;
                 }
@@ -218,7 +222,7 @@ namespace DriverPlannerAlgorithm {
             }
         }
 
-        static void PeformSaDebugLog(SimulatedAnnealing saThread, int threadIndex) {
+        static void PeformSaDebugLog(AlgorithmThread saThread, int threadIndex) {
             // Get Pareto-optimal front
             List<SaInfo> paretoFront = GetSingleParetoFront(saThread.BestInfoBySatisfaction);
             string paretoFrontStr;
@@ -243,16 +247,16 @@ namespace DriverPlannerAlgorithm {
                 string hasImprovementStr = saThread.Info.HasImprovementSinceLog ? " !!!" : "";
 
                 // Log basic info
-                Console.WriteLine("{0}:    # {1,6}    Last.impr: {2,4}    Cycle: {3,2}    Cost: {4,6} ({5,2}%)    Raw: {6,6}    Temp: {7,5}    Sat.f: {8,4}   Penalty: {9,-33}    {10}{11}", threadIndex, iterationNumStr, lastImprovementIterationStr, cycleNumStr, logCostStr, satisfactionScoreStr, rawCostStr, temperatureStr, satisfactionFactorStr, penaltyStr, paretoFrontStr, hasImprovementStr);
+                Console.WriteLine("{0,-2}:    # {1,6}    Last.impr: {2,4}    Cycle: {3,2}    Cost: {4,6} ({5,2}%)    Raw: {6,6}    Temp: {7,5}    Sat.f: {8,4}   Penalty: {9,-33}    {10}{11}", threadIndex, iterationNumStr, lastImprovementIterationStr, cycleNumStr, logCostStr, satisfactionScoreStr, rawCostStr, temperatureStr, satisfactionFactorStr, penaltyStr, paretoFrontStr, hasImprovementStr);
 
-                if (DevConfig.DebugSaLogAdditionalInfo) {
+                if (DevConfig.DebugLogAdditionalInfo) {
                     Console.WriteLine("Worked times: {0}", ParseHelper.ToString(saThread.Info.DriverInfos.Select(driverInfo => driverInfo.WorkedTime).ToArray()));
                     Console.WriteLine("Contract time factors: {0}", ParseHelper.ToString(saThread.Info.Instance.InternalDrivers.Select(driver => (double)saThread.Info.DriverInfos[driver.AllDriversIndex].WorkedTime / driver.ContractTime).ToArray()));
                     Console.WriteLine("Shift counts: {0}", ParseHelper.ToString(saThread.Info.DriverInfos.Select(driverInfo => driverInfo.ShiftCount).ToArray()));
                     Console.WriteLine("External type shift counts: {0}", ParseHelper.ToString(saThread.Info.ExternalDriverTypeInfos.Select(externalDriverTypeInfo => externalDriverTypeInfo.ExternalShiftCount).ToArray()));
                 }
 
-                if (DevConfig.DebugSaLogCurrentSolution) {
+                if (DevConfig.DebugLogCurrentSolutionAssignment) {
                     Console.WriteLine("Current solution: {0}", ParseHelper.AssignmentToString(saThread.Info));
                 }
 
@@ -268,7 +272,7 @@ namespace DriverPlannerAlgorithm {
                     SaInfo bestInfoOfLevel = bestInfoBySatisfaction[satisfactionLevel];
                     if (bestInfoOfLevel.TotalInfo.Stats.Cost == double.MaxValue) continue;
 
-                    if (bestOfPrevLevel == null || bestInfoOfLevel.TotalInfo.Stats.Cost < bestOfPrevLevel.TotalInfo.Stats.Cost - SaConfig.ParetoFrontMinCostDiff) {
+                    if (bestOfPrevLevel == null || bestInfoOfLevel.TotalInfo.Stats.Cost < bestOfPrevLevel.TotalInfo.Stats.Cost - AlgorithmConfig.ParetoFrontMinCostDiff) {
                         paretoFront.Add(bestInfoOfLevel);
                         bestOfPrevLevel = bestInfoOfLevel;
                     }
