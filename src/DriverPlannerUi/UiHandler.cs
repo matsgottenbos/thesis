@@ -5,8 +5,12 @@
 */
 
 using DriverPlannerShared;
+using System;
+using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DriverPlannerUi {
     static class UiHandler {
@@ -54,7 +58,7 @@ namespace DriverPlannerUi {
                 string originalRequestFilePath;
                 if (req.Url.AbsolutePath.StartsWith("/output/")) {
                     // Create symlink to output folder
-                    originalRequestFilePath = Path.Combine(DevConfig.OutputFolder, "." + req.Url.AbsolutePath[7..]);
+                    originalRequestFilePath = Path.Combine(DevConfig.OutputFolder, "." + req.Url.AbsolutePath.Substring(7));
                 } else {
                     originalRequestFilePath = Path.Combine(DevConfig.UiFolder, "." + req.Url.AbsolutePath);
                 }
@@ -66,7 +70,7 @@ namespace DriverPlannerUi {
                 } else {
                     // If path is a non-existing folder, try ~.html
                     if (Path.GetExtension(originalRequestFilePath) == "") {
-                        if (originalRequestFilePath.EndsWith("/")) requestFilePath = originalRequestFilePath[0..^1] + ".html";
+                        if (originalRequestFilePath.EndsWith("/")) requestFilePath = originalRequestFilePath.Substring(0, originalRequestFilePath.Length - 1) + ".html";
                         else requestFilePath += ".html";
                     }
                 }
@@ -99,14 +103,28 @@ namespace DriverPlannerUi {
 
                 // Get file info
                 string extension = Path.GetExtension(requestFilePath);
-                string contentType = extension switch {
-                    ".html" => "text/html",
-                    ".js" => "text/javascript",
-                    ".css" => "text/css",
-                    ".json" => "application/json",
-                    ".ttf" => "application/x-font-ttf",
-                    ".woff2" => "application/font-woff2",
-                    _ => throw new Exception(string.Format("Unknown file type: {0}", extension)),
+                string contentType;
+                switch (extension) {
+                    case ".html":
+                        contentType = "text/html";
+                        break;
+                    case ".js":
+                        contentType = "text/javascript";
+                        break;
+                    case ".css":
+                        contentType = "text/css";
+                        break;
+                    case ".json":
+                        contentType = "application/json";
+                        break;
+                    case ".ttf":
+                        contentType = "application/x-font-ttf";
+                        break;
+                    case ".woff2":
+                        contentType = "application/font-woff2";
+                        break;
+                    default:
+                        throw new Exception(string.Format("Unknown file type: {0}", extension));
                 };
 
                 // Log some request info
@@ -123,10 +141,9 @@ namespace DriverPlannerUi {
                 resp.StatusCode = statusCode;
 
                 // Write out to the response stream (asynchronously), then close it
-                await resp.OutputStream.WriteAsync(data.AsMemory(0, data.Length));
+                await resp.OutputStream.WriteAsync(data, 0, data.Length);
                 resp.Close();
             }
         }
-
     }
 }

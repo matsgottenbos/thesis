@@ -2,6 +2,9 @@
  * Calculates total cost of an assignment
 */
 
+using System;
+using System.Collections.Generic;
+
 namespace DriverPlannerShared {
     public static class TotalCostCalculator {
         /** Get assignment cost */

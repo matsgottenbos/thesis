@@ -2,6 +2,8 @@
  * Process a single activity for the range cost calculator
 */
 
+using System;
+
 namespace DriverPlannerShared {
     public static class RangeCostActivityProcessor {
         /* Process activities */

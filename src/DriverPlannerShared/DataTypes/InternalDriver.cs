@@ -1,4 +1,7 @@
-﻿namespace DriverPlannerShared {
+﻿using System;
+using System.Collections.Generic;
+
+namespace DriverPlannerShared {
     public class InternalDriver : Driver {
         public readonly int InternalIndex, ContractTime;
         public readonly SatisfactionCriterion[] SatisfactionCriteria;

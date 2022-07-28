@@ -2,6 +2,9 @@
  * Process salaries based on settings
 */
 
+using System;
+using System.Collections.Generic;
+
 namespace DriverPlannerShared {
     public static class DataSalaryProcessor {
         public static SalarySettings[] GetSalarySettingsByDriverType(int timeframeLength) {

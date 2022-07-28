@@ -1,4 +1,6 @@
-﻿namespace DriverPlannerShared {
+﻿using System;
+
+namespace DriverPlannerShared {
     public abstract class SalarySettings {
         public int DriverTypeIndex;
         public readonly SalaryRateBlock[] WeekdaySalaryRates;

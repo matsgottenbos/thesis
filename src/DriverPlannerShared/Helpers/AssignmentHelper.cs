@@ -2,6 +2,8 @@
  * Helper methods for activity assignments
 */
 
+using System.Collections.Generic;
+
 namespace DriverPlannerShared {
     public static class AssignmentHelper {
         public static int GetAssignedPathActivityIndexBefore(Activity assignedActivity, List<Activity> driverPath) {

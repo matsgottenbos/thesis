@@ -2,6 +2,9 @@
  * Used to store all changing variables of the simulated annealing algorithm
 */
 
+using System;
+using System.Collections.Generic;
+
 namespace DriverPlannerShared {
     public class SaInfo {
         public readonly Instance Instance;

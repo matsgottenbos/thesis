@@ -1,4 +1,6 @@
-﻿namespace DriverPlannerShared {
+﻿using System.Collections.Generic;
+
+namespace DriverPlannerShared {
     /*
     Terminology:
     Work shift: from first to last activity

@@ -30,6 +30,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using System;
+
 namespace DriverPlannerShared {
     /// <summary>
     ///   Generates pseudorandom primitive types with a 64-bit implementation

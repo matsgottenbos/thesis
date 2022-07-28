@@ -1,4 +1,6 @@
-﻿namespace DriverPlannerShared {
+﻿using System;
+
+namespace DriverPlannerShared {
     public abstract class AbstractSatisfactionCriterionInfo {
         public readonly string Name, Mode;
         protected readonly Func<SaDriverInfo, float> relevantValueFunc;

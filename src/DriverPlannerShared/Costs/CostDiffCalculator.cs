@@ -2,6 +2,10 @@
  * Calculates cost differences for changes to a single driver
 */
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace DriverPlannerShared {
     public static class CostDiffCalculator {
         static string GetRangeString(Activity firstRelevantActivity, Activity lastRelevantActivity) {

@@ -3,6 +3,10 @@
 */
 
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace DriverPlannerShared {
     public static class JsonOutputHelper {

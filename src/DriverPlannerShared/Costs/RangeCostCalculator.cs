@@ -2,6 +2,9 @@
  * Calculates costs for a range of activities for a driver
 */
 
+using System;
+using System.Collections.Generic;
+
 namespace DriverPlannerShared {
     public static class RangeCostCalculator {
         /** Get costs of part of a driver's path; penalty are computed with without worked time and shift count penalties */

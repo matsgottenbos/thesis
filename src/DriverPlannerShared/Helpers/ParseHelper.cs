@@ -2,6 +2,8 @@
  * Helper methods for converting strings to other values
 */
 
+using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace DriverPlannerShared {

@@ -4,6 +4,8 @@
 
 using Google.Maps;
 using Google.Maps.DistanceMatrix;
+using System;
+using System.Collections.Generic;
 
 namespace DriverPlannerShared {
     public static class TravelInfoMapsApiHandler {

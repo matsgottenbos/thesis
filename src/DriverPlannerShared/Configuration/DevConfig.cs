@@ -1,4 +1,7 @@
-﻿namespace DriverPlannerShared {
+﻿using System;
+using System.IO;
+
+namespace DriverPlannerShared {
     public enum DataSource {
         Excel,
         Odata,

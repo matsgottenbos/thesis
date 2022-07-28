@@ -2,6 +2,8 @@
  * Calculates cost differences for changes that are about multiple drivers together
 */
 
+using System;
+
 namespace DriverPlannerShared {
     public static class GlobalCostDiffCalculator {
         public static (SaExternalDriverTypeInfo, SaExternalDriverTypeInfo) GetExternalDriversGlobalCostDiff(Driver driver1, Driver driver2, SaDriverInfo driver1InfoDiff, SaDriverInfo driver2InfoDiff, SaInfo info) {

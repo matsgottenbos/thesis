@@ -1,5 +1,6 @@
 ﻿using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using System.Collections.Generic;
 
 namespace DriverPlannerShared {
     public class AlgorithmConfig {

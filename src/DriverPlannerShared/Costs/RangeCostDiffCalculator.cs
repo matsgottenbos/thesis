@@ -2,6 +2,9 @@
  * Calculates cost differences for a range of activities for a driver
 */
 
+using System;
+using System.Collections.Generic;
+
 namespace DriverPlannerShared {
     public static class RangeCostDiffCalculator {
         public static SaDriverInfo GetRangeCostDiff(Activity rangeFirstActivity, Activity rangeLastActivity, SaDriverInfo oldDriverInfo, Func<Activity, bool> newIsHotelAfterActivity, Driver driver, List<Activity> driverPath, SaInfo info) {

@@ -220,11 +220,11 @@ namespace DriverPlannerAlgorithm {
 
             // Log progression of min-cost solutions
             streamWriter.WriteLine("\nMin cost progression:");
-            streamWriter.WriteLine(string.Join(", ", paretoFrontsOverTime.Select(paretoFront => ToStringHelper.ToString(paretoFront.Count > 0 ? paretoFront[0].TotalInfo.Stats.Cost : -1, "0"))));
+            streamWriter.WriteLine(string.Join(", ", paretoFrontsOverTime.Select(searchParetoFront => ToStringHelper.ToString(searchParetoFront.Count > 0 ? searchParetoFront.First().TotalInfo.Stats.Cost : -1, "0"))));
 
             // Log progression of max-satisfaction solutions
             streamWriter.WriteLine("\nMax satisfaction progression:");
-            streamWriter.WriteLine(string.Join(", ", paretoFrontsOverTime.Select(paretoFront => ToStringHelper.ToString(paretoFront.Count > 0 ? paretoFront[^1].TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor : -1, "0.00"))));
+            streamWriter.WriteLine(string.Join(", ", paretoFrontsOverTime.Select(searchParetoFront => ToStringHelper.ToString(searchParetoFront.Count > 0 ? searchParetoFront.Last().TotalInfo.Stats.SatisfactionScore.Value * DevConfig.PercentageFactor : -1, "0.00"))));
         }
 
         static void PeformSaDebugLog(AlgorithmThread saThread, int threadIndex) {

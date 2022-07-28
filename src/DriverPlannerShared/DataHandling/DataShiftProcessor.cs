@@ -2,6 +2,9 @@
  * Preprocess shift info based on settings
 */
 
+using System;
+using System.Collections.Generic;
+
 namespace DriverPlannerShared {
     public static class DataShiftProcessor {
         public static MainShiftInfo[,] GetMainShiftInfos(SalarySettings[] salarySettingsByDriverType, int timeframeLength) {
@@ -83,7 +86,7 @@ namespace DriverPlannerShared {
                 int salaryEndTime = Math.Min(nextSalaryRateInfo.StartTime, mainShiftEndTime);
                 bool usesContinuingRate = shiftContinuingRate.Value > salaryRateInfo.SalaryRate;
 
-                ComputedSalaryRateBlock prevComputedSalaryBlock = salaryBlocks.Count > 0 ? salaryBlocks[^1] : null;
+                ComputedSalaryRateBlock prevComputedSalaryBlock = salaryBlocks.Count > 0 ? salaryBlocks[salaryBlocks.Count - 1] : null;
                 if (prevComputedSalaryBlock == null || prevComputedSalaryBlock.SalaryRate != applicableSalaryRate || prevComputedSalaryBlock.UsesContinuingRate != usesContinuingRate) {
                     salaryBlocks.Add(new ComputedSalaryRateBlock(salaryRateInfo.StartTime, nextSalaryRateInfo.StartTime, salaryStartTime, salaryEndTime, timeInRate, applicableSalaryRate, usesContinuingRate, costInRate));
                 } else {

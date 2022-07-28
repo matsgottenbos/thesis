@@ -2,6 +2,8 @@
  * Helper methods for arrays
 */
 
+using System;
+
 namespace DriverPlannerShared {
     public static class ArrayHelper {
         public static int[] InvertArray(int[] array) {

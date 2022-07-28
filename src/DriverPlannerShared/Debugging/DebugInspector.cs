@@ -1,4 +1,6 @@
-﻿namespace DriverPlannerShared {
+﻿using System;
+
+namespace DriverPlannerShared {
     public class DebugInspector {
         readonly Instance instance;
 

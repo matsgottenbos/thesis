@@ -2,6 +2,8 @@
  * Stores costs, robustness and satisfaction information
 */
 
+using System;
+
 namespace DriverPlannerShared {
     public class SaStats {
         public double Cost, RawCost, Robustness, Penalty, DriverSatisfaction;
@@ -14,7 +16,7 @@ namespace DriverPlannerShared {
                 Robustness = -a.Robustness,
                 Penalty = -a.Penalty,
                 DriverSatisfaction = -a.DriverSatisfaction,
-                SatisfactionScore = a.SatisfactionScore.HasValue ? -a.SatisfactionScore.Value : null,
+                SatisfactionScore = a.SatisfactionScore.HasValue ? -a.SatisfactionScore : null,
             };
         }
         public static SaStats operator +(SaStats a, SaStats b) {
@@ -24,7 +26,7 @@ namespace DriverPlannerShared {
                 Robustness = a.Robustness + b.Robustness,
                 Penalty = a.Penalty + b.Penalty,
                 DriverSatisfaction = a.DriverSatisfaction + b.DriverSatisfaction,
-                SatisfactionScore = a.SatisfactionScore.HasValue && b.SatisfactionScore.HasValue ? a.SatisfactionScore.Value + b.SatisfactionScore.Value : null,
+                SatisfactionScore = a.SatisfactionScore.HasValue && b.SatisfactionScore.HasValue ? a.SatisfactionScore + b.SatisfactionScore : null,
             };
         }
         public static SaStats operator -(SaStats a, SaStats b) => a + -b;

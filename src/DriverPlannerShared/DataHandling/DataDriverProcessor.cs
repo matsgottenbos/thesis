@@ -3,6 +3,10 @@
 */
 
 using NPOI.XSSF.UserModel;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace DriverPlannerShared {
     public static class DataDriverProcessor {
@@ -67,7 +71,7 @@ namespace DriverPlannerShared {
                 }
 
                 // Qualifications
-                string[] countryQualifications = countryQualificationsStr.Split(", ");
+                string[] countryQualifications = countryQualificationsStr.Split(new string[] { ", " }, StringSplitOptions.None);
                 bool[] activityQualifications = DetermineActivityQualificationsFromCountryQualifications(countryQualifications, activities);
                 bool isInternational = countryQualifications.Length > 1;
 
@@ -141,7 +145,7 @@ namespace DriverPlannerShared {
                 if (companyName == null || externalDriverTypeName == null || countryQualificationsStr == null || !isHotelAllowed.HasValue || !minShiftCount.HasValue || !maxShiftCount.HasValue) return;
                 if (maxShiftCount.Value == 0) return;
 
-                string[] countryQualifications = countryQualificationsStr.Split(", ");
+                string[] countryQualifications = countryQualificationsStr.Split(new string[] { ", " }, StringSplitOptions.None);
                 bool isInternational = countryQualifications.Length > 1;
 
                 int travelInfoExternalCompanyIndex = Array.IndexOf(travelInfoExternalCompanyNames, externalDriverTypeName);

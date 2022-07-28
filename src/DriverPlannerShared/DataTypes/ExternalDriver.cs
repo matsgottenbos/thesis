@@ -1,4 +1,6 @@
-﻿namespace DriverPlannerShared {
+﻿using System;
+
+namespace DriverPlannerShared {
     public class ExternalDriver : Driver {
         public readonly int ExternalDriverTypeIndex, IndexInType;
         public readonly string CompanyName, ExternalDriverTypeName;

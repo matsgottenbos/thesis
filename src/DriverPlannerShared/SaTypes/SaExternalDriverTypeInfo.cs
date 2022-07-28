@@ -2,6 +2,8 @@
  * Used to store calculated information about an external drivers's activity path, or a range of it, that concerns the external driver type
 */
 
+using System;
+
 namespace DriverPlannerShared {
     public class SaExternalDriverTypeInfo {
         public double Cost, Penalty;

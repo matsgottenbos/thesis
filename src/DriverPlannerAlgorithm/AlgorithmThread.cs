@@ -203,7 +203,7 @@ namespace DriverPlannerAlgorithm {
                     InternalDriver internalDriver = internalDriversRandomOrder[shuffledInternalDriverIndex];
                     List<Activity> driverPath = driverPaths[internalDriver.AllDriversIndex];
 
-                    if (driverPath.Count == 0 || Info.Instance.IsValidSuccession(driverPath[^1], activity)) {
+                    if (driverPath.Count == 0 || Info.Instance.IsValidSuccession(driverPath.Last(), activity)) {
                         // We can add this activity to this driver without overlap violations
                         assignment[activityIndex] = internalDriver;
                         driverPath.Add(activity);
@@ -224,7 +224,7 @@ namespace DriverPlannerAlgorithm {
                         ExternalDriver externalDriver = externalDriversInType[externalDriverIndexInType];
                         List<Activity> driverPath = driverPaths[externalDriver.AllDriversIndex];
 
-                        if (driverPath.Count == 0 || Info.Instance.IsValidSuccession(driverPath[^1], activity)) {
+                        if (driverPath.Count == 0 || Info.Instance.IsValidSuccession(driverPath.Last(), activity)) {
                             // We can add this activity to this driver without overlap violations
                             assignment[activityIndex] = externalDriver;
                             driverPath.Add(activity);

@@ -3,7 +3,11 @@
 */
 
 using CsvHelper;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 
 namespace DriverPlannerShared {
     public static class TravelInfoCsvHandler {
@@ -42,9 +46,11 @@ namespace DriverPlannerShared {
         }
 
         static void WriteCsvFile(List<TravelInfoCsv> travelInfoCsv, string csvFilePath) {
-            using StreamWriter streamWriter = new StreamWriter(csvFilePath);
-            using CsvWriter csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture);
-            csvWriter.WriteRecords(travelInfoCsv);
+            using (StreamWriter streamWriter = new StreamWriter(csvFilePath)) {
+                using (CsvWriter csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture)) {
+                    csvWriter.WriteRecords(travelInfoCsv);
+                }
+            }
         }
 
 
@@ -53,9 +59,11 @@ namespace DriverPlannerShared {
         public static List<TravelInfoCsv> ImportTravelInfoFromCsv(bool shouldIgnoreEmpty, string csvFilePath) {
             List<TravelInfoCsv> travelInfoCsv;
             if (File.Exists(csvFilePath)) {
-                using StreamReader streamReader = new StreamReader(csvFilePath);
-                using CsvReader csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
-                travelInfoCsv = csvReader.GetRecords<TravelInfoCsv>().ToList();
+                using (StreamReader streamReader = new StreamReader(csvFilePath)) {
+                    using (CsvReader csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture)) {
+                        travelInfoCsv = csvReader.GetRecords<TravelInfoCsv>().ToList();
+                    }
+                }
             } else if (shouldIgnoreEmpty) {
                 Console.WriteLine("File `{0}` not found\nWill generate relevant travel info", csvFilePath);
                 travelInfoCsv = new List<TravelInfoCsv>();

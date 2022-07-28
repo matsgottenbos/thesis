@@ -1,4 +1,8 @@
-﻿namespace DriverPlannerShared {
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace DriverPlannerShared {
     public static class SaDebugger {
         static OperationInfo CurrentOperation = null;
 
@@ -71,12 +75,17 @@
         }
 
         public DebugTotalInfo GetCurrentStageInfo() {
-            return stage switch {
-                OperationPartStage.OldNormal => oldNormalInfo,
-                OperationPartStage.NewNormal => newNormalInfo,
-                OperationPartStage.OldChecked => oldCheckedInfo,
-                OperationPartStage.NewChecked => newCheckedInfo,
-                _ => throw new Exception("Incorrect stage"),
+            switch (stage) {
+                case OperationPartStage.OldNormal:
+                    return oldNormalInfo;
+                case OperationPartStage.NewNormal:
+                    return newNormalInfo;
+                case OperationPartStage.OldChecked:
+                    return oldCheckedInfo;
+                case OperationPartStage.NewChecked:
+                    return newCheckedInfo;
+                default:
+                    throw new Exception("Incorrect stage");
             };
         }
 
@@ -267,11 +276,11 @@
         }
 
         public void Log() {
-            Console.WriteLine("> Shift {0}--{1}", Activities[0].Activity.Index, Activities[^1].Activity.Index);
+            Console.WriteLine("> Shift {0}--{1}", Activities[0].Activity.Index, Activities.Last().Activity.Index);
             Console.WriteLine("Shift first activity: {0}", ShiftFirstActivity?.Index.ToString() ?? "-");
             Console.WriteLine("Shift last activity: {0}", ShiftLastActivity?.Index.ToString() ?? "-");
             Console.WriteLine("After hotel activity: {0}", AfterHotelActivity?.Index.ToString() ?? "-");
-            Console.WriteLine("Activity part length: {0}", Activities[^1].Activity.EndTime - Activities[0].Activity.StartTime);
+            Console.WriteLine("Activity part length: {0}", Activities.Last().Activity.EndTime - Activities[0].Activity.StartTime);
             Console.WriteLine("Real main length: {0}", MainShiftInfo.RealMainShiftLength);
             Console.WriteLine("Paid main length: {0}", DriverTypeMainShiftInfo.PaidMainShiftLength);
             Console.WriteLine("Shared car travel time before: {0}", SharedCarTravelTimeBefore);

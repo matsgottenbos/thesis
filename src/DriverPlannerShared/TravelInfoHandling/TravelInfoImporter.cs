@@ -2,6 +2,8 @@
  * Helper methods to import travel info
 */
 
+using System.Collections.Generic;
+
 namespace DriverPlannerShared {
     public static class TravelInfoImporter {
         /* Import full info */
