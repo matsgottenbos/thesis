@@ -37,7 +37,7 @@
         /// <summary>Whether to disable multithreading in the algorithm.</summary>
         public const bool DebugDisableMultithreading = false;
         /// <summary>Whether to throw exceptions instead of handling them and logging them to console.</summary>
-        public const bool DebugThrowExceptions = true;
+        public const bool DebugThrowExceptions = false;
         /// <summary>Whether to use a fixed seed for the random objects of the application.</summary>
         public const bool DebugSeedRandomness = false;
         /// <summary>Whether to perform additional checks on the correctness of operation cost differences.</summary>
